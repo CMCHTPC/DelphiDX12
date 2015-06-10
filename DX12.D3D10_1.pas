@@ -1,4 +1,4 @@
-unit D3D10_1;
+unit DX12.D3D10_1;
 
 {$IFDEF FPC}
 {$MODE delphi}{$H+}
@@ -11,8 +11,8 @@ interface
 {$Z4}
 
 uses
-    Windows, Classes, SysUtils, D3D10, D3DCommon,
-    DXGI;
+    Windows, Classes, SysUtils, DX12.D3D10, DX12.D3DCommon,
+    DX12.DXGI;
 
 const
     DLL_D3D10_1 = 'd3d10_1.dll';

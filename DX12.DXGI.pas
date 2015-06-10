@@ -1,4 +1,4 @@
-unit DXGI;
+unit DX12.DXGI;
 
 { incldues
   DXGIFormat.h

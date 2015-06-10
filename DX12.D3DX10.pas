@@ -1,4 +1,4 @@
-unit D3DX10;
+unit DX12.D3DX10;
 
 {$IFDEF FPC}
 {$MODE delphi}{$H+}
@@ -11,8 +11,8 @@ interface
 
 uses
     Windows, Classes, SysUtils,
-    D3D10, D3DCommon, D3D10_1,
-    DXGI;
+    DX12.D3D10, DX12.D3DCommon, DX12.D3D10_1,
+    DX12.DXGI;
 
 const
     IID_ID3DXMatrixStack: TGUID = '{C7885BA7-F990-4fe7-922D-8515E477DD85}';

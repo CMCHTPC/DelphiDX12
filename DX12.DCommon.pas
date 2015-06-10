@@ -1,4 +1,4 @@
-unit DCommon;
+unit DX12.DCommon;
 
 {$IFDEF FPC}
 {$MODE delphi}{$H+}
@@ -9,7 +9,7 @@ interface
 {$Z4}
 
 uses
-    Windows, Classes, SysUtils, DXGI;
+    Windows, Classes, SysUtils, DX12.DXGI;
 
 type
     TDWRITE_MEASURING_MODE = (DWRITE_MEASURING_MODE_NATURAL, DWRITE_MEASURING_MODE_GDI_CLASSIC, DWRITE_MEASURING_MODE_GDI_NATURAL);

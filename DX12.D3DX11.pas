@@ -3,7 +3,7 @@
 { File: D3DX11Core.h }
 { File: D3DX11Tex.h }
 
-unit D3DX11;
+unit DX12.D3DX11;
 
 {$IFDEF FPC}
 {$MODE delphi}{$H+}
@@ -15,8 +15,8 @@ interface
 {$Z4}
 
 uses
-    Windows, Classes, SysUtils, DXGI,
-    D3D10, D3DX10, D3DCommon, D3D11;
+    Windows, Classes, SysUtils, DX12.DXGI,
+    DX12.D3D10, DX12.D3DCommon, DX12.D3D11;
 
 
 { Includs: D3DX11.h, D3DX11Async.h, D3DX11Core.h, D3DX11Tex.h}

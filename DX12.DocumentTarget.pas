@@ -1,4 +1,4 @@
-unit DocumentTarget;
+unit DX12.DocumentTarget;
 
 {$IFDEF FPC}
 {$mode delphi}

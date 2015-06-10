@@ -1,4 +1,4 @@
-unit WinCodec;
+unit DX12.WinCodec;
 
 {$IFDEF FPC}
 {$mode delphi}
@@ -7,7 +7,7 @@ unit WinCodec;
 interface
 
 uses
-    Windows, Classes, SysUtils, DCommon, DXGI, ActiveX, OCIdl;
+    Windows, Classes, SysUtils, DX12.DCommon, DX12.DXGI, ActiveX, DX12.OCIdl;
 
 const
     WINCODEC_SDK_VERSION1 = $0236;

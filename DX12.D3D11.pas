@@ -1,4 +1,4 @@
-unit D3D11;
+unit DX12.D3D11;
 
 {$IFDEF FPC}
 {$MODE delphi}{$H+}
@@ -11,8 +11,8 @@ interface
 {$Z4}
 
 uses
-    Windows, Classes, SysUtils, DXGI,
-    D3DCommon;
+    Windows, Classes, SysUtils, DX12.DXGI,
+    DX12.D3DCommon;
 
 const
     DLL_D3D11 = 'd3d11.dll';

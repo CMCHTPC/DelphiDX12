@@ -1,4 +1,4 @@
-unit DWrite;
+unit DX12.DWrite;
 
 {$IFDEF FPC}
 {$MODE delphi}{$H+}
@@ -9,7 +9,7 @@ interface
 {$Z4}
 
 uses
-    Windows, DCommon, D3DCommon, DXGI;
+    Windows, DX12.DCommon, DX12.D3DCommon, DX12.DXGI;
 
 const
     DWRITE_DLL = 'DWrite.dll';

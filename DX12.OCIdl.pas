@@ -1,4 +1,4 @@
-unit OCIdl;
+unit DX12.OCIdl;
 
 {$IFDEF FPC}
 {$mode delphi}

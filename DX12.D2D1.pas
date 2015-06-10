@@ -66,7 +66,7 @@
   ************************************************************************** }
 {$ENDREGION}
 
-unit D2D1;
+unit DX12.D2D1;
 
 {$IFDEF FPC}
 {$MODE delphi}{$H+}
@@ -77,8 +77,8 @@ interface
 {$Z4}
 
 uses
-    Windows, Classes, SysUtils, DXGI, DCommon, D3DCommon, DWrite,
-    WinCodec, ActiveX, DocumentTarget;
+    Windows, Classes, SysUtils, DX12.DXGI, DX12.DCommon, DX12.D3DCommon, DX12.DWrite,
+    DX12.WinCodec, ActiveX, DX12.DocumentTarget;
 
 const
     D2D1_DLL = 'd2d1.dll';
@@ -3014,9 +3014,6 @@ function ComputeFlatteningTolerance(matrix: TD2D1_MATRIX_3X2_F; dpiX: single = 9
 
 implementation
 
-uses
-    D2D1_1;
-
 
 
 function FloatMax: single;
@@ -3738,7 +3735,7 @@ var
     absMaxZoomFactor: single;
 begin
     dpiDependentTransform :=
-        matrix * D2D1.Matrix3x2F_Scale(dpiX / 96.0, dpiY / 96.0);
+        matrix * DX12.D2D1.Matrix3x2F_Scale(dpiX / 96.0, dpiY / 96.0);
     if (maxZoomFactor > 0) then
         absMaxZoomFactor := maxZoomFactor
     else

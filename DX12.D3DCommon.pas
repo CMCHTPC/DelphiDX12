@@ -37,7 +37,7 @@
   Version 0.9 2015.06.04 - First release
   ************************************************************************** }
 
-unit D3DCommon;
+unit DX12.D3DCommon;
 
 {$IFDEF FPC}
 {$mode delphi}{$H+}

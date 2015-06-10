@@ -1,4 +1,4 @@
-unit D3D10;
+unit DX12.D3D10;
 
 {$IFDEF FPC}
 {$mode delphi}{$H+}
@@ -9,7 +9,7 @@ interface
 {$Z4}
 
 uses
-    Windows, Classes, SysUtils, DXGI, D3DCommon;
+    Windows, Classes, SysUtils, DX12.DXGI, DX12.D3DCommon;
 
 const
     D3D10_SDK_VERSION = 29;
