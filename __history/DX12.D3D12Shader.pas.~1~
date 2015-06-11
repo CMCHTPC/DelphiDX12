@@ -38,7 +38,7 @@
   Version 0.9 2015.06.04 - First release
   ************************************************************************** }
 
-unit DX12.D3D12Shader;
+unit D3D12Shader;
 
 {$IFDEF FPC}
 {$mode delphi}
@@ -47,7 +47,7 @@ unit DX12.D3D12Shader;
 interface
 
 uses
-    Windows, Classes, SysUtils, DX12.D3DCommon;
+    Windows, Classes, SysUtils, D3DCommon;
 
 const
     IID_ID3D12ShaderReflectionType: TGUID = '{E913C351-783D-48CA-A1D1-4F306284AD56}';

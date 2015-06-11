@@ -7,7 +7,7 @@ unit DX12.DXGI1_4;
 interface
 
 uses
-    Windows, Classes, SysUtils, DX12.DXGI1_3, DX12.DXGI, DX12.DXGI1_2;
+    Windows, Classes, SysUtils, DXGI1_3, DXGI, DXGI1_2;
 
 const
     IID_IDXGISwapChain3: TGUID = '{94d99bdb-f1f8-4ab0-b236-7da0170edab1}';

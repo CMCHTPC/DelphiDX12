@@ -1,4 +1,4 @@
-unit DX12.DWrite3;
+unit DWrite3;
 
 {$IFDEF FPC}
 {$mode delphi}
@@ -7,7 +7,7 @@ unit DX12.DWrite3;
 interface
 
 uses
-    Windows, Classes, SysUtils, DX12.DWrite, DX12.DCommon;
+    Windows, Classes, SysUtils, DWrite, DCommon;
 
 const
     IID_IDWriteRenderingParams3: TGUID = '{b7924baa-391b-412a-8c5c-e44cc2d867dc}';

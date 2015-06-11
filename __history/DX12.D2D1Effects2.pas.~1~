@@ -1,4 +1,4 @@
-unit DX12.D2D1Effects2;
+unit D2D1Effects2;
 
 {$IFDEF FPC}
 {$mode delphi}

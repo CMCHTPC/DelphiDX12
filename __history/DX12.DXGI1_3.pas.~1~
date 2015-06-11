@@ -1,4 +1,4 @@
-unit DX12.DXGI1_3;
+unit DXGI1_3;
 
 {$IFDEF FPC}
 {$MODE delphi}{$H+}
@@ -8,7 +8,7 @@ unit DX12.DXGI1_3;
 interface
 
 uses
-    Windows, Classes, SysUtils, DX12.DXGI, DX12.DXGI1_2;
+    Windows, Classes, SysUtils, DXGI, DXGI1_2;
 
 const
     DLL_DXGI = 'dxgi.dll';

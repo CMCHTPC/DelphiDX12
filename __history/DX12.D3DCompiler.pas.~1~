@@ -1,4 +1,4 @@
-unit DX12.D3DCompiler;
+unit D3DCompiler;
 
 {$IFDEF FPC}
 {$MODE delphi}{$H+}
@@ -7,7 +7,7 @@ unit DX12.D3DCompiler;
 interface
 
 uses
-    Windows, Classes, SysUtils, DX12.D3DCommon, DX12.D3D11, DX12.D3D10;
+    Windows, Classes, SysUtils, D3DCommon, D3D11, D3D10;
 
 const
     D3DCOMPILER_DLL = 'd3dcompiler_47.dll';

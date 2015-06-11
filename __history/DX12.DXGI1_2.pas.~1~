@@ -1,4 +1,4 @@
-unit DX12.DXGI1_2;
+unit DXGI1_2;
 
 {$IFDEF FPC}
 {$MODE delphi}{$H+}
@@ -9,7 +9,7 @@ interface
 {$Z4}
 
 uses
-    Windows, Classes, SysUtils, DX12.DXGI, ActiveX;
+    Windows, Classes, SysUtils, DXGI, ActiveX;
 
 const
     IID_IDXGIDisplayControl: TGUID = '{ea9dbf1a-c88e-4486-854a-98aa0138f30c}';

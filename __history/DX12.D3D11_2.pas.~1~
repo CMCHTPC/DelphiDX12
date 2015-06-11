@@ -1,4 +1,4 @@
-unit DX12.D3D11_2;
+unit D3D11_2;
 
 {$IFDEF FPC}
 {$MODE delphi}{$H+}
@@ -10,8 +10,8 @@ interface
 
 uses
     Windows, Classes, SysUtils,
-    DX12.DXGI, DX12.D3D11, DX12.D3D11_1,
-    DX12.D3DCommon;
+    DXGI, D3D11, D3D11_1,
+    D3DCommon;
 
 const
 

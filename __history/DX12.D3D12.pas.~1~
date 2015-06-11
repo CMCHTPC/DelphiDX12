@@ -37,7 +37,7 @@
   Version 0.9 2015.06.04 - First release
   ************************************************************************** }
 
-unit DX12.D3D12;
+unit D3D12;
 
 {$IFDEF FPC}
 {$mode delphi}
@@ -46,7 +46,7 @@ unit DX12.D3D12;
 interface
 
 uses
-    Windows, Classes, SysUtils, DX12.DXGI, DX12.D3DCommon;
+    Windows, Classes, SysUtils, DXGI, D3DCommon;
 	
 const
 		D3D12_DLL ='D3D12.dll';
