@@ -46,6 +46,8 @@ unit DX12.D3D12Shader;
 
 interface
 
+{$Z4}
+
 uses
     Windows, Classes, SysUtils, DX12.D3DCommon;
 

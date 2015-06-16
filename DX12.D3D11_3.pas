@@ -6,6 +6,8 @@ unit DX12.D3D11_3;
 
 interface
 
+{$Z4}
+
 uses
     Windows, Classes, SysUtils, DX12.DXGI1_3, DX12.D3D11_2, DX12.D3D11_1, DX12.D3DCommon, DX12.DXGI, DX12.D3D11;
 

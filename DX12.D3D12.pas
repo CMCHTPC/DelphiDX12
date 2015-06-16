@@ -45,6 +45,8 @@ unit DX12.D3D12;
 
 interface
 
+{$Z4}
+
 uses
     Windows, Classes, SysUtils, DX12.DXGI, DX12.D3DCommon;
 	

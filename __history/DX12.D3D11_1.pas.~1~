@@ -160,7 +160,7 @@ type
         function CreateDeviceContextState(Flags: UINT; pFeatureLevels: PD3D_FEATURE_LEVEL; FeatureLevels: UINT;
             SDKVersion: UINT; EmulatedInterface: TGUID; out pChosenFeatureLevel: TD3D_FEATURE_LEVEL;
             out ppContextState: ID3DDeviceContextState): HResult; stdcall;
-        function OpenSharedResource1(hResource: THANDLE; const returnedInterface: TGUID; out ppResource{: pointer}): HResult; stdcall;
+        function OpenSharedResource1(hResource: THANDLE; returnedInterface: TGUID; out ppResource: pointer): HResult; stdcall;
         function OpenSharedResourceByName(lpName: PWideChar; dwDesiredAccess: DWORD; returnedInterface: TGUID;
             out ppResource: Pointer): HResult; stdcall;
     end;

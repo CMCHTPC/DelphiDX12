@@ -6,6 +6,8 @@ unit DX12.WinCodec;
 
 interface
 
+{$Z4}
+
 uses
     Windows, Classes, SysUtils, DX12.DCommon, DX12.DXGI, ActiveX, DX12.OCIdl;
 

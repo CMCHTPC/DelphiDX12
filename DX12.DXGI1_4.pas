@@ -6,6 +6,8 @@ unit DX12.DXGI1_4;
 
 interface
 
+{$Z4}
+
 uses
     Windows, Classes, SysUtils, DX12.DXGI1_3, DX12.DXGI, DX12.DXGI1_2;
 

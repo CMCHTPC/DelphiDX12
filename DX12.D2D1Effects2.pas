@@ -6,6 +6,8 @@ unit DX12.D2D1Effects2;
 
 interface
 
+{$Z4}
+
 uses
     Windows, Classes, SysUtils;
 

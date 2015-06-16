@@ -1383,7 +1383,7 @@ type
             out szName: PAnsiChar; var pNameLength: UINT; out szUnits: PAnsiChar; var pUnitsLength: UINT;
             out szDescription: PAnsiChar; var pDescriptionLength: UINT): HResult; stdcall;
         function GetCreationFlags(): UInt; stdcall;
-        function OpenSharedResource(hResource: THANDLE; const ReturnedInterface: TGUID; out ppResource): HResult; stdcall;
+        function OpenSharedResource(hResource: THANDLE; const ReturnedInterface: TGUID; out ppResource): UINT; stdcall;
         procedure SetTextFilterSize(Width: UINT; Height: UINT); stdcall;
         procedure GetTextFilterSize(out pWidth: UINT; out pHeight: UINT); stdcall;
     end;
@@ -1782,8 +1782,6 @@ type
     ID3D10EffectSamplerVariable = interface;
     ID3D10EffectShaderVariable = interface;
 
-    PID3D10EffectMatrixVariable = ^ID3D10EffectMatrixVariable;
-
     TD3D10_PASS_SHADER_DESC = record
         pShaderVariable: ID3D10EffectShaderVariable;
         ShaderIndex: UINT;
@@ -1872,7 +1870,7 @@ type
     PID3D10EffectVectorVariable = ^ID3D10EffectVectorVariable;
 
 
-    ID3D10EffectMatrixVariable = interface (ID3D10EffectVariable)
+    ID3D10EffectMatrixVariable = interface(ID3D10EffectVariable)
         ['{50666C24-B82F-4eed-A172-5B6E7E8522E0}']
         function SetMatrix(pData: PSingle): HResult; stdcall;
         function GetMatrix(pData: PSingle): HResult; stdcall;
@@ -1884,7 +1882,7 @@ type
         function GetMatrixTransposeArray(pData: PSingle; Offset: UINT; Count: UINT): HResult; stdcall;
     end;
 
-    //PID3D10EffectMatrixVariable = ^ID3D10EffectMatrixVariable;
+    PID3D10EffectMatrixVariable = ^ID3D10EffectMatrixVariable;
 
 
     ID3D10EffectStringVariable = interface(ID3D10EffectVariable)
@@ -2007,7 +2005,7 @@ type
     ID3D10EffectTechnique = interface
         ['{DB122CE8-D1C9-4292-B237-24ED3DE8B175}']
         function IsValid(): longbool; stdcall;
-        function GetDesc(var pDesc: TD3D10_TECHNIQUE_DESC): HResult; stdcall;
+        function GetDesc(out pDesc: TD3D10_TECHNIQUE_DESC): HResult; stdcall;
         function GetAnnotationByIndex(Index: UINT): ID3D10EffectVariable; stdcall;
         function GetAnnotationByName(Name: PAnsiChar): ID3D10EffectVariable; stdcall;
         function GetPassByIndex(Index: UINT): ID3D10EffectPass; stdcall;
@@ -2123,35 +2121,9 @@ type
     PID3D10EffectVectorVariable = ^ID3D10EffectVectorVariable;
 
 
-    ID3D10EffectMatrixVariable = class {(ID3D10EffectVariable)}  // Cannot use 'interface' as the QueryInterface, AddRef and Release methods are missing.
-        function IsValid(): longbool;  virtual; stdcall; abstract;
-        function GetType(): ID3D10EffectType;  virtual; stdcall; abstract;
-        function GetDesc(out pDesc: TD3D10_EFFECT_VARIABLE_DESC): HResult;  virtual; stdcall; abstract;
-        function GetAnnotationByIndex(Index: UINT): ID3D10EffectVariable;  virtual; stdcall; abstract;
-        function GetAnnotationByName(Name: PAnsiChar): ID3D10EffectVariable;  virtual; stdcall; abstract;
-        function GetMemberByIndex(Index: UINT): ID3D10EffectVariable; virtual; stdcall; abstract;
-        function GetMemberByName(Name: PAnsiChar): ID3D10EffectVariable;  virtual; stdcall; abstract;
-        function GetMemberBySemantic(Semantic: PAnsiChar): ID3D10EffectVariable;  virtual; stdcall; abstract;
-        function GetElement(Index: UINT): ID3D10EffectVariable;  virtual; stdcall; abstract;
-        function GetParentConstantBuffer(): ID3D10EffectConstantBuffer;  virtual; stdcall; abstract;
-        function AsScalar(): ID3D10EffectScalarVariable;  virtual; stdcall; abstract;
-        function AsVector(): ID3D10EffectVectorVariable;  virtual; stdcall; abstract;
-        function AsMatrix(): ID3D10EffectMatrixVariable;  virtual; stdcall; abstract;
-        function AsString(): ID3D10EffectStringVariable;  virtual; stdcall; abstract;
-        function AsShaderResource(): ID3D10EffectShaderResourceVariable;  virtual; stdcall; abstract;
-        function AsRenderTargetView(): ID3D10EffectRenderTargetViewVariable;  virtual; stdcall; abstract;
-        function AsDepthStencilView(): ID3D10EffectDepthStencilViewVariable;  virtual; stdcall; abstract;
-        function AsConstantBuffer(): ID3D10EffectConstantBuffer;  virtual; stdcall; abstract;
-        function AsShader(): ID3D10EffectShaderVariable;  virtual; stdcall; abstract;
-        function AsBlend(): ID3D10EffectBlendVariable;  virtual; stdcall; abstract;
-        function AsDepthStencil(): ID3D10EffectDepthStencilVariable;  virtual; stdcall; abstract;
-        function AsRasterizer(): ID3D10EffectRasterizerVariable; virtual; stdcall; abstract;
-        function AsSampler(): ID3D10EffectSamplerVariable;  virtual; stdcall; abstract;
-        function SetRawValue(pData: Pointer; Offset: UINT; ByteCount: UINT): HResult;  virtual; stdcall; abstract;
-        function GetRawValue(pData: Pointer; Offset: UINT; ByteCount: UINT): HResult;  virtual; stdcall; abstract;
-
+    ID3D10EffectMatrixVariable = class(ID3D10EffectVariable)  // Cannot use 'interface' as the QueryInterface, AddRef and Release methods are missing.
         function SetMatrix(pData: PSingle): HResult; virtual; stdcall; abstract;
-        function GetMatrix(out pData: PSingle): HResult; virtual; stdcall; abstract;
+        function GetMatrix(pData: PSingle): HResult; virtual; stdcall; abstract;
         function SetMatrixArray(pData: PSingle; Offset: UINT; Count: UINT): HResult; virtual; stdcall; abstract;
         function GetMatrixArray(pData: Psingle; Offset: UINT; Count: UINT): HResult; virtual; stdcall; abstract;
         function SetMatrixTranspose(pData: PSingle): HResult; virtual; stdcall; abstract;

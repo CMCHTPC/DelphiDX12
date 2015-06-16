@@ -6,6 +6,8 @@ unit DX12.D3DCompiler;
 
 interface
 
+{$Z4}
+
 uses
     Windows, Classes, SysUtils, DX12.D3DCommon, DX12.D3D11, DX12.D3D10;
 

@@ -222,8 +222,8 @@ type
 
 const
     _FACDXGI = $87A;
-    MAKE_DXGI_HRESULT = Longint(_FACDXGI shl 16) or Longint(1 shl 31);
-    MAKE_DXGI_STATUS = Longint(_FACDXGI shl 16);
+    MAKE_DXGI_HRESULT = longint(_FACDXGI shl 16) or longword(1 shl 31);
+    MAKE_DXGI_STATUS = longint(_FACDXGI shl 16);
 
     DXGI_STATUS_OCCLUDED = MAKE_DXGI_STATUS or 1;
     DXGI_STATUS_CLIPPED = MAKE_DXGI_STATUS or 2;

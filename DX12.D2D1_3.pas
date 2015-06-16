@@ -65,6 +65,8 @@ unit DX12.D2D1_3;
 
 interface
 
+{$Z4}
+
 uses
     Windows, Classes, SysUtils, DX12.D2D1, DX12.WinCodec, DX12.DCommon, DX12.DXGI;
 

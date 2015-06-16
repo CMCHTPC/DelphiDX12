@@ -6,6 +6,8 @@ unit DX12.DocumentTarget;
 
 interface
 
+{$Z4}
+
 uses
     Windows, Classes, SysUtils,ActiveX;
 

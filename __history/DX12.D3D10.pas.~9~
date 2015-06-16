@@ -1782,8 +1782,6 @@ type
     ID3D10EffectSamplerVariable = interface;
     ID3D10EffectShaderVariable = interface;
 
-    PID3D10EffectMatrixVariable = ^ID3D10EffectMatrixVariable;
-
     TD3D10_PASS_SHADER_DESC = record
         pShaderVariable: ID3D10EffectShaderVariable;
         ShaderIndex: UINT;
@@ -1872,7 +1870,7 @@ type
     PID3D10EffectVectorVariable = ^ID3D10EffectVectorVariable;
 
 
-    ID3D10EffectMatrixVariable = interface (ID3D10EffectVariable)
+    ID3D10EffectMatrixVariable = interface(ID3D10EffectVariable)
         ['{50666C24-B82F-4eed-A172-5B6E7E8522E0}']
         function SetMatrix(pData: PSingle): HResult; stdcall;
         function GetMatrix(pData: PSingle): HResult; stdcall;
@@ -1884,7 +1882,7 @@ type
         function GetMatrixTransposeArray(pData: PSingle; Offset: UINT; Count: UINT): HResult; stdcall;
     end;
 
-    //PID3D10EffectMatrixVariable = ^ID3D10EffectMatrixVariable;
+    PID3D10EffectMatrixVariable = ^ID3D10EffectMatrixVariable;
 
 
     ID3D10EffectStringVariable = interface(ID3D10EffectVariable)
@@ -2007,7 +2005,7 @@ type
     ID3D10EffectTechnique = interface
         ['{DB122CE8-D1C9-4292-B237-24ED3DE8B175}']
         function IsValid(): longbool; stdcall;
-        function GetDesc(var pDesc: TD3D10_TECHNIQUE_DESC): HResult; stdcall;
+        function GetDesc(out pDesc: TD3D10_TECHNIQUE_DESC): HResult; stdcall;
         function GetAnnotationByIndex(Index: UINT): ID3D10EffectVariable; stdcall;
         function GetAnnotationByName(Name: PAnsiChar): ID3D10EffectVariable; stdcall;
         function GetPassByIndex(Index: UINT): ID3D10EffectPass; stdcall;
@@ -2151,7 +2149,7 @@ type
         function GetRawValue(pData: Pointer; Offset: UINT; ByteCount: UINT): HResult;  virtual; stdcall; abstract;
 
         function SetMatrix(pData: PSingle): HResult; virtual; stdcall; abstract;
-        function GetMatrix(out pData: PSingle): HResult; virtual; stdcall; abstract;
+        function GetMatrix(pData: PSingle): HResult; virtual; stdcall; abstract;
         function SetMatrixArray(pData: PSingle; Offset: UINT; Count: UINT): HResult; virtual; stdcall; abstract;
         function GetMatrixArray(pData: Psingle; Offset: UINT; Count: UINT): HResult; virtual; stdcall; abstract;
         function SetMatrixTranspose(pData: PSingle): HResult; virtual; stdcall; abstract;

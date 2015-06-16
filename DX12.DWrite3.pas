@@ -6,6 +6,8 @@ unit DX12.DWrite3;
 
 interface
 
+{$Z4}
+
 uses
     Windows, Classes, SysUtils, DX12.DWrite, DX12.DCommon;
 

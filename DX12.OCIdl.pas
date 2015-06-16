@@ -6,6 +6,8 @@ unit DX12.OCIdl;
 
 interface
 
+{$Z4}
+
 uses
     Windows, Classes, SysUtils,ActiveX;
 
