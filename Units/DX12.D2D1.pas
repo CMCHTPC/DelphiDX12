@@ -2199,7 +2199,7 @@ type
         function CreateRadialGradientBrush(radialGradientBrushProperties: PD2D1_RADIAL_GRADIENT_BRUSH_PROPERTIES;
             brushProperties: PD2D1_BRUSH_PROPERTIES; gradientStopCollection: ID2D1GradientStopCollection;
             out radialGradientBrush: ID2D1RadialGradientBrush): HResult; stdcall;
-        function CreateCompatibleRenderTarget(desiredSize: PD2D1_SIZE_F; desiredPixelSize: PD2D1_SIZE_U;
+        function CreateCompatibleRenderTarget(const desiredSize: TD2D1_SIZE_F; desiredPixelSize: PD2D1_SIZE_U;
             desiredFormat: PD2D1_PIXEL_FORMAT; options: TD2D1_COMPATIBLE_RENDER_TARGET_OPTIONS;
             out bitmapRenderTarget: ID2D1BitmapRenderTarget): HResult; stdcall;
         function CreateLayer(size: PD2D1_SIZE_F; out layer: ID2D1Layer): HResult; stdcall;

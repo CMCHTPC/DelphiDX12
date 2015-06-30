@@ -237,6 +237,9 @@ type
     TWICColor = UINT32;
     PWICColor = ^TWICColor;
 
+    TWICColorArray = array of TWICColor;
+    PWICColorArray = ^TWICColorArray;
+
     TWICRect = record
         X: INT32;
         Y: INT32;
@@ -791,7 +794,7 @@ type
         function InitializeFromPalette(pIPalette: IWICPalette): HResult; stdcall;
         function GetType(out pePaletteType: TWICBitmapPaletteType): HResult; stdcall;
         function GetColorCount(out pcCount: UINT): HResult; stdcall;
-        function GetColors(cCount: UINT; out pColors: PWICColor; out pcActualColors: UINT): HResult; stdcall;
+        function GetColors(cCount: UINT; var {out ??? } pColors: PWICColor; out pcActualColors: UINT): HResult; stdcall;
         function IsBlackWhite(out pfIsBlackWhite: longbool): HResult; stdcall;
         function IsGrayscale(out pfIsGrayscale: longbool): HResult; stdcall;
         function HasAlpha(out pfHasAlpha: longbool): HResult; stdcall;
