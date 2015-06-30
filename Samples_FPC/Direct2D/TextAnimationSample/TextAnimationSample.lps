@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <PathDelim Value="\"/>
+    <Version Value="9"/>
+    <BuildModes Active="Default"/>
+    <Units Count="15">
+      <Unit0>
+        <Filename Value="TextAnimationSample.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <TopLine Value="26"/>
+        <CursorPos X="21" Y="45"/>
+        <UsageCount Value="32"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit0>
+      <Unit1>
+        <Filename Value="TextAnimation.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="TextAnimation"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="622"/>
+        <CursorPos Y="632"/>
+        <UsageCount Value="32"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit1>
+      <Unit2>
+        <Filename Value="F:\DXNewLib\D2D1.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1079"/>
+        <CursorPos X="60" Y="1092"/>
+        <UsageCount Value="32"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit2>
+      <Unit3>
+        <Filename Value="F:\DXNewLib\DWrite.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="9" Y="9"/>
+        <UsageCount Value="32"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit3>
+      <Unit4>
+        <Filename Value="RingBuffer.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="RingBuffer"/>
+        <EditorIndex Value="6"/>
+        <CursorPos X="25" Y="5"/>
+        <UsageCount Value="29"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit4>
+      <Unit5>
+        <Filename Value="unit1.pas"/>
+        <ComponentName Value="Form1"/>
+        <ResourceBaseClass Value="Form"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="19"/>
+      </Unit5>
+      <Unit6>
+        <Filename Value="F:\DXNewLib\DXGI.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="593"/>
+        <CursorPos Y="605"/>
+        <UsageCount Value="14"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit6>
+      <Unit7>
+        <Filename Value="C:\codetyphon\fpcsrc\rtl\win\wininc\redef.inc"/>
+        <EditorIndex Value="4"/>
+        <TopLine Value="787"/>
+        <CursorPos X="62" Y="798"/>
+        <UsageCount Value="13"/>
+        <Loaded Value="True"/>
+      </Unit7>
+      <Unit8>
+        <Filename Value="C:\codetyphon\fpcsrc\rtl\win\wininc\struct.inc"/>
+        <EditorIndex Value="5"/>
+        <TopLine Value="2209"/>
+        <CursorPos X="57" Y="2222"/>
+        <UsageCount Value="13"/>
+        <Loaded Value="True"/>
+      </Unit8>
+      <Unit9>
+        <Filename Value="F:\DXNewLib\DCommon.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="9" Y="9"/>
+        <UsageCount Value="13"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit9>
+      <Unit10>
+        <Filename Value="C:\codetyphon\fpcsrc\rtl\inc\objpash.inc"/>
+        <EditorIndex Value="3"/>
+        <TopLine Value="184"/>
+        <CursorPos X="23" Y="193"/>
+        <UsageCount Value="13"/>
+        <Loaded Value="True"/>
+      </Unit10>
+      <Unit11>
+        <Filename Value="C:\codetyphon\typhon\components\lazutils\winlazfileutils.inc"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="861"/>
+        <CursorPos X="43" Y="868"/>
+        <UsageCount Value="13"/>
+        <Loaded Value="True"/>
+      </Unit11>
+      <Unit12>
+        <Filename Value="..\..\..\Units\DX12.D2D1.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit12>
+      <Unit13>
+        <Filename Value="..\..\..\Units\DX12.DWrite.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit13>
+      <Unit14>
+        <Filename Value="..\..\..\Units\DX12.DXProgrammableCapture.pas"/>
+        <UnitName Value="DX12.DXProgrammableCapture"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="12"/>
+        <CursorPos Y="31"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit14>
+    </Units>
+    <JumpHistory Count="11" HistoryIndex="10">
+      <Position1>
+        <Filename Value="TextAnimationSample.lpr"/>
+        <Caret Line="45" Column="21" TopLine="26"/>
+      </Position1>
+      <Position2>
+        <Filename Value="TextAnimation.pas"/>
+        <Caret Line="3"/>
+      </Position2>
+      <Position3>
+        <Filename Value="TextAnimation.pas"/>
+        <Caret Line="235" Column="17" TopLine="221"/>
+      </Position3>
+      <Position4>
+        <Filename Value="TextAnimation.pas"/>
+        <Caret Line="241" Column="53" TopLine="221"/>
+      </Position4>
+      <Position5>
+        <Filename Value="TextAnimation.pas"/>
+        <Caret Line="253" Column="69" TopLine="240"/>
+      </Position5>
+      <Position6>
+        <Filename Value="TextAnimation.pas"/>
+        <Caret Line="318" Column="43" TopLine="305"/>
+      </Position6>
+      <Position7>
+        <Filename Value="TextAnimation.pas"/>
+        <Caret Line="319" Column="28" TopLine="306"/>
+      </Position7>
+      <Position8>
+        <Filename Value="TextAnimation.pas"/>
+        <Caret Line="334" Column="37" TopLine="315"/>
+      </Position8>
+      <Position9>
+        <Filename Value="TextAnimation.pas"/>
+        <Caret Line="353" Column="22" TopLine="340"/>
+      </Position9>
+      <Position10>
+        <Filename Value="TextAnimation.pas"/>
+        <Caret Line="562" Column="33" TopLine="539"/>
+      </Position10>
+      <Position11>
+        <Filename Value="TextAnimation.pas"/>
+        <Caret Line="571" Column="54" TopLine="558"/>
+      </Position11>
+    </JumpHistory>
+  </ProjectSession>
+  <Debugging>
+    <Watches Count="1">
+      <Item1>
+        <Expression Value="stringLength"/>
+      </Item1>
+    </Watches>
+  </Debugging>
+</CONFIG>
