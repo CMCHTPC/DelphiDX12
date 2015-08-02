@@ -1,5 +1,6 @@
 # DelphiDX12
 DirectX 12 Headers for Delphi and FPC
+based on SDK 10.0.10240.0
 
 This header translation is  NOT based on the JSB headers
 

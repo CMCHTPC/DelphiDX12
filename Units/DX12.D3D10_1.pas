@@ -172,11 +172,9 @@ type
 
 
     TD3D10_SHADER_DEBUG_TOKEN_INFO = record
-
         OffsetFile: UINT;    // offset into file list
         Line: UINT;    // line #
         Column: UINT;  // column #
-
         TokenLength: UINT;
         TokenId: UINT; // offset to LPCSTR of length TokenLength in string datastore
     end;
@@ -192,41 +190,26 @@ type
     end;
 
     TD3D10_SHADER_DEBUG_INPUT_INFO = record
-
         VarIndex: UINT;
-
         InitialRegisterSet: TD3D10_SHADER_DEBUG_REGTYPE;
         InitialBank: UINT;
-
         InitialRegister: UINT;
-
         InitialComponent: UINT;
-
         InitialValue: UINT;
     end;
 
     TD3D10_SHADER_DEBUG_SCOPEVAR_INFO = record
         // Index into variable token
         TokenId: UINT;
-
         VarType: TD3D10_SHADER_DEBUG_VARTYPE; // variable or function (different namespaces)
         _Class: TD3D10_SHADER_VARIABLE_CLASS;
         Rows: UINT;          // number of rows (matrices)
         Columns: UINT;       // number of columns (vectors and matrices)
-
-
         StructMemberScope: UINT;
-
-
         uArrayIndices: UINT;    // a[3][2][1] has 3 indices
-
-
         ArrayElements: UINT; // a[3][2][1] has {3, 2, 1}
-
         ArrayStrides: UINT;  // a[3][2][1] has {2, 1, 1}
-
         uVariables: UINT;
-
         uFirstVariable: UINT;
     end;
 

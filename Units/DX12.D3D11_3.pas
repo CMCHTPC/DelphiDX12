@@ -292,6 +292,8 @@ type
     ID3D11DeviceContext3 = interface(ID3D11DeviceContext2)
         ['{b4e3c01d-e79e-4637-91b2-510e9f4c9b8f}']
         procedure Flush1(ContextType: TD3D11_CONTEXT_TYPE; hEvent: THANDLE); stdcall;
+		procedure SetHardwareProtectionState( HwProtectionEnable:BOOLean); stdcall;
+        procedure GetHardwareProtectionState( Out pHwProtectionEnable:BOOLean); stdcall;
     end;
 
 

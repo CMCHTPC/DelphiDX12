@@ -560,7 +560,7 @@ begin
         // Create the compatible render target using desiredPixelSize to avoid
         // blurriness issues caused by a fractional-pixel desiredSize.
         alphaOnlyFormat := DX12.D2D1.PixelFormat(DXGI_FORMAT_A8_UNORM, D2D1_ALPHA_MODE_PREMULTIPLIED);
-        Result := m_pRT.CreateCompatibleRenderTarget(nil, @maskPixelSize, @alphaOnlyFormat,
+        Result := m_pRT.CreateCompatibleRenderTarget(TD2D_SIZE_F(nil^), @maskPixelSize, @alphaOnlyFormat,
             D2D1_COMPATIBLE_RENDER_TARGET_OPTIONS_NONE, m_pOpacityRT);
         if (SUCCEEDED(Result)) then
         begin

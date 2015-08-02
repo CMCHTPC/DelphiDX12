@@ -423,8 +423,8 @@ begin
 
     newPatch.color00 := color00;
     newPatch.color03 := color03;
-    newPatch.color33 := color30;
-    newPatch.color30 := color33;
+    newPatch.color33 := color33
+    newPatch.color30 := color30;
 
     newPatch.topEdgeMode := topEdgeMode;
     newPatch.leftEdgeMode := leftEdgeMode;

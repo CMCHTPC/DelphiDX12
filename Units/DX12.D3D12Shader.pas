@@ -277,7 +277,7 @@ type
 
 
     {$IFDEF FPC}
-    {$interface corba}
+    {$interfaces corba}
 
     ID3D12ShaderReflectionConstantBuffer = interface;
     ID3D12ShaderReflectionVariable = interface;
@@ -336,7 +336,7 @@ type
     end;
 
 
-    {$interface com}
+    {$interfaces com}
     {$ELSE}
 
 

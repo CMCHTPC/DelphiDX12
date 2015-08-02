@@ -4,7 +4,7 @@
     <PathDelim Value="\"/>
     <Version Value="9"/>
     <BuildModes Active="Default"/>
-    <Units Count="5">
+    <Units Count="6">
       <Unit0>
         <Filename Value="WICAnimatedGIF.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -17,11 +17,9 @@
       <Unit1>
         <Filename Value="AppUnit.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="AppUnit"/>
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="223"/>
-        <CursorPos X="39" Y="239"/>
+        <CursorPos X="31" Y="9"/>
         <UsageCount Value="20"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -48,7 +46,6 @@
       </Unit3>
       <Unit4>
         <Filename Value="..\..\..\..\WinUnitNeu\CMC.COMBaseAPI.pas"/>
-        <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
         <WindowIndex Value="-1"/>
         <TopLine Value="-1"/>
@@ -56,127 +53,137 @@
         <UsageCount Value="20"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit4>
+      <Unit5>
+        <Filename Value="..\..\..\..\WinUnits\CMC.COMBaseAPI.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit5>
     </Units>
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="AppUnit.pas"/>
-        <Caret Line="30" Column="15" TopLine="25"/>
+        <Caret Line="393" Column="19" TopLine="379"/>
       </Position1>
       <Position2>
         <Filename Value="AppUnit.pas"/>
-        <Caret Line="393" Column="19" TopLine="379"/>
+        <Caret Line="409" Column="60" TopLine="396"/>
       </Position2>
       <Position3>
         <Filename Value="AppUnit.pas"/>
-        <Caret Line="409" Column="60" TopLine="396"/>
+        <Caret Line="454" Column="25" TopLine="441"/>
       </Position3>
       <Position4>
         <Filename Value="AppUnit.pas"/>
-        <Caret Line="454" Column="25" TopLine="441"/>
+        <Caret Line="891" Column="25" TopLine="877"/>
       </Position4>
       <Position5>
         <Filename Value="AppUnit.pas"/>
-        <Caret Line="891" Column="25" TopLine="877"/>
+        <Caret Line="918" Column="28" TopLine="904"/>
       </Position5>
       <Position6>
         <Filename Value="AppUnit.pas"/>
-        <Caret Line="918" Column="28" TopLine="904"/>
+        <Caret Line="963" Column="34" TopLine="951"/>
       </Position6>
       <Position7>
         <Filename Value="AppUnit.pas"/>
-        <Caret Line="963" Column="34" TopLine="951"/>
+        <Caret Line="1288" Column="33" TopLine="1275"/>
       </Position7>
       <Position8>
         <Filename Value="AppUnit.pas"/>
-        <Caret Line="1288" Column="33" TopLine="1275"/>
+        <Caret Line="1295" Column="23" TopLine="1282"/>
       </Position8>
       <Position9>
         <Filename Value="AppUnit.pas"/>
-        <Caret Line="1295" Column="23" TopLine="1282"/>
+        <Caret Line="1312" Column="38" TopLine="1299"/>
       </Position9>
       <Position10>
         <Filename Value="AppUnit.pas"/>
-        <Caret Line="1312" Column="38" TopLine="1299"/>
+        <Caret Line="1343" Column="31" TopLine="1320"/>
       </Position10>
       <Position11>
         <Filename Value="AppUnit.pas"/>
-        <Caret Line="1343" Column="31" TopLine="1320"/>
+        <Caret Line="1334" Column="108" TopLine="1319"/>
       </Position11>
       <Position12>
         <Filename Value="AppUnit.pas"/>
-        <Caret Line="1334" Column="108" TopLine="1319"/>
+        <Caret Line="1330" TopLine="1320"/>
       </Position12>
       <Position13>
         <Filename Value="AppUnit.pas"/>
-        <Caret Line="1330" TopLine="1320"/>
+        <Caret Line="77" TopLine="66"/>
       </Position13>
       <Position14>
-        <Filename Value="AppUnit.pas"/>
-        <Caret Line="77" TopLine="66"/>
+        <Filename Value="WICAnimatedGIF.lpr"/>
+        <Caret Line="35" Column="13" TopLine="9"/>
       </Position14>
       <Position15>
         <Filename Value="WICAnimatedGIF.lpr"/>
-        <Caret Line="35" Column="13" TopLine="9"/>
+        <Caret Line="23" Column="17" TopLine="7"/>
       </Position15>
       <Position16>
         <Filename Value="WICAnimatedGIF.lpr"/>
-        <Caret Line="23" Column="17" TopLine="7"/>
+        <Caret Line="37" Column="19" TopLine="12"/>
       </Position16>
       <Position17>
         <Filename Value="WICAnimatedGIF.lpr"/>
-        <Caret Line="37" Column="19" TopLine="12"/>
+        <Caret Line="24" Column="28" TopLine="10"/>
       </Position17>
       <Position18>
         <Filename Value="WICAnimatedGIF.lpr"/>
-        <Caret Line="24" Column="28" TopLine="10"/>
+        <Caret Line="23" Column="21" TopLine="10"/>
       </Position18>
       <Position19>
         <Filename Value="WICAnimatedGIF.lpr"/>
-        <Caret Line="23" Column="21" TopLine="10"/>
+        <Caret Line="24" Column="33" TopLine="10"/>
       </Position19>
       <Position20>
         <Filename Value="WICAnimatedGIF.lpr"/>
-        <Caret Line="24" Column="33" TopLine="10"/>
+        <Caret Line="38" Column="22" TopLine="11"/>
       </Position20>
       <Position21>
-        <Filename Value="WICAnimatedGIF.lpr"/>
-        <Caret Line="38" Column="22" TopLine="11"/>
+        <Filename Value="AppUnit.pas"/>
+        <Caret Line="82" Column="44" TopLine="69"/>
       </Position21>
       <Position22>
         <Filename Value="AppUnit.pas"/>
-        <Caret Line="82" Column="44" TopLine="69"/>
+        <Caret Line="152" Column="14" TopLine="141"/>
       </Position22>
       <Position23>
         <Filename Value="AppUnit.pas"/>
-        <Caret Line="152" Column="14" TopLine="141"/>
+        <Caret Line="168" Column="14" TopLine="161"/>
       </Position23>
       <Position24>
-        <Filename Value="AppUnit.pas"/>
-        <Caret Line="168" Column="14" TopLine="161"/>
+        <Filename Value="WICAnimatedGIF.lpr"/>
+        <Caret Line="28" Column="26" TopLine="10"/>
       </Position24>
       <Position25>
         <Filename Value="WICAnimatedGIF.lpr"/>
-        <Caret Line="28" Column="26" TopLine="10"/>
+        <Caret Line="24" Column="19" TopLine="12"/>
       </Position25>
       <Position26>
-        <Filename Value="WICAnimatedGIF.lpr"/>
-        <Caret Line="24" Column="19" TopLine="12"/>
-      </Position26>
-      <Position27>
         <Filename Value="AppUnit.pas"/>
         <Caret Line="9" Column="45"/>
-      </Position27>
-      <Position28>
+      </Position26>
+      <Position27>
         <Filename Value="WICAnimatedGIF.lpr"/>
         <Caret Line="24" Column="19" TopLine="12"/>
+      </Position27>
+      <Position28>
+        <Filename Value="AppUnit.pas"/>
+        <Caret Line="226" Column="28" TopLine="214"/>
       </Position28>
       <Position29>
         <Filename Value="AppUnit.pas"/>
-        <Caret Line="226" Column="28" TopLine="214"/>
+        <Caret Line="242" Column="32" TopLine="230"/>
       </Position29>
       <Position30>
         <Filename Value="AppUnit.pas"/>
-        <Caret Line="242" Column="32" TopLine="230"/>
+        <Caret Line="239" Column="39" TopLine="223"/>
       </Position30>
     </JumpHistory>
   </ProjectSession>

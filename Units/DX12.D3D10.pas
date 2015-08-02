@@ -355,7 +355,7 @@ const
 
 type
 
-   // TFloatArray4 = array[0..3] of single;
+    // TFloatArray4 = array[0..3] of single;
 
     TD3D10_INPUT_CLASSIFICATION = (
         D3D10_INPUT_PER_VERTEX_DATA = 0,
@@ -1263,17 +1263,17 @@ type
 
     ID3D10Device = interface(IUnknown)
         ['{9B7E4C0F-342C-4106-A19F-4F2704F689F0}']
-        procedure VSSetConstantBuffers(StartSlot: UINT; NumBuffers: UINT;  ppConstantBuffers: PID3D10Buffer); stdcall;
-        procedure PSSetShaderResources(StartSlot: UINT; NumViews: UINT;  ppShaderResourceViews: PID3D10ShaderResourceView); stdcall;
+        procedure VSSetConstantBuffers(StartSlot: UINT; NumBuffers: UINT; ppConstantBuffers: PID3D10Buffer); stdcall;
+        procedure PSSetShaderResources(StartSlot: UINT; NumViews: UINT; ppShaderResourceViews: PID3D10ShaderResourceView); stdcall;
         procedure PSSetShader(pPixelShader: ID3D10PixelShader); stdcall;
-        procedure PSSetSamplers(StartSlot: UINT; NumSamplers: UINT;  ppSamplers: PID3D10SamplerState); stdcall;
+        procedure PSSetSamplers(StartSlot: UINT; NumSamplers: UINT; ppSamplers: PID3D10SamplerState); stdcall;
         procedure VSSetShader(pVertexShader: ID3D10VertexShader); stdcall;
         procedure DrawIndexed(IndexCount: UINT; StartIndexLocation: UINT; BaseVertexLocation: integer); stdcall;
         procedure Draw(VertexCount: UINT; StartVertexLocation: UINT); stdcall;
-        procedure PSSetConstantBuffers(StartSlot: UINT; NumBuffers: UINT;  ppConstantBuffers: PID3D10Buffer); stdcall;
+        procedure PSSetConstantBuffers(StartSlot: UINT; NumBuffers: UINT; ppConstantBuffers: PID3D10Buffer); stdcall;
         procedure IASetInputLayout(pInputLayout: ID3D10InputLayout); stdcall;
-        procedure IASetVertexBuffers(StartSlot: UINT; NumBuffers: UINT;  ppVertexBuffers: PID3D10Buffer;
-            const pStrides: PUINT;  pOffsets: PUINT); stdcall;
+        procedure IASetVertexBuffers(StartSlot: UINT; NumBuffers: UINT; ppVertexBuffers: PID3D10Buffer;
+            const pStrides: PUINT; pOffsets: PUINT); stdcall;
         procedure IASetIndexBuffer(pIndexBuffer: ID3D10Buffer; Format: TDXGI_FORMAT; Offset: UINT); stdcall;
         procedure DrawIndexedInstanced(IndexCountPerInstance: UINT; InstanceCount: UINT; StartIndexLocation: UINT;
             BaseVertexLocation: integer; StartInstanceLocation: UINT); stdcall;
@@ -1282,20 +1282,20 @@ type
         procedure GSSetConstantBuffers(StartSlot: UINT; NumBuffers: UINT; const ppConstantBuffers: PID3D10Buffer); stdcall;
         procedure GSSetShader(pShader: ID3D10GeometryShader); stdcall;
         procedure IASetPrimitiveTopology(Topology: TD3D10_PRIMITIVE_TOPOLOGY); stdcall;
-        procedure VSSetShaderResources(StartSlot: UINT; NumViews: UINT;  ppShaderResourceViews: PID3D10ShaderResourceView); stdcall;
-        procedure VSSetSamplers(StartSlot: UINT; NumSamplers: UINT;  ppSamplers: PID3D10SamplerState); stdcall;
+        procedure VSSetShaderResources(StartSlot: UINT; NumViews: UINT; ppShaderResourceViews: PID3D10ShaderResourceView); stdcall;
+        procedure VSSetSamplers(StartSlot: UINT; NumSamplers: UINT; ppSamplers: PID3D10SamplerState); stdcall;
         procedure SetPredication(pPredicate: ID3D10Predicate; PredicateValue: longbool); stdcall;
-        procedure GSSetShaderResources(StartSlot: UINT; NumViews: UINT;  ppShaderResourceViews: PID3D10ShaderResourceView); stdcall;
-        procedure GSSetSamplers(StartSlot: UINT; NumSamplers: UINT;  ppSamplers: PID3D10SamplerState); stdcall;
-        procedure OMSetRenderTargets(NumViews: UINT;  ppRenderTargetViews: PID3D10RenderTargetView;
+        procedure GSSetShaderResources(StartSlot: UINT; NumViews: UINT; ppShaderResourceViews: PID3D10ShaderResourceView); stdcall;
+        procedure GSSetSamplers(StartSlot: UINT; NumSamplers: UINT; ppSamplers: PID3D10SamplerState); stdcall;
+        procedure OMSetRenderTargets(NumViews: UINT; ppRenderTargetViews: PID3D10RenderTargetView;
             pDepthStencilView: ID3D10DepthStencilView); stdcall;
         procedure OMSetBlendState(pBlendState: ID3D10BlendState; const BlendFactor: TFloatArray4; SampleMask: UINT); stdcall;
         procedure OMSetDepthStencilState(pDepthStencilState: ID3D10DepthStencilState; StencilRef: UINT); stdcall;
-        procedure SOSetTargets(NumBuffers: UINT;  ppSOTargets: PID3D10Buffer;  pOffsets: PUINT); stdcall;
+        procedure SOSetTargets(NumBuffers: UINT; ppSOTargets: PID3D10Buffer; pOffsets: PUINT); stdcall;
         procedure DrawAuto(); stdcall;
         procedure RSSetState(pRasterizerState: ID3D10RasterizerState); stdcall;
-        procedure RSSetViewports(NumViewports: UINT;  pViewports: PD3D10_VIEWPORT); stdcall;
-        procedure RSSetScissorRects(NumRects: UINT;  pRects: PD3D10_RECT); stdcall;
+        procedure RSSetViewports(NumViewports: UINT; pViewports: PD3D10_VIEWPORT); stdcall;
+        procedure RSSetScissorRects(NumRects: UINT; pRects: PD3D10_RECT); stdcall;
         procedure CopySubresourceRegion(pDstResource: ID3D10Resource; DstSubresource: UINT; DstX: UINT; DstY: UINT;
             DstZ: UINT; pSrcResource: ID3D10Resource; SrcSubresource: UINT; pSrcBox: PD3D10_BOX); stdcall;
         procedure CopyResource(pDstResource: ID3D10Resource; pSrcResource: ID3D10Resource); stdcall;
@@ -1338,26 +1338,26 @@ type
         function SetExceptionMode(RaiseFlags: UINT): HResult; stdcall;
         function GetExceptionMode(): UINT; stdcall;
         function GetPrivateData(guid: TGUID; var pDataSize: UINT; pData: Pointer): HResult; stdcall;
-        function SetPrivateData(guid: TGUID; DataSize: UINT;  pData: pointer): HResult; stdcall;
-        function SetPrivateDataInterface(guid: TGUID;  pData: IUnknown): HResult; stdcall;
+        function SetPrivateData(guid: TGUID; DataSize: UINT; pData: pointer): HResult; stdcall;
+        function SetPrivateDataInterface(guid: TGUID; pData: IUnknown): HResult; stdcall;
         procedure ClearState(); stdcall;
         procedure Flush(); stdcall;
-        function CreateBuffer(const pDesc: PD3D10_BUFFER_DESC;  pInitialData: PD3D10_SUBRESOURCE_DATA;
+        function CreateBuffer(const pDesc: PD3D10_BUFFER_DESC; pInitialData: PD3D10_SUBRESOURCE_DATA;
             out ppBuffer: ID3D10Buffer): HResult; stdcall;
-        function CreateTexture1D( pDesc: PD3D10_TEXTURE1D_DESC;  pInitialData: PD3D10_SUBRESOURCE_DATA;
+        function CreateTexture1D(pDesc: PD3D10_TEXTURE1D_DESC; pInitialData: PD3D10_SUBRESOURCE_DATA;
             out ppTexture1D: ID3D10Texture1D): HResult; stdcall;
-        function CreateTexture2D( pDesc: PD3D10_TEXTURE2D_DESC;  pInitialData: PD3D10_SUBRESOURCE_DATA;
+        function CreateTexture2D(pDesc: PD3D10_TEXTURE2D_DESC; pInitialData: PD3D10_SUBRESOURCE_DATA;
             out ppTexture2D: ID3D10Texture2D): HResult; stdcall;
-        function CreateTexture3D( pDesc: PD3D10_TEXTURE3D_DESC;  pInitialData: PD3D10_SUBRESOURCE_DATA;
+        function CreateTexture3D(pDesc: PD3D10_TEXTURE3D_DESC; pInitialData: PD3D10_SUBRESOURCE_DATA;
             out ppTexture3D: ID3D10Texture3D): HResult; stdcall;
-        function CreateShaderResourceView(pResource: ID3D10Resource;  pDesc: PD3D10_SHADER_RESOURCE_VIEW_DESC;
+        function CreateShaderResourceView(pResource: ID3D10Resource; pDesc: PD3D10_SHADER_RESOURCE_VIEW_DESC;
             out ppSRView: ID3D10ShaderResourceView): HResult; stdcall;
-        function CreateRenderTargetView(pResource: ID3D10Resource;  pDesc: PD3D10_RENDER_TARGET_VIEW_DESC;
+        function CreateRenderTargetView(pResource: ID3D10Resource; pDesc: PD3D10_RENDER_TARGET_VIEW_DESC;
             out ppRTView: ID3D10RenderTargetView): HResult; stdcall;
-        function CreateDepthStencilView(pResource: ID3D10Resource;  pDesc: PD3D10_DEPTH_STENCIL_VIEW_DESC;
+        function CreateDepthStencilView(pResource: ID3D10Resource; pDesc: PD3D10_DEPTH_STENCIL_VIEW_DESC;
             out ppDepthStencilView: ID3D10DepthStencilView): HResult; stdcall;
         function CreateInputLayout(pInputElementDescs: PD3D10_INPUT_ELEMENT_DESC; NumElements: UINT;
-           pShaderBytecodeWithInputSignature: Pointer; BytecodeLength: SIZE_T; out ppInputLayout: ID3D10InputLayout): HResult; stdcall;
+            pShaderBytecodeWithInputSignature: Pointer; BytecodeLength: SIZE_T; out ppInputLayout: ID3D10InputLayout): HResult; stdcall;
         function CreateVertexShader(pShaderBytecode: Pointer; BytecodeLength: SIZE_T;
             out ppVertexShader: ID3D10VertexShader): HResult; stdcall;
         function CreateGeometryShader(pShaderBytecode: pointer; BytecodeLength: SIZE_T;
@@ -1367,15 +1367,15 @@ type
             out ppGeometryShader: ID3D10GeometryShader): HResult; stdcall;
         function CreatePixelShader(pShaderBytecode: pointer; BytecodeLength: SIZE_T;
             out ppPixelShader: ID3D10PixelShader): HResult; stdcall;
-        function CreateBlendState( pBlendStateDesc: PD3D10_BLEND_DESC; out ppBlendState: ID3D10BlendState): HResult; stdcall;
-        function CreateDepthStencilState( pDepthStencilDesc: PD3D10_DEPTH_STENCIL_DESC;
+        function CreateBlendState(pBlendStateDesc: PD3D10_BLEND_DESC; out ppBlendState: ID3D10BlendState): HResult; stdcall;
+        function CreateDepthStencilState(pDepthStencilDesc: PD3D10_DEPTH_STENCIL_DESC;
             out ppDepthStencilState: ID3D10DepthStencilState): HResult; stdcall;
-        function CreateRasterizerState( pRasterizerDesc: PD3D10_RASTERIZER_DESC;
+        function CreateRasterizerState(pRasterizerDesc: PD3D10_RASTERIZER_DESC;
             out ppRasterizerState: ID3D10RasterizerState): HResult; stdcall;
-        function CreateSamplerState( pSamplerDesc: PD3D10_SAMPLER_DESC; out ppSamplerState: ID3D10SamplerState): HResult; stdcall;
+        function CreateSamplerState(pSamplerDesc: PD3D10_SAMPLER_DESC; out ppSamplerState: ID3D10SamplerState): HResult; stdcall;
         function CreateQuery(const pQueryDesc: PD3D10_QUERY_DESC; out ppQuery: ID3D10Query): HResult; stdcall;
-        function CreatePredicate( pPredicateDesc: PD3D10_QUERY_DESC; out ppPredicate: ID3D10Predicate): HResult; stdcall;
-        function CreateCounter( pCounterDesc: PD3D10_COUNTER_DESC; out ppCounter: ID3D10Counter): HResult; stdcall;
+        function CreatePredicate(pPredicateDesc: PD3D10_QUERY_DESC; out ppPredicate: ID3D10Predicate): HResult; stdcall;
+        function CreateCounter(pCounterDesc: PD3D10_COUNTER_DESC; out ppCounter: ID3D10Counter): HResult; stdcall;
         function CheckFormatSupport(Format: TDXGI_FORMAT; out pFormatSupport: UINT): HResult; stdcall;
         function CheckMultisampleQualityLevels(Format: TDXGI_FORMAT; SampleCount: UINT; out pNumQualityLevels: UINT): HResult; stdcall;
         procedure CheckCounterInfo(out pCounterInfo: TD3D10_COUNTER_INFO); stdcall;
@@ -1428,6 +1428,9 @@ const
     D3D10_SHADER_IEEE_STRICTNESS = 1 shl 13;
     D3D10_SHADER_WARNINGS_ARE_ERRORS = 1 shl 18;
     D3D10_SHADER_RESOURCES_MAY_ALIAS = 1 shl 19;
+    D3D10_ENABLE_UNBOUNDED_DESCRIPTOR_TABLES = (1 shl 20);
+    D3D10_ALL_RESOURCES_BOUND = (1 shl 21);
+
 
 
     // optimization level flags
@@ -1872,7 +1875,7 @@ type
     PID3D10EffectVectorVariable = ^ID3D10EffectVectorVariable;
 
 
-    ID3D10EffectMatrixVariable = interface (ID3D10EffectVariable)
+    ID3D10EffectMatrixVariable = interface(ID3D10EffectVariable)
         ['{50666C24-B82F-4eed-A172-5B6E7E8522E0}']
         function SetMatrix(pData: PSingle): HResult; stdcall;
         function GetMatrix(pData: PSingle): HResult; stdcall;
@@ -2021,7 +2024,7 @@ type
     {$interfaces com}
     {$ELSE}
 
-        ID3D10EffectScalarVariable = class;
+    ID3D10EffectScalarVariable = class;
     ID3D10EffectVectorVariable = class;
     ID3D10EffectMatrixVariable = class;
     ID3D10EffectStringVariable = class;
@@ -2043,51 +2046,50 @@ type
 
 
 
-
-
     ID3D10EffectType = class // Cannot use 'interface' as the QueryInterface, AddRef and Release methods are missing.
-        function IsValid(): longbool;  virtual; stdcall; abstract;
-        function GetDesc(out pDesc: TD3D10_EFFECT_TYPE_DESC): HResult;  virtual; stdcall; abstract;
-        function GetMemberTypeByIndex(Index: UINT): ID3D10EffectType;  virtual; stdcall; abstract;
-        function GetMemberTypeByName(Name: PAnsiChar): ID3D10EffectType;  virtual; stdcall; abstract;
-        function GetMemberTypeBySemantic(Semantic: PAnsiChar): ID3D10EffectType;  virtual; stdcall; abstract;
-        function GetMemberName(Index: UINT): PAnsiChar;  virtual; stdcall; abstract;
-        function GetMemberSemantic(Index: UINT): PAnsiChar;  virtual; stdcall; abstract;
+        function IsValid(): longbool; virtual; stdcall; abstract;
+        function GetDesc(out pDesc: TD3D10_EFFECT_TYPE_DESC): HResult; virtual; stdcall; abstract;
+        function GetMemberTypeByIndex(Index: UINT): ID3D10EffectType; virtual; stdcall; abstract;
+        function GetMemberTypeByName(Name: PAnsiChar): ID3D10EffectType; virtual; stdcall; abstract;
+        function GetMemberTypeBySemantic(Semantic: PAnsiChar): ID3D10EffectType; virtual; stdcall; abstract;
+        function GetMemberName(Index: UINT): PAnsiChar; virtual; stdcall; abstract;
+        function GetMemberSemantic(Index: UINT): PAnsiChar; virtual; stdcall; abstract;
     end;
 
 
     ID3D10EffectVariable = class // Cannot use 'interface' as the QueryInterface, AddRef and Release methods are missing.
-        function IsValid(): longbool;  virtual; stdcall; abstract;
-        function GetType(): ID3D10EffectType;  virtual; stdcall; abstract;
-        function GetDesc(out pDesc: TD3D10_EFFECT_VARIABLE_DESC): HResult;  virtual; stdcall; abstract;
-        function GetAnnotationByIndex(Index: UINT): ID3D10EffectVariable;  virtual; stdcall; abstract;
-        function GetAnnotationByName(Name: PAnsiChar): ID3D10EffectVariable;  virtual; stdcall; abstract;
+        function IsValid(): longbool; virtual; stdcall; abstract;
+        function GetType(): ID3D10EffectType; virtual; stdcall; abstract;
+        function GetDesc(out pDesc: TD3D10_EFFECT_VARIABLE_DESC): HResult; virtual; stdcall; abstract;
+        function GetAnnotationByIndex(Index: UINT): ID3D10EffectVariable; virtual; stdcall; abstract;
+        function GetAnnotationByName(Name: PAnsiChar): ID3D10EffectVariable; virtual; stdcall; abstract;
         function GetMemberByIndex(Index: UINT): ID3D10EffectVariable; virtual; stdcall; abstract;
-        function GetMemberByName(Name: PAnsiChar): ID3D10EffectVariable;  virtual; stdcall; abstract;
-        function GetMemberBySemantic(Semantic: PAnsiChar): ID3D10EffectVariable;  virtual; stdcall; abstract;
-        function GetElement(Index: UINT): ID3D10EffectVariable;  virtual; stdcall; abstract;
-        function GetParentConstantBuffer(): ID3D10EffectConstantBuffer;  virtual; stdcall; abstract;
-        function AsScalar(): ID3D10EffectScalarVariable;  virtual; stdcall; abstract;
-        function AsVector(): ID3D10EffectVectorVariable;  virtual; stdcall; abstract;
-        function AsMatrix(): ID3D10EffectMatrixVariable;  virtual; stdcall; abstract;
-        function AsString(): ID3D10EffectStringVariable;  virtual; stdcall; abstract;
-        function AsShaderResource(): ID3D10EffectShaderResourceVariable;  virtual; stdcall; abstract;
-        function AsRenderTargetView(): ID3D10EffectRenderTargetViewVariable;  virtual; stdcall; abstract;
-        function AsDepthStencilView(): ID3D10EffectDepthStencilViewVariable;  virtual; stdcall; abstract;
-        function AsConstantBuffer(): ID3D10EffectConstantBuffer;  virtual; stdcall; abstract;
-        function AsShader(): ID3D10EffectShaderVariable;  virtual; stdcall; abstract;
-        function AsBlend(): ID3D10EffectBlendVariable;  virtual; stdcall; abstract;
-        function AsDepthStencil(): ID3D10EffectDepthStencilVariable;  virtual; stdcall; abstract;
+        function GetMemberByName(Name: PAnsiChar): ID3D10EffectVariable; virtual; stdcall; abstract;
+        function GetMemberBySemantic(Semantic: PAnsiChar): ID3D10EffectVariable; virtual; stdcall; abstract;
+        function GetElement(Index: UINT): ID3D10EffectVariable; virtual; stdcall; abstract;
+        function GetParentConstantBuffer(): ID3D10EffectConstantBuffer; virtual; stdcall; abstract;
+        function AsScalar(): ID3D10EffectScalarVariable; virtual; stdcall; abstract;
+        function AsVector(): ID3D10EffectVectorVariable; virtual; stdcall; abstract;
+        function AsMatrix(): ID3D10EffectMatrixVariable; virtual; stdcall; abstract;
+        function AsString(): ID3D10EffectStringVariable; virtual; stdcall; abstract;
+        function AsShaderResource(): ID3D10EffectShaderResourceVariable; virtual; stdcall; abstract;
+        function AsRenderTargetView(): ID3D10EffectRenderTargetViewVariable; virtual; stdcall; abstract;
+        function AsDepthStencilView(): ID3D10EffectDepthStencilViewVariable; virtual; stdcall; abstract;
+        function AsConstantBuffer(): ID3D10EffectConstantBuffer; virtual; stdcall; abstract;
+        function AsShader(): ID3D10EffectShaderVariable; virtual; stdcall; abstract;
+        function AsBlend(): ID3D10EffectBlendVariable; virtual; stdcall; abstract;
+        function AsDepthStencil(): ID3D10EffectDepthStencilVariable; virtual; stdcall; abstract;
         function AsRasterizer(): ID3D10EffectRasterizerVariable; virtual; stdcall; abstract;
-        function AsSampler(): ID3D10EffectSamplerVariable;  virtual; stdcall; abstract;
-        function SetRawValue(pData: Pointer; Offset: UINT; ByteCount: UINT): HResult;  virtual; stdcall; abstract;
-        function GetRawValue(pData: Pointer; Offset: UINT; ByteCount: UINT): HResult;  virtual; stdcall; abstract;
+        function AsSampler(): ID3D10EffectSamplerVariable; virtual; stdcall; abstract;
+        function SetRawValue(pData: Pointer; Offset: UINT; ByteCount: UINT): HResult; virtual; stdcall; abstract;
+        function GetRawValue(pData: Pointer; Offset: UINT; ByteCount: UINT): HResult; virtual; stdcall; abstract;
     end;
 
     PID3D10EffectVariable = ^ID3D10EffectVariable;
 
 
-    ID3D10EffectScalarVariable = class( ID3D10EffectVariable) // Cannot use 'interface' as the QueryInterface, AddRef and Release methods are missing.
+    ID3D10EffectScalarVariable = class(ID3D10EffectVariable)
+        // Cannot use 'interface' as the QueryInterface, AddRef and Release methods are missing.
         function SetFloat(Value: single): HResult; virtual; stdcall; abstract;
         function GetFloat(out pValue: single): HResult; virtual; stdcall; abstract;
         function SetFloatArray(pData: Psingle; Offset: UINT; Count: UINT): HResult; virtual; stdcall; abstract;
@@ -2123,32 +2125,33 @@ type
     PID3D10EffectVectorVariable = ^ID3D10EffectVectorVariable;
 
 
-    ID3D10EffectMatrixVariable = class {(ID3D10EffectVariable)}  // Cannot use 'interface' as the QueryInterface, AddRef and Release methods are missing.
-        function IsValid(): longbool;  virtual; stdcall; abstract;
-        function GetType(): ID3D10EffectType;  virtual; stdcall; abstract;
-        function GetDesc(out pDesc: TD3D10_EFFECT_VARIABLE_DESC): HResult;  virtual; stdcall; abstract;
-        function GetAnnotationByIndex(Index: UINT): ID3D10EffectVariable;  virtual; stdcall; abstract;
-        function GetAnnotationByName(Name: PAnsiChar): ID3D10EffectVariable;  virtual; stdcall; abstract;
+    ID3D10EffectMatrixVariable = class {(ID3D10EffectVariable)}
+        // Cannot use 'interface' as the QueryInterface, AddRef and Release methods are missing.
+        function IsValid(): longbool; virtual; stdcall; abstract;
+        function GetType(): ID3D10EffectType; virtual; stdcall; abstract;
+        function GetDesc(out pDesc: TD3D10_EFFECT_VARIABLE_DESC): HResult; virtual; stdcall; abstract;
+        function GetAnnotationByIndex(Index: UINT): ID3D10EffectVariable; virtual; stdcall; abstract;
+        function GetAnnotationByName(Name: PAnsiChar): ID3D10EffectVariable; virtual; stdcall; abstract;
         function GetMemberByIndex(Index: UINT): ID3D10EffectVariable; virtual; stdcall; abstract;
-        function GetMemberByName(Name: PAnsiChar): ID3D10EffectVariable;  virtual; stdcall; abstract;
-        function GetMemberBySemantic(Semantic: PAnsiChar): ID3D10EffectVariable;  virtual; stdcall; abstract;
-        function GetElement(Index: UINT): ID3D10EffectVariable;  virtual; stdcall; abstract;
-        function GetParentConstantBuffer(): ID3D10EffectConstantBuffer;  virtual; stdcall; abstract;
-        function AsScalar(): ID3D10EffectScalarVariable;  virtual; stdcall; abstract;
-        function AsVector(): ID3D10EffectVectorVariable;  virtual; stdcall; abstract;
-        function AsMatrix(): ID3D10EffectMatrixVariable;  virtual; stdcall; abstract;
-        function AsString(): ID3D10EffectStringVariable;  virtual; stdcall; abstract;
-        function AsShaderResource(): ID3D10EffectShaderResourceVariable;  virtual; stdcall; abstract;
-        function AsRenderTargetView(): ID3D10EffectRenderTargetViewVariable;  virtual; stdcall; abstract;
-        function AsDepthStencilView(): ID3D10EffectDepthStencilViewVariable;  virtual; stdcall; abstract;
-        function AsConstantBuffer(): ID3D10EffectConstantBuffer;  virtual; stdcall; abstract;
-        function AsShader(): ID3D10EffectShaderVariable;  virtual; stdcall; abstract;
-        function AsBlend(): ID3D10EffectBlendVariable;  virtual; stdcall; abstract;
-        function AsDepthStencil(): ID3D10EffectDepthStencilVariable;  virtual; stdcall; abstract;
+        function GetMemberByName(Name: PAnsiChar): ID3D10EffectVariable; virtual; stdcall; abstract;
+        function GetMemberBySemantic(Semantic: PAnsiChar): ID3D10EffectVariable; virtual; stdcall; abstract;
+        function GetElement(Index: UINT): ID3D10EffectVariable; virtual; stdcall; abstract;
+        function GetParentConstantBuffer(): ID3D10EffectConstantBuffer; virtual; stdcall; abstract;
+        function AsScalar(): ID3D10EffectScalarVariable; virtual; stdcall; abstract;
+        function AsVector(): ID3D10EffectVectorVariable; virtual; stdcall; abstract;
+        function AsMatrix(): ID3D10EffectMatrixVariable; virtual; stdcall; abstract;
+        function AsString(): ID3D10EffectStringVariable; virtual; stdcall; abstract;
+        function AsShaderResource(): ID3D10EffectShaderResourceVariable; virtual; stdcall; abstract;
+        function AsRenderTargetView(): ID3D10EffectRenderTargetViewVariable; virtual; stdcall; abstract;
+        function AsDepthStencilView(): ID3D10EffectDepthStencilViewVariable; virtual; stdcall; abstract;
+        function AsConstantBuffer(): ID3D10EffectConstantBuffer; virtual; stdcall; abstract;
+        function AsShader(): ID3D10EffectShaderVariable; virtual; stdcall; abstract;
+        function AsBlend(): ID3D10EffectBlendVariable; virtual; stdcall; abstract;
+        function AsDepthStencil(): ID3D10EffectDepthStencilVariable; virtual; stdcall; abstract;
         function AsRasterizer(): ID3D10EffectRasterizerVariable; virtual; stdcall; abstract;
-        function AsSampler(): ID3D10EffectSamplerVariable;  virtual; stdcall; abstract;
-        function SetRawValue(pData: Pointer; Offset: UINT; ByteCount: UINT): HResult;  virtual; stdcall; abstract;
-        function GetRawValue(pData: Pointer; Offset: UINT; ByteCount: UINT): HResult;  virtual; stdcall; abstract;
+        function AsSampler(): ID3D10EffectSamplerVariable; virtual; stdcall; abstract;
+        function SetRawValue(pData: Pointer; Offset: UINT; ByteCount: UINT): HResult; virtual; stdcall; abstract;
+        function GetRawValue(pData: Pointer; Offset: UINT; ByteCount: UINT): HResult; virtual; stdcall; abstract;
 
         function SetMatrix(pData: PSingle): HResult; virtual; stdcall; abstract;
         function GetMatrix(out pData: PSingle): HResult; virtual; stdcall; abstract;
@@ -2171,7 +2174,8 @@ type
     PID3D10EffectStringVariable = ^ID3D10EffectStringVariable;
 
 
-    ID3D10EffectShaderResourceVariable = class(ID3D10EffectVariable)   // Cannot use 'interface' as the QueryInterface, AddRef and Release methods are missing.
+    ID3D10EffectShaderResourceVariable = class(ID3D10EffectVariable)
+        // Cannot use 'interface' as the QueryInterface, AddRef and Release methods are missing.
         function SetResource(pResource: ID3D10ShaderResourceView): HResult; virtual; stdcall; abstract;
         function GetResource(out ppResource: ID3D10ShaderResourceView): HResult; virtual; stdcall; abstract;
         function SetResourceArray(ppResources: PID3D10ShaderResourceView; Offset: UINT; Count: UINT): HResult; virtual; stdcall; abstract;
@@ -2181,7 +2185,8 @@ type
     PID3D10EffectShaderResourceVariable = ^ID3D10EffectShaderResourceVariable;
 
 
-    ID3D10EffectRenderTargetViewVariable = class(ID3D10EffectVariable)// Cannot use 'interface' as the QueryInterface, AddRef and Release methods are missing.
+    ID3D10EffectRenderTargetViewVariable = class(ID3D10EffectVariable)
+        // Cannot use 'interface' as the QueryInterface, AddRef and Release methods are missing.
         function SetRenderTarget(pResource: ID3D10RenderTargetView): HResult; virtual; stdcall; abstract;
         function GetRenderTarget(out ppResource: ID3D10RenderTargetView): HResult; virtual; stdcall; abstract;
         function SetRenderTargetArray(ppResources: PID3D10RenderTargetView; Offset: UINT; Count: UINT): HResult; virtual; stdcall; abstract;
@@ -2191,7 +2196,8 @@ type
     PID3D10EffectRenderTargetViewVariable = ^ID3D10EffectRenderTargetViewVariable;
 
 
-    ID3D10EffectDepthStencilViewVariable = class(ID3D10EffectVariable) // Cannot use 'interface' as the QueryInterface, AddRef and Release methods are missing.
+    ID3D10EffectDepthStencilViewVariable = class(ID3D10EffectVariable)
+        // Cannot use 'interface' as the QueryInterface, AddRef and Release methods are missing.
         function SetDepthStencil(pResource: ID3D10DepthStencilView): HResult; virtual; stdcall; abstract;
         function GetDepthStencil(out ppResource: ID3D10DepthStencilView): HResult; virtual; stdcall; abstract;
         function SetDepthStencilArray(ppResources: pID3D10DepthStencilView; Offset: UINT; Count: UINT): HResult; virtual; stdcall; abstract;
@@ -2201,7 +2207,8 @@ type
     PID3D10EffectDepthStencilViewVariable = ^ID3D10EffectDepthStencilViewVariable;
 
 
-    ID3D10EffectConstantBuffer = class(ID3D10EffectVariable)   // Cannot use 'interface' as the QueryInterface, AddRef and Release methods are missing.
+    ID3D10EffectConstantBuffer = class(ID3D10EffectVariable)
+        // Cannot use 'interface' as the QueryInterface, AddRef and Release methods are missing.
         function SetConstantBuffer(pConstantBuffer: ID3D10Buffer): HResult; virtual; stdcall; abstract;
         function GetConstantBuffer(out ppConstantBuffer: ID3D10Buffer): HResult; virtual; stdcall; abstract;
         function SetTextureBuffer(pTextureBuffer: ID3D10ShaderResourceView): HResult; virtual; stdcall; abstract;
@@ -2211,13 +2218,16 @@ type
     PID3D10EffectConstantBuffer = ^ID3D10EffectConstantBuffer;
 
 
-    ID3D10EffectShaderVariable = class(ID3D10EffectVariable)  // Cannot use 'interface' as the QueryInterface, AddRef and Release methods are missing.
+    ID3D10EffectShaderVariable = class(ID3D10EffectVariable)
+        // Cannot use 'interface' as the QueryInterface, AddRef and Release methods are missing.
         function GetShaderDesc(ShaderIndex: UINT; out pDesc: TD3D10_EFFECT_SHADER_DESC): HResult; virtual; stdcall; abstract;
         function GetVertexShader(ShaderIndex: UINT; out ppVS: ID3D10VertexShader): HResult; virtual; stdcall; abstract;
         function GetGeometryShader(ShaderIndex: UINT; out ppGS: ID3D10GeometryShader): HResult; virtual; stdcall; abstract;
         function GetPixelShader(ShaderIndex: UINT; out ppPS: ID3D10PixelShader): HResult; virtual; stdcall; abstract;
-        function GetInputSignatureElementDesc(ShaderIndex: UINT; Element: UINT; out pDesc: TD3D10_SIGNATURE_PARAMETER_DESC): HResult; virtual; stdcall; abstract;
-        function GetOutputSignatureElementDesc(ShaderIndex: UINT; Element: UINT; out pDesc: TD3D10_SIGNATURE_PARAMETER_DESC): HResult; virtual; stdcall; abstract;
+        function GetInputSignatureElementDesc(ShaderIndex: UINT; Element: UINT; out pDesc: TD3D10_SIGNATURE_PARAMETER_DESC): HResult;
+            virtual; stdcall; abstract;
+        function GetOutputSignatureElementDesc(ShaderIndex: UINT; Element: UINT; out pDesc: TD3D10_SIGNATURE_PARAMETER_DESC): HResult;
+            virtual; stdcall; abstract;
     end;
 
     PID3D10EffectShaderVariable = ^ID3D10EffectShaderVariable;
@@ -2231,7 +2241,8 @@ type
     PID3D10EffectBlendVariable = ^ID3D10EffectBlendVariable;
 
 
-    ID3D10EffectDepthStencilVariable = class(ID3D10EffectVariable) // Cannot use 'interface' as the QueryInterface, AddRef and Release methods are missing.
+    ID3D10EffectDepthStencilVariable = class(ID3D10EffectVariable)
+        // Cannot use 'interface' as the QueryInterface, AddRef and Release methods are missing.
         function GetDepthStencilState(Index: UINT; out ppDepthStencilState: ID3D10DepthStencilState): HResult; virtual; stdcall; abstract;
         function GetBackingStore(Index: UINT; out pDepthStencilDesc: TD3D10_DEPTH_STENCIL_DESC): HResult; virtual; stdcall; abstract;
     end;
@@ -2239,14 +2250,16 @@ type
     PID3D10EffectDepthStencilVariable = ^ID3D10EffectDepthStencilVariable;
 
 
-    ID3D10EffectRasterizerVariable = class(ID3D10EffectVariable)// Cannot use 'interface' as the QueryInterface, AddRef and Release methods are missing.
+    ID3D10EffectRasterizerVariable = class(ID3D10EffectVariable)
+        // Cannot use 'interface' as the QueryInterface, AddRef and Release methods are missing.
         function GetRasterizerState(Index: UINT; out ppRasterizerState: ID3D10RasterizerState): HResult; virtual; stdcall; abstract;
         function GetBackingStore(Index: UINT; out pRasterizerDesc: TD3D10_RASTERIZER_DESC): HResult; virtual; stdcall; abstract;
     end;
 
     PID3D10EffectRasterizerVariable = ^ID3D10EffectRasterizerVariable;
 
-    ID3D10EffectSamplerVariable = class(ID3D10EffectVariable)  // Cannot use 'interface' as the QueryInterface, AddRef and Release methods are missing.
+    ID3D10EffectSamplerVariable = class(ID3D10EffectVariable)
+        // Cannot use 'interface' as the QueryInterface, AddRef and Release methods are missing.
         function GetSampler(Index: UINT; out ppSampler: ID3D10SamplerState): HResult; virtual; stdcall; abstract;
         function GetBackingStore(Index: UINT; out pSamplerDesc: TD3D10_SAMPLER_DESC): HResult; virtual; stdcall; abstract;
     end;
@@ -2331,7 +2344,6 @@ type
     PD3D10_MESSAGE_CATEGORY = ^TD3D10_MESSAGE_CATEGORY;
 
     TD3D10_MESSAGE_SEVERITY = (
-
         D3D10_MESSAGE_SEVERITY_CORRUPTION = 0,
         D3D10_MESSAGE_SEVERITY_ERROR = (D3D10_MESSAGE_SEVERITY_CORRUPTION + 1),
         D3D10_MESSAGE_SEVERITY_WARNING = (D3D10_MESSAGE_SEVERITY_ERROR + 1),
@@ -2342,7 +2354,6 @@ type
     PD3D10_MESSAGE_SEVERITY = ^TD3D10_MESSAGE_SEVERITY;
 
     TD3D10_MESSAGE_ID = (
-
         D3D10_MESSAGE_ID_UNKNOWN = 0,
         D3D10_MESSAGE_ID_DEVICE_IASETVERTEXBUFFERS_HAZARD = (D3D10_MESSAGE_ID_UNKNOWN + 1),
         D3D10_MESSAGE_ID_DEVICE_IASETINDEXBUFFER_HAZARD = (D3D10_MESSAGE_ID_DEVICE_IASETVERTEXBUFFERS_HAZARD + 1),
@@ -2909,15 +2920,13 @@ type
 
     TD3D10_INFO_QUEUE_FILTER_DESC = record
         NumCategories: UINT;
-
         pCategoryList: PD3D10_MESSAGE_CATEGORY;
         NumSeverities: UINT;
-
         pSeverityList: PD3D10_MESSAGE_SEVERITY;
         NumIDs: UINT;
-
         pIDList: PD3D10_MESSAGE_ID;
     end;
+
     PD3D10_INFO_QUEUE_FILTER_DESC = ^TD3D10_INFO_QUEUE_FILTER_DESC;
 
     TD3D10_INFO_QUEUE_FILTER = record

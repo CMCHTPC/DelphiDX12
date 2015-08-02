@@ -41,7 +41,6 @@
       <Unit1>
         <Filename Value="AppUnit.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="AppUnit"/>
       </Unit1>
       <Unit2>
         <Filename Value="..\..\..\Units\DX12.D2D1.pas"/>
@@ -52,7 +51,7 @@
         <IsPartOfProject Value="True"/>
       </Unit3>
       <Unit4>
-        <Filename Value="..\..\..\..\WinUnitNeu\CMC.COMBaseAPI.pas"/>
+        <Filename Value="..\..\..\..\WinUnits\CMC.COMBaseAPI.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit4>
     </Units>
@@ -65,7 +64,7 @@
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
-      <OtherUnitFiles Value="..\..\..\Units;..\..\..\..\WinUnitNeu"/>
+      <OtherUnitFiles Value="..\..\..\Units;..\..\..\..\WinUnits"/>
       <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Parsing>
