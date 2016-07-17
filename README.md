@@ -1,7 +1,13 @@
 # DelphiDX12
 DirectX 12 Headers for Delphi and FPC
-based on SDK 10.0.10240.0
+based on SDK 10.0.10586
 
+The files are available under Apache License, Version 2.0.
+You may obtain a copy of the License at
+       http://www.apache.org/licenses/LICENSE-2.0
+
+So this license should be okay also for commerical projects.
+	   
 This header translation is  NOT based on the JSB headers
 
   The HelperFiles are translated to be used with Delphi/FPC. Therefore there are
