@@ -289,6 +289,9 @@ type
         DXGI_MSG_IDXGIFactory_CreateSwapChain_10BitFormatNotSupported,
         DXGI_MSG_IDXGIFactory_CreateSwapChain_FlipSwapEffectRequired,
         DXGI_MSG_IDXGIFactory_CreateSwapChain_InvalidDevice,
+        DXGI_MSG_IDXGIOutput_TakeOwnership_Unsupported,
+        DXGI_MSG_IDXGIFactory_CreateSwapChain_InvalidQueue,
+        DXGI_MSG_IDXGISwapChain3_ResizeBuffers1_InvalidQueue,
 
         DXGI_MSG_Phone_IDXGIFactory_CreateSwapChain_NotForegroundWindow = 1000,
         DXGI_MSG_Phone_IDXGIFactory_CreateSwapChain_DISCARD_BufferCount,

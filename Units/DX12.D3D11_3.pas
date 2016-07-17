@@ -1,3 +1,37 @@
+{ **************************************************************************
+  Copyright 2016 Norbert Sonnleitner
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+   SOFTWARE.
+  ************************************************************************** }
+
+{ **************************************************************************
+  Additional Copyright (C) for this modul:
+
+  Copyright (c) Microsoft Corporation.  All rights reserved.
+
+  This unit consists of the following header files
+  File name: D3D11_3.h
+  Header version: 10.0.10586
+
+  ************************************************************************** }
 unit DX12.D3D11_3;
 
 {$IFDEF FPC}
@@ -292,8 +326,8 @@ type
     ID3D11DeviceContext3 = interface(ID3D11DeviceContext2)
         ['{b4e3c01d-e79e-4637-91b2-510e9f4c9b8f}']
         procedure Flush1(ContextType: TD3D11_CONTEXT_TYPE; hEvent: THANDLE); stdcall;
-		procedure SetHardwareProtectionState( HwProtectionEnable:BOOLean); stdcall;
-        procedure GetHardwareProtectionState( Out pHwProtectionEnable:BOOLean); stdcall;
+        procedure SetHardwareProtectionState(HwProtectionEnable: boolean); stdcall;
+        procedure GetHardwareProtectionState(Out pHwProtectionEnable: boolean); stdcall;
     end;
 
 

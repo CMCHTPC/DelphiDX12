@@ -219,6 +219,7 @@ type
 
         DXGI_FORMAT_FORCE_UINT = $ffffffff);
 
+    PDXGI_FORMAT = ^TDXGI_FORMAT;
 
 const
     _FACDXGI = $87A;

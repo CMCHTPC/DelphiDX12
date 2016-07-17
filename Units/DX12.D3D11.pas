@@ -91,7 +91,11 @@ const
     D3D11_DECODER_PROFILE_MPEG4PT2_VLD_ADVSIMPLE_NOGMC: TGUID = '{ed418a9f-010d-4eda-9ae3-9a65358d8d2e}';
     D3D11_DECODER_PROFILE_MPEG4PT2_VLD_ADVSIMPLE_GMC: TGUID = '{ab998b5b-4258-44a9-9feb-94e597a6baae}';
     D3D11_DECODER_PROFILE_HEVC_VLD_MAIN: TGUID = '{5b11d51b-2f4c-4452-bcc3-09f2a1160cc0}';
-    D3D11_DECODER_PROFILE_HEVC_VLD_MAIN10: TGUID = '{107af0e0-ef1a-4d19-aba8-67a163073d13}';
+    D3D11_DECODER_PROFILE_HEVC_VLD_MAIN10: TGUID =  '{107af0e0-ef1a-4d19-aba8-67a163073d13}';
+    D3D11_DECODER_PROFILE_VP9_VLD_PROFILE0: TGUID = '{463707f8-a1d0-4585-876d-83aa6d60b89e}';
+    D3D11_DECODER_PROFILE_VP8_VLD: TGUID =          '{90b899ea-3a62-4705-88b3-8df04b2744e7}';
+
+
     D3D11_CRYPTO_TYPE_AES128_CTR: TGUID = '{9b6bd711-4f74-41c9-9e7b-0be2d7d93b4f}';
 
     D3D11_AUTHENTICATED_QUERY_PROTECTION: TGUID = '{a84eb584-c495-48aa-b94d-8bd2d6fbce05}';
@@ -5155,7 +5159,7 @@ function D3DDisassemble11Trace(pSrcData: Pointer; SrcDataSize: SIZE_T; pTrace: I
 
 function D3D11CreateDeviceAndSwapChain(pAdapter: IDXGIAdapter; DriverType: TD3D_DRIVER_TYPE; Software: HMODULE;
     Flags: UINT; const pFeatureLevels: PD3D_FEATURE_LEVEL; FeatureLevels: UINT; SDKVersion: UINT;
-    const pSwapChainDesc: TDXGI_SWAP_CHAIN_DESC; out ppSwapChain: IDXGISwapChain; out ppDevice: ID3D11Device;
+    {const} pSwapChainDesc: PDXGI_SWAP_CHAIN_DESC; out ppSwapChain: IDXGISwapChain; out ppDevice: ID3D11Device;
     out pFeatureLevel: TD3D_FEATURE_LEVEL; out ppImmediateContext: ID3D11DeviceContext): HResult; stdcall; external DLL_D3D11;
 
 

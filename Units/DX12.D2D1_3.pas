@@ -1,19 +1,26 @@
 {$REGION 'Copyright (C) CMC Development Team'}
 { **************************************************************************
-  Copyright (C) 2015 CMC Development Team
+  Copyright 2016 Norbert Sonnleitner
 
-  CMC is free software: you can redistribute it and/or modify
-  it under the terms of the GNU General Public License as published by
-  the Free Software Foundation, either version 2 of the License, or
-  (at your option) any later version.
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
 
-  CMC is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-  GNU General Public License for more details.
+       http://www.apache.org/licenses/LICENSE-2.0
 
-  You should have received a copy of the GNU General Public License
-  along with CMC. If not, see <http://www.gnu.org/licenses/>.
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+   SOFTWARE.
   ************************************************************************** }
 
 { **************************************************************************
@@ -87,6 +94,12 @@ const
     IID_ID2D1CommandSink2: TGUID = '{3bab440e-417e-47df-a2e2-bc0be6a00916}';
     IID_ID2D1GdiMetafile1: TGUID = '{2e69f9e8-dd3f-4bf9-95ba-c04f49d788df}';
     IID_ID2D1GdiMetafileSink1: TGUID = '{fd0ecb6b-91e6-411e-8655-395e760f91b4}';
+	
+	IID_ID2D1SpriteBatch: TGUID = '{4dc583bf-3a10-438a-8722-e9765224f1f1}';
+    IID_ID2D1DeviceContext3: TGUID = '{235a7496-8351-414c-bcd4-6672ab2d8e00}';
+    IID_ID2D1Device3: TGUID = '{852f2087-802c-4037-ab60-ff2e7ee6fc01}';
+    IID_ID2D1Factory4: TGUID = '{bd4ec2d2-0662-4bee-ba8e-6f29f032e096}';
+    IID_ID2D1CommandSink3: TGUID = '{18079135-4cf3-4868-bc8e-06067e6d242d}'; 
 
 type
     {$IFNDEF FPC}
@@ -215,6 +228,12 @@ type
         bottomEdgeMode: TD2D1_PATCH_EDGE_MODE;
         rightEdgeMode: TD2D1_PATCH_EDGE_MODE;
     end;
+	
+	TD2D1_SPRITE_OPTIONS = (
+        D2D1_SPRITE_OPTIONS_NONE = 0,
+        D2D1_SPRITE_OPTIONS_CLAMP_TO_SOURCE_RECTANGLE = 1,
+        D2D1_SPRITE_OPTIONS_FORCE_DWORD = $ffffffff
+        );  
 
     PD2D1_GRADIENT_MESH_PATCH = ^TD2D1_GRADIENT_MESH_PATCH;
 
@@ -357,6 +376,48 @@ type
         ['{fd0ecb6b-91e6-411e-8655-395e760f91b4}']
         function ProcessRecord(recordType: DWORD; recordData: pointer; recordDataSize: DWORD; flags: UINT32): HResult; stdcall;
     end;
+	
+	
+	ID2D1SpriteBatch = interface(ID2D1Resource)
+        ['{4dc583bf-3a10-438a-8722-e9765224f1f1}']
+        function AddSprites(spriteCount: UINT32; destinationRectangles: PD2D1_RECT_F; sourceRectangles: PD2D1_RECT_U;
+            colors: PD2D1_COLOR_F; transforms: PD2D1_MATRIX_3X2_F; destinationRectanglesStride: UINT32;
+            sourceRectanglesStride: UINT32; colorsStride: UINT32; transformsStride: UINT32): HResult; stdcall;
+        function SetSprites(startIndex: UINT32; spriteCount: UINT32; destinationRectangles: PD2D1_RECT_F;
+            sourceRectangles: PD2D1_RECT_U; colors: PD2D1_COLOR_F; transforms: PD2D1_MATRIX_3X2_F;
+            destinationRectanglesStride: UINT32; sourceRectanglesStride: UINT32; colorsStride: UINT32;
+            transformsStride: UINT32): HResult; stdcall;
+        function GetSprites(startIndex: UINT32; spriteCount: UINT32; out destinationRectangles: PD2D1_RECT_F;
+            out sourceRectangles: PD2D1_RECT_U; out colors: PD2D1_COLOR_F; out transforms: PD2D1_MATRIX_3X2_F): HResult; stdcall;
+        function GetSpriteCount: UINT32; stdcall;
+        procedure Clear; stdcall;
+    end;
+
+    ID2D1DeviceContext3 = interface(ID2D1DeviceContext2)
+        ['{235a7496-8351-414c-bcd4-6672ab2d8e00}']
+        function CreateSpriteBatch(out spriteBatch: ID2D1SpriteBatch): HResult; stdcall;
+        procedure DrawSpriteBatch(spriteBatch: ID2D1SpriteBatch; startIndex: UINT32; spriteCount: UINT32;
+            bitmap: ID2D1Bitmap; interpolationMode: TD2D1_BITMAP_INTERPOLATION_MODE = D2D1_BITMAP_INTERPOLATION_MODE_LINEAR;
+            spriteOptions: TD2D1_SPRITE_OPTIONS = D2D1_SPRITE_OPTIONS_NONE); stdcall;
+    end;
+
+    ID2D1Device3 = interface(ID2D1Device2)
+        ['{852f2087-802c-4037-ab60-ff2e7ee6fc01}']
+        function CreateDeviceContext(options: TD2D1_DEVICE_CONTEXT_OPTIONS; out deviceContext3: ID2D1DeviceContext3): HResult;
+            stdcall;
+    end;
+
+    ID2D1Factory4 = interface(ID2D1Factory3)
+        ['{bd4ec2d2-0662-4bee-ba8e-6f29f032e096}']
+        function CreateDevice(dxgiDevice: IDXGIDevice; out d2dDevice3: ID2D1Device3): HResult; stdcall;
+    end;
+
+    ID2D1CommandSink3 = interface(ID2D1CommandSink2)
+        ['{18079135-4cf3-4868-bc8e-06067e6d242d}']
+        function DrawSpriteBatch(spriteBatch: ID2D1SpriteBatch; startIndex: UINT32; spriteCount: UINT32;
+            bitmap: ID2D1Bitmap; interpolationMode: TD2D1_BITMAP_INTERPOLATION_MODE;
+            spriteOptions: TD2D1_SPRITE_OPTIONS): HResult; stdcall;
+    end; 
 
 
 procedure D2D1GetGradientMeshInteriorPointsFromCoonsPatch(const pPoint0: TD2D1_POINT_2F; const pPoint1: TD2D1_POINT_2F;
@@ -388,6 +449,8 @@ function InkPoint(point: TD2D1_POINT_2F; radius: single): TD2D1_INK_POINT;
 function InkBezierSegment(point1: TD2D1_INK_POINT; point2: TD2D1_INK_POINT; point3: TD2D1_INK_POINT): TD2D1_INK_BEZIER_SEGMENT;
 
 function InkStyleProperties(nibShape: TD2D1_INK_NIB_SHAPE; nibTransform: TD2D1_MATRIX_3X2_F): TD2D1_INK_STYLE_PROPERTIES;
+
+function InfiniteRectU: TD2D1_RECT_U; 
 
 implementation
 
@@ -523,5 +586,13 @@ begin
     inkStyleProperties.nibTransform := nibTransform;
     Result := inkStyleProperties;
 end;
+
+function InfiniteRectU: TD2D1_RECT_U;
+begin
+    result.left:=0;
+    result.top:=0;
+    result.bottom:=UINT_MAX;
+    result.right:=UINT_MAX;
+end;     
 
 end.

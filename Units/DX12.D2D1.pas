@@ -465,6 +465,7 @@ type
         procedure Translation(size: TD2D_SIZE_F); overload;
         procedure Translation(x, y: single); overload;
         procedure Rotation(angle: single; center: TD2D_POINT_2F); overload;
+        procedure Rotation(angle: single; x, y: single); overload;
         procedure Rotation(angle: single); overload;
         procedure Skew(angleX, angleY: single; center: TD2D_POINT_2F); overload;
         procedure Skew(angleX, angleY: single); overload;
@@ -2139,7 +2140,7 @@ type
         procedure AddBezier(bezier: PD2D1_BEZIER_SEGMENT); stdcall;
         procedure AddQuadraticBezier(bezier: PD2D1_QUADRATIC_BEZIER_SEGMENT); stdcall;
         procedure AddQuadraticBeziers(beziers: PD2D1_QUADRATIC_BEZIER_SEGMENT; beziersCount: UINT32); stdcall;
-        procedure AddArc(arc: PD2D1_ARC_SEGMENT); stdcall;
+        procedure AddArc(const arc: TD2D1_ARC_SEGMENT); stdcall;
 
     end;
 
@@ -2214,8 +2215,8 @@ type
             strokeStyle: ID2D1StrokeStyle = nil);
             stdcall;
         procedure FillRoundedRectangle(const roundedRect: TD2D1_ROUNDED_RECT; brush: ID2D1Brush); stdcall;
-        procedure DrawEllipse(ellipse: PD2D1_ELLIPSE; brush: ID2D1Brush; strokeWidth: single = 1.0; strokeStyle: ID2D1StrokeStyle = nil); stdcall;
-        procedure FillEllipse(ellipse: PD2D1_ELLIPSE; brush: ID2D1Brush); stdcall;
+        procedure DrawEllipse(const ellipse: TD2D1_ELLIPSE; brush: ID2D1Brush; strokeWidth: single = 1.0; strokeStyle: ID2D1StrokeStyle = nil); stdcall;
+        procedure FillEllipse(const ellipse: TD2D1_ELLIPSE; brush: ID2D1Brush); stdcall;
         procedure DrawGeometry(geometry: ID2D1Geometry; brush: ID2D1Brush; strokeWidth: single = 1.0; strokeStyle: ID2D1StrokeStyle = nil); stdcall;
         procedure FillGeometry(geometry: ID2D1Geometry; brush: ID2D1Brush; opacityBrush: ID2D1Brush = nil); stdcall;
         procedure FillMesh(mesh: ID2D1Mesh; brush: ID2D1Brush); stdcall;
@@ -2945,7 +2946,8 @@ function DrawingStateDescription(antialiasMode: TD2D1_ANTIALIAS_MODE = D2D1_ANTI
     textAntialiasMode: TD2D1_TEXT_ANTIALIAS_MODE = D2D1_TEXT_ANTIALIAS_MODE_DEFAULT; tag1: TD2D1_TAG = 0;
     tag2: TD2D1_TAG = 0): TD2D1_DRAWING_STATE_DESCRIPTION; overload;
 
-function Matrix3x2F_Rotation(angle: single; center: TD2D_POINT_2F): TD2D_MATRIX_3X2_F;
+function Matrix3x2F_Rotation(angle: single; center: TD2D_POINT_2F): TD2D_MATRIX_3X2_F; overload;
+function Matrix3x2F_Rotation(angle: single; x, y: single): TD2D_MATRIX_3X2_F; overload;
 function Matrix3x2F_Scale(size: TD2D_SIZE_F; center: TD2D_POINT_2F): TD2D_MATRIX_3X2_F; overload;
 function Matrix3x2F_Scale(size: TD2D_SIZE_F): TD2D_MATRIX_3X2_F; overload;
 function Matrix3x2F_Scale(x, y: single; center: TD2D_POINT_2F): TD2D_MATRIX_3X2_F; overload;
@@ -3398,6 +3400,10 @@ begin
 end;
 
 
+function Matrix3x2F_Rotation(angle: single; x, y: single): TD2D_MATRIX_3X2_F;
+begin
+    Result.Rotation(angle, x,y);
+end;
 
 function Matrix3x2F_Scale(size: TD2D_SIZE_F; center: TD2D_POINT_2F): TD2D_MATRIX_3X2_F;
 begin
@@ -4270,6 +4276,22 @@ var
     rotation: TD2D_MATRIX_3X2_F;
 begin
     D2D1MakeRotateMatrix(angle, center, rotation);
+    _11 := Rotation._11;
+    _12 := Rotation._12;
+    _21 := Rotation._21;
+    _22 := Rotation._22;
+    _31 := Rotation._31;
+    _32 := Rotation._32;
+end;
+
+procedure TD2D_MATRIX_3X2_F.Rotation(angle: single; x, y: single);
+var
+    center: TD2D_POINT_2F;
+    rotation: TD2D_MATRIX_3X2_F;
+begin
+    center := Point2F(x,y);
+   D2D1MakeRotateMatrix(angle, center, rotation);
+
     _11 := Rotation._11;
     _12 := Rotation._12;
     _21 := Rotation._21;
