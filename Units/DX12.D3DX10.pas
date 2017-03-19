@@ -131,7 +131,7 @@ type
     PD3DXFLOAT16ARRAY4 = ^TD3DXFLOAT16ARRAY4;
     PD3DXFLOAT16ARRAY3 = ^TD3DXFLOAT16ARRAY3;
     PD3DXFLOAT16ARRAY2 = ^TD3DXFLOAT16ARRAY2;
-    
+
 
     { TD3DXVECTOR2 }
 
@@ -1707,6 +1707,7 @@ end;
 
 { TD3DX10_IMAGE_LOAD_INFO }
 
+{$RANGECHECKS OFF}
 procedure TD3DX10_IMAGE_LOAD_INFO.Init;
 begin
     Width := D3DX10_DEFAULT;
@@ -1718,12 +1719,13 @@ begin
     BindFlags := D3DX10_DEFAULT;
     CpuAccessFlags := D3DX10_DEFAULT;
     MiscFlags := D3DX10_DEFAULT;
-    Format := DXGI_FORMAT_FROM_FILE;
+    Format := (DXGI_FORMAT_FROM_FILE);
     Filter := D3DX10_DEFAULT;
     MipFilter := D3DX10_DEFAULT;
     pSrcInfo := nil;
 end;
 
+ {$RANGECHECKS ON}
 
 { TD3DXCOLOR }
 
@@ -2222,14 +2224,14 @@ var
     {$IFDEF FPC}
     lTemp: array [0 .. 3] of TD3DXFLOAT16;
     {$ELSE}
-     lTemp : PD3DXFLOAT16ARRAY4;
+    lTemp: PD3DXFLOAT16ARRAY4;
      {$ENDIF}
 begin
     if (pf = nil) then
         Exit;
     {$IFDEF FPC}
     lTemp := pf;
-        x.Value := UINT(lTemp[0].Value);
+    x.Value := UINT(lTemp[0].Value);
     y.Value := UINT(lTemp[1].Value);
     z.Value := UINT(lTemp[2].Value);
     w.Value := UINT(lTemp[3].Value);
@@ -2479,8 +2481,8 @@ constructor TD3DXVECTOR2_16F.CreateByFloat16(pf: PD3DXFLOAT16ARRAY2);
 begin
     if (pf = nil) then
         Exit;
-    x.Value :=pf^[0].Value;
-    y.Value :=pf^[1].Value;
+    x.Value := pf^[0].Value;
+    y.Value := pf^[1].Value;
 end;
 
 
@@ -2754,14 +2756,14 @@ end;
 
 class operator TD3DXFLOAT16.Implicit(a: single): TD3DXFLOAT16;
 begin
-    D3DXFloat32To16Array(@result,@a,1);
+    D3DXFloat32To16Array(@Result, @a, 1);
 end;
 
 
 
 class operator TD3DXFLOAT16.Explicit(a: TD3DXFLOAT16): single;
 begin
-    D3DXFloat16To32Array(@result, @a, 1);
+    D3DXFloat16To32Array(@Result, @a, 1);
 end;
 
 

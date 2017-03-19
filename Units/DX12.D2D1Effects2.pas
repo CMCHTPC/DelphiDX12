@@ -31,6 +31,11 @@ const
     CLSID_D2D1EdgeDetection: TGUID = '{EFF583CA-CB07-4AA9-AC5D-2CC44C76460F}';
     CLSID_D2D1HighlightsShadows: TGUID = '{CADC8384-323F-4C7E-A361-2E2B24DF6EE4}';
     CLSID_D2D1LookupTable3D: TGUID = '{349E0EDA-0088-4A79-9CA3-C7E300202020}';
+    CLSID_D2D1Opacity: TGUID = '{811d79a4-de28-4454-8094-c64685f8bd4c}';
+    CLSID_D2D1AlphaMask: TGUID = '{c80ecff0-3fd5-4f05-8328-c5d1724b4f0a}';
+    CLSID_D2D1CrossFade: TGUID = '{12f575e8-4db1-485f-9a84-03a07dd3829f}';
+    CLSID_D2D1Tint: TGUID = '{36312b17-f7dd-4014-915d-ffca768cf211}';
+
 
 type
     TD2D1_CONTRAST_PROP = (
@@ -322,9 +327,38 @@ type
         D2D1_LOOKUPTABLE3D_PROP_FORCE_DWORD = $ffffffff);
 
 
+
+
+    // if NTDDI_VERSION >= NTDDI_WIN10_RS1
+
+    TD2D1_OPACITY_PROP = (
+        D2D1_OPACITY_PROP_OPACITY = 0,
+        D2D1_OPACITY_PROP_FORCE_DWORD = $ffffffff);
+
+
+
+    TD2D1_CROSSFADE_PROP = (
+        D2D1_CROSSFADE_PROP_WEIGHT = 0,
+        D2D1_CROSSFADE_PROP_FORCE_DWORD = $ffffffff
+        );
+
+
+    TD2D1_TINT_PROP = (
+        D2D1_TINT_PROP_COLOR = 0,
+        D2D1_TINT_PROP_CLAMP_OUTPUT = 1,
+        D2D1_TINT_PROP_FORCE_DWORD = $ffffffff
+        );
+
+
+// endif // #if NTDDI_VERSION >= NTDDI_WIN10_RS1
+
+
 implementation
 
 end.
+
+
+
 
 
 

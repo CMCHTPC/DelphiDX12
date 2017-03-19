@@ -29,7 +29,7 @@
 
   This unit consists of the following header files
   File name: DXGI1_4.h
-  Header version: 10.0.10586
+  Header version: 10.0.14393.0
 
   ************************************************************************** }
 unit DX12.DXGI1_4;

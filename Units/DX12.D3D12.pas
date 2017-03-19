@@ -49,9 +49,9 @@ interface
 
 uses
     Windows, Classes, SysUtils, DX12.DXGI, DX12.D3DCommon;
-	
+
 const
-		D3D12_DLL ='D3D12.dll';
+    D3D12_DLL = 'D3D12.dll';
 
 const
     IID_ID3D12Object: TGUID = '{c4fec28f-7966-4e95-9f94-f431cb56c3b8}';
@@ -71,6 +71,10 @@ const
     IID_ID3D12GraphicsCommandList: TGUID = '{5b160d0f-ac1b-4185-8ba8-b3ae42a5a455}';
     IID_ID3D12CommandQueue: TGUID = '{0ec870a6-5d7e-4c22-8cfc-5baae07616ed}';
     IID_ID3D12Device: TGUID = '{189819f1-1db6-4b57-be54-1821339b85f7}';
+    IID_ID3D12VersionedRootSignatureDeserializer: TGUID = '{7F91CE67-090C-4BB7-B78E-ED8FF2E31DA0}';
+    IID_ID3D12PipelineLibrary: TGUID = '{c64226a8-9201-46af-b4cc-53fb9ff7414f}';
+    IID_ID3D12Device1: TGUID = '{77acce80-638e-4e65-8895-c1f23386863e}';
+
 
 
 const
@@ -779,7 +783,7 @@ type
     TD3D12_INDEX_BUFFER_STRIP_CUT_VALUE = (
         D3D12_INDEX_BUFFER_STRIP_CUT_VALUE_DISABLED = 0,
         D3D12_INDEX_BUFFER_STRIP_CUT_VALUE_0xFFFF = 1,
-        D3D12_INDEX_BUFFER_STRIP_CUT_VALUE_0xFFFFFFFF = 2
+        D3D12_INDEX_BUFFER_STRIP_CUT_VALUE_0XFFFFFFFF = 2
         );
 
     TD3D12_CACHED_PIPELINE_STATE = record
@@ -827,12 +831,15 @@ type
 
     TD3D12_FEATURE = (
         D3D12_FEATURE_D3D12_OPTIONS = 0,
-        D3D12_FEATURE_ARCHITECTURE = (D3D12_FEATURE_D3D12_OPTIONS + 1),
-        D3D12_FEATURE_FEATURE_LEVELS = (D3D12_FEATURE_ARCHITECTURE + 1),
-        D3D12_FEATURE_FORMAT_SUPPORT = (D3D12_FEATURE_FEATURE_LEVELS + 1),
-        D3D12_FEATURE_MULTISAMPLE_QUALITY_LEVELS = (D3D12_FEATURE_FORMAT_SUPPORT + 1),
-        D3D12_FEATURE_FORMAT_INFO = (D3D12_FEATURE_MULTISAMPLE_QUALITY_LEVELS + 1),
-	D3D12_FEATURE_GPU_VIRTUAL_ADDRESS_SUPPORT	= ( D3D12_FEATURE_FORMAT_INFO + 1 )
+        D3D12_FEATURE_ARCHITECTURE = 1,
+        D3D12_FEATURE_FEATURE_LEVELS = 2,
+        D3D12_FEATURE_FORMAT_SUPPORT = 3,
+        D3D12_FEATURE_MULTISAMPLE_QUALITY_LEVELS = 4,
+        D3D12_FEATURE_FORMAT_INFO = 5,
+        D3D12_FEATURE_GPU_VIRTUAL_ADDRESS_SUPPORT = 6,
+        D3D12_FEATURE_SHADER_MODEL = 7,
+        D3D12_FEATURE_D3D12_OPTIONS1 = 8,
+        D3D12_FEATURE_ROOT_SIGNATURE = 12
         );
 
     TD3D12_SHADER_MIN_PRECISION_SUPPORT = (
@@ -949,6 +956,28 @@ type
         ResourceHeapTier: TD3D12_RESOURCE_HEAP_TIER;
     end;
 
+
+    TD3D12_FEATURE_DATA_D3D12_OPTIONS1 = record
+        WaveOps: boolean;
+        WaveLaneCountMin: UINT;
+        WaveLaneCountMax: UINT;
+        TotalLaneCount: UINT;
+        ExpandedComputeResourceStates: boolean;
+        Int64ShaderOps: boolean;
+    end;
+
+    TD3D_ROOT_SIGNATURE_VERSION = (
+        D3D_ROOT_SIGNATURE_VERSION_1 = $1,
+        D3D_ROOT_SIGNATURE_VERSION_1_0 = $1,
+        D3D_ROOT_SIGNATURE_VERSION_1_1 = $2
+        );
+
+    PD3D_ROOT_SIGNATURE_VERSION = ^TD3D_ROOT_SIGNATURE_VERSION;
+
+    TD3D12_FEATURE_DATA_ROOT_SIGNATURE = record
+        HighestVersion: TD3D_ROOT_SIGNATURE_VERSION;
+    end;
+
     TD3D12_FEATURE_DATA_ARCHITECTURE = record
         NodeIndex: UINT;
         TileBasedRenderer: boolean;
@@ -961,6 +990,16 @@ type
         pFeatureLevelsRequested: PD3D_FEATURE_LEVEL;
         MaxSupportedFeatureLevel: TD3D_FEATURE_LEVEL;
     end;
+
+    TD3D_SHADER_MODEL = (
+        D3D_SHADER_MODEL_5_1 = $51,
+        D3D_SHADER_MODEL_6_0 = $60
+        );
+
+    TD3D12_FEATURE_DATA_SHADER_MODEL = record
+        HighestShaderModel: TD3D_SHADER_MODEL;
+    end;
+
 
     TD3D12_FEATURE_DATA_FORMAT_SUPPORT = record
         Format: TDXGI_FORMAT;
@@ -979,13 +1018,13 @@ type
         Format: TDXGI_FORMAT;
         PlaneCount: UINT8;
     end;
-	
-	
-TD3D12_FEATURE_DATA_GPU_VIRTUAL_ADDRESS_SUPPORT = record
-     MaxGPUVirtualAddressBitsPerResource:UINT;
-     MaxGPUVirtualAddressBitsPerProcess:UINT;
+
+
+    TD3D12_FEATURE_DATA_GPU_VIRTUAL_ADDRESS_SUPPORT = record
+        MaxGPUVirtualAddressBitsPerResource: UINT;
+        MaxGPUVirtualAddressBitsPerProcess: UINT;
     end;
-	PD3D12_FEATURE_DATA_GPU_VIRTUAL_ADDRESS_SUPPORT = ^TD3D12_FEATURE_DATA_GPU_VIRTUAL_ADDRESS_SUPPORT;
+    PD3D12_FEATURE_DATA_GPU_VIRTUAL_ADDRESS_SUPPORT = ^TD3D12_FEATURE_DATA_GPU_VIRTUAL_ADDRESS_SUPPORT;
 
     TD3D12_RESOURCE_ALLOCATION_INFO = record
         SizeInBytes: UINT64;
@@ -1028,6 +1067,7 @@ TD3D12_FEATURE_DATA_GPU_VIRTUAL_ADDRESS_SUPPORT = record
         D3D12_HEAP_FLAG_SHARED_CROSS_ADAPTER = $20,
         D3D12_HEAP_FLAG_DENY_RT_DS_TEXTURES = $40,
         D3D12_HEAP_FLAG_DENY_NON_RT_DS_TEXTURES = $80,
+        D3D12_HEAP_FLAG_HARDWARE_PROTECTED = $100,
         D3D12_HEAP_FLAG_ALLOW_ALL_BUFFERS_AND_TEXTURES = 0,
         D3D12_HEAP_FLAG_ALLOW_ONLY_BUFFERS = $c0,
         D3D12_HEAP_FLAG_ALLOW_ONLY_NON_RT_DS_TEXTURES = $44,
@@ -1203,7 +1243,7 @@ TD3D12_FEATURE_DATA_GPU_VIRTUAL_ADDRESS_SUPPORT = record
         D3D12_RESOURCE_STATE_GENERIC_READ = Ord(D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER) or Ord(
         D3D12_RESOURCE_STATE_INDEX_BUFFER) or Ord(D3D12_RESOURCE_STATE_COPY_SOURCE) or Ord(D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE) or
         Ord(D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE) or Ord(D3D12_RESOURCE_STATE_INDIRECT_ARGUMENT),
-		D3D12_RESOURCE_STATE_PRESENT = 0,
+        D3D12_RESOURCE_STATE_PRESENT = 0,
         D3D12_RESOURCE_STATE_PREDICATION = $200
         );
 
@@ -1807,17 +1847,97 @@ TD3D12_FEATURE_DATA_GPU_VIRTUAL_ADDRESS_SUPPORT = record
 
     PD3D12_ROOT_SIGNATURE_DESC = ^TD3D12_ROOT_SIGNATURE_DESC;
 
-    TD3D_ROOT_SIGNATURE_VERSION = (
-        D3D_ROOT_SIGNATURE_VERSION_1 = $1
+
+    TD3D12_DESCRIPTOR_RANGE_FLAGS = (
+        D3D12_DESCRIPTOR_RANGE_FLAG_NONE = 0,
+        D3D12_DESCRIPTOR_RANGE_FLAG_DESCRIPTORS_VOLATILE = $1,
+        D3D12_DESCRIPTOR_RANGE_FLAG_DATA_VOLATILE = $2,
+        D3D12_DESCRIPTOR_RANGE_FLAG_DATA_STATIC_WHILE_SET_AT_EXECUTE = $4,
+        D3D12_DESCRIPTOR_RANGE_FLAG_DATA_STATIC = $8
         );
+
+
+    TD3D12_DESCRIPTOR_RANGE1 = record
+        RangeType: TD3D12_DESCRIPTOR_RANGE_TYPE;
+        NumDescriptors: UINT;
+        BaseShaderRegister: UINT;
+        RegisterSpace: UINT;
+        Flags: TD3D12_DESCRIPTOR_RANGE_FLAGS;
+        OffsetInDescriptorsFromTableStart: UINT;
+    end;
+
+    PD3D12_DESCRIPTOR_RANGE1 = ^TD3D12_DESCRIPTOR_RANGE1;
+
+    TD3D12_ROOT_DESCRIPTOR_TABLE1 = record
+        NumDescriptorRanges: UINT;
+        pDescriptorRanges: PD3D12_DESCRIPTOR_RANGE1;
+    end;
+
+    TD3D12_ROOT_DESCRIPTOR_FLAGS = (
+        D3D12_ROOT_DESCRIPTOR_FLAG_NONE = 0,
+        D3D12_ROOT_DESCRIPTOR_FLAG_DATA_VOLATILE = $2,
+        D3D12_ROOT_DESCRIPTOR_FLAG_DATA_STATIC_WHILE_SET_AT_EXECUTE = $4,
+        D3D12_ROOT_DESCRIPTOR_FLAG_DATA_STATIC = $8
+        );
+
+
+
+    TD3D12_ROOT_DESCRIPTOR1 = record
+        ShaderRegister: UINT;
+        RegisterSpace: UINT;
+        Flags: TD3D12_ROOT_DESCRIPTOR_FLAGS;
+    end;
+    PD3D12_ROOT_DESCRIPTOR1 = ^TD3D12_ROOT_DESCRIPTOR1;
+
+    TD3D12_ROOT_PARAMETER1 = record
+        ParameterType: TD3D12_ROOT_PARAMETER_TYPE;
+        case integer of
+            0: (DescriptorTable: TD3D12_ROOT_DESCRIPTOR_TABLE1;
+                ShaderVisibility: TD3D12_SHADER_VISIBILITY;);
+            1: (
+                Constants: TD3D12_ROOT_CONSTANTS);
+            2: (
+                Descriptor: TD3D12_ROOT_DESCRIPTOR1);
+
+
+    end;
+
+    PD3D12_ROOT_PARAMETER1 = ^TD3D12_ROOT_PARAMETER1;
+
+    TD3D12_ROOT_SIGNATURE_DESC1 = record
+        NumParameters: UINT;
+        pParameters: PD3D12_ROOT_PARAMETER1;
+        NumStaticSamplers: UINT;
+        pStaticSamplers: PD3D12_STATIC_SAMPLER_DESC;
+        Flags: TD3D12_ROOT_SIGNATURE_FLAGS;
+    end;
+
+    TD3D12_VERSIONED_ROOT_SIGNATURE_DESC = record
+        Version: TD3D_ROOT_SIGNATURE_VERSION;
+        case integer of
+            0: (Desc_1_0: TD3D12_ROOT_SIGNATURE_DESC);
+            1: (Desc_1_1: TD3D12_ROOT_SIGNATURE_DESC1);
+
+    end;
+
 
 
     ID3D12RootSignatureDeserializer = interface(IUnknown)
         ['{34AB647B-3CC8-46AC-841B-C0965645C046}']
-
         function GetRootSignatureDesc(): TD3D12_ROOT_SIGNATURE_DESC; stdcall;
+    end;
+
+
+
+    ID3D12VersionedRootSignatureDeserializer = interface(IUnknown)
+        ['{7F91CE67-090C-4BB7-B78E-ED8FF2E31DA0}']
+        function GetRootSignatureDescAtVersion(convertToVersion: TD3D_ROOT_SIGNATURE_VERSION;
+            out ppDesc: TD3D12_VERSIONED_ROOT_SIGNATURE_DESC): HResult; stdcall;
+
+        function GetUnconvertedRootSignatureDesc(): TD3D12_VERSIONED_ROOT_SIGNATURE_DESC; stdcall;
 
     end;
+
 
 
     TD3D12_CPU_DESCRIPTOR_HANDLE = record
@@ -2016,63 +2136,46 @@ TD3D12_FEATURE_DATA_GPU_VIRTUAL_ADDRESS_SUPPORT = record
 
     ID3D12Resource = interface(ID3D12Pageable)
         ['{696442be-a72e-4059-bc79-5b5c98040fad}']
-
         function Map(Subresource: UINT; const pReadRange: TD3D12_RANGE; out ppData): HResult; stdcall;
-
         procedure Unmap(Subresource: UINT; const pWrittenRange: TD3D12_RANGE); stdcall;
-
         function GetDesc(): TD3D12_RESOURCE_DESC; stdcall;
-
         function GetGPUVirtualAddress(): TD3D12_GPU_VIRTUAL_ADDRESS; stdcall;
-
         function WriteToSubresource(DstSubresource: UINT; const pDstBox: TD3D12_BOX; pSrcData: pointer;
             SrcRowPitch: UINT; SrcDepthPitch: UINT): HResult; stdcall;
-
         function ReadFromSubresource(out pDstData: pointer; DstRowPitch: UINT; DstDepthPitch: UINT;
             SrcSubresource: UINT; const pSrcBox: TD3D12_BOX): HResult; stdcall;
-
         function GetHeapProperties(out pHeapProperties: TD3D12_HEAP_PROPERTIES; out pHeapFlags: TD3D12_HEAP_FLAGS): HResult; stdcall;
-
     end;
 
 
     ID3D12CommandAllocator = interface(ID3D12Pageable)
         ['{6102dee4-af59-4b09-b999-b44d73f09b24}']
-
         function Reset(): HResult; stdcall;
-
     end;
 
 
     ID3D12Fence = interface(ID3D12Pageable)
         ['{0a753dcf-c4d8-4b91-adf6-be5a60d95a76}']
-
         function GetCompletedValue(): UINT64; stdcall;
-
         function SetEventOnCompletion(Value: UINT64; hEvent: THANDLE): HResult; stdcall;
-
         function Signal(Value: UINT64): HResult; stdcall;
-
     end;
+
+    PID3D12Fence = ^ID3D12Fence;
 
 
     ID3D12PipelineState = interface(ID3D12Pageable)
         ['{765a30f3-f624-4c6f-a828-ace948622445}']
-
         function GetCachedBlob(out ppBlob: ID3DBlob): HResult; stdcall;
-
     end;
 
+    PID3D12PipelineState = ^ID3D12PipelineState;
 
     ID3D12DescriptorHeap = interface(ID3D12Pageable)
         ['{8efb471d-616c-4f49-90f7-127bb763fa51}']
-
         function GetDesc(): TD3D12_DESCRIPTOR_HEAP_DESC; stdcall;
-
         function GetCPUDescriptorHandleForHeapStart(): TD3D12_CPU_DESCRIPTOR_HANDLE; stdcall;
-
         function GetGPUDescriptorHandleForHeapStart(): TD3D12_GPU_DESCRIPTOR_HANDLE; stdcall;
-
     end;
 
     PID3D12DescriptorHeap = ^ID3D12DescriptorHeap;
@@ -2080,7 +2183,6 @@ TD3D12_FEATURE_DATA_GPU_VIRTUAL_ADDRESS_SUPPORT = record
 
     ID3D12QueryHeap = interface(ID3D12Pageable)
         ['{0d9658ae-ed45-469e-a61d-970ec583cab4}']
-
     end;
 
 
@@ -2123,11 +2225,7 @@ TD3D12_FEATURE_DATA_GPU_VIRTUAL_ADDRESS_SUPPORT = record
         procedure OMSetBlendFactor(BlendFactor: TSingleArray4); stdcall;
         procedure OMSetStencilRef(StencilRef: UINT); stdcall;
         procedure SetPipelineState(pPipelineState: ID3D12PipelineState); stdcall;
-
-
         procedure ResourceBarrier(NumBarriers: UINT; pBarriers: PD3D12_RESOURCE_BARRIER); stdcall;
-
-
         procedure ExecuteBundle(pCommandList: ID3D12GraphicsCommandList); stdcall;
         procedure SetDescriptorHeaps(NumDescriptorHeaps: UINT; ppDescriptorHeaps: PID3D12DescriptorHeap); stdcall;
         procedure SetComputeRootSignature(pRootSignature: ID3D12RootSignature); stdcall;
@@ -2178,35 +2276,22 @@ TD3D12_FEATURE_DATA_GPU_VIRTUAL_ADDRESS_SUPPORT = record
 
     ID3D12CommandQueue = interface(ID3D12Pageable)
         ['{0ec870a6-5d7e-4c22-8cfc-5baae07616ed}']
-
-
         procedure UpdateTileMappings(pResource: ID3D12Resource; NumResourceRegions: UINT;
             pResourceRegionStartCoordinates: PD3D12_TILED_RESOURCE_COORDINATE; pResourceRegionSizes: PD3D12_TILE_REGION_SIZE;
             pHeap: ID3D12Heap; NumRanges: UINT; pRangeFlags: PD3D12_TILE_RANGE_FLAGS; pHeapRangeStartOffsets: PUINT;
             pRangeTileCounts: PUINT; Flags: TD3D12_TILE_MAPPING_FLAGS); stdcall;
-
         procedure CopyTileMappings(pDstResource: ID3D12Resource; const pDstRegionStartCoordinate: TD3D12_TILED_RESOURCE_COORDINATE;
             pSrcResource: ID3D12Resource; const pSrcRegionStartCoordinate: TD3D12_TILED_RESOURCE_COORDINATE;
             const pRegionSize: TD3D12_TILE_REGION_SIZE; Flags: TD3D12_TILE_MAPPING_FLAGS); stdcall;
-
         procedure ExecuteCommandLists(NumCommandLists: UINT; ppCommandLists: PID3D12CommandList); stdcall;
-
         procedure SetMarker(Metadata: UINT; pData: pointer; Size: UINT); stdcall;
-
         procedure BeginEvent(Metadata: UINT; pData: pointer; Size: UINT); stdcall;
-
         procedure EndEvent(); stdcall;
-
         function Signal(pFence: ID3D12Fence; Value: UINT64): HResult; stdcall;
-
         function Wait(pFence: ID3D12Fence; Value: UINT64): HResult; stdcall;
-
         function GetTimestampFrequency(out pFrequency: UINT64): HResult; stdcall;
-
         function GetClockCalibration(out pGpuTimestamp: UINT64; out pCpuTimestamp: UINT64): HResult; stdcall;
-
         function GetDesc(): TD3D12_COMMAND_QUEUE_DESC; stdcall;
-
     end;
 
 
@@ -2279,6 +2364,49 @@ TD3D12_FEATURE_DATA_GPU_VIRTUAL_ADDRESS_SUPPORT = record
     end;
 
 
+
+
+    ID3D12PipelineLibrary = interface(ID3D12DeviceChild)
+        ['{c64226a8-9201-46af-b4cc-53fb9ff7414f}']
+        function StorePipeline(pName: LPCWSTR; pPipeline: ID3D12PipelineState): HResult; stdcall;
+        function LoadGraphicsPipeline(pName: LPCWSTR; const pDesc: TD3D12_GRAPHICS_PIPELINE_STATE_DESC;
+            const riid: TGUID; out ppPipelineState): HResult; stdcall;
+        function LoadComputePipeline(pName: LPCWSTR; const pDesc: TD3D12_COMPUTE_PIPELINE_STATE_DESC;
+            const riid: TGUID; out ppPipelineState): HResult; stdcall;
+        function GetSerializedSize(): SIZE_T; stdcall;
+        function Serialize(out pData: PByte; DataSizeInBytes: SIZE_T): HResult; stdcall;
+    end;
+
+
+
+    TD3D12_MULTIPLE_FENCE_WAIT_FLAGS = (
+        D3D12_MULTIPLE_FENCE_WAIT_FLAG_NONE = 0,
+        D3D12_MULTIPLE_FENCE_WAIT_FLAG_ANY = $1,
+        D3D12_MULTIPLE_FENCE_WAIT_FLAG_ALL = 0
+        );
+
+    TD3D12_RESIDENCY_PRIORITY = (
+        D3D12_RESIDENCY_PRIORITY_MINIMUM = $28000000,
+        D3D12_RESIDENCY_PRIORITY_LOW = $50000000,
+        D3D12_RESIDENCY_PRIORITY_NORMAL = $78000000,
+        D3D12_RESIDENCY_PRIORITY_HIGH = $a0000000,
+        D3D12_RESIDENCY_PRIORITY_MAXIMUM = $c8000000
+        );
+
+    PD3D12_RESIDENCY_PRIORITY = ^TD3D12_RESIDENCY_PRIORITY;
+
+
+    ID3D12Device1 = interface(ID3D12Device)
+        ['{77acce80-638e-4e65-8895-c1f23386863e}']
+        function CreatePipelineLibrary(pLibraryBlob: Pointer; BlobLength: SIZE_T; const riid: TGUID;
+            out ppPipelineLibrary): HResult; stdcall;
+        function SetEventOnMultipleFenceCompletion(ppFences: PID3D12Fence; pFenceValues: PUINT64; NumFences: UINT;
+            Flags: TD3D12_MULTIPLE_FENCE_WAIT_FLAGS; hEvent: HANDLE): HResult; stdcall;
+        function SetResidencyPriority(NumObjects: UINT; ppObjects: PID3D12Pageable;
+            pPriorities: PD3D12_RESIDENCY_PRIORITY): HResult; stdcall;
+    end;
+
+
     TD3D12_SUBRESOURCE_DATA = record
         pData: pointer;
         RowPitch: LONG_PTR;
@@ -2298,6 +2426,14 @@ function D3D12SerializeRootSignature(const pRootSignature: TD3D12_ROOT_SIGNATURE
 
 function D3D12CreateRootSignatureDeserializer(pSrcData: pointer; SrcDataSizeInBytes: SIZE_T;
     const pRootSignatureDeserializerInterface: TGUID; out ppRootSignatureDeserializer): HResult; stdcall; external D3D12_DLL;
+
+
+function D3D12SerializeVersionedRootSignature(pRootSignature: TD3D12_VERSIONED_ROOT_SIGNATURE_DESC; out ppBlob: ID3DBlob;
+    out ppErrorBlob: ID3DBlob): HResult; stdcall; external D3D12_DLL;
+
+function D3D12CreateVersionedRootSignatureDeserializer(pSrcData: pointer; SrcDataSizeInBytes: SIZE_T;
+    const pRootSignatureDeserializerInterface: TGUID; out ppRootSignatureDeserializer): HResult; stdcall; external D3D12_DLL;
+
 
 
 ///////////////////////////////////////////////////////////////////////////
@@ -2332,14 +2468,6 @@ function D3D12GetDebugInterface(const riid: TGUID; out ppvDebug): HResult; stdca
 implementation
 
 end.
-
-
-
-
-
-
-
-
 
 
 

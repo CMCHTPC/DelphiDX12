@@ -55,7 +55,7 @@ const
 
 type
   {$IFNDEF FPC}
-  PHRESULT = ^HRESULT;
+    PHRESULT = ^HRESULT;
   {$ENDIF}
 
     TD3DX11_FILTER_FLAG = (
@@ -399,6 +399,7 @@ end;
 
 { TD3DX11_IMAGE_LOAD_INFO }
 
+{$R-}
 procedure TD3DX11_IMAGE_LOAD_INFO.Init;
 begin
     Width := D3DX11_DEFAULT;
@@ -416,5 +417,5 @@ begin
     pSrcInfo := nil;
 end;
 
+{$R+}
 end.
-

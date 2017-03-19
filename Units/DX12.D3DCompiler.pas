@@ -37,12 +37,20 @@ const
     D3DCOMPILE_RESERVED17 = (1 shl 17);
     D3DCOMPILE_WARNINGS_ARE_ERRORS = (1 shl 18);
     D3DCOMPILE_RESOURCES_MAY_ALIAS = (1 shl 19);
-    D3DCOMPILE_ENABLE_UNBOUNDED_DESCRIPTOR_TABLES  = (1 shl 20);
-    D3DCOMPILE_ALL_RESOURCES_BOUND               =    (1 shl 21);
+    D3DCOMPILE_ENABLE_UNBOUNDED_DESCRIPTOR_TABLES = (1 shl 20);
+    D3DCOMPILE_ALL_RESOURCES_BOUND = (1 shl 21);
 
 
     D3DCOMPILE_EFFECT_CHILD_EFFECT = (1 shl 0);
     D3DCOMPILE_EFFECT_ALLOW_SLOW_OPS = (1 shl 1);
+
+    //----------------------------------------------------------------------------
+    // D3DCOMPILE Flags2:
+    // -----------------
+    // Root signature flags. (passed in Flags2)
+    D3DCOMPILE_FLAGS2_FORCE_ROOT_SIGNATURE_LATEST = 0;
+    D3DCOMPILE_FLAGS2_FORCE_ROOT_SIGNATURE_1_0 = (1 shl 4);
+    D3DCOMPILE_FLAGS2_FORCE_ROOT_SIGNATURE_1_1 = (1 shl 5);
 
 
     D3DCOMPILE_SECDATA_MERGE_UAV_SLOTS = $00000001;
@@ -73,7 +81,7 @@ type
         D3DCOMPILER_STRIP_DEBUG_INFO = 2,
         D3DCOMPILER_STRIP_TEST_BLOBS = 4,
         D3DCOMPILER_STRIP_PRIVATE_DATA = 8,
-        D3DCOMPILER_STRIP_ROOT_SIGNATURE        = $00000010,
+        D3DCOMPILER_STRIP_ROOT_SIGNATURE = $00000010,
         D3DCOMPILER_STRIP_FORCE_DWORD = $7fffffff);
 
     TD3D_BLOB_PART = (
@@ -168,37 +176,37 @@ function D3DGetInputSignatureBlob(pSrcData: Pointer; SrcDataSize: SIZE_T; out pp
     stdcall; external D3DCOMPILER_DLL;
 
 
-function D3DGetOutputSignatureBlob(pSrcData: Pointer; SrcDataSize: SIZE_T;
-    out ppSignatureBlob: ID3DBlob): HResult; stdcall; external D3DCOMPILER_DLL;
+function D3DGetOutputSignatureBlob(pSrcData: Pointer; SrcDataSize: SIZE_T; out ppSignatureBlob: ID3DBlob): HResult;
+    stdcall; external D3DCOMPILER_DLL;
 
 
-function D3DGetInputAndOutputSignatureBlob(pSrcData: Pointer; SrcDataSize: SIZE_T;
-    out ppSignatureBlob: ID3DBlob): HResult; stdcall; external D3DCOMPILER_DLL;
+function D3DGetInputAndOutputSignatureBlob(pSrcData: Pointer; SrcDataSize: SIZE_T; out ppSignatureBlob: ID3DBlob): HResult;
+    stdcall; external D3DCOMPILER_DLL;
 
 
-function D3DStripShader(pShaderBytecode: Pointer; BytecodeLength: SIZE_T; uStripFlags: UINT;
-    out ppStrippedBlob: ID3DBlob): HResult; stdcall; external D3DCOMPILER_DLL;
+function D3DStripShader(pShaderBytecode: Pointer; BytecodeLength: SIZE_T; uStripFlags: UINT; out ppStrippedBlob: ID3DBlob): HResult;
+    stdcall; external D3DCOMPILER_DLL;
 
 
-function D3DGetBlobPart(pSrcData: Pointer; SrcDataSize: SIZE_T; Part: TD3D_BLOB_PART;
-    Flags: UINT; out ppPart: ID3DBlob): HResult; stdcall; external D3DCOMPILER_DLL;
+function D3DGetBlobPart(pSrcData: Pointer; SrcDataSize: SIZE_T; Part: TD3D_BLOB_PART; Flags: UINT; out ppPart: ID3DBlob): HResult;
+    stdcall; external D3DCOMPILER_DLL;
 
 
-function D3DSetBlobPart(pSrcData: Pointer; SrcDataSize: SIZE_T; Part: TD3D_BLOB_PART;
-    Flags: UINT; pPart: Pointer; PartSize: SIZE_T;
-    out ppNewShader: ID3DBlob): HResult; stdcall; external D3DCOMPILER_DLL;
+function D3DSetBlobPart(pSrcData: Pointer; SrcDataSize: SIZE_T; Part: TD3D_BLOB_PART; Flags: UINT; pPart: Pointer;
+    PartSize: SIZE_T; out ppNewShader: ID3DBlob): HResult; stdcall; external D3DCOMPILER_DLL;
 
 
 function D3DCreateBlob(Size: SIZE_T; out ppBlob: ID3DBlob): HResult; stdcall; external D3DCOMPILER_DLL;
 
 
-function D3DCompressShaders(uNumShaders: UINT; pShaderData: PD3D_SHADER_DATA; uFlags: UINT;
-    out ppCompressedData: ID3DBlob): HResult; stdcall; external D3DCOMPILER_DLL;
+function D3DCompressShaders(uNumShaders: UINT; pShaderData: PD3D_SHADER_DATA; uFlags: UINT; out ppCompressedData: ID3DBlob): HResult;
+    stdcall; external D3DCOMPILER_DLL;
 
 
-function D3DDecompressShaders(pSrcData: Pointer; SrcDataSize: SIZE_T; uNumShaders: UINT;
-    uStartIndex: UINT; pIndices: PUINT; uFlags: UINT;
-    out ppShaders: PID3DBlob; out pTotalShaders: UINT): HResult; stdcall; external D3DCOMPILER_DLL;
+function D3DDecompressShaders(pSrcData: Pointer; SrcDataSize: SIZE_T; uNumShaders: UINT; uStartIndex: UINT;
+    pIndices: PUINT; uFlags: UINT; out ppShaders: PID3DBlob; out pTotalShaders: UINT): HResult; stdcall; external D3DCOMPILER_DLL;
+
+
 
 
 implementation

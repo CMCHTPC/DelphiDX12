@@ -13,9 +13,8 @@ interface
 uses
     Windows, Classes;
 
-
 const
-    DXGIDEBUG_DLL ='Dxgidebug.dll';
+    DXGIDEBUG_DLL = 'Dxgidebug.dll';
 
 const
     IID_IDXGIInfoQueue: TGUID = '{D67441C7-672A-476f-9E82-CD55B44949CE}';
@@ -174,4 +173,5 @@ function DXGIGetDebugInterface(const riid: TGUID; out ppDebug): HResult; stdcall
 implementation
 
 end.
+
 

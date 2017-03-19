@@ -53,6 +53,8 @@ uses
 const
     IID_ID3D10Blob: TGUID = '{8BA5FB08-5195-40e2-AC58-0D989C3A0102}';
     IID_ID3DBlob: TGUID = '{8BA5FB08-5195-40e2-AC58-0D989C3A0102}';
+    IID_ID3DDestructionNotifier: TGUID = '{a06eb39a-50da-425b-8c31-4eecd6c270f3}';
+
     WKPDID_D3DDebugObjectName: TGUID = '{429b8c22-9188-4b0c-8742-acb0bf85c200}';
     WKPDID_D3DDebugObjectNameW: TGUID = '{4cca5fd8-921f-42c8-8566-70caf2a9b741}';
     WKPDID_CommentStringW: TGUID = '{d0149dc0-90e8-4ec8-8144-e900ad266bb2}';
@@ -385,6 +387,17 @@ type
     PID3D10Blob = ^ID3D10Blob;
     ID3DBlob = ID3D10Blob;
     PID3DBlob = ^ID3DBlob;
+
+
+    PFN_DESTRUCTION_CALLBACK = procedure(pData: Pointer); stdcall;
+
+    ID3DDestructionNotifier = interface(IUnknown)
+        ['{a06eb39a-50da-425b-8c31-4eecd6c270f3}']
+        function RegisterDestructionCallback(callbackFn: PFN_DESTRUCTION_CALLBACK; pData: Pointer;
+            out pCallbackID: UINT): HResult; stdcall;
+        function UnregisterDestructionCallback(callbackID: UINT): HResult; stdcall;
+    end;
+
 
 
     TD3D_INCLUDE_TYPE = (

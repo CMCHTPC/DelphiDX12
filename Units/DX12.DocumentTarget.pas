@@ -9,7 +9,7 @@ interface
 {$Z4}
 
 uses
-    Windows, Classes, SysUtils,ActiveX;
+    Windows, Classes, SysUtils, ActiveX;
 
 const
     IID_IPrintDocumentPackageTarget: TGUID = '{1b8efec4-3019-4c27-964e-367202156906}';

@@ -84,15 +84,15 @@ const
     D2D1_DLL = 'd2d1.dll';
 
 const
-     // defined in IntSafe.h
-    UINT_MAX   = UINT($ffffffff);
-    ULONGLONG_MAX  =UINT64($ffffffffffffffff);
+    // defined in IntSafe.h
+    UINT_MAX = UINT($ffffffff);
+    ULONGLONG_MAX = UINT64($ffffffffffffffff);
 
     D2D1_INVALID_PROPERTY_INDEX = UINT_MAX;
     FACILITY_D2D = $899;
 
     MAKE_D2DHR_ERR = longword(1 shl 31) or longword(FACILITY_D2D shl 16);
-    // D2D specific codes now live in winerror.h
+// D2D specific codes now live in winerror.h
 
 const
     { D2D1.h }
@@ -586,7 +586,9 @@ type
         D2D1_BITMAP_INTERPOLATION_MODE_LINEAR = D2D1_INTERPOLATION_MODE_DEFINITION_LINEAR, D2D1_BITMAP_INTERPOLATION_MODE_FORCE_DWORD = $FFFFFFFF);
 
     TD2D1_DRAW_TEXT_OPTIONS = (D2D1_DRAW_TEXT_OPTIONS_NO_SNAP = $00000001, D2D1_DRAW_TEXT_OPTIONS_CLIP = $00000002,
-        D2D1_DRAW_TEXT_OPTIONS_ENABLE_COLOR_FONT = $00000004, D2D1_DRAW_TEXT_OPTIONS_NONE = $00000000,
+        D2D1_DRAW_TEXT_OPTIONS_ENABLE_COLOR_FONT = $00000004,
+        D2D1_DRAW_TEXT_OPTIONS_DISABLE_COLOR_BITMAP_SNAPPING = $00000008,
+        D2D1_DRAW_TEXT_OPTIONS_NONE = $00000000,
         D2D1_DRAW_TEXT_OPTIONS_FORCE_DWORD = $FFFFFFFF);
 
     TD2D1_BITMAP_PROPERTIES = record
@@ -1990,11 +1992,12 @@ type
         function GetPixelSize(): TD2D1_SIZE_U; stdcall;
         function GetPixelFormat(): TD2D1_PIXEL_FORMAT; stdcall;
         procedure GetDpi(out dpiX: single; out dpiY: single); stdcall;
-//        function CopyFromBitmap( destPoint: PD2D1_POINT_2U; bitmap: ID2D1Bitmap;  srcRect: PD2D1_RECT_U): HResult; stdcall;  // <- funkt
-        function CopyFromBitmap(const destPoint: PD2D1_POINT_2U; bitmap: ID2D1Bitmap; const srcRect: PD2D1_RECT_U): HResult; stdcall;// <- funkt
-//        function CopyFromBitmap(const destPoint: TD2D1_POINT_2U; bitmap: ID2D1Bitmap; const srcRect: TD2D1_RECT_U): HResult; stdcall;// <- funkt
-//        function CopyFromBitmap(destPoint: TD2D1_POINT_2U; bitmap: ID2D1Bitmap; srcRect: TD2D1_RECT_U): HResult; stdcall;  <- das crasht, weil ja kein Pointer übergeben wird
-        function CopyFromRenderTarget(const destPoint: TD2D1_POINT_2U; renderTarget: ID2D1RenderTarget; const srcRect: TD2D1_RECT_U): HResult; stdcall;
+        //        function CopyFromBitmap( destPoint: PD2D1_POINT_2U; bitmap: ID2D1Bitmap;  srcRect: PD2D1_RECT_U): HResult; stdcall;  // <- funkt
+        function CopyFromBitmap(const destPoint: TD2D1_POINT_2U; bitmap: ID2D1Bitmap; const srcRect: TD2D1_RECT_U): HResult; stdcall;// <- funkt
+        //        function CopyFromBitmap(const destPoint: TD2D1_POINT_2U; bitmap: ID2D1Bitmap; const srcRect: TD2D1_RECT_U): HResult; stdcall;// <- funkt
+        //        function CopyFromBitmap(destPoint: TD2D1_POINT_2U; bitmap: ID2D1Bitmap; srcRect: TD2D1_RECT_U): HResult; stdcall;  <- das crasht, weil ja kein Pointer übergeben wird
+        function CopyFromRenderTarget(const destPoint: TD2D1_POINT_2U; renderTarget: ID2D1RenderTarget;
+            const srcRect: TD2D1_RECT_U): HResult; stdcall;
         function CopyFromMemory(dstRect: PD2D1_RECT_U; srcData: Pointer; pitch: UINT32): HResult; stdcall;
     end;
 
@@ -2180,12 +2183,12 @@ type
 
     ID2D1RenderTarget = interface(ID2D1Resource)
         ['{2cd90694-12e2-11dc-9fed-001143a055f9}']
-        function CreateBitmap(size: TD2D1_SIZE_U; srcData: Pointer; pitch: UINT32; bitmapProperties: PD2D1_BITMAP_PROPERTIES;
+        function CreateBitmap(size: TD2D1_SIZE_U; srcData: Pointer; pitch: UINT32; const bitmapProperties: TD2D1_BITMAP_PROPERTIES;
             out bitmap: ID2D1Bitmap): HResult; stdcall;
         function CreateBitmapFromWicBitmap(wicBitmapSource: IWICBitmapSource; bitmapProperties: PD2D1_BITMAP_PROPERTIES;
             out bitmap: ID2D1Bitmap): HResult;
             stdcall;
-        function CreateSharedBitmap(const riid: TGUID; Data : Pointer; const bitmapProperties: TD2D1_BITMAP_PROPERTIES;
+        function CreateSharedBitmap(const riid: TGUID; Data: Pointer; const bitmapProperties: TD2D1_BITMAP_PROPERTIES;
             out bitmap: ID2D1Bitmap): HResult; stdcall;
         function CreateBitmapBrush(bitmap: ID2D1Bitmap; bitmapBrushProperties: PD2D1_BITMAP_BRUSH_PROPERTIES;
             brushProperties: PD2D1_BRUSH_PROPERTIES; out bitmapBrush: ID2D1BitmapBrush): HResult; stdcall;
@@ -2209,13 +2212,15 @@ type
         procedure DrawLine(point0: TD2D1_POINT_2F; point1: TD2D1_POINT_2F; brush: ID2D1Brush; strokeWidth: single = 1.0;
             strokeStyle: ID2D1StrokeStyle = nil);
             stdcall;
-        procedure DrawRectangle(const rect: TD2D1_RECT_F; brush: ID2D1Brush; strokeWidth: single = 1.0; strokeStyle: ID2D1StrokeStyle = nil); stdcall;
+        procedure DrawRectangle(const rect: TD2D1_RECT_F; brush: ID2D1Brush; strokeWidth: single = 1.0;
+            strokeStyle: ID2D1StrokeStyle = nil); stdcall;
         procedure FillRectangle(const rect: TD2D1_RECT_F; brush: ID2D1Brush); stdcall;
         procedure DrawRoundedRectangle(const roundedRect: TD2D1_ROUNDED_RECT; brush: ID2D1Brush; strokeWidth: single = 1.0;
             strokeStyle: ID2D1StrokeStyle = nil);
             stdcall;
         procedure FillRoundedRectangle(const roundedRect: TD2D1_ROUNDED_RECT; brush: ID2D1Brush); stdcall;
-        procedure DrawEllipse(const ellipse: TD2D1_ELLIPSE; brush: ID2D1Brush; strokeWidth: single = 1.0; strokeStyle: ID2D1StrokeStyle = nil); stdcall;
+        procedure DrawEllipse(const ellipse: TD2D1_ELLIPSE; brush: ID2D1Brush; strokeWidth: single = 1.0;
+            strokeStyle: ID2D1StrokeStyle = nil); stdcall;
         procedure FillEllipse(const ellipse: TD2D1_ELLIPSE; brush: ID2D1Brush); stdcall;
         procedure DrawGeometry(geometry: ID2D1Geometry; brush: ID2D1Brush; strokeWidth: single = 1.0; strokeStyle: ID2D1StrokeStyle = nil); stdcall;
         procedure FillGeometry(geometry: ID2D1Geometry; brush: ID2D1Brush; opacityBrush: ID2D1Brush = nil); stdcall;
@@ -2226,9 +2231,9 @@ type
             interpolationMode: TD2D1_BITMAP_INTERPOLATION_MODE = D2D1_BITMAP_INTERPOLATION_MODE_LINEAR;
             sourceRectangle: PD2D1_RECT_F = nil); stdcall;
         procedure DrawText(Text: PWideChar; stringLength: UINT32; textFormat: IDWriteTextFormat; layoutRect: PD2D1_RECT_F;
-            defaultForegroundBrush: ID2D1Brush; options: TD2D1_DRAW_TEXT_OPTIONS = D2D1_DRAW_TEXT_OPTIONS_NONE;
+            defaultFillBrush: ID2D1Brush; options: TD2D1_DRAW_TEXT_OPTIONS = D2D1_DRAW_TEXT_OPTIONS_NONE;
             measuringMode: TDWRITE_MEASURING_MODE = DWRITE_MEASURING_MODE_NATURAL); stdcall;
-        procedure DrawTextLayout(origin: TD2D1_POINT_2F; textLayout: IDWriteTextLayout; defaultForegroundBrush: ID2D1Brush;
+        procedure DrawTextLayout(origin: TD2D1_POINT_2F; textLayout: IDWriteTextLayout; defaultFillBrush: ID2D1Brush;
             options: TD2D1_DRAW_TEXT_OPTIONS = D2D1_DRAW_TEXT_OPTIONS_NONE); stdcall;
         procedure DrawGlyphRun(baselineOrigin: TD2D1_POINT_2F; glyphRun: PDWRITE_GLYPH_RUN; foregroundBrush: ID2D1Brush;
             measuringMode: TDWRITE_MEASURING_MODE = DWRITE_MEASURING_MODE_NATURAL); stdcall;
@@ -2242,7 +2247,7 @@ type
         procedure GetTextRenderingParams(out textRenderingParams: IDWriteRenderingParams); stdcall;
         procedure SetTags(tag1: TD2D1_TAG; tag2: TD2D1_TAG); stdcall;
         procedure GetTags(out tag1: TD2D1_TAG; out tag2: TD2D1_TAG); stdcall;
-        procedure PushLayer(layerParameters: PD2D1_LAYER_PARAMETERS; layer: ID2D1Layer); stdcall;
+        procedure PushLayer(const layerParameters: TD2D1_LAYER_PARAMETERS; layer: ID2D1Layer); stdcall;
         procedure PopLayer(); stdcall;
         function Flush(out tag1: TD2D1_TAG; out tag2: TD2D1_TAG): HResult; stdcall;
         procedure SaveDrawingState(var drawingStateBlock: ID2D1DrawingStateBlock); stdcall;
@@ -2299,11 +2304,11 @@ type
         function CreateTransformedGeometry(sourceGeometry: ID2D1Geometry; transform: PD2D1_MATRIX_3X2_F;
             out transformedGeometry: ID2D1TransformedGeometry): HResult; stdcall;
         function CreatePathGeometry(out pathGeometry: ID2D1PathGeometry): HResult; stdcall;
-        function CreateStrokeStyle(strokeStyleProperties: PD2D1_STROKE_STYLE_PROPERTIES; dashes: Psingle;
+        function CreateStrokeStyle(const strokeStyleProperties: TD2D1_STROKE_STYLE_PROPERTIES; dashes: Psingle;
             dashesCount: UINT32; out strokeStyle: ID2D1StrokeStyle): HResult; stdcall;
         function CreateDrawingStateBlock(drawingStateDescription: PD2D1_DRAWING_STATE_DESCRIPTION;
             textRenderingParams: IDWriteRenderingParams; out drawingStateBlock: ID2D1DrawingStateBlock): HResult; stdcall;
-        function CreateWicBitmapRenderTarget(target: IWICBitmap; renderTargetProperties: PD2D1_RENDER_TARGET_PROPERTIES;
+        function CreateWicBitmapRenderTarget(target: IWICBitmap; const renderTargetProperties: TD2D1_RENDER_TARGET_PROPERTIES;
             out renderTarget: ID2D1RenderTarget): HResult; stdcall;
         function CreateHwndRenderTarget(const renderTargetProperties: TD2D1_RENDER_TARGET_PROPERTIES;
             const hwndRenderTargetProperties: TD2D1_HWND_RENDER_TARGET_PROPERTIES; out hwndRenderTarget: ID2D1HwndRenderTarget): HResult; stdcall;
@@ -3400,10 +3405,13 @@ begin
 end;
 
 
+
 function Matrix3x2F_Rotation(angle: single; x, y: single): TD2D_MATRIX_3X2_F;
 begin
-    Result.Rotation(angle, x,y);
+    Result.Rotation(angle, x, y);
 end;
+
+
 
 function Matrix3x2F_Scale(size: TD2D_SIZE_F; center: TD2D_POINT_2F): TD2D_MATRIX_3X2_F;
 begin
@@ -3754,15 +3762,14 @@ end;
 
 class operator TD2D_SIZE_U.Equal(a, b: TD2D_SIZE_U): longbool;
 begin
-    result:= (a.width = b.width) AND (a.height = b.height);
+    Result := (a.Width = b.Width) and (a.Height = b.Height);
 end;
 
 { TD2D_RECT_U }
 
 class operator TD2D_RECT_U.Equal(a, b: TD2D_RECT_U): longbool;
 begin
-     result:= (a.left  = b.left)  AND (a.top     = b.top)  AND
-           (a.right = b.right)  AND (a.bottom  = b.bottom);
+    Result := (a.left = b.left) and (a.top = b.top) and (a.right = b.right) and (a.bottom = b.bottom);
 end;
 
 { TD2D_MATRIX_5X4_F }
@@ -4284,13 +4291,15 @@ begin
     _32 := Rotation._32;
 end;
 
+
+
 procedure TD2D_MATRIX_3X2_F.Rotation(angle: single; x, y: single);
 var
     center: TD2D_POINT_2F;
     rotation: TD2D_MATRIX_3X2_F;
 begin
-    center := Point2F(x,y);
-   D2D1MakeRotateMatrix(angle, center, rotation);
+    center := Point2F(x, y);
+    D2D1MakeRotateMatrix(angle, center, rotation);
 
     _11 := Rotation._11;
     _12 := Rotation._12;

@@ -1439,6 +1439,10 @@ const
     D3D10_SHADER_OPTIMIZATION_LEVEL2 = (1 shl 14) or (1 shl 15);
     D3D10_SHADER_OPTIMIZATION_LEVEL3 = 1 shl 15;
 
+    // Force root signature flags. (Passed in Flags2)
+    D3D10_SHADER_FLAGS2_FORCE_ROOT_SIGNATURE_LATEST = 0;
+    D3D10_SHADER_FLAGS2_FORCE_ROOT_SIGNATURE_1_0 = (1 shl 4);
+    D3D10_SHADER_FLAGS2_FORCE_ROOT_SIGNATURE_1_1 = (1 shl 5);
 
 type
     TD3D10_DRIVER_TYPE = (
@@ -3089,6 +3093,8 @@ procedure TD3D10_INPUT_ELEMENT_DESC.Init;
 begin
     ZeroMemory(@Self, SizeOf(TD3D10_INPUT_ELEMENT_DESC));
 end;
+
+
 
 procedure TD3D10_INPUT_ELEMENT_DESC.Init(ASemanticName: PAnsiChar; ASemanticIndex: UINT; AFormat: TDXGI_FORMAT;
     AInputSlot: UINT; AAlignedByteOffset: UINT; AInputSlotClass: TD3D10_INPUT_CLASSIFICATION; AInstanceDataStepRate: UINT);

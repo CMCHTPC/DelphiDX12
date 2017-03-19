@@ -9,7 +9,7 @@ interface
 {$Z4}
 
 uses
-    Windows, Classes, SysUtils,ActiveX;
+    Windows, Classes, SysUtils, ActiveX;
 
 const
     MULTICLASSINFO_GETTYPEINFO = $00000001;
@@ -26,7 +26,7 @@ const
     IID_IClassFactory2: TGUID = '{B196B28F-BAB4-101A-B69C-00AA00341D07}';
 
 
-    IID_IPropertyBag2 : TGUID ='{22F55882-280B-11d0-A8A9-00A0C90C2004}';
+    IID_IPropertyBag2: TGUID = '{22F55882-280B-11d0-A8A9-00A0C90C2004}';
 
 type
 
@@ -137,46 +137,37 @@ type
 
 
 
-IPropertyBag2 = interface(IUnknown)
-['{22F55882-280B-11d0-A8A9-00A0C90C2004}']
-
-        function  Read(
-              cProperties:ULONG;
-            pPropBag:   PPROPBAG2   ;
-            pErrLog: IErrorLog     ;
-            pvarValue: PVARIANT      ;
-            var phrError:HRESULT): HResult; stdcall;
-
-        function  Write(
-             cProperties:  ULONG    ;
-            pPropBag:  PPROPBAG2    ;
-            pvarValue:PVARIANT): HResult; stdcall;
-
-        function  CountProperties(
-             out pcProperties:ULONG): HResult; stdcall;
-
-        function  GetPropertyInfo(
-              iProperty:   ULONG   ;
-              cProperties: ULONG     ;
-             out  pPropBag:  PPROPBAG2    ;
-            out pcProperties:ULONG): HResult; stdcall;
-
-        function  LoadObject(
-              pstrName: POleStr     ;
-              dwHint: DWORD     ;
-            pUnkObject:IUnknown      ;
-            pErrLog:IErrorLog): HResult; stdcall;
-
+    IPropertyBag2 = interface(IUnknown)
+        ['{22F55882-280B-11d0-A8A9-00A0C90C2004}']
+        function Read(cProperties: ULONG; pPropBag: PPROPBAG2; pErrLog: IErrorLog; pvarValue: PVARIANT;
+            var phrError: HRESULT): HResult; stdcall;
+        function Write(cProperties: ULONG; pPropBag: PPROPBAG2; pvarValue: PVARIANT): HResult; stdcall;
+        function CountProperties(out pcProperties: ULONG): HResult; stdcall;
+        function GetPropertyInfo(iProperty: ULONG; cProperties: ULONG; out pPropBag: PPROPBAG2; out pcProperties: ULONG): HResult; stdcall;
+        function LoadObject(pstrName: POleStr; dwHint: DWORD; pUnkObject: IUnknown; pErrLog: IErrorLog): HResult; stdcall;
     end;
 
-PIPropertyBag2 = ^IPropertyBag2;
-
-
-
+    PIPropertyBag2 = ^IPropertyBag2;
 
 implementation
 
 end.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

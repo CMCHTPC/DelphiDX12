@@ -6,6 +6,7 @@ unit DX12.DXGI1_2;
 
 
 interface
+
 {$Z4}
 
 uses

@@ -9,7 +9,7 @@ interface
 {$Z4}
 
 uses
-    Windows, Classes, SysUtils, DX12.DWrite, DX12.DCommon;
+    Windows, Classes, SysUtils, DX12.DWrite, DX12.DCommon, DX12.D2D1;
 
 const
     IID_IDWriteRenderingParams3: TGUID = '{b7924baa-391b-412a-8c5c-e44cc2d867dc}';
@@ -28,6 +28,9 @@ const
     IID_IDWriteGdiInterop1: TGUID = '{4556BE70-3ABD-4F70-90BE-421780A6F515}';
     IID_IDWriteTextFormat2: TGUID = '{F67E0EDD-9E3D-4ECC-8C32-4183253DFE70}';
     IID_IDWriteTextLayout3: TGUID = '{07DDCD52-020E-4DE8-AC33-6C953D83F92D}';
+    IID_IDWriteColorGlyphRunEnumerator1: TGUID = '{7C5F86DA-C7A1-4F05-B8E1-55A179FE5A35}';
+    IID_IDWriteFontFace4: TGUID = '{27F2A904-4EB8-441D-9678-0563F53E3E2F}';
+    IID_IDWriteFactory4: TGUID = '{4B0B5BD3-0797-4549-8AC5-FE915CC53856}';
 
 
 const
@@ -483,6 +486,79 @@ type
 
 
 
+
+    // if NTDDI_VERSION >= NTDDI_WIN10_RS1
+
+
+
+    TDWRITE_GLYPH_IMAGE_FORMATS = (
+        DWRITE_GLYPH_IMAGE_FORMATS_NONE = $00000000,
+        DWRITE_GLYPH_IMAGE_FORMATS_TRUETYPE = $00000001,
+        DWRITE_GLYPH_IMAGE_FORMATS_CFF = $00000002,
+        DWRITE_GLYPH_IMAGE_FORMATS_COLR = $00000004,
+        DWRITE_GLYPH_IMAGE_FORMATS_SVG = $00000008,
+        DWRITE_GLYPH_IMAGE_FORMATS_PNG = $00000010,
+        DWRITE_GLYPH_IMAGE_FORMATS_JPEG = $00000020,
+        DWRITE_GLYPH_IMAGE_FORMATS_TIFF = $00000040,
+        DWRITE_GLYPH_IMAGE_FORMATS_PREMULTIPLIED_B8G8R8A8 = $00000080);
+
+
+    TDWRITE_COLOR_GLYPH_RUN1 = record
+        glyphRun: TDWRITE_GLYPH_RUN;
+        glyphRunDescription: PDWRITE_GLYPH_RUN_DESCRIPTION;
+        baselineOriginX: single;
+        baselineOriginY: single;
+        runColor: TDWRITE_COLOR_F;
+        paletteIndex: UINT16;
+        glyphImageFormat: TDWRITE_GLYPH_IMAGE_FORMATS;
+        measuringMode: TDWRITE_MEASURING_MODE;
+    end;
+
+
+    TDWRITE_GLYPH_IMAGE_DATA = record
+        imageData: Pointer;
+        imageDataSize: UINT32;
+        uniqueDataId: UINT32;
+        pixelsPerEm: UINT32;
+        pixelSize: TD2D1_SIZE_U;
+        horizontalLeftOrigin: TD2D1_POINT_2L;
+        horizontalRightOrigin: TD2D1_POINT_2L;
+        verticalTopOrigin: TD2D1_POINT_2L;
+        verticalBottomOrigin: TD2D1_POINT_2L;
+    end;
+
+
+
+
+    IDWriteColorGlyphRunEnumerator1 = interface(IDWriteColorGlyphRunEnumerator)
+        ['{7C5F86DA-C7A1-4F05-B8E1-55A179FE5A35}']
+        function GetCurrentRun(out colorGlyphRun: TDWRITE_COLOR_GLYPH_RUN1): HResult; stdcall;
+    end;
+
+
+    IDWriteFontFace4 = interface(IDWriteFontFace3)
+        ['{27F2A904-4EB8-441D-9678-0563F53E3E2F}']
+        function GetGlyphImageFormats(glyphId: UINT16; pixelsPerEmFirst: UINT32; pixelsPerEmLast: UINT32;
+            out glyphImageFormats: TDWRITE_GLYPH_IMAGE_FORMATS): HResult; stdcall;
+        function GetGlyphImageData(glyphId: UINT16; pixelsPerEm: UINT32; glyphImageFormat: TDWRITE_GLYPH_IMAGE_FORMATS;
+            out glyphData: TDWRITE_GLYPH_IMAGE_DATA; out glyphDataContext: pointer): HResult; stdcall;
+        procedure ReleaseGlyphImageData(glyphDataContext: pointer); stdcall;
+    end;
+
+
+    IDWriteFactory4 = interface(IDWriteFactory3)
+        ['{4B0B5BD3-0797-4549-8AC5-FE915CC53856}']
+        function TranslateColorGlyphRun(baselineOrigin: TD2D1_POINT_2F; const glyphRun: TDWRITE_GLYPH_RUN;
+            const glyphRunDescription: TDWRITE_GLYPH_RUN_DESCRIPTION; desiredGlyphImageFormats: TDWRITE_GLYPH_IMAGE_FORMATS;
+            measuringMode: TDWRITE_MEASURING_MODE; const worldAndDpiTransform: TDWRITE_MATRIX; colorPaletteIndex: UINT32;
+            out colorLayers: IDWriteColorGlyphRunEnumerator1): HResult; stdcall;
+        function ComputeGlyphOrigins(const glyphRun: TDWRITE_GLYPH_RUN; measuringMode: TDWRITE_MEASURING_MODE;
+            baselineOrigin: TD2D1_POINT_2F; const worldAndDpiTransform: TDWRITE_MATRIX;
+            out glyphOrigins: PD2D1_POINT_2F): HResult; stdcall;
+    end;
+
+
+//endif // NTDDI_VERSION >= NTDDI_WIN10_RS1
 
 
 implementation

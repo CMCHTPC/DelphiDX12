@@ -75,10 +75,10 @@ interface
 {$Z4}
 
 uses
-    Windows, Classes, SysUtils, DX12.D2D1, DX12.WinCodec, DX12.DCommon, DX12.DXGI;
+    Windows, Classes, SysUtils, DX12.D2D1, DX12.WinCodec, DX12.DCommon, DX12.DXGI, DX12.DWrite, DX12.DWrite3;
 
 const
-    D2D1_DLL = 'D2D1.DLL'; 
+    D2D1_DLL = 'D2D1.DLL';
 
 const
     IID_ID2D1InkStyle: TGUID = '{bae8b344-23fc-4071-8cb5-d05d6f073848}';
@@ -94,12 +94,17 @@ const
     IID_ID2D1CommandSink2: TGUID = '{3bab440e-417e-47df-a2e2-bc0be6a00916}';
     IID_ID2D1GdiMetafile1: TGUID = '{2e69f9e8-dd3f-4bf9-95ba-c04f49d788df}';
     IID_ID2D1GdiMetafileSink1: TGUID = '{fd0ecb6b-91e6-411e-8655-395e760f91b4}';
-	
-	IID_ID2D1SpriteBatch: TGUID = '{4dc583bf-3a10-438a-8722-e9765224f1f1}';
+
+    IID_ID2D1SpriteBatch: TGUID = '{4dc583bf-3a10-438a-8722-e9765224f1f1}';
     IID_ID2D1DeviceContext3: TGUID = '{235a7496-8351-414c-bcd4-6672ab2d8e00}';
     IID_ID2D1Device3: TGUID = '{852f2087-802c-4037-ab60-ff2e7ee6fc01}';
     IID_ID2D1Factory4: TGUID = '{bd4ec2d2-0662-4bee-ba8e-6f29f032e096}';
-    IID_ID2D1CommandSink3: TGUID = '{18079135-4cf3-4868-bc8e-06067e6d242d}'; 
+    IID_ID2D1CommandSink3: TGUID = '{18079135-4cf3-4868-bc8e-06067e6d242d}';
+
+    IID_ID2D1SvgGlyphStyle: TGUID = '{af671749-d241-4db8-8e41-dcc2e5c1a438}';
+    IID_ID2D1DeviceContext4: TGUID = '{8c427831-3d90-4476-b647-c4fae349e4db}';
+    IID_ID2D1Device4: TGUID = '{d7bdb159-5683-4a46-bc9c-72dc720b858b}';
+    IID_ID2D1Factory5: TGUID = '{c4349994-838e-4b0f-8cab-44997d9eeacc}';
 
 type
     {$IFNDEF FPC}
@@ -228,15 +233,23 @@ type
         bottomEdgeMode: TD2D1_PATCH_EDGE_MODE;
         rightEdgeMode: TD2D1_PATCH_EDGE_MODE;
     end;
-	
-	TD2D1_SPRITE_OPTIONS = (
+
+    TD2D1_SPRITE_OPTIONS = (
         D2D1_SPRITE_OPTIONS_NONE = 0,
         D2D1_SPRITE_OPTIONS_CLAMP_TO_SOURCE_RECTANGLE = 1,
         D2D1_SPRITE_OPTIONS_FORCE_DWORD = $ffffffff
-        );  
+        );
 
     PD2D1_GRADIENT_MESH_PATCH = ^TD2D1_GRADIENT_MESH_PATCH;
 
+
+    TD2D1_COLOR_BITMAP_GLYPH_SNAP_OPTION = (
+        D2D1_COLOR_BITMAP_GLYPH_SNAP_OPTION_DEFAULT = 0,
+        D2D1_COLOR_BITMAP_GLYPH_SNAP_OPTION_DISABLE = 1,
+        D2D1_COLOR_BITMAP_GLYPH_SNAP_OPTION_FORCE_DWORD = $ffffffff
+
+        );
+    PD2D1_COLOR_BITMAP_GLYPH_SNAP_OPTION = ^TD2D1_COLOR_BITMAP_GLYPH_SNAP_OPTION;
 
     ID2D1InkStyle = interface(ID2D1Resource)
         ['{bae8b344-23fc-4071-8cb5-d05d6f073848}']
@@ -376,9 +389,9 @@ type
         ['{fd0ecb6b-91e6-411e-8655-395e760f91b4}']
         function ProcessRecord(recordType: DWORD; recordData: pointer; recordDataSize: DWORD; flags: UINT32): HResult; stdcall;
     end;
-	
-	
-	ID2D1SpriteBatch = interface(ID2D1Resource)
+
+
+    ID2D1SpriteBatch = interface(ID2D1Resource)
         ['{4dc583bf-3a10-438a-8722-e9765224f1f1}']
         function AddSprites(spriteCount: UINT32; destinationRectangles: PD2D1_RECT_F; sourceRectangles: PD2D1_RECT_U;
             colors: PD2D1_COLOR_F; transforms: PD2D1_MATRIX_3X2_F; destinationRectanglesStride: UINT32;
@@ -417,7 +430,65 @@ type
         function DrawSpriteBatch(spriteBatch: ID2D1SpriteBatch; startIndex: UINT32; spriteCount: UINT32;
             bitmap: ID2D1Bitmap; interpolationMode: TD2D1_BITMAP_INTERPOLATION_MODE;
             spriteOptions: TD2D1_SPRITE_OPTIONS): HResult; stdcall;
-    end; 
+    end;
+
+
+
+    ID2D1SvgGlyphStyle = interface(ID2D1Resource)
+        ['{af671749-d241-4db8-8e41-dcc2e5c1a438}']
+        function SetFill(brush: ID2D1Brush): HResult; stdcall;
+        procedure GetFill(out brush: ID2D1Brush); stdcall;
+        function SetStroke(brush: ID2D1Brush; strokeWidth: single = 1.0; dashes: PSingle = nil; dashesCount: UINT32 = 0;
+            dashOffset: single = 1.0): HResult; stdcall;
+        function GetStrokeDashesCount(): UINT32; stdcall;
+        procedure GetStroke(out brush: ID2D1Brush; out strokeWidth: single; out dashes: Psingle; dashesCount: UINT32;
+            out dashOffset: single); stdcall;
+    end;
+
+
+
+    ID2D1DeviceContext4 = interface(ID2D1DeviceContext3)
+        ['{8c427831-3d90-4476-b647-c4fae349e4db}']
+        function CreateSvgGlyphStyle(out svgGlyphStyle: ID2D1SvgGlyphStyle): HResult; stdcall;
+        procedure DrawText(Text: WideString; stringLength: UINT32; textFormat: IDWriteTextFormat;
+            const layoutRect: TD2D1_RECT_F; defaultFillBrush: ID2D1Brush; svgGlyphStyle: ID2D1SvgGlyphStyle;
+            colorPaletteIndex: UINT32; options: TD2D1_DRAW_TEXT_OPTIONS = D2D1_DRAW_TEXT_OPTIONS_ENABLE_COLOR_FONT;
+            measuringMode: TDWRITE_MEASURING_MODE = DWRITE_MEASURING_MODE_NATURAL); stdcall;
+        procedure DrawTextLayout(origin: TD2D1_POINT_2F; textLayout: IDWriteTextLayout; defaultFillBrush: ID2D1Brush;
+            svgGlyphStyle: ID2D1SvgGlyphStyle; colorPaletteIndex: UINT32;
+            options: TD2D1_DRAW_TEXT_OPTIONS = D2D1_DRAW_TEXT_OPTIONS_ENABLE_COLOR_FONT); stdcall;
+        procedure DrawColorBitmapGlyphRun(glyphImageFormat: TDWRITE_GLYPH_IMAGE_FORMATS; baselineOrigin: TD2D1_POINT_2F;
+            const glyphRun: PDWRITE_GLYPH_RUN; measuringMode: TDWRITE_MEASURING_MODE = DWRITE_MEASURING_MODE_NATURAL;
+            bitmapSnapOption: TD2D1_COLOR_BITMAP_GLYPH_SNAP_OPTION = D2D1_COLOR_BITMAP_GLYPH_SNAP_OPTION_DEFAULT); stdcall;
+        procedure DrawSvgGlyphRun(baselineOrigin: TD2D1_POINT_2F; const glyphRun: PDWRITE_GLYPH_RUN;
+            defaultFillBrush: ID2D1Brush; svgGlyphStyle: ID2D1SvgGlyphStyle; colorPaletteIndex: UINT32 = 0;
+            measuringMode: TDWRITE_MEASURING_MODE = DWRITE_MEASURING_MODE_NATURAL); stdcall;
+        function GetColorBitmapGlyphImage(glyphImageFormat: TDWRITE_GLYPH_IMAGE_FORMATS; glyphOrigin: TD2D1_POINT_2F;
+            fontFace: IDWriteFontFace; fontEmSize: single; glyphIndex: UINT16; isSideways: boolean;
+            const worldTransform: TD2D1_MATRIX_3X2_F; dpiX: single; dpiY: single; out glyphTransform: TD2D1_MATRIX_3X2_F;
+            out glyphImage: ID2D1Image): HResult; stdcall;
+        function GetSvgGlyphImage(glyphOrigin: TD2D1_POINT_2F; fontFace: IDWriteFontFace; fontEmSize: single;
+            glyphIndex: UINT16; isSideways: boolean; const worldTransform: TD2D1_MATRIX_3X2_F; defaultFillBrush: ID2D1Brush;
+            svgGlyphStyle: ID2D1SvgGlyphStyle; colorPaletteIndex: UINT32; out glyphTransform: TD2D1_MATRIX_3X2_F;
+            out glyphImage: ID2D1CommandList): HResult; stdcall;
+    end;
+
+
+
+    ID2D1Device4 = interface(ID2D1Device3)
+        ['{d7bdb159-5683-4a46-bc9c-72dc720b858b}']
+        function CreateDeviceContext(options: TD2D1_DEVICE_CONTEXT_OPTIONS; out deviceContext4: ID2D1DeviceContext4): HResult; stdcall;
+        procedure SetMaximumColorGlyphCacheMemory(maximumInBytes: UINT64); stdcall;
+        function GetMaximumColorGlyphCacheMemory(): UINT64; stdcall;
+    end;
+
+
+
+    ID2D1Factory5 = interface(ID2D1Factory4)
+        ['{c4349994-838e-4b0f-8cab-44997d9eeacc}']
+        function CreateDevice(dxgiDevice: IDXGIDevice; out d2dDevice4: ID2D1Device4): HResult; stdcall;
+    end;
+
 
 
 procedure D2D1GetGradientMeshInteriorPointsFromCoonsPatch(const pPoint0: TD2D1_POINT_2F; const pPoint1: TD2D1_POINT_2F;
@@ -450,7 +521,7 @@ function InkBezierSegment(point1: TD2D1_INK_POINT; point2: TD2D1_INK_POINT; poin
 
 function InkStyleProperties(nibShape: TD2D1_INK_NIB_SHAPE; nibTransform: TD2D1_MATRIX_3X2_F): TD2D1_INK_STYLE_PROPERTIES;
 
-function InfiniteRectU: TD2D1_RECT_U; 
+function InfiniteRectU: TD2D1_RECT_U;
 
 implementation
 
@@ -486,7 +557,7 @@ begin
 
     newPatch.color00 := color00;
     newPatch.color03 := color03;
-    newPatch.color33 := color33
+    newPatch.color33 := color33;
     newPatch.color30 := color30;
 
     newPatch.topEdgeMode := topEdgeMode;
@@ -587,12 +658,14 @@ begin
     Result := inkStyleProperties;
 end;
 
+
+
 function InfiniteRectU: TD2D1_RECT_U;
 begin
-    result.left:=0;
-    result.top:=0;
-    result.bottom:=UINT_MAX;
-    result.right:=UINT_MAX;
-end;     
+    Result.left := 0;
+    Result.top := 0;
+    Result.bottom := UINT_MAX;
+    Result.right := UINT_MAX;
+end;
 
 end.

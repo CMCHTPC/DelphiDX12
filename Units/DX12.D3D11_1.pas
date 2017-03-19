@@ -5,6 +5,7 @@ unit DX12.D3D11_1;
 {$ENDIF}
 
 interface
+
 {$Z4}
 
 uses
@@ -17,6 +18,9 @@ const
     IID_ID3D11BlendState1: TGUID = '{cc86fabe-da55-401d-85e7-e3c9de2877e9}';
     IID_ID3D11RasterizerState1: TGUID = '{1217d7a6-5039-418c-b042-9cbe256afd6e}';
     IID_ID3DDeviceContextState: TGUID = '{5c1e0d8a-7c23-48f9-8c59-a92958ceff11}';
+    IID_ID3D11VideoContext1: TGUID = '{A7F026DA-A5F8-4487-A564-15E34357651E}';
+    IID_ID3D11VideoDevice1: TGUID = '{29DA1D51-1321-4454-804B-F5FC9F861F0F}';
+    IID_ID3D11VideoProcessorEnumerator1: TGUID = '{465217F2-5568-43CF-B5B9-F61D54531CA1}';
     IID_ID3D11DeviceContext1: TGUID = '{bb2c6faa-b5fb-4082-8e6b-388b8cfa90e1}';
     IID_ID3D11Device1: TGUID = '{a04bfb29-08ef-43d6-a49c-a9bdbdcbe686}';
     IID_ID3DUserDefinedAnnotation: TGUID = '{b2daad8b-03d4-4dbf-95eb-32ab4b63d0ab}';
@@ -150,6 +154,152 @@ type
     end;
 
 
+    TD3D11_VIDEO_DECODER_SUB_SAMPLE_MAPPING_BLOCK = record
+        ClearSize: UINT;
+        EncryptedSize: UINT;
+    end;
+    PD3D11_VIDEO_DECODER_SUB_SAMPLE_MAPPING_BLOCK = ^TD3D11_VIDEO_DECODER_SUB_SAMPLE_MAPPING_BLOCK;
+
+    TD3D11_VIDEO_DECODER_BUFFER_DESC1 = record
+        BufferType: TD3D11_VIDEO_DECODER_BUFFER_TYPE;
+        DataOffset: UINT;
+        DataSize: UINT;
+        pIV: Pointer;
+        IVSize: UINT;
+        pSubSampleMappingBlock: PD3D11_VIDEO_DECODER_SUB_SAMPLE_MAPPING_BLOCK;
+        SubSampleMappingCount: UINT;
+    end;
+    PD3D11_VIDEO_DECODER_BUFFER_DESC1 = ^TD3D11_VIDEO_DECODER_BUFFER_DESC1;
+
+    TD3D11_VIDEO_DECODER_BEGIN_FRAME_CRYPTO_SESSION = record
+        pCryptoSession: ID3D11CryptoSession;
+        BlobSize: UINT;
+        pBlob: Pointer;
+        pKeyInfoId: PGUID;
+        PrivateDataSize: UINT;
+        pPrivateData: Pointer;
+    end;
+    PD3D11_VIDEO_DECODER_BEGIN_FRAME_CRYPTO_SESSION = ^TD3D11_VIDEO_DECODER_BEGIN_FRAME_CRYPTO_SESSION;
+
+    TD3D11_VIDEO_DECODER_CAPS = (
+        D3D11_VIDEO_DECODER_CAPS_DOWNSAMPLE = $1,
+        D3D11_VIDEO_DECODER_CAPS_NON_REAL_TIME = $2,
+        D3D11_VIDEO_DECODER_CAPS_DOWNSAMPLE_DYNAMIC = $4,
+        D3D11_VIDEO_DECODER_CAPS_DOWNSAMPLE_REQUIRED = $8,
+        D3D11_VIDEO_DECODER_CAPS_UNSUPPORTED = $10
+        );
+
+    TD3D11_VIDEO_PROCESSOR_BEHAVIOR_HINTS = (
+        D3D11_VIDEO_PROCESSOR_BEHAVIOR_HINT_MULTIPLANE_OVERLAY_ROTATION = $1,
+        D3D11_VIDEO_PROCESSOR_BEHAVIOR_HINT_MULTIPLANE_OVERLAY_RESIZE = $2,
+        D3D11_VIDEO_PROCESSOR_BEHAVIOR_HINT_MULTIPLANE_OVERLAY_COLOR_SPACE_CONVERSION = $4,
+        D3D11_VIDEO_PROCESSOR_BEHAVIOR_HINT_TRIPLE_BUFFER_OUTPUT = $8
+        );
+
+    TD3D11_VIDEO_PROCESSOR_STREAM_BEHAVIOR_HINT = record
+        Enable: boolean;
+        Width: UINT;
+        Height: UINT;
+        Format: TDXGI_FORMAT;
+    end;
+    PD3D11_VIDEO_PROCESSOR_STREAM_BEHAVIOR_HINT = ^TD3D11_VIDEO_PROCESSOR_STREAM_BEHAVIOR_HINT;
+
+    TD3D11_CRYPTO_SESSION_STATUS = (
+        D3D11_CRYPTO_SESSION_STATUS_OK = 0,
+        D3D11_CRYPTO_SESSION_STATUS_KEY_LOST = 1,
+        D3D11_CRYPTO_SESSION_STATUS_KEY_AND_CONTENT_LOST = 2
+        );
+
+
+    TD3D11_KEY_EXCHANGE_HW_PROTECTION_INPUT_DATA = record
+        PrivateDataSize: UINT;
+        HWProtectionDataSize: UINT;
+        pbInput: array [0..3] of byte;
+    end;
+    PD3D11_KEY_EXCHANGE_HW_PROTECTION_INPUT_DATA = ^TD3D11_KEY_EXCHANGE_HW_PROTECTION_INPUT_DATA;
+
+    TD3D11_KEY_EXCHANGE_HW_PROTECTION_OUTPUT_DATA = record
+        PrivateDataSize: UINT;
+        MaxHWProtectionDataSize: UINT;
+        HWProtectionDataSize: UINT;
+        TransportTime: UINT64;
+        ExecutionTime: UINT64;
+        pbOutput: array [0..3] of byte;
+    end;
+    PD3D11_KEY_EXCHANGE_HW_PROTECTION_OUTPUT_DATA = ^TD3D11_KEY_EXCHANGE_HW_PROTECTION_OUTPUT_DATA;
+
+    TD3D11_KEY_EXCHANGE_HW_PROTECTION_DATA = record
+        HWProtectionFunctionID: UINT;
+        pInputData: PD3D11_KEY_EXCHANGE_HW_PROTECTION_INPUT_DATA;
+        pOutputData: PD3D11_KEY_EXCHANGE_HW_PROTECTION_OUTPUT_DATA;
+        Status: HRESULT;
+    end;
+    PD3D11_KEY_EXCHANGE_HW_PROTECTION_DATA = ^TD3D11_KEY_EXCHANGE_HW_PROTECTION_DATA;
+
+    TD3D11_VIDEO_SAMPLE_DESC = record
+        Width: UINT;
+        Height: UINT;
+        Format: TDXGI_FORMAT;
+        ColorSpace: TDXGI_COLOR_SPACE_TYPE;
+    end;
+    PD3D11_VIDEO_SAMPLE_DESC = ^TD3D11_VIDEO_SAMPLE_DESC;
+
+
+
+
+    ID3D11VideoContext1 = interface(ID3D11VideoContext)
+        ['{A7F026DA-A5F8-4487-A564-15E34357651E}']
+        function SubmitDecoderBuffers1(pDecoder: ID3D11VideoDecoder; NumBuffers: UINT;
+            pBufferDesc: PD3D11_VIDEO_DECODER_BUFFER_DESC1): HResult; stdcall;
+        function GetDataForNewHardwareKey(pCryptoSession: ID3D11CryptoSession; PrivateInputSize: UINT;
+            pPrivatInputData: Pointer; out pPrivateOutputData: UINT64): HResult; stdcall;
+        function CheckCryptoSessionStatus(pCryptoSession: ID3D11CryptoSession; out pStatus: TD3D11_CRYPTO_SESSION_STATUS): HResult;
+            stdcall;
+        function DecoderEnableDownsampling(pDecoder: ID3D11VideoDecoder; InputColorSpace: TDXGI_COLOR_SPACE_TYPE;
+            const pOutputDesc: TD3D11_VIDEO_SAMPLE_DESC; ReferenceFrameCount: UINT): HResult; stdcall;
+        function DecoderUpdateDownsampling(pDecoder: ID3D11VideoDecoder; const pOutputDesc: TD3D11_VIDEO_SAMPLE_DESC): HResult; stdcall;
+        procedure VideoProcessorSetOutputColorSpace1(pVideoProcessor: ID3D11VideoProcessor; ColorSpace: TDXGI_COLOR_SPACE_TYPE); stdcall;
+        procedure VideoProcessorSetOutputShaderUsage(pVideoProcessor: ID3D11VideoProcessor; ShaderUsage: boolean); stdcall;
+        procedure VideoProcessorGetOutputColorSpace1(pVideoProcessor: ID3D11VideoProcessor;
+            out pColorSpace: TDXGI_COLOR_SPACE_TYPE); stdcall;
+        procedure VideoProcessorGetOutputShaderUsage(pVideoProcessor: ID3D11VideoProcessor; out pShaderUsage: boolean); stdcall;
+        procedure VideoProcessorSetStreamColorSpace1(pVideoProcessor: ID3D11VideoProcessor; StreamIndex: UINT;
+            ColorSpace: TDXGI_COLOR_SPACE_TYPE); stdcall;
+        procedure VideoProcessorSetStreamMirror(pVideoProcessor: ID3D11VideoProcessor; StreamIndex: UINT;
+            Enable: boolean; FlipHorizontal: boolean; FlipVertical: boolean); stdcall;
+        procedure VideoProcessorGetStreamColorSpace1(pVideoProcessor: ID3D11VideoProcessor; StreamIndex: UINT;
+            out pColorSpace: TDXGI_COLOR_SPACE_TYPE); stdcall;
+        procedure VideoProcessorGetStreamMirror(pVideoProcessor: ID3D11VideoProcessor; StreamIndex: UINT;
+            out pEnable: boolean; out pFlipHorizontal: boolean; out pFlipVertical: boolean); stdcall;
+        function VideoProcessorGetBehaviorHints(pVideoProcessor: ID3D11VideoProcessor; OutputWidth: UINT;
+            OutputHeight: UINT; OutputFormat: TDXGI_FORMAT; StreamCount: UINT; pStreams: PD3D11_VIDEO_PROCESSOR_STREAM_BEHAVIOR_HINT;
+            out pBehaviorHints: UINT): HResult; stdcall;
+    end;
+
+    ID3D11VideoDevice1 = interface(ID3D11VideoDevice)
+        ['{29DA1D51-1321-4454-804B-F5FC9F861F0F}']
+        function GetCryptoSessionPrivateDataSize(const pCryptoType: TGUID; const pDecoderProfile: TGUID;
+            const pKeyExchangeType: TGUID; out pPrivateInputSize: UINT; out pPrivateOutputSize: UINT): HResult; stdcall;
+        function GetVideoDecoderCaps(const pDecoderProfile: TGUID; SampleWidth: UINT; SampleHeight: UINT;
+            const pFrameRate: TDXGI_RATIONAL; BitRate: UINT; const pCryptoType: TGUID; out pDecoderCaps: UINT): HResult; stdcall;
+        function CheckVideoDecoderDownsampling(const pInputDesc: TD3D11_VIDEO_DECODER_DESC;
+            InputColorSpace: TDXGI_COLOR_SPACE_TYPE; const pInputConfig: TD3D11_VIDEO_DECODER_CONFIG;
+            const pFrameRate: TDXGI_RATIONAL; const pOutputDesc: TD3D11_VIDEO_SAMPLE_DESC; out pSupported: boolean;
+            out pRealTimeHint: boolean): HResult; stdcall;
+        function RecommendVideoDecoderDownsampleParameters(const pInputDesc: TD3D11_VIDEO_DECODER_DESC;
+            InputColorSpace: TDXGI_COLOR_SPACE_TYPE; const pInputConfig: TD3D11_VIDEO_DECODER_CONFIG;
+            const pFrameRate: TDXGI_RATIONAL; out pRecommendedOutputDesc: TD3D11_VIDEO_SAMPLE_DESC): HResult; stdcall;
+    end;
+
+
+
+    ID3D11VideoProcessorEnumerator1 = interface(ID3D11VideoProcessorEnumerator)
+        ['{465217F2-5568-43CF-B5B9-F61D54531CA1}']
+        function CheckVideoProcessorFormatConversion(InputFormat: TDXGI_FORMAT; InputColorSpace: TDXGI_COLOR_SPACE_TYPE;
+            OutputFormat: TDXGI_FORMAT; OutputColorSpace: TDXGI_COLOR_SPACE_TYPE; out pSupported: boolean): HResult; stdcall;
+    end;
+
+
     ID3D11Device1 = interface(ID3D11Device)
         ['{a04bfb29-08ef-43d6-a49c-a9bdbdcbe686}']
         procedure GetImmediateContext1(out ppImmediateContext: ID3D11DeviceContext1); stdcall;
@@ -247,206 +397,3 @@ begin
 end;
 
 end.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
