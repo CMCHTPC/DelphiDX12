@@ -1,3 +1,36 @@
+{ **************************************************************************
+  Copyright 2016 Norbert Sonnleitner
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+   SOFTWARE.
+  ************************************************************************** }
+{ **************************************************************************
+  Additional Copyright (C) for this modul:
+
+  Copyright (c) Microsoft Corporation.  All rights reserved.
+
+  This unit consists of the following header files
+  File name: D3D11.h
+  Header version: 10.0.15063.0
+
+  ************************************************************************** }
 unit DX12.D3D11;
 
 {$IFDEF FPC}
@@ -1813,7 +1846,8 @@ type
         D3D11_FEATURE_D3D11_OPTIONS2 = (D3D11_FEATURE_D3D9_OPTIONS1 + 1),
         D3D11_FEATURE_D3D11_OPTIONS3 = (D3D11_FEATURE_D3D11_OPTIONS2 + 1),
         D3D11_FEATURE_GPU_VIRTUAL_ADDRESS_SUPPORT = (D3D11_FEATURE_D3D11_OPTIONS3 + 1),
-        D3D11_FEATURE_D3D11_OPTIONS4 = (D3D11_FEATURE_GPU_VIRTUAL_ADDRESS_SUPPORT + 1)
+        D3D11_FEATURE_D3D11_OPTIONS4 = (D3D11_FEATURE_GPU_VIRTUAL_ADDRESS_SUPPORT + 1),
+        D3D11_FEATURE_SHADER_CACHE = (D3D11_FEATURE_D3D11_OPTIONS4 + 1)
         );
 
 
@@ -1941,6 +1975,19 @@ type
         MaxGPUVirtualAddressBitsPerProcess: UINT;
     end;
     PD3D11_FEATURE_DATA_GPU_VIRTUAL_ADDRESS_SUPPORT = ^TD3D11_FEATURE_DATA_GPU_VIRTUAL_ADDRESS_SUPPORT;
+
+
+    TD3D11_SHADER_CACHE_SUPPORT_FLAGS = (
+        D3D11_SHADER_CACHE_SUPPORT_NONE = 0,
+        D3D11_SHADER_CACHE_SUPPORT_AUTOMATIC_INPROC_CACHE = $1,
+        D3D11_SHADER_CACHE_SUPPORT_AUTOMATIC_DISK_CACHE = $2
+        );
+
+    TD3D11_FEATURE_DATA_SHADER_CACHE = record
+        SupportFlags: UINT;
+    end;
+    PD3D11_FEATURE_DATA_SHADER_CACHE = ^TD3D11_FEATURE_DATA_SHADER_CACHE;
+
 
     ID3D11DeviceContext = interface(ID3D11DeviceChild)
         ['{c0bfa96c-e089-44fb-8eaf-26f8796190da}']

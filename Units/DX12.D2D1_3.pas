@@ -30,7 +30,7 @@
 
   This unit consists of the following header files
   File name: D2D1_3.h
-  Header version: 10.0.10075.0
+  Header version: 10.0.15063.0
 
   ************************************************************************** }
 {$ENDREGION}
@@ -75,7 +75,8 @@ interface
 {$Z4}
 
 uses
-    Windows, Classes, SysUtils, DX12.D2D1, DX12.WinCodec, DX12.DCommon, DX12.DXGI, DX12.DWrite, DX12.DWrite3;
+    Windows, Classes, SysUtils, DX12.D2D1, DX12.WinCodec, DX12.DCommon, DX12.DXGI, DX12.DWrite, DX12.DWrite3,
+    ActiveX,DX12.D2D1SVG;
 
 const
     D2D1_DLL = 'D2D1.DLL';
@@ -105,6 +106,12 @@ const
     IID_ID2D1DeviceContext4: TGUID = '{8c427831-3d90-4476-b647-c4fae349e4db}';
     IID_ID2D1Device4: TGUID = '{d7bdb159-5683-4a46-bc9c-72dc720b858b}';
     IID_ID2D1Factory5: TGUID = '{c4349994-838e-4b0f-8cab-44997d9eeacc}';
+
+    IID_ID2D1CommandSink4: TGUID = '{c78a6519-40d6-4218-b2de-beeeb744bb3e}';
+    IID_ID2D1ColorContext1: TGUID = '{1ab42875-c57f-4be9-bd85-9cd78d6f55ee}';
+    IID_ID2D1DeviceContext5: TGUID = '{7836d248-68cc-4df6-b9e8-de991bf62eb7}';
+    IID_ID2D1Device5: TGUID = '{d55ba0a4-6405-4694-aef5-08ee1a4358b4}';
+    IID_ID2D1Factory6: TGUID = '{f9976f46-f642-44c1-97ca-da32ea2a2635}';
 
 type
     {$IFNDEF FPC}
@@ -247,9 +254,36 @@ type
         D2D1_COLOR_BITMAP_GLYPH_SNAP_OPTION_DEFAULT = 0,
         D2D1_COLOR_BITMAP_GLYPH_SNAP_OPTION_DISABLE = 1,
         D2D1_COLOR_BITMAP_GLYPH_SNAP_OPTION_FORCE_DWORD = $ffffffff
-
         );
     PD2D1_COLOR_BITMAP_GLYPH_SNAP_OPTION = ^TD2D1_COLOR_BITMAP_GLYPH_SNAP_OPTION;
+
+
+    // This determines what gamma is used for interpolation/blending.
+    TD2D1_GAMMA1 = (
+        D2D1_GAMMA1_G22 = Ord(D2D1_GAMMA_2_2), // Colors are manipulated in 2.2 gamma color space.
+        D2D1_GAMMA1_G10 = Ord(D2D1_GAMMA_1_0), // Colors are manipulated in 1.0 gamma color space.
+        D2D1_GAMMA1_G2084 = 2,  // Colors are manipulated in ST.2084 PQ gamma color space.
+        D2D1_GAMMA1_FORCE_DWORD = $ffffffff);
+
+
+    // Simple description of a color space.
+    TD2D1_SIMPLE_COLOR_PROFILE = record
+        redPrimary: TD2D1_POINT_2F;   // The XY coordinates of the red primary in CIEXYZ space.
+        greenPrimary: TD2D1_POINT_2F;// The XY coordinates of the green primary in CIEXYZ space.
+        bluePrimary: TD2D1_POINT_2F;  // The XY coordinates of the blue primary in CIEXYZ space.
+        whitePointXZ: TD2D1_POINT_2F; // The X/Z tristimulus values for the whitepoint, normalized for relative
+        gamma: TD2D1_GAMMA1; // The gamma encoding to use for this color space.
+    end;
+
+
+    // Specifies which way a color profile is defined.
+    TD2D1_COLOR_CONTEXT_TYPE = (
+        D2D1_COLOR_CONTEXT_TYPE_ICC = 0,
+        D2D1_COLOR_CONTEXT_TYPE_SIMPLE = 1,
+        D2D1_COLOR_CONTEXT_TYPE_DXGI = 2,
+        D2D1_COLOR_CONTEXT_TYPE_FORCE_DWORD = $ffffffff);
+
+
 
     ID2D1InkStyle = interface(ID2D1Resource)
         ['{bae8b344-23fc-4071-8cb5-d05d6f073848}']
@@ -490,6 +524,51 @@ type
     end;
 
 
+    //    {$IFDEF NTDDI_VERSION >= NTDDI_WIN10_RS2}
+
+    ID2D1CommandSink4 = interface(ID2D1CommandSink3)
+        ['{c78a6519-40d6-4218-b2de-beeeb744bb3e}']
+        function SetPrimitiveBlend2(primitiveBlend: TD2D1_PRIMITIVE_BLEND): HResult; stdcall;
+    end;
+
+
+    // Represents a color context to be used with the Color Management Effect.
+    ID2D1ColorContext1 = interface(ID2D1ColorContext)
+        ['{1ab42875-c57f-4be9-bd85-9cd78d6f55ee}']
+        function GetColorContextType(): TD2D1_COLOR_CONTEXT_TYPE; stdcall;
+        function GetDXGIColorSpace(): TDXGI_COLOR_SPACE_TYPE; stdcall;
+        function GetSimpleColorProfile(out simpleProfile: TD2D1_SIMPLE_COLOR_PROFILE): HResult; stdcall;
+    end;
+
+
+    ID2D1DeviceContext5 = interface(ID2D1DeviceContext4)
+        ['{7836d248-68cc-4df6-b9e8-de991bf62eb7}']
+        function CreateSvgDocument(inputXmlStream: IStream; viewportSize: TD2D1_SIZE_F;
+            out svgDocument: ID2D1SvgDocument): HResult; stdcall;
+        procedure DrawSvgDocument(svgDocument: ID2D1SvgDocument); stdcall;
+        function CreateColorContextFromDxgiColorSpace(colorSpace: TDXGI_COLOR_SPACE_TYPE;
+            out colorContext: ID2D1ColorContext1): HResult; stdcall;
+        function CreateColorContextFromSimpleColorProfile(const simpleProfile: TD2D1_SIMPLE_COLOR_PROFILE;
+            out colorContext: ID2D1ColorContext1): HResult; stdcall;
+    end;
+
+
+
+    ID2D1Device5 = interface(ID2D1Device4)
+        ['{d55ba0a4-6405-4694-aef5-08ee1a4358b4}']
+        function CreateDeviceContext(options: TD2D1_DEVICE_CONTEXT_OPTIONS; out deviceContext5: ID2D1DeviceContext5): HResult; stdcall;
+    end;
+
+
+    // Creates Direct2D resources. This interface also enables the creation of ID2D1Device5 objects.
+    ID2D1Factory6 = interface(ID2D1Factory5)
+        ['{f9976f46-f642-44c1-97ca-da32ea2a2635}']
+        function CreateDevice(dxgiDevice: IDXGIDevice; out d2dDevice5: ID2D1Device5): HResult; stdcall;
+    end;
+
+//{$endif}
+
+
 
 procedure D2D1GetGradientMeshInteriorPointsFromCoonsPatch(const pPoint0: TD2D1_POINT_2F; const pPoint1: TD2D1_POINT_2F;
     const pPoint2: TD2D1_POINT_2F; const pPoint3: TD2D1_POINT_2F; const pPoint4: TD2D1_POINT_2F; const pPoint5: TD2D1_POINT_2F;
@@ -522,6 +601,9 @@ function InkBezierSegment(point1: TD2D1_INK_POINT; point2: TD2D1_INK_POINT; poin
 function InkStyleProperties(nibShape: TD2D1_INK_NIB_SHAPE; nibTransform: TD2D1_MATRIX_3X2_F): TD2D1_INK_STYLE_PROPERTIES;
 
 function InfiniteRectU: TD2D1_RECT_U;
+
+function SimpleColorProfile(const redPrimary: TD2D1_POINT_2F; const greenPrimary: TD2D1_POINT_2F; const bluePrimary: TD2D1_POINT_2F;
+    const gamma: TD2D1_GAMMA1; const whitePointXZ: TD2D1_POINT_2F): TD2D1_SIMPLE_COLOR_PROFILE;
 
 implementation
 
@@ -667,5 +749,18 @@ begin
     Result.bottom := UINT_MAX;
     Result.right := UINT_MAX;
 end;
+
+
+
+function SimpleColorProfile(const redPrimary: TD2D1_POINT_2F; const greenPrimary: TD2D1_POINT_2F; const bluePrimary: TD2D1_POINT_2F;
+    const gamma: TD2D1_GAMMA1; const whitePointXZ: TD2D1_POINT_2F): TD2D1_SIMPLE_COLOR_PROFILE;
+begin
+    Result.redPrimary := redPrimary;
+    Result.greenPrimary := greenPrimary;
+    Result.bluePrimary := bluePrimary;
+    Result.gamma := gamma;
+    Result.whitePointXZ := whitePointXZ;
+end;
+
 
 end.

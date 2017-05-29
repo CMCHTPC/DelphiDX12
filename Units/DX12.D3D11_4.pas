@@ -47,6 +47,7 @@ uses
 
 const
     IID_ID3D11Device4: TGUID = '{8992ab71-02e6-4b8d-ba48-b056dcda42c4}';
+    IID_ID3D11Device5: TGUID = '{8ffde202-a0e7-45df-9e01-e837801b5ea0}';
     IID_ID3D11Multithread: TGUID = '{9B7E4E00-342C-4106-A19F-4F2704F689F0}';
     IID_ID3D11VideoContext2: TGUID = '{C4E7374C-6243-4D1B-AE87-52B4F740E261}';
 
@@ -59,6 +60,12 @@ type
     end;
 
 
+    ID3D11Device5 = interface(ID3D11Device4)
+        ['{8ffde202-a0e7-45df-9e01-e837801b5ea0}']
+        function OpenSharedFence(hFence: HANDLE; const ReturnedInterface: TGUID; out ppFence): HResult; stdcall;
+        function CreateFence(InitialValue: UINT64; Flags: TD3D11_FENCE_FLAG; const ReturnedInterface: TGUID;
+            out ppFence): HResult; stdcall;
+    end;
 
 
     ID3D11Multithread = interface(IUnknown)
@@ -92,4 +99,7 @@ type
 implementation
 
 end.
+
+
+
 

@@ -43,7 +43,8 @@ interface
 {$Z4}
 
 uses
-    Windows, Classes, SysUtils, DX12.DXGI1_3, DX12.D3D11_2, DX12.D3D11_1, DX12.D3DCommon, DX12.DXGI, DX12.D3D11;
+    Windows, Classes, SysUtils, DX12.DXGI1_3, DX12.D3D11_2, DX12.D3D11_1, DX12.D3DCommon, DX12.DXGI, DX12.D3D11,
+    ActiveX;
 
 const
 
@@ -56,7 +57,8 @@ const
     IID_ID3D11Query1: TGUID = '{631b4766-36dc-461d-8db6-c47e13e60916}';
     IID_ID3D11DeviceContext3: TGUID = '{b4e3c01d-e79e-4637-91b2-510e9f4c9b8f}';
     IID_ID3D11Device3: TGUID = '{A05C8C37-D2C6-4732-B3A0-9CE0B0DC9AE6}';
-
+    IID_ID3D11Fence: TGUID = '{affde9d1-1df7-4bb7-8a34-0f46251dab80}';
+    IID_ID3D11DeviceContext4: TGUID = '{917600da-f58c-4c33-98d8-3e15b390fa24}';
 
 type
 
@@ -323,12 +325,40 @@ type
     end;
 
 
+    TD3D11_FENCE_FLAG = (
+        D3D11_FENCE_FLAG_NONE = $1,
+        D3D11_FENCE_FLAG_SHARED = $2,
+        D3D11_FENCE_FLAG_SHARED_CROSS_ADAPTER = $4
+        );
+
     ID3D11DeviceContext3 = interface(ID3D11DeviceContext2)
         ['{b4e3c01d-e79e-4637-91b2-510e9f4c9b8f}']
         procedure Flush1(ContextType: TD3D11_CONTEXT_TYPE; hEvent: THANDLE); stdcall;
         procedure SetHardwareProtectionState(HwProtectionEnable: boolean); stdcall;
         procedure GetHardwareProtectionState(Out pHwProtectionEnable: boolean); stdcall;
     end;
+
+
+
+
+    ID3D11Fence = interface(ID3D11DeviceChild)
+        ['{affde9d1-1df7-4bb7-8a34-0f46251dab80}']
+        function CreateSharedHandle(pAttributes: pointer {PSECURITY_ATTRIBUTES}; dwAccess: DWORD; lpName: LPCWSTR;
+            out pHandle: HANDLE): HResult; stdcall;
+        function GetCompletedValue(): UINT64; stdcall;
+        function SetEventOnCompletion(Value: UINT64; hEvent: HANDLE): HResult; stdcall;
+    end;
+
+
+
+
+    ID3D11DeviceContext4 = interface(ID3D11DeviceContext3)
+        ['{917600da-f58c-4c33-98d8-3e15b390fa24}']
+        function Signal(pFence: ID3D11Fence; Value: UINT64): HResult; stdcall;
+        function Wait(pFence: ID3D11Fence; Value: UINT64): HResult; stdcall;
+    end;
+
+
 
 
     ID3D11Device3 = interface(ID3D11Device2)
