@@ -735,24 +735,33 @@ type
         function CreatePathData(segmentData: PSingle; segmentDataCount: UINT32; commands: PD2D1_SVG_PATH_COMMAND;
             commandsCount: UINT32; out pathData: ID2D1SvgPathData): HResult; stdcall;
 
-(*
-    COM_DECLSPEC_NOTHROW
-    HRESULT
-    CreatePaint(
-        D2D1_SVG_PAINT_TYPE paintType,
-        CONST D2D1_COLOR_F &color,
-        _In_opt_ PCWSTR id,
-        out  ID2D1SvgPaint **paint
-        )
-    {
-        return CreatePaint(paintType, &color, id, paint);
-    }
-    *)
     end;
 
+   (*
+    { TMyID2D1SvgDocumentHelper }
+
+    TMyID2D1SvgDocumentHelper = class helper for ID2D1SvgDocument
+        function CreatePaint(paintType: TD2D1_SVG_PAINT_TYPE; color: TD2D1_COLOR_F; id: PWideChar;
+            out paint: ID2D1SvgPaint): HResult; stdcall;
+    end;
+
+    *)
 
 //{$ENDIF}
 
 implementation
+
+(*
+
+{ TMyID2D1SvgDocumentHelper }
+
+function TMyID2D1SvgDocumentHelper.CreatePaint(paintType: TD2D1_SVG_PAINT_TYPE;
+  color: TD2D1_COLOR_F; id: PWideChar; out paint: ID2D1SvgPaint): HResult;
+  stdcall;
+begin
+    result:= CreatePaint(paintType, color, id, paint);
+end;
+
+*)
 
 end.

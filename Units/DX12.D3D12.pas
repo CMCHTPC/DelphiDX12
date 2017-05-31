@@ -67,13 +67,19 @@ const
     IID_ID3D12DescriptorHeap: TGUID = '{8efb471d-616c-4f49-90f7-127bb763fa51}';
     IID_ID3D12QueryHeap: TGUID = '{0d9658ae-ed45-469e-a61d-970ec583cab4}';
     IID_ID3D12CommandSignature: TGUID = '{c36a797c-ec80-4f0a-8985-a7b2475082d1}';
+    IID_ID3D12GraphicsCommandList1: TGUID = '{553103fb-1fe7-4557-bb38-946d7d0e7ca7}';
     IID_ID3D12CommandList: TGUID = '{7116d91c-e7e4-47ce-b8c6-ec8168f437e5}';
     IID_ID3D12GraphicsCommandList: TGUID = '{5b160d0f-ac1b-4185-8ba8-b3ae42a5a455}';
     IID_ID3D12CommandQueue: TGUID = '{0ec870a6-5d7e-4c22-8cfc-5baae07616ed}';
     IID_ID3D12Device: TGUID = '{189819f1-1db6-4b57-be54-1821339b85f7}';
     IID_ID3D12VersionedRootSignatureDeserializer: TGUID = '{7F91CE67-090C-4BB7-B78E-ED8FF2E31DA0}';
     IID_ID3D12PipelineLibrary: TGUID = '{c64226a8-9201-46af-b4cc-53fb9ff7414f}';
+    IID_ID3D12PipelineLibrary1: TGUID = '{80eabf42-2568-4e5e-bd82-c37f86961dc3}';
     IID_ID3D12Device1: TGUID = '{77acce80-638e-4e65-8895-c1f23386863e}';
+    IID_ID3D12Device2: TGUID = '{30baa41e-b15b-475c-a0bb-1af5c5b64328}';
+    IID_ID3D12Tools: TGUID = '{7071e1f0-e84b-4b33-974f-12fa49de65c5}';
+
+    UUID_D3D12ExperimentalShaderModels: TGUID = '{76f5573e-f13a-40f5-b297-81ce9e18933f}';
 
 
 
@@ -1254,6 +1260,7 @@ type
         Subresource: UINT;
         Range: TD3D12_RANGE_UINT64;
     end;
+    PD3D12_SUBRESOURCE_RANGE_UINT64 = ^TD3D12_SUBRESOURCE_RANGE_UINT64;
 
 
     TD3D12_SUBRESOURCE_INFO = record
@@ -1433,17 +1440,19 @@ type
 
     end;
 
-    TD3D12_RESOLVE_MODE=(
-        D3D12_RESOLVE_MODE_DECOMPRESS	= 0,
-        D3D12_RESOLVE_MODE_MIN	= 1,
-        D3D12_RESOLVE_MODE_MAX	= 2,
-        D3D12_RESOLVE_MODE_AVERAGE	= 3
-    );
+    TD3D12_RESOLVE_MODE = (
+        D3D12_RESOLVE_MODE_DECOMPRESS = 0,
+        D3D12_RESOLVE_MODE_MIN = 1,
+        D3D12_RESOLVE_MODE_MAX = 2,
+        D3D12_RESOLVE_MODE_AVERAGE = 3
+        );
 
-TD3D12_SAMPLE_POSITION= record
-     X:INT8;
-     Y:INT8;
+    TD3D12_SAMPLE_POSITION = record
+        X: INT8;
+        Y: INT8;
     end;
+
+    PD3D12_SAMPLE_POSITION = ^TD3D12_SAMPLE_POSITION;
 
 
     TD3D12_SHADER_COMPONENT_MAPPING = (
@@ -2396,6 +2405,26 @@ TD3D12_SAMPLE_POSITION= record
     end;
 
 
+
+
+    ID3D12GraphicsCommandList1 = interface(ID3D12GraphicsCommandList)
+        ['{553103fb-1fe7-4557-bb38-946d7d0e7ca7}']
+        procedure AtomicCopyBufferUINT(pDstBuffer: ID3D12Resource; DstOffset: UINT64; pSrcBuffer: ID3D12Resource;
+            SrcOffset: UINT64; Dependencies: UINT; ppDependentResources: PID3D12Resource;
+            pDependentSubresourceRanges: PD3D12_SUBRESOURCE_RANGE_UINT64); stdcall;
+        procedure AtomicCopyBufferUINT64(pDstBuffer: ID3D12Resource; DstOffset: UINT64; pSrcBuffer: ID3D12Resource;
+            SrcOffset: UINT64; Dependencies: UINT; ppDependentResources: PID3D12Resource;
+            pDependentSubresourceRanges: PD3D12_SUBRESOURCE_RANGE_UINT64); stdcall;
+        procedure OMSetDepthBounds(Min: single; Max: single); stdcall;
+        procedure SetSamplePositions(NumSamplesPerPixel: UINT; NumPixels: UINT; pSamplePositions: PD3D12_SAMPLE_POSITION); stdcall;
+        procedure ResolveSubresourceRegion(pDstResource: ID3D12Resource; DstSubresource: UINT; DstX: UINT;
+            DstY: UINT; pSrcResource: ID3D12Resource; SrcSubresource: UINT; const pSrcRect: TD3D12_RECT;
+            Format: TDXGI_FORMAT; ResolveMode: TD3D12_RESOLVE_MODE); stdcall;
+    end;
+
+
+
+
     ID3D12CommandQueue = interface(ID3D12Pageable)
         ['{0ec870a6-5d7e-4c22-8cfc-5baae07616ed}']
         procedure UpdateTileMappings(pResource: ID3D12Resource; NumResourceRegions: UINT;
@@ -2501,6 +2530,15 @@ TD3D12_SAMPLE_POSITION= record
 
 
 
+
+    ID3D12PipelineLibrary1 = interface(ID3D12PipelineLibrary)
+        ['{80eabf42-2568-4e5e-bd82-c37f86961dc3}']
+        function LoadPipeline(pName: LPCWSTR; const pDesc: TD3D12_PIPELINE_STATE_STREAM_DESC; const riid: TGUID;
+            out ppPipelineState): HResult; stdcall;
+    end;
+
+
+
     TD3D12_MULTIPLE_FENCE_WAIT_FLAGS = (
         D3D12_MULTIPLE_FENCE_WAIT_FLAG_NONE = 0,
         D3D12_MULTIPLE_FENCE_WAIT_FLAG_ANY = $1,
@@ -2511,7 +2549,8 @@ TD3D12_SAMPLE_POSITION= record
         D3D12_RESIDENCY_PRIORITY_MINIMUM = $28000000,
         D3D12_RESIDENCY_PRIORITY_LOW = $50000000,
         D3D12_RESIDENCY_PRIORITY_NORMAL = $78000000,
-        D3D12_RESIDENCY_PRIORITY_HIGH = $a0000000,
+        //        D3D12_RESIDENCY_PRIORITY_HIGH = $a0000000,
+        D3D12_RESIDENCY_PRIORITY_HIGH = $a0010000,
         D3D12_RESIDENCY_PRIORITY_MAXIMUM = $c8000000
         );
 
@@ -2527,6 +2566,25 @@ TD3D12_SAMPLE_POSITION= record
         function SetResidencyPriority(NumObjects: UINT; ppObjects: PID3D12Pageable;
             pPriorities: PD3D12_RESIDENCY_PRIORITY): HResult; stdcall;
     end;
+
+
+
+
+    ID3D12Device2 = interface(ID3D12Device1)
+        ['{30baa41e-b15b-475c-a0bb-1af5c5b64328}']
+        function CreatePipelineState(const pDesc: TD3D12_PIPELINE_STATE_STREAM_DESC; const riid: TGUID;
+            out ppPipelineState): HResult; stdcall;
+    end;
+
+
+
+
+    ID3D12Tools = interface(IUnknown)
+        ['{7071e1f0-e84b-4b33-974f-12fa49de65c5}']
+        procedure EnableShaderInstrumentation(bEnable: boolean); stdcall;
+        function ShaderInstrumentationEnabled(): boolean; stdcall;
+    end;
+
 
 
     TD3D12_SUBRESOURCE_DATA = record
@@ -2587,9 +2645,16 @@ function D3D12CreateDevice(pAdapter: IUnknown; MinimumFeatureLevel: TD3D_FEATURE
 
 function D3D12GetDebugInterface(const riid: TGUID; out ppvDebug): HResult; stdcall; external D3D12_DLL;
 
+
+function D3D12EnableExperimentalFeatures(NumFeatures: UINT; pIIDs: PIID; pConfigurationStructs: pointer;
+    pConfigurationStructSizes: PUINT): HResult; stdcall; external D3D12_DLL;
+
+
 implementation
 
 end.
+
+
 
 
 

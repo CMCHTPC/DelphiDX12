@@ -303,6 +303,11 @@ type
         DXGI_MSG_IDXGIFactory_CreateSwapChain_AllowTearingFlagIsFlipModelOnly,
         DXGI_MSG_IDXGIFactory_CheckFeatureSupport_InvalidFeature,
         DXGI_MSG_IDXGIFactory_CheckFeatureSupport_InvalidSize,
+        DXGI_MSG_IDXGIOutput6_CheckHardwareCompositionSupport_NullPointer,
+        DXGI_MSG_IDXGISwapChain_SetFullscreenState_PerMonitorDpiShimApplied,
+        DXGI_MSG_IDXGIOutput_DuplicateOutput_PerMonitorDpiShimApplied,
+        DXGI_MSG_IDXGIOutput_DuplicateOutput1_PerMonitorDpiRequired,
+
 
         DXGI_MSG_Phone_IDXGIFactory_CreateSwapChain_NotForegroundWindow = 1000,
         DXGI_MSG_Phone_IDXGIFactory_CreateSwapChain_DISCARD_BufferCount,

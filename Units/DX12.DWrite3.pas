@@ -31,6 +31,12 @@ const
     IID_IDWriteColorGlyphRunEnumerator1: TGUID = '{7C5F86DA-C7A1-4F05-B8E1-55A179FE5A35}';
     IID_IDWriteFontFace4: TGUID = '{27F2A904-4EB8-441D-9678-0563F53E3E2F}';
     IID_IDWriteFactory4: TGUID = '{4B0B5BD3-0797-4549-8AC5-FE915CC53856}';
+    IID_IDWriteFontSetBuilder1: TGUID = '{3FF7715F-3CDC-4DC6-9B72-EC5621DCCAFD}';
+    IID_IDWriteAsyncResult: TGUID = '{CE25F8FD-863B-4D13-9651-C1F88DC73FE2}';
+    IID_IDWriteRemoteFontFileStream: TGUID = '{4DB3757A-2C72-4ED9-B2B6-1ABABE1AFF9C}';
+    IID_IDWriteRemoteFontFileLoader: TGUID = '{68648C83-6EDE-46C0-AB46-20083A887FDE}';
+    IID_IDWriteInMemoryFontFileLoader: TGUID = '{DC102F47-A12D-4B1C-822D-9E117E33043F}';
+    IID_IDWriteFactory5: TGUID = '{958DB99A-BE2A-4F09-AF7D-65189803D1D3}';
 
 
 const
@@ -558,7 +564,85 @@ type
     end;
 
 
-//endif // NTDDI_VERSION >= NTDDI_WIN10_RS1
+    //endif // NTDDI_VERSION >= NTDDI_WIN10_RS1
+
+
+
+    //{$IFDEF NTDDI_VERSION >= NTDDI_WIN10_RS2}
+
+    IDWriteFontSetBuilder1 = interface(IDWriteFontSetBuilder)
+        ['{3FF7715F-3CDC-4DC6-9B72-EC5621DCCAFD}']
+        function AddFontFile(fontFile: IDWriteFontFile): HResult; stdcall;
+    end;
+
+
+    IDWriteAsyncResult = interface(IUnknown)
+        ['{CE25F8FD-863B-4D13-9651-C1F88DC73FE2}']
+        function GetWaitHandle(): HANDLE; stdcall;
+        function GetResult(): HResult; stdcall;
+    end;
+
+
+    TDWRITE_FILE_FRAGMENT = record
+        fileOffset: UINT64;
+        fragmentSize: UINT64;
+    end;
+    PDWRITE_FILE_FRAGMENT = ^TDWRITE_FILE_FRAGMENT;
+
+
+    IDWriteRemoteFontFileStream = interface(IDWriteFontFileStream)
+        ['{4DB3757A-2C72-4ED9-B2B6-1ABABE1AFF9C}']
+        function GetLocalFileSize(out localFileSize: UINT64): HResult; stdcall;
+        function GetFileFragmentLocality(fileOffset: UINT64; fragmentSize: UINT64; out isLocal: boolean;
+            out partialSize: PUINT64): HResult; stdcall;
+        function GetLocality(): TDWRITE_LOCALITY; stdcall;
+        function BeginDownload(const downloadOperationID: TGUID; fileFragments: PDWRITE_FILE_FRAGMENT;
+            fragmentCount: UINT32; out asyncResult: IDWriteAsyncResult): HResult; stdcall;
+    end;
+
+
+
+    TDWRITE_CONTAINER_TYPE = (
+        DWRITE_CONTAINER_TYPE_UNKNOWN,
+        DWRITE_CONTAINER_TYPE_WOFF,
+        DWRITE_CONTAINER_TYPE_WOFF2);
+
+
+
+    IDWriteRemoteFontFileLoader = interface(IDWriteFontFileLoader)
+        ['{68648C83-6EDE-46C0-AB46-20083A887FDE}']
+        function CreateRemoteStreamFromKey(fontFileReferenceKey: Pointer; fontFileReferenceKeySize: UINT32;
+            out fontFileStream: IDWriteRemoteFontFileStream): HResult; stdcall;
+        function GetLocalityFromKey(fontFileReferenceKey: Pointer; fontFileReferenceKeySize: UINT32;
+            out locality: TDWRITE_LOCALITY): HResult; stdcall;
+        function CreateFontFileReferenceFromUrl(factory: IDWriteFactory; baseUrl: PWCHAR; fontFileUrl: PWCHAR;
+            out fontFile: IDWriteFontFile): HResult; stdcall;
+    end;
+
+
+
+    IDWriteInMemoryFontFileLoader = interface(IDWriteFontFileLoader)
+        ['{DC102F47-A12D-4B1C-822D-9E117E33043F}']
+        function CreateInMemoryFontFileReference(factory: IDWriteFactory; fontData: Pointer; fontDataSize: UINT32;
+            ownerObject: IUnknown; out fontFile: IDWriteFontFile): HResult; stdcall;
+        function GetFileCount(): UINT32; stdcall;
+    end;
+
+
+
+    IDWriteFactory5 = interface(IDWriteFactory4)
+        ['{958DB99A-BE2A-4F09-AF7D-65189803D1D3}']
+        function CreateFontSetBuilder(out fontSetBuilder: IDWriteFontSetBuilder1): HResult; stdcall;
+        function CreateInMemoryFontFileLoader(out newLoader: IDWriteInMemoryFontFileLoader): HResult; stdcall;
+        function CreateHttpFontFileLoader(referrerUrl: PWChar; extraHeaders: PWChar;
+            out newLoader: IDWriteRemoteFontFileLoader): HResult; stdcall;
+        function AnalyzeContainerType(fileData: Pointer; fileDataSize: UINT32): TDWRITE_CONTAINER_TYPE; stdcall;
+        function UnpackFontFile(containerType: TDWRITE_CONTAINER_TYPE; fileData: Pointer; fileDataSize: UINT32;
+            out unpackedFontStream: IDWriteFontFileStream): HResult; stdcall;
+    end;
+
+//{$endif}// NTDDI_VERSION >= NTDDI_WIN10_RS2
+
 
 
 implementation
