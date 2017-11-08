@@ -1,24 +1,27 @@
 
 {$REGION 'Copyright (C) CMC Development Team'}
 { **************************************************************************
-  Copyright (C) 2015 CMC Development Team
+  Copyright 2015-2017 Norbert Sonnleitner
 
-  CMC is free software: you can redistribute it and/or modify
-  it under the terms of the GNU General Public License as published by
-  the Free Software Foundation, either version 2 of the License, or
-  (at your option) any later version.
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
 
-  CMC is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-  GNU General Public License for more details.
+       http://www.apache.org/licenses/LICENSE-2.0
 
-  You should have received a copy of the GNU General Public License
-  along with CMC. If not, see <http://www.gnu.org/licenses/>.
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
 
-  Commercial use of this header files is prohibited. Especially the
-  use by Embarcadero.
-
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+   SOFTWARE.
   ************************************************************************** }
 
 { **************************************************************************
@@ -26,7 +29,7 @@
 
   Copyright (c) Microsoft Corporation.  All rights reserved.
   File name:  D3DCommon.h
-  Header Version: 10.0.10075.0
+  Header version: 10.0.16299.0
 
   ************************************************************************** }
 {$ENDREGION}
@@ -652,6 +655,7 @@ type
         D3D_NAME_FINAL_TRI_INSIDE_TESSFACTOR = 14,
         D3D_NAME_FINAL_LINE_DETAIL_TESSFACTOR = 15,
         D3D_NAME_FINAL_LINE_DENSITY_TESSFACTOR = 16,
+        D3D_NAME_BARYCENTRICS	= 23,
         D3D_NAME_TARGET = 64,
         D3D_NAME_DEPTH = 65,
         D3D_NAME_COVERAGE = 66,
@@ -682,7 +686,8 @@ type
         D3D11_NAME_DEPTH_GREATER_EQUAL = D3D_NAME_DEPTH_GREATER_EQUAL,
         D3D11_NAME_DEPTH_LESS_EQUAL = D3D_NAME_DEPTH_LESS_EQUAL,
         D3D11_NAME_STENCIL_REF = D3D_NAME_STENCIL_REF,
-        D3D11_NAME_INNER_COVERAGE = D3D_NAME_INNER_COVERAGE
+        D3D11_NAME_INNER_COVERAGE = D3D_NAME_INNER_COVERAGE,
+        D3D12_NAME_BARYCENTRICS	= D3D_NAME_BARYCENTRICS
         );
 
     TD3D_RESOURCE_RETURN_TYPE = (

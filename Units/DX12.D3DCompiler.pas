@@ -39,7 +39,8 @@ const
     D3DCOMPILE_RESOURCES_MAY_ALIAS = (1 shl 19);
     D3DCOMPILE_ENABLE_UNBOUNDED_DESCRIPTOR_TABLES = (1 shl 20);
     D3DCOMPILE_ALL_RESOURCES_BOUND = (1 shl 21);
-
+    D3DCOMPILE_DEBUG_NAME_FOR_SOURCE            =    (1 shl 22);
+    D3DCOMPILE_DEBUG_NAME_FOR_BINARY       =         (1 shl 23);
 
     D3DCOMPILE_EFFECT_CHILD_EFFECT = (1 shl 0);
     D3DCOMPILE_EFFECT_ALLOW_SLOW_OPS = (1 shl 1);
@@ -97,6 +98,7 @@ type
         D3D_BLOB_PDB,
         D3D_BLOB_PRIVATE_DATA,
         D3D_BLOB_ROOT_SIGNATURE,
+        D3D_BLOB_DEBUG_NAME,
         // Test parts are only produced by special compiler versions and so
         // are usually not present in shaders.
         D3D_BLOB_TEST_ALTERNATE_SHADER = $8000,

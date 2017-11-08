@@ -1,6 +1,6 @@
 {$REGION 'Copyright (C) CMC Development Team'}
 { **************************************************************************
-  Copyright 2016 Norbert Sonnleitner
+  Copyright 2016-2017 Norbert Sonnleitner
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@
 
   This unit consists of the following header files
   File name: D2D1_3.h
-  Header version: 10.0.15063.0
+  Header version: 10.0.16299.0
 
   ************************************************************************** }
 {$ENDREGION}
@@ -76,7 +76,7 @@ interface
 
 uses
     Windows, Classes, SysUtils, DX12.D2D1, DX12.WinCodec, DX12.DCommon, DX12.DXGI, DX12.DWrite, DX12.DWrite3,
-    ActiveX,DX12.D2D1SVG;
+    ActiveX, DX12.D2D1SVG;
 
 const
     D2D1_DLL = 'D2D1.DLL';
@@ -112,6 +112,10 @@ const
     IID_ID2D1DeviceContext5: TGUID = '{7836d248-68cc-4df6-b9e8-de991bf62eb7}';
     IID_ID2D1Device5: TGUID = '{d55ba0a4-6405-4694-aef5-08ee1a4358b4}';
     IID_ID2D1Factory6: TGUID = '{f9976f46-f642-44c1-97ca-da32ea2a2635}';
+    IID_ID2D1CommandSink5: TGUID = '{7047dd26-b1e7-44a7-959a-8349e2144fa8}';
+    IID_ID2D1DeviceContext6: TGUID = '{985f7e37-4ed0-4a19-98a3-15b0edfde306}';
+    IID_ID2D1Device6: TGUID = '{7bfef914-2d75-4bad-be87-e18ddb077b6d}';
+    IID_ID2D1Factory7: TGUID = '{bdc2bdd3-b96c-4de6-bdf7-99d4745454de}';
 
 type
     {$IFNDEF FPC}
@@ -566,6 +570,42 @@ type
         function CreateDevice(dxgiDevice: IDXGIDevice; out d2dDevice5: ID2D1Device5): HResult; stdcall;
     end;
 
+    PID2D1Factory6 = ^ID2D1Factory6;
+
+
+    ID2D1CommandSink5 = interface(ID2D1CommandSink4)
+        ['{7047dd26-b1e7-44a7-959a-8349e2144fa8}']
+        function BlendImage(image: ID2D1Image; blendMode: TD2D1_BLEND_MODE; targetOffset: TD2D1_POINT_2F;
+            imageRectangle: TD2D1_RECT_F; interpolationMode: TD2D1_INTERPOLATION_MODE): HResult; stdcall;
+    end; // interface ID2D1CommandSink5
+    PID2D1CommandSink5 = ^ID2D1CommandSink5;
+
+    ID2D1DeviceContext6 = interface(ID2D1DeviceContext5)
+        ['{985f7e37-4ed0-4a19-98a3-15b0edfde306}']
+        // Draw an image to the device context.
+        procedure BlendImage(image: ID2D1Image; blendMode: TD2D1_BLEND_MODE; const targetOffset: TD2D1_POINT_2F;
+            const imageRectangle: TD2D1_RECT_F; interpolationMode: TD2D1_INTERPOLATION_MODE = D2D1_INTERPOLATION_MODE_LINEAR);
+            stdcall;
+    end; // interface ID2D1DeviceContext6
+    PID2D1DeviceContext6 = ^ID2D1DeviceContext6;
+
+
+    ID2D1Device6 = interface(ID2D1Device5)
+        ['{7bfef914-2d75-4bad-be87-e18ddb077b6d}']
+        // Creates a new device context with no initially assigned target.
+        function CreateDeviceContext(options: TD2D1_DEVICE_CONTEXT_OPTIONS; out deviceContext6: ID2D1DeviceContext6): HResult; stdcall;
+    end; // interface ID2D1Device6
+    PID2D1Device6 = ^ID2D1Device6;
+
+
+    // Creates Direct2D resources. This interface also enables the creation of ID2D1Device6 objects.
+    ID2D1Factory7 = interface(ID2D1Factory6)
+        ['{bdc2bdd3-b96c-4de6-bdf7-99d4745454de}']
+        /// This creates a new Direct2D device from the given IDXGIDevice.
+        function CreateDevice(dxgiDevice: IDXGIDevice; out d2dDevice6: ID2D1Device6): HResult; stdcall;
+    end; // interface ID2D1Factory7
+
+    PID2D1Factory7 = ^ID2D1Factory7;
 //{$endif}
 
 

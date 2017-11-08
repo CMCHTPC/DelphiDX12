@@ -39,6 +39,22 @@ const
     IID_IDWriteFactory5: TGUID = '{958DB99A-BE2A-4F09-AF7D-65189803D1D3}';
 
 
+    IID_IDWriteFactory6: TGUID = '{F3744D80-21F7-42EB-B35D-995BC72FC223}';
+    IID_IDWriteFontFace5: TGUID = '{98EFF3A5-B667-479A-B145-E2FA5B9FDC29}';
+    IID_IDWriteFontResource: TGUID = '{1F803A76-6871-48E8-987F-B975551C50F2}';
+
+    IID_IDWriteFontFaceReference1: TGUID = '{C081FE77-2FD1-41AC-A5A3-34983C4BA61A}';
+    IID_IDWriteFontSetBuilder2: TGUID = '{EE5BA612-B131-463C-8F4F-3189B9401E45}';
+    IID_IDWriteFontSet1: TGUID = '{7E9FDA85-6C92-4053-BC47-7AE3530DB4D3}';
+    IID_IDWriteFontFamily2: TGUID = '{3ED49E77-A398-4261-B9CF-C126C2131EF3}';
+
+    IID_IDWriteFontCollection2: TGUID = '{514039C6-4617-4064-BF8B-92EA83E506E0}';
+    IID_IDWriteTextLayout4: TGUID = '{05A9BF42-223F-4441-B5FB-8263685F55E9}';
+
+    IID_IDWriteTextFormat3: TGUID = '{6D3B5641-E550-430D-A85B-B7BF48A93427}';
+    IID_IDWriteFontFallback1: TGUID = '{2397599D-DD0D-4681-BD6A-F4F31EAADE77}';
+    IID_IDWriteFontList2: TGUID = '{C0763A34-77AF-445A-B735-08C37B0A5BF5}';
+
 const
     /// A font resource could not be accessed because it was remote. This can happen
     /// when calling CreateFontFace on a non-local font or trying to measure/draw
@@ -641,9 +657,209 @@ type
             out unpackedFontStream: IDWriteFontFileStream): HResult; stdcall;
     end;
 
-//{$endif}// NTDDI_VERSION >= NTDDI_WIN10_RS2
+    //{$endif}// NTDDI_VERSION >= NTDDI_WIN10_RS2
 
 
+    //{$if NTDDI_VERSION >= NTDDI_WIN10_RS3}
+
+
+    IDWriteFontResource = interface;
+    IDWriteFontFace5 = interface;
+    IDWriteFontFaceReference1 = interface;
+    IDWriteFontSet1 = interface;
+    IDWriteFontCollection2 = interface;
+    IDWriteTextFormat3 = interface;
+    IDWriteFontSetBuilder2 = interface;
+
+
+
+    TDWRITE_FONT_AXIS_TAG = (
+        DWRITE_FONT_AXIS_TAG_WEIGHT = UINT32(Ord('w') or (Ord('g') shl 8) or (Ord('h') shl 16) or (Ord('t') shl 24)),
+        DWRITE_FONT_AXIS_TAG_WIDTH = UINT32(Ord('w') or (Ord('d') shl 8) or (Ord('t') shl 16) or (Ord('h') shl 24)),
+        DWRITE_FONT_AXIS_TAG_SLANT = UINT32(Ord('s') or (Ord('l') shl 8) or (Ord('n') shl 16) or (Ord('t') shl 24)),
+        DWRITE_FONT_AXIS_TAG_OPTICAL_SIZE = UINT32(Ord('o') or (Ord('p') shl 8) or (Ord('s') shl 16) or (Ord('z') shl 24)),
+        DWRITE_FONT_AXIS_TAG_ITALIC = UINT32(Ord('i') or (Ord('t') shl 8) or (Ord('a') shl 16) or (Ord('l') shl 24)));
+
+
+    TDWRITE_FONT_AXIS_VALUE = record
+        axisTag: TDWRITE_FONT_AXIS_TAG;
+        Value: single;
+    end;
+    PDWRITE_FONT_AXIS_VALUE = ^TDWRITE_FONT_AXIS_VALUE;
+
+
+    TDWRITE_FONT_AXIS_RANGE = record
+        axisTag: TDWRITE_FONT_AXIS_TAG;
+        MinValue: single;
+        MaxValue: single;
+    end;
+    PDWRITE_FONT_AXIS_RANGE = ^TDWRITE_FONT_AXIS_RANGE;
+
+    TDWRITE_FONT_FAMILY_MODEL = (
+        DWRITE_FONT_FAMILY_MODEL_TYPOGRAPHIC,
+        DWRITE_FONT_FAMILY_MODEL_WEIGHT_STRETCH_STYLE);
+    PDWRITE_FONT_FAMILY_MODEL = ^TDWRITE_FONT_FAMILY_MODEL;
+
+    TDWRITE_AUTOMATIC_FONT_AXES = (
+        DWRITE_AUTOMATIC_FONT_AXES_NONE = $0000,
+        DWRITE_AUTOMATIC_FONT_AXES_OPTICAL_SIZE = $0001);
+    PDWRITE_AUTOMATIC_FONT_AXES = ^TDWRITE_AUTOMATIC_FONT_AXES;
+
+    TDWRITE_FONT_AXIS_ATTRIBUTES = (
+        DWRITE_FONT_AXIS_ATTRIBUTES_NONE = $0000,
+        DWRITE_FONT_AXIS_ATTRIBUTES_VARIABLE = $0001,
+        DWRITE_FONT_AXIS_ATTRIBUTES_HIDDEN = $0002);
+    PDWRITE_FONT_AXIS_ATTRIBUTES = ^TDWRITE_FONT_AXIS_ATTRIBUTES;
+
+
+    IDWriteFactory6 = interface(IDWriteFactory5)
+        ['{F3744D80-21F7-42EB-B35D-995BC72FC223}']
+        function CreateFontFaceReference(fontFile: IDWriteFontFile; faceIndex: UINT32; fontSimulations: TDWRITE_FONT_SIMULATIONS;
+            const fontAxisValues: PDWRITE_FONT_AXIS_VALUE; fontAxisValueCount: UINT32;
+            out fontFaceReference: IDWriteFontFaceReference1): HResult; stdcall;
+        function CreateFontResource(fontFile: IDWriteFontFile; faceIndex: UINT32; out fontResource: IDWriteFontResource): HResult; stdcall;
+        function GetSystemFontSet(includeDownloadableFonts: boolean; out fontSet: IDWriteFontSet1): HResult; stdcall;
+        function GetSystemFontCollection(includeDownloadableFonts: boolean; fontFamilyModel: TDWRITE_FONT_FAMILY_MODEL;
+            out fontCollection: IDWriteFontCollection2): HResult; stdcall;
+        function CreateFontCollectionFromFontSet(fontSet: IDWriteFontSet; fontFamilyModel: TDWRITE_FONT_FAMILY_MODEL;
+            out fontCollection: IDWriteFontCollection2): HResult; stdcall;
+        function CreateFontSetBuilder(out fontSetBuilder: IDWriteFontSetBuilder2): HResult; stdcall;
+        function CreateTextFormat(const fontFamilyName: PWideChar; fontCollection: IDWriteFontCollection;
+            const fontAxisValues: PDWRITE_FONT_AXIS_VALUE; fontAxisValueCount: UINT32; fontSize: single;
+            const localeName: PWideChar; out textFormat: IDWriteTextFormat3): HResult; stdcall;
+    end;
+
+
+
+    IDWriteFontFace5 = interface(IDWriteFontFace4)
+        ['{98EFF3A5-B667-479A-B145-E2FA5B9FDC29}']
+        function GetFontAxisValueCount(): UINT32; stdcall;
+        function GetFontAxisValues(out fontAxisValues: PDWRITE_FONT_AXIS_VALUE; fontAxisValueCount: UINT32): HResult; stdcall;
+        function HasVariations(): boolean; stdcall;
+        function GetFontResource(out fontResource: IDWriteFontResource): HResult; stdcall;
+        function Equals(fontFace: IDWriteFontFace): boolean; stdcall;
+    end;
+
+
+    IDWriteFontResource = interface(IUnknown)
+        ['{1F803A76-6871-48E8-987F-B975551C50F2}']
+        function GetFontFile(out fontFile: IDWriteFontFile): HResult; stdcall;
+        function GetFontFaceIndex(): UINT32; stdcall;
+        function GetFontAxisCount(): UINT32; stdcall;
+        function GetDefaultFontAxisValues(out fontAxisValues: PDWRITE_FONT_AXIS_VALUE; fontAxisValueCount: UINT32): HResult; stdcall;
+        function GetFontAxisRanges(out fontAxisRanges: PDWRITE_FONT_AXIS_RANGE; fontAxisRangeCount: UINT32): HResult; stdcall;
+        function GetFontAxisAttributes(axisIndex: UINT32): TDWRITE_FONT_AXIS_ATTRIBUTES; stdcall;
+        function GetAxisNames(axisIndex: UINT32; out names: IDWriteLocalizedStrings): HResult; stdcall;
+        function GetAxisValueNameCount(axisIndex: UINT32): UINT32; stdcall;
+        function GetAxisValueNames(axisIndex: UINT32; axisValueIndex: UINT32; out fontAxisRange: TDWRITE_FONT_AXIS_RANGE;
+            out names: IDWriteLocalizedStrings): HResult; stdcall;
+        function HasVariations(): boolean; stdcall;
+        function CreateFontFace(fontSimulations: TDWRITE_FONT_SIMULATIONS; const fontAxisValues: PDWRITE_FONT_AXIS_VALUE;
+            fontAxisValueCount: UINT32; out fontFace: IDWriteFontFace5): HResult; stdcall;
+        function CreateFontFaceReference(fontSimulations: TDWRITE_FONT_SIMULATIONS; const fontAxisValues: PDWRITE_FONT_AXIS_VALUE;
+            fontAxisValueCount: UINT32; out fontFaceReference: IDWriteFontFaceReference1): HResult; stdcall;
+    end;
+
+
+
+    IDWriteFontFaceReference1 = interface(IDWriteFontFaceReference)
+        ['{C081FE77-2FD1-41AC-A5A3-34983C4BA61A}']
+        function CreateFontFace(out fontFace: IDWriteFontFace5): HResult; stdcall;
+        function GetFontAxisValueCount(): UINT32; stdcall;
+        function GetFontAxisValues(out fontAxisValues: PDWRITE_FONT_AXIS_VALUE; fontAxisValueCount: UINT32): HResult; stdcall;
+    end;
+
+
+    IDWriteFontSetBuilder2 = interface(IDWriteFontSetBuilder1)
+        ['{EE5BA612-B131-463C-8F4F-3189B9401E45}']
+        function AddFont(fontFile: IDWriteFontFile; fontFaceIndex: UINT32; fontSimulations: TDWRITE_FONT_SIMULATIONS;
+            const fontAxisValues: PDWRITE_FONT_AXIS_VALUE; fontAxisValueCount: UINT32; const fontAxisRanges: PDWRITE_FONT_AXIS_RANGE;
+            fontAxisRangeCount: UINT32; const properties: PDWRITE_FONT_PROPERTY; propertyCount: UINT32): HResult; stdcall;
+        function AddFontFile(const filePath: PWideChar): HResult; stdcall;
+    end;
+
+
+    IDWriteFontSet1 = interface(IDWriteFontSet)
+        ['{7E9FDA85-6C92-4053-BC47-7AE3530DB4D3}']
+        function GetMatchingFonts(const fontProperty: TDWRITE_FONT_PROPERTY; const fontAxisValues: PDWRITE_FONT_AXIS_VALUE;
+            fontAxisValueCount: UINT32; out matchingFonts: IDWriteFontSet1): HResult; stdcall;
+        function GetFirstFontResources(out filteredFontSet: IDWriteFontSet1): HResult; stdcall;
+        function GetFilteredFonts(const properties: PDWRITE_FONT_PROPERTY; propertyCount: UINT32;
+            selectAnyProperty: boolean; out filteredFontSet: IDWriteFontSet1): HResult; stdcall; overload;
+        function GetFilteredFonts(const fontAxisRanges: PDWRITE_FONT_AXIS_RANGE; fontAxisRangeCount: UINT32;
+            selectAnyRange: boolean; out filteredFontSet: IDWriteFontSet1): HResult; stdcall; overload;
+        function GetFilteredFonts(const indices: PUINT32; indexCount: UINT32; out filteredFontSet: IDWriteFontSet1): HResult; stdcall;
+        function GetFilteredFontIndices(const properties: PDWRITE_FONT_PROPERTY; propertyCount: UINT32;
+            selectAnyProperty: boolean; out indices: PUINT32; maxIndexCount: UINT32; out actualIndexCount: UINT32): HResult;
+            stdcall; overload;
+        function GetFilteredFontIndices(const fontAxisRanges: PDWRITE_FONT_AXIS_RANGE; fontAxisRangeCount: UINT32;
+            selectAnyRange: boolean; out indices: PUINT32; maxIndexCount: UINT32; out actualIndexCount: UINT32): HResult;
+            stdcall; overload;
+        function GetFontAxisRanges(out fontAxisRanges: PDWRITE_FONT_AXIS_RANGE; maxFontAxisRangeCount: UINT32;
+            out actualFontAxisRangeCount: UINT32): HResult; stdcall; overload;
+        function GetFontAxisRanges(listIndex: UINT32; out fontAxisRanges: PDWRITE_FONT_AXIS_RANGE;
+            maxFontAxisRangeCount: UINT32; out actualFontAxisRangeCount: UINT32): HResult; stdcall; overload;
+        function GetFontFaceReference(listIndex: UINT32; out fontFaceReference: IDWriteFontFaceReference1): HResult; stdcall;
+        function CreateFontResource(listIndex: UINT32; out fontResource: IDWriteFontResource): HResult; stdcall;
+        function CreateFontFace(listIndex: UINT32; out fontFace: IDWriteFontFace5): HResult; stdcall;
+        function GetFontLocality(listIndex: UINT32): TDWRITE_LOCALITY; stdcall;
+    end;
+
+
+    IDWriteFontList2 = interface(IDWriteFontList1)
+        ['{C0763A34-77AF-445A-B735-08C37B0A5BF5}']
+        function GetFontSet(out fontSet: IDWriteFontSet1): HResult; stdcall;
+    end;
+
+
+    IDWriteFontFamily2 = interface(IDWriteFontFamily1)
+        ['{3ED49E77-A398-4261-B9CF-C126C2131EF3}']
+        function GetMatchingFonts(const fontAxisValues: PDWRITE_FONT_AXIS_VALUE; fontAxisValueCount: UINT32;
+            out matchingFonts: IDWriteFontList2): HResult; stdcall;
+        function GetFontSet(out fontSet: IDWriteFontSet1): HResult; stdcall;
+    end;
+
+
+    IDWriteFontCollection2 = interface(IDWriteFontCollection1)
+        ['{514039C6-4617-4064-BF8B-92EA83E506E0}']
+        function GetFontFamily(index: UINT32; out fontFamily: IDWriteFontFamily2): HResult; stdcall;
+        function GetMatchingFonts(const familyName: PWideChar; const fontAxisValues: PDWRITE_FONT_AXIS_VALUE;
+            fontAxisValueCount: UINT32; out fontList: IDWriteFontList2): HResult; stdcall;
+        function GetFontFamilyModel(): TDWRITE_FONT_FAMILY_MODEL; stdcall;
+        function GetFontSet(out fontSet: IDWriteFontSet1): HResult; stdcall;
+    end;
+
+
+    IDWriteTextLayout4 = interface(IDWriteTextLayout3)
+        ['{05A9BF42-223F-4441-B5FB-8263685F55E9}']
+        function SetFontAxisValues(const fontAxisValues: PDWRITE_FONT_AXIS_VALUE; fontAxisValueCount: UINT32;
+            textRange: TDWRITE_TEXT_RANGE): HResult; stdcall;
+        function GetFontAxisValueCount(currentPosition: UINT32): UINT32; stdcall;
+        function GetFontAxisValues(currentPosition: UINT32; out fontAxisValues: PDWRITE_FONT_AXIS_VALUE;
+            fontAxisValueCount: UINT32; out textRange: TDWRITE_TEXT_RANGE): HResult; stdcall;
+        function GetAutomaticFontAxes(): TDWRITE_AUTOMATIC_FONT_AXES; stdcall;
+        function SetAutomaticFontAxes(automaticFontAxes: TDWRITE_AUTOMATIC_FONT_AXES): HResult; stdcall;
+    end;
+
+
+    IDWriteTextFormat3 = interface(IDWriteTextFormat2)
+        ['{6D3B5641-E550-430D-A85B-B7BF48A93427}']
+        function SetFontAxisValues(const fontAxisValues: PDWRITE_FONT_AXIS_VALUE; fontAxisValueCount: UINT32): HResult; stdcall;
+        function GetFontAxisValueCount(): UINT32; stdcall;
+        function GetFontAxisValues(out fontAxisValues: PDWRITE_FONT_AXIS_VALUE; fontAxisValueCount: UINT32): HResult; stdcall;
+        function GetAutomaticFontAxes(): TDWRITE_AUTOMATIC_FONT_AXES; stdcall;
+        function SetAutomaticFontAxes(automaticFontAxes: TDWRITE_AUTOMATIC_FONT_AXES): HResult; stdcall;
+    end;
+
+
+    IDWriteFontFallback1 = interface(IDWriteFontFallback)
+        ['{2397599D-DD0D-4681-BD6A-F4F31EAADE77}']
+        function MapCharacters(analysisSource: IDWriteTextAnalysisSource; textPosition: UINT32; textLength: UINT32;
+            baseFontCollection: IDWriteFontCollection; const baseFamilyName: PWideChar; const fontAxisValues: PDWRITE_FONT_AXIS_VALUE;
+            fontAxisValueCount: UINT32; out mappedLength: UINT32; out scale: single; out mappedFontFace: IDWriteFontFace5): HResult; stdcall;
+    end;
+
+//{$endif} // NTDDI_VERSION >= NTDDI_WIN10_RS3
 
 implementation
 
