@@ -72,6 +72,10 @@ unit DX12.D2D1;
 {$MODE delphi}{$H+}
 {$ENDIF}
 
+{$IF FPC_FULLVERSION >= 30101}
+{$modeswitch typehelpers}{$H+}{$I-}
+{$ENDIF}
+
 interface
 
 {$Z4}
@@ -2268,6 +2272,13 @@ type
         function IsSupported(renderTargetProperties: PD2D1_RENDER_TARGET_PROPERTIES): longbool; stdcall;
     end;
 
+     {$IF FPC_FULLVERSION >= 30101}
+     { ID2D1RenderTargetHelper }
+     ID2D1RenderTargetHelper =  type helper for ID2D1RenderTarget
+         function CreateSolidColorBrush(const color:TD2D1_COLOR_F; out solidColorBrush:ID2D1SolidColorBrush):HRESULT; stdcall; overload;
+     end;
+     {$ENDIF}
+
     ID2D1BitmapRenderTarget = interface(ID2D1RenderTarget)
         ['{2cd90695-12e2-11dc-9fed-001143a055f9}']
         function GetBitmap(out bitmap: ID2D1Bitmap): HResult; stdcall;
@@ -3758,6 +3769,16 @@ begin
         absMaxZoomFactor := -maxZoomFactor;
     Result := D2D1_DEFAULT_FLATTENING_TOLERANCE / (absMaxZoomFactor * D2D1ComputeMaximumScaleFactor(dpiDependentTransform));
 end;
+
+{ ID2D1RenderTargetHelper }
+{$IF FPC_FULLVERSION >= 30101}
+function ID2D1RenderTargetHelper.CreateSolidColorBrush(
+  const color: TD2D1_COLOR_F; out solidColorBrush: ID2D1SolidColorBrush
+  ): HRESULT; stdcall;
+begin
+    result:= CreateSolidColorBrush(color, nil, solidColorBrush);
+ end;
+{$ENDIF}
 
 { TD2D_SIZE_U }
 

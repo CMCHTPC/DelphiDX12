@@ -190,7 +190,7 @@ begin
         // features- this is just one example.
 
         pTypography := nil;
-        hr := m_pDWriteFactory.CreateTypography(&pTypography);
+        hr := m_pDWriteFactory.CreateTypography(pTypography);
         if (SUCCEEDED(hr)) then
         begin
             fontFeature.nameTag := DWRITE_FONT_FEATURE_TAG_STYLISTIC_SET_7;
@@ -250,7 +250,11 @@ begin
             // mode to aliased up front.
             m_pRT.SetAntialiasMode(D2D1_ANTIALIAS_MODE_ALIASED);
             //create a black brush
-            hr := m_pRT.CreateSolidColorBrush(DX12.D2D1.ColorF(DX12.D2D1.Black), nil, m_pBlackBrush);
+            {$IF FPC_FULLVERSION >= 30101}
+            hr := m_pRT.CreateSolidColorBrush(DX12.D2D1.ColorF(DX12.D2D1.Black),{ nil,} m_pBlackBrush); // calling the helper function
+            {$ELSE}
+             hr := m_pRT.CreateSolidColorBrush(DX12.D2D1.ColorF(DX12.D2D1.Black), nil, m_pBlackBrush);
+            {$ENDIF}
         end;
         if (SUCCEEDED(hr)) then
         begin

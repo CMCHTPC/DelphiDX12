@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
   <ProjectOptions>
-    <Version Value="9"/>
+    <Version Value="11"/>
     <PathDelim Value="\"/>
     <General>
       <SessionStorage Value="InProjectDir"/>
@@ -14,9 +14,6 @@
     <i18n>
       <EnableI18N LFM="False"/>
     </i18n>
-    <VersionInfo>
-      <StringTable ProductVersion=""/>
-    </VersionInfo>
     <BuildModes Count="1">
       <Item1 Name="Default" Default="True"/>
     </BuildModes>
@@ -24,9 +21,10 @@
       <Version Value="2"/>
     </PublishOptions>
     <RunParams>
-      <local>
-        <FormatVersion Value="1"/>
-      </local>
+      <FormatVersion Value="2"/>
+      <Modes Count="1">
+        <Mode0 Name="default"/>
+      </Modes>
     </RunParams>
     <RequiredPackages Count="1">
       <Item1>
@@ -41,12 +39,10 @@
       <Unit1>
         <Filename Value="TextAnimation.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="TextAnimation"/>
       </Unit1>
       <Unit2>
         <Filename Value="RingBuffer.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="RingBuffer"/>
       </Unit2>
       <Unit3>
         <Filename Value="..\..\..\Units\DX12.D2D1.pas"/>
