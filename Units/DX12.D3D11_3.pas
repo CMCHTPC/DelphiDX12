@@ -328,7 +328,8 @@ type
     TD3D11_FENCE_FLAG = (
         D3D11_FENCE_FLAG_NONE = $1,
         D3D11_FENCE_FLAG_SHARED = $2,
-        D3D11_FENCE_FLAG_SHARED_CROSS_ADAPTER = $4
+        D3D11_FENCE_FLAG_SHARED_CROSS_ADAPTER = $4,
+        D3D11_FENCE_FLAG_NON_MONITORED = $8
         );
 
     ID3D11DeviceContext3 = interface(ID3D11DeviceContext2)
@@ -344,9 +345,9 @@ type
     ID3D11Fence = interface(ID3D11DeviceChild)
         ['{affde9d1-1df7-4bb7-8a34-0f46251dab80}']
         function CreateSharedHandle(pAttributes: pointer {PSECURITY_ATTRIBUTES}; dwAccess: DWORD; lpName: LPCWSTR;
-            out pHandle: HANDLE): HResult; stdcall;
+            out pHandle: THANDLE): HResult; stdcall;
         function GetCompletedValue(): UINT64; stdcall;
-        function SetEventOnCompletion(Value: UINT64; hEvent: HANDLE): HResult; stdcall;
+        function SetEventOnCompletion(Value: UINT64; hEvent: THANDLE): HResult; stdcall;
     end;
 
 

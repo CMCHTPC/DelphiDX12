@@ -24,6 +24,7 @@ const
     DXGI_FORMAT_DEFINED = 1;
     DLL_DXGI = 'dxgi.dll';
 
+
 const
     IID_IDXGIObject: TGUID = '{aec22fb8-76f3-4639-9be0-28eb43a67a2e}';
     IID_IDXGIDeviceSubObject: TGUID = '{3d3e0379-f9de-4d58-bb6c-18d62992f1a6}';
@@ -226,6 +227,7 @@ type
     PDXGI_FORMAT = ^TDXGI_FORMAT;
 
 const
+	// DXGI error messages have moved to winerror.h
     _FACDXGI = $87A;
     MAKE_DXGI_HRESULT = longint(_FACDXGI shl 16) or longint(1 shl 31);
     MAKE_DXGI_STATUS = longint(_FACDXGI shl 16);
@@ -336,6 +338,8 @@ type
         DXGI_MODE_ROTATION_ROTATE180 = 3,
         DXGI_MODE_ROTATION_ROTATE270 = 4);
 
+    { TDXGI_MODE_DESC }
+
     TDXGI_MODE_DESC = record
         Width: UINT;
         Height: UINT;
@@ -343,13 +347,23 @@ type
         Format: TDXGI_FORMAT;
         ScanlineOrdering: TDXGI_MODE_SCANLINE_ORDER;
         Scaling: TDXGI_MODE_SCALING;
+        {$IFDEF FPC}
+        class operator Initialize(var A: TDXGI_MODE_DESC);
+        {$ENDIF}
+        procedure Init;
     end;
 
     PDXGI_MODE_DESC = ^TDXGI_MODE_DESC;
 
+    { TDXGI_SAMPLE_DESC }
+
     TDXGI_SAMPLE_DESC = record
         Count: UINT;
         Quality: UINT;
+        {$IFDEF FPC}
+        class operator Initialize(var A: TDXGI_SAMPLE_DESC);
+        {$ENDIF}
+        procedure Init;
     end;
 
     PDXGI_SAMPLE_DESC = ^TDXGI_SAMPLE_DESC;
@@ -492,6 +506,8 @@ type
         DXGI_SWAP_CHAIN_FLAG_RESTRICTED_TO_ALL_HOLOGRAPHIC_DISPLAYS = 4096
         );
 
+    { TDXGI_SWAP_CHAIN_DESC }
+
     TDXGI_SWAP_CHAIN_DESC = record
         BufferDesc: TDXGI_MODE_DESC;
         SampleDesc: TDXGI_SAMPLE_DESC;
@@ -501,6 +517,10 @@ type
         Windowed: longbool;
         SwapEffect: TDXGI_SWAP_EFFECT;
         Flags: UINT;
+        {$IFDEF FPC}
+        class operator Initialize(var A: TDXGI_SWAP_CHAIN_DESC);
+        {$ENDIF}
+        procedure Init;
     end;
 
     PDXGI_SWAP_CHAIN_DESC = ^TDXGI_SWAP_CHAIN_DESC;
@@ -560,7 +580,7 @@ type
         function CheckInterfaceSupport(const InterfaceName: TGUID; out pUMDVersion: LARGE_INTEGER): HResult; stdcall;
     end;
 
-
+    PIDXGIOutput = ^IDXGIOutput;
     IDXGIOutput = interface(IDXGIObject)
         ['{ae02eedb-c735-4690-8d52-5a8dc20213aa}']
         function GetDesc(out pDesc: TDXGI_OUTPUT_DESC): HResult; stdcall;
@@ -584,7 +604,7 @@ type
         function Present(SyncInterval: UINT; Flags: UINT): HResult; stdcall;
         function GetBuffer(Buffer: UINT; const riid: TGUID; out ppSurface): HResult; stdcall;
         function SetFullscreenState(Fullscreen: longbool; pTarget: IDXGIOutput): HResult; stdcall;
-        function GetFullscreenState(out pFullscreen: longbool; out ppTarget: IDXGIOutput): HResult; stdcall;
+        function GetFullscreenState(out pFullscreen: longbool; {out} ppTarget: PIDXGIOutput): HResult; stdcall;
         function GetDesc(out pDesc: TDXGI_SWAP_CHAIN_DESC): HResult; stdcall;
         function ResizeBuffers(BufferCount: UINT; Width: UINT; Height: UINT; NewFormat: TDXGI_FORMAT;
             SwapChainFlags: UINT): HResult; stdcall;
@@ -666,6 +686,78 @@ function CreateDXGIFactory(const riid: TGUID; out ppFactory): HResult; stdcall; 
 function CreateDXGIFactory1(const riid: TGUID; out ppFactory): HResult; stdcall; external DLL_DXGI;
 
 implementation
+
+{ TDXGI_SWAP_CHAIN_DESC }
+
+{$IFDEF FPC}
+class operator TDXGI_SWAP_CHAIN_DESC.Initialize(var A: TDXGI_SWAP_CHAIN_DESC);
+begin
+   // a.BufferDesc: TDXGI_MODE_DESC;
+   // a.SampleDesc: TDXGI_SAMPLE_DESC;
+    a.BufferUsage:=DXGI_USAGE_RENDER_TARGET_OUTPUT;
+    a.BufferCount:=0;
+    a.OutputWindow:=0;
+    a.Windowed:=False;
+    a.SwapEffect:=DXGI_SWAP_EFFECT_DISCARD;
+    a.Flags:=0;
+end;
+{$ENDIF}
+
+procedure TDXGI_SWAP_CHAIN_DESC.Init;
+begin
+    BufferUsage:=DXGI_USAGE_RENDER_TARGET_OUTPUT;
+    BufferCount:=0;
+    OutputWindow:=0;
+    Windowed:=False;
+    SwapEffect:=DXGI_SWAP_EFFECT_DISCARD;
+    Flags:=0;
+end;
+
+
+{ TDXGI_MODE_DESC }
+
+ {$IFDEF FPC}
+class operator TDXGI_MODE_DESC.Initialize(var A: TDXGI_MODE_DESC);
+begin
+    a.Width:=0;
+    a.Height:=0;
+    a.RefreshRate.Numerator:=0;
+    a.RefreshRate.Denominator:=1;
+    a.Format:=DXGI_FORMAT_UNKNOWN;
+    a.ScanlineOrdering:=DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
+    a.Scaling:=DXGI_MODE_SCALING_UNSPECIFIED;
+end;
+{$ENDIF}
+
+procedure TDXGI_MODE_DESC.Init;
+begin
+    Width:=0;
+    Height:=0;
+    RefreshRate.Numerator:=0;
+    RefreshRate.Denominator:=1;
+    Format:=DXGI_FORMAT_UNKNOWN;
+    ScanlineOrdering:=DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
+    Scaling:=DXGI_MODE_SCALING_UNSPECIFIED;
+end;
+
+{ TDXGI_SAMPLE_DESC }
+
+{$IFDEF FPC}
+class operator TDXGI_SAMPLE_DESC.Initialize(var A: TDXGI_SAMPLE_DESC);
+begin
+   // Default values MSDN
+   a.Count:=1;
+   a.Quality:=0;
+end;
+{$ENDIF}
+
+procedure TDXGI_SAMPLE_DESC.Init;
+begin
+   // Default values MSDN
+   Count:=1;
+   Quality:=0;
+end;
+
 
 { TD3DCOLORVALUE }
 

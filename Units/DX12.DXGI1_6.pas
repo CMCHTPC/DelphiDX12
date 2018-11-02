@@ -1,6 +1,8 @@
 unit DX12.DXGI1_6;
 
+{$IFDEF FPC}
 {$mode delphi}
+{$ENDIF}
 
 interface
 
@@ -10,6 +12,7 @@ uses
 const
     IID_IDXGIAdapter4: TGUID = '{3c8d99d1-4fbf-4181-a82c-af66bf7bd24e}';
     IID_IDXGIOutput6: TGUID = '{068346e8-aaec-4b84-add7-137f513f77a1}';
+    IID_IDXGIFactory6: TGUID = '{c1b6694f-ff09-44a9-b03c-77900a0a1d17}';
 
 type
 
@@ -18,9 +21,9 @@ type
         DXGI_ADAPTER_FLAG3_REMOTE = 1,
         DXGI_ADAPTER_FLAG3_SOFTWARE = 2,
         DXGI_ADAPTER_FLAG3_ACG_COMPATIBLE = 4,
-        DXGI_ADAPTER_FLAG3_SUPPORT_MONITORED_FENCES	= 8,
-        DXGI_ADAPTER_FLAG3_SUPPORT_NON_MONITORED_FENCES	= $10,
-        DXGI_ADAPTER_FLAG3_KEYED_MUTEX_CONFORMANCE	= $20,
+        DXGI_ADAPTER_FLAG3_SUPPORT_MONITORED_FENCES = 8,
+        DXGI_ADAPTER_FLAG3_SUPPORT_NON_MONITORED_FENCES = $10,
+        DXGI_ADAPTER_FLAG3_KEYED_MUTEX_CONFORMANCE = $20,
         DXGI_ADAPTER_FLAG3_FORCE_DWORD = $ffffffff
         );
 
@@ -54,7 +57,7 @@ type
 
     TDXGI_OUTPUT_DESC1 = record
         DeviceName: array [0..31] of WCHAR;
-        DesktopCoordinates: RECT;
+        DesktopCoordinates: TRECT;
         AttachedToDesktop: boolean;
         Rotation: TDXGI_MODE_ROTATION;
         Monitor: HMONITOR;
@@ -85,10 +88,26 @@ type
     end;
 
 
+    TDXGI_GPU_PREFERENCE = (
+        DXGI_GPU_PREFERENCE_UNSPECIFIED = 0,
+        DXGI_GPU_PREFERENCE_MINIMUM_POWER = (DXGI_GPU_PREFERENCE_UNSPECIFIED + 1),
+        DXGI_GPU_PREFERENCE_HIGH_PERFORMANCE = (DXGI_GPU_PREFERENCE_MINIMUM_POWER + 1)
+        );
 
+
+
+
+    IDXGIFactory6 = interface(IDXGIFactory5)
+        ['{c1b6694f-ff09-44a9-b03c-77900a0a1d17}']
+        function EnumAdapterByGpuPreference(Adapter: UINT; GpuPreference: TDXGI_GPU_PREFERENCE; const riid: TGUID; out ppvAdapter): HRESULT; stdcall;
+    end;
+
+
+
+
+function DXGIDeclareAdapterRemovalSupport(): HRESULT; stdcall; external '';
 
 implementation
 
 end.
-
 

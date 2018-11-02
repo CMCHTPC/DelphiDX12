@@ -35,7 +35,9 @@ unit DX12.D3D11;
 
 {$IFDEF FPC}
 {$MODE delphi}{$H+}
+{$ADVANCEDRECORDS}
 {$ENDIF}
+
 
 
 
@@ -131,6 +133,11 @@ const
 
 
     D3D11_CRYPTO_TYPE_AES128_CTR: TGUID = '{9b6bd711-4f74-41c9-9e7b-0be2d7d93b4f}';
+    D3D11_DECODER_ENCRYPTION_HW_CENC: TGUID = '{89d6ac4f-09f2-4229-b2cd-37740a6dfd81}';
+    D3D11_DECODER_BITSTREAM_ENCRYPTION_TYPE_CENC: TGUID = '{b0405235-c13d-44f2-9ae5-dd48e08e5b67}';
+    D3D11_DECODER_BITSTREAM_ENCRYPTION_TYPE_CBCS: TGUID = '{422d9319-9d21-4bb7-9371-faf5a82c3e04}';
+    D3D11_KEY_EXCHANGE_HW_PROTECTION: TGUID = '{b1170d8a-628d-4da3-ad3b-82ddb08b4970}';
+
 
     D3D11_AUTHENTICATED_QUERY_PROTECTION: TGUID = '{a84eb584-c495-48aa-b94d-8bd2d6fbce05}';
     D3D11_AUTHENTICATED_QUERY_CHANNEL_TYPE: TGUID = '{bc1b18a5-b1fb-42ab-bd94-b5828b4bf7be}';
@@ -553,6 +560,10 @@ const
     D3D11_WHQL_DRAW_VERTEX_COUNT_2_TO_EXP = 25;
     D3D11_1_UAV_SLOT_COUNT = 64;
     D3D11_2_TILED_RESOURCE_TILE_SIZE_IN_BYTES = 65536;
+
+    D3D11_4_VIDEO_DECODER_MAX_HISTOGRAM_COMPONENTS = 4;
+
+    D3D11_4_VIDEO_DECODER_HISTOGRAM_OFFSET_ALIGNMENT = 256;
 
     D3D11_APPEND_ALIGNED_ELEMENT = ($ffffffff);
 
@@ -1229,8 +1240,7 @@ type
         procedure Init(AViewDimension: TD3D11_SRV_DIMENSION; AFormat: TDXGI_FORMAT = DXGI_FORMAT_UNKNOWN;
                 AMostDetailedMip: UINT = 0; AMipLevels: INT32 = -1; AFirstArraySlice: UINT = 0; AArraySize: INT32 = -1;
                 AFlags: UINT = 0); overload;
-        procedure Init(ABuffer: ID3D11Buffer; Aformat: TDXGI_FORMAT; AfirstElement: UINT; AnumElements: UINT;
-                Aflags: UINT = 0); overload;
+        procedure Init(ABuffer: ID3D11Buffer; Aformat: TDXGI_FORMAT; AfirstElement: UINT; AnumElements: UINT; Aflags: UINT = 0); overload;
         procedure Init(pTex1D: ID3D11Texture1D; AViewDimension: TD3D11_SRV_DIMENSION; AFormat: TDXGI_FORMAT = DXGI_FORMAT_UNKNOWN;
                 AmostDetailedMip: UINT = 0; AmipLevels: INT32 = -1; AfirstArraySlice: UINT = 0; AarraySize: INT32 = -1); overload;
         procedure Init(pTex2D: ID3D11Texture2D; AViewDimension: TD3D11_SRV_DIMENSION; AFormat: TDXGI_FORMAT = DXGI_FORMAT_UNKNOWN;
@@ -1450,8 +1460,7 @@ type
         ViewDimension: TD3D11_UAV_DIMENSION;
         procedure Init(AviewDimension: TD3D11_UAV_DIMENSION; Aformat: TDXGI_FORMAT = DXGI_FORMAT_UNKNOWN;
                 mipSlice: UINT = 0; firstArraySlice: UINT = 0; arraySize: INT32 = -1; flags: UINT = 0); overload;
-        procedure Init(ABuffer: ID3D11Buffer; AFormat: TDXGI_FORMAT; firstElement: UINT; numElements: UINT;
-                flags: UINT = 0); overload;
+        procedure Init(ABuffer: ID3D11Buffer; AFormat: TDXGI_FORMAT; firstElement: UINT; numElements: UINT; flags: UINT = 0); overload;
 
         procedure Init(pTex1D: ID3D11Texture1D; AViewDimension: TD3D11_UAV_DIMENSION; AFormat: TDXGI_FORMAT = DXGI_FORMAT_UNKNOWN;
                 mipSlice: UINT = 0; firstArraySlice: UINT = 0; arraySize: INT32 = -1); overload;
@@ -1813,8 +1822,7 @@ type
 
     ID3D11ClassLinkage = interface(ID3D11DeviceChild)
         ['{ddf57cba-9543-46e4-a12b-f207a0fe7fed}']
-        function GetClassInstance(pClassInstanceName: PAnsiChar; InstanceIndex: UINT;
-            out ppInstance: ID3D11ClassInstance): HResult; stdcall;
+        function GetClassInstance(pClassInstanceName: PAnsiChar; InstanceIndex: UINT; out ppInstance: ID3D11ClassInstance): HResult; stdcall;
         function CreateClassInstance(pClassTypeName: PAnsiChar; ConstantBufferOffset: UINT; ConstantVectorOffset: UINT;
             TextureOffset: UINT; SamplerOffset: UINT; out ppInstance: ID3D11ClassInstance): HResult; stdcall;
     end;
@@ -1847,7 +1855,8 @@ type
         D3D11_FEATURE_D3D11_OPTIONS3 = (D3D11_FEATURE_D3D11_OPTIONS2 + 1),
         D3D11_FEATURE_GPU_VIRTUAL_ADDRESS_SUPPORT = (D3D11_FEATURE_D3D11_OPTIONS3 + 1),
         D3D11_FEATURE_D3D11_OPTIONS4 = (D3D11_FEATURE_GPU_VIRTUAL_ADDRESS_SUPPORT + 1),
-        D3D11_FEATURE_SHADER_CACHE = (D3D11_FEATURE_D3D11_OPTIONS4 + 1)
+        D3D11_FEATURE_SHADER_CACHE = (D3D11_FEATURE_D3D11_OPTIONS4 + 1),
+        D3D11_FEATURE_D3D11_OPTIONS5 = (D3D11_FEATURE_SHADER_CACHE + 1)
         );
 
 
@@ -1989,14 +1998,27 @@ type
     PD3D11_FEATURE_DATA_SHADER_CACHE = ^TD3D11_FEATURE_DATA_SHADER_CACHE;
 
 
+    TD3D11_SHARED_RESOURCE_TIER = (
+        D3D11_SHARED_RESOURCE_TIER_0 = 0,
+        D3D11_SHARED_RESOURCE_TIER_1 = (D3D11_SHARED_RESOURCE_TIER_0 + 1),
+        D3D11_SHARED_RESOURCE_TIER_2 = (D3D11_SHARED_RESOURCE_TIER_1 + 1)
+        );
+
+    TD3D11_FEATURE_DATA_D3D11_OPTIONS5 = record
+        SharedResourceTier: TD3D11_SHARED_RESOURCE_TIER;
+    end;
+    PD3D11_FEATURE_DATA_D3D11_OPTIONS5 = ^TD3D11_FEATURE_DATA_D3D11_OPTIONS5;
+
+
+    PID3D11DeviceContext = ^ID3D11DeviceContext;
+
     ID3D11DeviceContext = interface(ID3D11DeviceChild)
         ['{c0bfa96c-e089-44fb-8eaf-26f8796190da}']
         procedure VSSetConstantBuffers(StartSlot: UINT; NumBuffers: UINT; ppConstantBuffers: PID3D11Buffer); stdcall;
         procedure PSSetShaderResources(StartSlot: UINT; NumViews: UINT; ppShaderResourceViews: PID3D11ShaderResourceView); stdcall;
         procedure PSSetShader(pPixelShader: ID3D11PixelShader; ppClassInstances: PID3D11ClassInstance; NumClassInstances: UINT); stdcall;
         procedure PSSetSamplers(StartSlot: UINT; NumSamplers: UINT; ppSamplers: PID3D11SamplerState); stdcall;
-        procedure VSSetShader(pVertexShader: ID3D11VertexShader; ppClassInstances: PID3D11ClassInstance;
-            NumClassInstances: UINT); stdcall;
+        procedure VSSetShader(pVertexShader: ID3D11VertexShader; ppClassInstances: PID3D11ClassInstance; NumClassInstances: UINT); stdcall;
         procedure DrawIndexed(IndexCount: UINT; StartIndexLocation: UINT; BaseVertexLocation: integer); stdcall;
         procedure Draw(VertexCount: UINT; StartVertexLocation: UINT); stdcall;
         function Map(pResource: ID3D11Resource; Subresource: UINT; MapType: TD3D11_MAP; MapFlags: UINT;
@@ -2004,13 +2026,11 @@ type
         procedure Unmap(pResource: ID3D11Resource; Subresource: UINT); stdcall;
         procedure PSSetConstantBuffers(StartSlot: UINT; NumBuffers: UINT; ppConstantBuffers: PID3D11Buffer); stdcall;
         procedure IASetInputLayout(pInputLayout: ID3D11InputLayout); stdcall;
-        procedure IASetVertexBuffers(StartSlot: UINT; NumBuffers: UINT; ppVertexBuffers: PID3D11Buffer;
-            pStrides: PUINT; pOffsets: PUINT); stdcall;
+        procedure IASetVertexBuffers(StartSlot: UINT; NumBuffers: UINT; ppVertexBuffers: PID3D11Buffer; pStrides: PUINT; pOffsets: PUINT); stdcall;
         procedure IASetIndexBuffer(pIndexBuffer: ID3D11Buffer; Format: TDXGI_FORMAT; Offset: UINT); stdcall;
         procedure DrawIndexedInstanced(IndexCountPerInstance: UINT; InstanceCount: UINT; StartIndexLocation: UINT;
             BaseVertexLocation: integer; StartInstanceLocation: UINT); stdcall;
-        procedure DrawInstanced(VertexCountPerInstance: UINT; InstanceCount: UINT; StartVertexLocation: UINT;
-            StartInstanceLocation: UINT); stdcall;
+        procedure DrawInstanced(VertexCountPerInstance: UINT; InstanceCount: UINT; StartVertexLocation: UINT; StartInstanceLocation: UINT); stdcall;
         procedure GSSetConstantBuffers(StartSlot: UINT; NumBuffers: UINT; ppConstantBuffers: PID3D11Buffer); stdcall;
         procedure GSSetShader(pShader: ID3D11GeometryShader; ppClassInstances: PID3D11ClassInstance; NumClassInstances: UINT); stdcall;
         procedure IASetPrimitiveTopology(Topology: TD3D11_PRIMITIVE_TOPOLOGY); stdcall;
@@ -2025,8 +2045,8 @@ type
         procedure OMSetRenderTargets(NumViews: UINT; ppRenderTargetViews: PID3D11RenderTargetView;
             pDepthStencilView: ID3D11DepthStencilView); stdcall;
         procedure OMSetRenderTargetsAndUnorderedAccessViews(NumRTVs: UINT; ppRenderTargetViews: PID3D11RenderTargetView;
-            pDepthStencilView: ID3D11DepthStencilView; UAVStartSlot: UINT; NumUAVs: UINT;
-            ppUnorderedAccessViews: PID3D11UnorderedAccessView; pUAVInitialCounts: PUINT); stdcall;
+            pDepthStencilView: ID3D11DepthStencilView; UAVStartSlot: UINT; NumUAVs: UINT; ppUnorderedAccessViews: PID3D11UnorderedAccessView;
+            pUAVInitialCounts: PUINT); stdcall;
         procedure OMSetBlendState(pBlendState: ID3D11BlendState; BlendFactor: TFloatArray4; SampleMask: UINT); stdcall;
         procedure OMSetDepthStencilState(pDepthStencilState: ID3D11DepthStencilState; StencilRef: UINT); stdcall;
         procedure SOSetTargets(NumBuffers: UINT; ppSOTargets: PID3D11Buffer; pOffsets: PUINT); stdcall;
@@ -2047,8 +2067,7 @@ type
         procedure ClearRenderTargetView(pRenderTargetView: ID3D11RenderTargetView; ColorRGBA: TFloatArray4); stdcall;
         procedure ClearUnorderedAccessViewUINT(pUnorderedAccessView: ID3D11UnorderedAccessView; Values: TUINTArray4); stdcall;
         procedure ClearUnorderedAccessViewFloat(pUnorderedAccessView: ID3D11UnorderedAccessView; Values: TFloatArray4); stdcall;
-        procedure ClearDepthStencilView(pDepthStencilView: ID3D11DepthStencilView; ClearFlags: UINT; Depth: single;
-            Stencil: UINT8); stdcall;
+        procedure ClearDepthStencilView(pDepthStencilView: ID3D11DepthStencilView; ClearFlags: UINT; Depth: single; Stencil: UINT8); stdcall;
         procedure GenerateMips(pShaderResourceView: ID3D11ShaderResourceView); stdcall;
         procedure SetResourceMinLOD(pResource: ID3D11Resource; MinLOD: single); stdcall;
         function GetResourceMinLOD(pResource: ID3D11Resource): single; stdcall;
@@ -2060,15 +2079,13 @@ type
         procedure HSSetSamplers(StartSlot: UINT; NumSamplers: UINT; ppSamplers: PID3D11SamplerState); stdcall;
         procedure HSSetConstantBuffers(StartSlot: UINT; NumBuffers: UINT; ppConstantBuffers: PID3D11Buffer); stdcall;
         procedure DSSetShaderResources(StartSlot: UINT; NumViews: UINT; ppShaderResourceViews: PID3D11ShaderResourceView); stdcall;
-        procedure DSSetShader(pDomainShader: ID3D11DomainShader; ppClassInstances: PID3D11ClassInstance;
-            NumClassInstances: UINT); stdcall;
+        procedure DSSetShader(pDomainShader: ID3D11DomainShader; ppClassInstances: PID3D11ClassInstance; NumClassInstances: UINT); stdcall;
         procedure DSSetSamplers(StartSlot: UINT; NumSamplers: UINT; ppSamplers: ID3D11SamplerState); stdcall;
         procedure DSSetConstantBuffers(StartSlot: UINT; NumBuffers: UINT; ppConstantBuffers: PID3D11Buffer); stdcall;
         procedure CSSetShaderResources(StartSlot: UINT; NumViews: UINT; ppShaderResourceViews: ID3D11ShaderResourceView); stdcall;
         procedure CSSetUnorderedAccessViews(StartSlot: UINT; NumUAVs: UINT; ppUnorderedAccessViews: PID3D11UnorderedAccessView;
             pUAVInitialCounts: PUINT); stdcall;
-        procedure CSSetShader(pComputeShader: ID3D11ComputeShader; ppClassInstances: PID3D11ClassInstance;
-            NumClassInstances: UINT); stdcall;
+        procedure CSSetShader(pComputeShader: ID3D11ComputeShader; ppClassInstances: PID3D11ClassInstance; NumClassInstances: UINT); stdcall;
         procedure CSSetSamplers(StartSlot: UINT; NumSamplers: UINT; ppSamplers: PID3D11SamplerState); stdcall;
         procedure CSSetConstantBuffers(StartSlot: UINT; NumBuffers: UINT; ppConstantBuffers: PID3D11Buffer); stdcall;
         procedure VSGetConstantBuffers(StartSlot: UINT; NumBuffers: UINT; out ppConstantBuffers: PID3D11Buffer); stdcall;
@@ -2215,8 +2232,7 @@ type
 
     ID3D11VideoDecoder = interface(ID3D11DeviceChild)
         ['{3C9C5B51-995D-48d1-9B8D-FA5CAEDED65C}']
-        function GetCreationParameters(out pVideoDesc: TD3D11_VIDEO_DECODER_DESC;
-            out pConfig: TD3D11_VIDEO_DECODER_CONFIG): HResult; stdcall;
+        function GetCreationParameters(out pVideoDesc: TD3D11_VIDEO_DECODER_DESC; out pConfig: TD3D11_VIDEO_DECODER_CONFIG): HResult; stdcall;
         function GetDriverHandle(out pDriverHandle: THANDLE): HResult; stdcall;
     end;
 
@@ -2342,7 +2358,12 @@ type
         D3D11_CONTENT_PROTECTION_CAPS_ENCRYPTED_READ_BACK_KEY = $80,
         D3D11_CONTENT_PROTECTION_CAPS_SEQUENTIAL_CTR_IV = $100,
         D3D11_CONTENT_PROTECTION_CAPS_ENCRYPT_SLICEDATA_ONLY = $200,
-        D3D11_CONTENT_PROTECTION_CAPS_DECRYPTION_BLT = $400
+        D3D11_CONTENT_PROTECTION_CAPS_DECRYPTION_BLT = $400,
+        D3D11_CONTENT_PROTECTION_CAPS_HARDWARE_PROTECT_UNCOMPRESSED = $800,
+        D3D11_CONTENT_PROTECTION_CAPS_HARDWARE_PROTECTED_MEMORY_PAGEABLE = $1000,
+        D3D11_CONTENT_PROTECTION_CAPS_HARDWARE_TEARDOWN = $2000,
+        D3D11_CONTENT_PROTECTION_CAPS_HARDWARE_DRM_COMMUNICATION = $4000,
+        D3D11_CONTENT_PROTECTION_CAPS_HARDWARE_DRM_COMMUNICATION_MULTI_THREADED = $8000
         );
 
 
@@ -2414,10 +2435,10 @@ type
         function GetVideoProcessorCaps(out pCaps: TD3D11_VIDEO_PROCESSOR_CAPS): HResult; stdcall;
         function GetVideoProcessorRateConversionCaps(TypeIndex: UINT; out pCaps: TD3D11_VIDEO_PROCESSOR_RATE_CONVERSION_CAPS): HResult;
             stdcall;
-        function GetVideoProcessorCustomRate(TypeIndex: UINT; CustomRateIndex: UINT;
-            out pRate: TD3D11_VIDEO_PROCESSOR_CUSTOM_RATE): HResult; stdcall;
-        function GetVideoProcessorFilterRange(Filter: TD3D11_VIDEO_PROCESSOR_FILTER;
-            out pRange: TD3D11_VIDEO_PROCESSOR_FILTER_RANGE): HResult; stdcall;
+        function GetVideoProcessorCustomRate(TypeIndex: UINT; CustomRateIndex: UINT; out pRate: TD3D11_VIDEO_PROCESSOR_CUSTOM_RATE): HResult;
+            stdcall;
+        function GetVideoProcessorFilterRange(Filter: TD3D11_VIDEO_PROCESSOR_FILTER; out pRange: TD3D11_VIDEO_PROCESSOR_FILTER_RANGE): HResult;
+            stdcall;
     end;
 
 
@@ -2852,11 +2873,11 @@ type
         function GetDecoderBuffer(pDecoder: ID3D11VideoDecoder; _Type: TD3D11_VIDEO_DECODER_BUFFER_TYPE;
             out pBufferSize: UINT; ppBuffer: Pointer): HResult; stdcall;
         function ReleaseDecoderBuffer(pDecoder: ID3D11VideoDecoder; _Type: TD3D11_VIDEO_DECODER_BUFFER_TYPE): HResult; stdcall;
-        function DecoderBeginFrame(pDecoder: ID3D11VideoDecoder; pView: ID3D11VideoDecoderOutputView;
-            ContentKeySize: UINT; pContentKey: Pointer): HResult; stdcall;
+        function DecoderBeginFrame(pDecoder: ID3D11VideoDecoder; pView: ID3D11VideoDecoderOutputView; ContentKeySize: UINT;
+            pContentKey: Pointer): HResult; stdcall;
         function DecoderEndFrame(pDecoder: ID3D11VideoDecoder): HResult; stdcall;
-        function SubmitDecoderBuffers(pDecoder: ID3D11VideoDecoder; NumBuffers: UINT;
-            pBufferDesc: PD3D11_VIDEO_DECODER_BUFFER_DESC): HResult; stdcall;
+        function SubmitDecoderBuffers(pDecoder: ID3D11VideoDecoder; NumBuffers: UINT; pBufferDesc: PD3D11_VIDEO_DECODER_BUFFER_DESC): HResult;
+            stdcall;
         function DecoderExtension(pDecoder: ID3D11VideoDecoder; pExtensionData: PD3D11_VIDEO_DECODER_EXTENSION): HResult; stdcall;
         procedure VideoProcessorSetOutputTargetRect(pVideoProcessor: ID3D11VideoProcessor; Enable: longbool; pRect: PRECT); stdcall;
         procedure VideoProcessorSetOutputBackgroundColor(pVideoProcessor: ID3D11VideoProcessor; YCbCr: longbool;
@@ -2869,16 +2890,14 @@ type
         procedure VideoProcessorSetOutputStereoMode(pVideoProcessor: ID3D11VideoProcessor; Enable: longbool); stdcall;
         function VideoProcessorSetOutputExtension(pVideoProcessor: ID3D11VideoProcessor; pExtensionGuid: PGUID;
             DataSize: UINT; pData: Pointer): HResult; stdcall;
-        procedure VideoProcessorGetOutputTargetRect(pVideoProcessor: ID3D11VideoProcessor; out Enabled: longbool;
-            out pRect: TRECT); stdcall;
+        procedure VideoProcessorGetOutputTargetRect(pVideoProcessor: ID3D11VideoProcessor; out Enabled: longbool; out pRect: TRECT); stdcall;
         procedure VideoProcessorGetOutputBackgroundColor(pVideoProcessor: ID3D11VideoProcessor; out pYCbCr: longbool;
             out pColor: TD3D11_VIDEO_COLOR); stdcall;
         procedure VideoProcessorGetOutputColorSpace(pVideoProcessor: ID3D11VideoProcessor;
             out pColorSpace: TD3D11_VIDEO_PROCESSOR_COLOR_SPACE); stdcall;
         procedure VideoProcessorGetOutputAlphaFillMode(pVideoProcessor: ID3D11VideoProcessor;
             out pAlphaFillMode: TD3D11_VIDEO_PROCESSOR_ALPHA_FILL_MODE; out pStreamIndex: UINT); stdcall;
-        procedure VideoProcessorGetOutputConstriction(pVideoProcessor: ID3D11VideoProcessor; out pEnabled: BOOL;
-            out pSize: TSIZE); stdcall;
+        procedure VideoProcessorGetOutputConstriction(pVideoProcessor: ID3D11VideoProcessor; out pEnabled: BOOL; out pSize: TSIZE); stdcall;
         procedure VideoProcessorGetOutputStereoMode(pVideoProcessor: ID3D11VideoProcessor; out pEnabled: longbool); stdcall;
         function VideoProcessorGetOutputExtension(pVideoProcessor: ID3D11VideoProcessor; pExtensionGuid: PGUID;
             DataSize: UINT; out pData: Pointer): HResult; stdcall;
@@ -2892,10 +2911,8 @@ type
             Enable: longbool; pRect: PRECT); stdcall;
         procedure VideoProcessorSetStreamDestRect(pVideoProcessor: ID3D11VideoProcessor; StreamIndex: UINT;
             Enable: longbool; pRect: PRECT); stdcall;
-        procedure VideoProcessorSetStreamAlpha(pVideoProcessor: ID3D11VideoProcessor; StreamIndex: UINT;
-            Enable: longbool; Alpha: single); stdcall;
-        procedure VideoProcessorSetStreamPalette(pVideoProcessor: ID3D11VideoProcessor; StreamIndex: UINT;
-            Count: UINT; pEntries: PUINT); stdcall;
+        procedure VideoProcessorSetStreamAlpha(pVideoProcessor: ID3D11VideoProcessor; StreamIndex: UINT; Enable: longbool; Alpha: single); stdcall;
+        procedure VideoProcessorSetStreamPalette(pVideoProcessor: ID3D11VideoProcessor; StreamIndex: UINT; Count: UINT; pEntries: PUINT); stdcall;
         procedure VideoProcessorSetStreamPixelAspectRatio(pVideoProcessor: ID3D11VideoProcessor; StreamIndex: UINT;
             Enable: longbool; pSourceAspectRatio: PDXGI_RATIONAL; pDestinationAspectRatio: PDXGI_RATIONAL); stdcall;
         procedure VideoProcessorSetStreamLumaKey(pVideoProcessor: ID3D11VideoProcessor; StreamIndex: UINT;
@@ -2903,8 +2920,7 @@ type
         procedure VideoProcessorSetStreamStereoFormat(pVideoProcessor: ID3D11VideoProcessor; StreamIndex: UINT;
             Enable: longbool; Format: TD3D11_VIDEO_PROCESSOR_STEREO_FORMAT; LeftViewFrame0: longbool; BaseViewFrame0: longbool;
             FlipMode: TD3D11_VIDEO_PROCESSOR_STEREO_FLIP_MODE; MonoOffset: integer); stdcall;
-        procedure VideoProcessorSetStreamAutoProcessingMode(pVideoProcessor: ID3D11VideoProcessor; StreamIndex: UINT;
-            Enable: longbool); stdcall;
+        procedure VideoProcessorSetStreamAutoProcessingMode(pVideoProcessor: ID3D11VideoProcessor; StreamIndex: UINT; Enable: longbool); stdcall;
         procedure VideoProcessorSetStreamFilter(pVideoProcessor: ID3D11VideoProcessor; StreamIndex: UINT;
             Filter: TD3D11_VIDEO_PROCESSOR_FILTER; Enable: longbool; Level: integer); stdcall;
         function VideoProcessorSetStreamExtension(pVideoProcessor: ID3D11VideoProcessor; StreamIndex: UINT;
@@ -2938,13 +2954,11 @@ type
             pExtensionGuid: PGUID; DataSize: UINT; pData: pointer): HResult; stdcall;
         function VideoProcessorBlt(pVideoProcessor: ID3D11VideoProcessor; pView: ID3D11VideoProcessorOutputView;
             OutputFrame: UINT; StreamCount: UINT; pStreams: PD3D11_VIDEO_PROCESSOR_STREAM): HResult; stdcall;
-        function NegotiateCryptoSessionKeyExchange(pCryptoSession: ID3D11CryptoSession; DataSize: UINT;
-            var pData: pointer): HResult; stdcall;
-        procedure EncryptionBlt(pCryptoSession: ID3D11CryptoSession; pSrcSurface: ID3D11Texture2D;
-            pDstSurface: ID3D11Texture2D; IVSize: UINT; var pIV: Pointer); stdcall;
-        procedure DecryptionBlt(pCryptoSession: ID3D11CryptoSession; pSrcSurface: ID3D11Texture2D;
-            pDstSurface: ID3D11Texture2D; pEncryptedBlockInfo: PD3D11_ENCRYPTED_BLOCK_INFO; ContentKeySize: UINT;
-            pContentKey: Pointer; IVSize: UINT; var pIV: pointer); stdcall;
+        function NegotiateCryptoSessionKeyExchange(pCryptoSession: ID3D11CryptoSession; DataSize: UINT; var pData: pointer): HResult; stdcall;
+        procedure EncryptionBlt(pCryptoSession: ID3D11CryptoSession; pSrcSurface: ID3D11Texture2D; pDstSurface: ID3D11Texture2D;
+            IVSize: UINT; var pIV: Pointer); stdcall;
+        procedure DecryptionBlt(pCryptoSession: ID3D11CryptoSession; pSrcSurface: ID3D11Texture2D; pDstSurface: ID3D11Texture2D;
+            pEncryptedBlockInfo: PD3D11_ENCRYPTED_BLOCK_INFO; ContentKeySize: UINT; pContentKey: Pointer; IVSize: UINT; var pIV: pointer); stdcall;
         procedure StartSessionKeyRefresh(pCryptoSession: ID3D11CryptoSession; RandomNumberSize: UINT; out pRandomNumber: Pointer); stdcall;
         procedure FinishSessionKeyRefresh(pCryptoSession: ID3D11CryptoSession); stdcall;
         function GetEncryptionBltKey(pCryptoSession: ID3D11CryptoSession; KeySize: UINT; out pReadbackKey: Pointer): HResult; stdcall;
@@ -2983,12 +2997,10 @@ type
         function GetVideoDecoderProfile(Index: UINT; out pDecoderProfile: TGUID): HResult; stdcall;
         function CheckVideoDecoderFormat(pDecoderProfile: PGUID; Format: TDXGI_FORMAT; out pSupported: longbool): HResult; stdcall;
         function GetVideoDecoderConfigCount(pDesc: PD3D11_VIDEO_DECODER_DESC; out pCount: UINT): HResult; stdcall;
-        function GetVideoDecoderConfig(pDesc: PD3D11_VIDEO_DECODER_DESC; Index: UINT;
-            out pConfig: TD3D11_VIDEO_DECODER_CONFIG): HResult; stdcall;
-        function GetContentProtectionCaps(pCryptoType: PGUID; pDecoderProfile: PGUID;
-            out pCaps: TD3D11_VIDEO_CONTENT_PROTECTION_CAPS): HResult; stdcall;
-        function CheckCryptoKeyExchange(pCryptoType: PGUID; pDecoderProfile: PGUID; Index: UINT;
-            out pKeyExchangeType: TGUID): HResult; stdcall;
+        function GetVideoDecoderConfig(pDesc: PD3D11_VIDEO_DECODER_DESC; Index: UINT; out pConfig: TD3D11_VIDEO_DECODER_CONFIG): HResult; stdcall;
+        function GetContentProtectionCaps(pCryptoType: PGUID; pDecoderProfile: PGUID; out pCaps: TD3D11_VIDEO_CONTENT_PROTECTION_CAPS): HResult;
+            stdcall;
+        function CheckCryptoKeyExchange(pCryptoType: PGUID; pDecoderProfile: PGUID; Index: UINT; out pKeyExchangeType: TGUID): HResult; stdcall;
         function SetPrivateData(guid: TGUID; DataSize: UINT; pData: Pointer): HResult; stdcall;
         function SetPrivateDataInterface(GUID: TGUID; pData: IUnknown): HResult; stdcall;
     end;
@@ -2996,8 +3008,7 @@ type
 
     ID3D11Device = interface(IUnknown)
         ['{db6f6ddb-ac77-4e88-8253-819df9bbf140}']
-        function CreateBuffer(const pDesc: TD3D11_BUFFER_DESC; pInitialData: PD3D11_SUBRESOURCE_DATA;
-            out ppBuffer: ID3D11Buffer): HResult; stdcall;
+        function CreateBuffer(const pDesc: TD3D11_BUFFER_DESC; pInitialData: PD3D11_SUBRESOURCE_DATA; out ppBuffer: ID3D11Buffer): HResult; stdcall;
         function CreateTexture1D(pDesc: PD3D11_TEXTURE1D_DESC; pInitialData: PD3D11_SUBRESOURCE_DATA;
             out ppTexture1D: ID3D11Texture1D): HResult; stdcall;
         function CreateTexture2D(const pDesc: TD3D11_TEXTURE2D_DESC; pInitialData: PD3D11_SUBRESOURCE_DATA;
@@ -3033,8 +3044,8 @@ type
         function CreateBlendState(const pBlendStateDesc: TD3D11_BLEND_DESC; out ppBlendState: ID3D11BlendState): HResult; stdcall;
         function CreateDepthStencilState(const pDepthStencilDesc: TD3D11_DEPTH_STENCIL_DESC;
             out ppDepthStencilState: ID3D11DepthStencilState): HResult; stdcall;
-        function CreateRasterizerState(const pRasterizerDesc: TD3D11_RASTERIZER_DESC;
-            out ppRasterizerState: ID3D11RasterizerState): HResult; stdcall;
+        function CreateRasterizerState(const pRasterizerDesc: TD3D11_RASTERIZER_DESC; out ppRasterizerState: ID3D11RasterizerState): HResult;
+            stdcall;
         function CreateSamplerState(const pSamplerDesc: TD3D11_SAMPLER_DESC; out ppSamplerState: ID3D11SamplerState): HResult; stdcall;
         function CreateQuery(pQueryDesc: PD3D11_QUERY_DESC; out ppQuery: ID3D11Query): HResult; stdcall;
         function CreatePredicate(pPredicateDesc: PD3D11_QUERY_DESC; out ppPredicate: ID3D11Predicate): HResult; stdcall;
@@ -3048,8 +3059,7 @@ type
         function CheckCounter(pDesc: PD3D11_COUNTER_DESC; out pType: TD3D11_COUNTER_TYPE; out pActiveCounters: UINT;
             out szName: PAnsiChar; var pNameLength: UINT; out szUnits: PAnsiChar; var pUnitsLength: UINT;
             out szDescription: PAnsiChar; var pDescriptionLength: UINT): HResult; stdcall;
-        function CheckFeatureSupport(Feature: TD3D11_FEATURE; out pFeatureSupportData: Pointer;
-            FeatureSupportDataSize: UINT): HResult; stdcall;
+        function CheckFeatureSupport(Feature: TD3D11_FEATURE; {out} pFeatureSupportData: Pointer; FeatureSupportDataSize: UINT): HResult; stdcall;
         function GetPrivateData(guid: TGUID; var pDataSize: UINT; out pData: Pointer): HResult; stdcall;
         function SetPrivateData(guid: TGUID; DataSize: UINT; pData: Pointer): HResult; stdcall;
         function SetPrivateDataInterface(guid: TGUID; pData: IUnknown): HResult; stdcall;
@@ -3073,10 +3083,13 @@ type
         D3D11_CREATE_DEVICE_VIDEO_SUPPORT = $800
         );
 
+    PFN_D3D11_CREATE_DEVICE = function(pAdapter: IDXGIAdapter; DriverType: TD3D_DRIVER_TYPE; Software: HMODULE;
+        Flags: UINT; const pFeatureLevels: PD3D_FEATURE_LEVEL; FeatureLevels: UINT; SDKVersion: UINT;
+        out ppDevice: ID3D11Device; out pFeatureLevel: TD3D_FEATURE_LEVEL; {out} ppImmediateContext: PID3D11DeviceContext): HRESULT; stdcall;
 
 function D3D11CreateDevice(pAdapter: IDXGIAdapter; DriverType: TD3D_DRIVER_TYPE; Software: HMODULE; Flags: UINT;
     pFeatureLevels: PD3D_FEATURE_LEVEL; FeatureLevels: UINT; SDKVersion: UINT; out ppDevice: ID3D11Device;
-    out pFeatureLevel: TD3D_FEATURE_LEVEL; out ppImmediateContext: ID3D11DeviceContext): HResult;
+    out pFeatureLevel: TD3D_FEATURE_LEVEL; {out} ppImmediateContext: PID3D11DeviceContext): HResult;
     stdcall; external DLL_D3D11;
 
 { D3D11Shader.h }
@@ -3659,8 +3672,7 @@ type
 
     ID3D11ShaderTraceFactory = interface(IUnknown)
         ['{1fbad429-66ab-41cc-9617-667ac10e4459}']
-        function CreateShaderTrace(pShader: IUnknown; pTraceDesc: PD3D11_SHADER_TRACE_DESC;
-            out ppShaderTrace: ID3D11ShaderTrace): HResult; stdcall;
+        function CreateShaderTrace(pShader: IUnknown; pTraceDesc: PD3D11_SHADER_TRACE_DESC; out ppShaderTrace: ID3D11ShaderTrace): HResult; stdcall;
     end;
 
     { D3D11SDKLayers.h}
@@ -5218,6 +5230,11 @@ type
     end;
 
 
+    PFN_D3D11_CREATE_DEVICE_AND_SWAP_CHAIN = function(pAdapter: IDXGIAdapter; DriverType: TD3D_DRIVER_TYPE; Software: HMODULE;
+        Flags: UINT; const pFeatureLevels: PD3D_FEATURE_LEVEL; FeatureLevels: UINT; SDKVersion: UINT;
+        {const} pSwapChainDesc: PDXGI_SWAP_CHAIN_DESC; out ppSwapChain: IDXGISwapChain; out ppDevice: ID3D11Device;
+        out pFeatureLevel: TD3D_FEATURE_LEVEL; out ppImmediateContext: ID3D11DeviceContext): HRESULT; stdcall;
+
 
 function D3DDisassemble11Trace(pSrcData: Pointer; SrcDataSize: SIZE_T; pTrace: ID3D11ShaderTrace; StartStep: UINT;
     NumSteps: UINT; Flags: UINT; out ppDisassembly: ID3D10Blob): HResult; stdcall; external D3DCompiler_DLL;
@@ -5239,7 +5256,10 @@ function D3D11_SHVER_GET_TYPE(_Version: UINT): UINT;
 function D3D11_SHVER_GET_MAJOR(_Version: UINT): UINT;
 function D3D11_SHVER_GET_MINOR(_Version: UINT): UINT;
 
+
+
 implementation
+
 
 
 
@@ -5268,9 +5288,9 @@ function D3D11_ENCODE_BASIC_FILTER(min, mag, mip, reduction: UINT): TD3D11_FILTE
 var
     x: longint;
 begin
-    x := ((min and D3D11_FILTER_TYPE_MASK) shl D3D11_MIN_FILTER_SHIFT) or ((mag and D3D11_FILTER_TYPE_MASK) shl
-        D3D11_MAG_FILTER_SHIFT) or ((mip and D3D11_FILTER_TYPE_MASK) shl D3D11_MIP_FILTER_SHIFT) or
-        ((reduction and D3D11_FILTER_REDUCTION_TYPE_MASK) shl D3D11_FILTER_REDUCTION_TYPE_SHIFT);
+    x := ((min and D3D11_FILTER_TYPE_MASK) shl D3D11_MIN_FILTER_SHIFT) or ((mag and D3D11_FILTER_TYPE_MASK) shl D3D11_MAG_FILTER_SHIFT) or
+        ((mip and D3D11_FILTER_TYPE_MASK) shl D3D11_MIP_FILTER_SHIFT) or ((reduction and D3D11_FILTER_REDUCTION_TYPE_MASK) shl
+        D3D11_FILTER_REDUCTION_TYPE_SHIFT);
     Result := TD3D11_Filter(x);
 end;
 
@@ -5279,8 +5299,7 @@ end;
 function D3D11_ENCODE_ANISOTROPIC_FILTER(reduction: UINT): TD3D11_FILTER;
 
 begin
-    Result := D3D11_ENCODE_BASIC_FILTER(Ord(D3D11_FILTER_TYPE_LINEAR), Ord(D3D11_FILTER_TYPE_LINEAR),
-        Ord(D3D11_FILTER_TYPE_LINEAR), reduction);
+    Result := D3D11_ENCODE_BASIC_FILTER(Ord(D3D11_FILTER_TYPE_LINEAR), Ord(D3D11_FILTER_TYPE_LINEAR), Ord(D3D11_FILTER_TYPE_LINEAR), reduction);
 
     Result := TD3D11_Filter(Ord(Result) or Ord(D3D11_ANISOTROPIC_FILTERING_BIT));
 end;
@@ -5908,8 +5927,7 @@ end;
 
 
 
-procedure TD3D11_SHADER_RESOURCE_VIEW_DESC.Init(ABuffer: ID3D11Buffer; Aformat: TDXGI_FORMAT; AfirstElement: UINT;
-    AnumElements: UINT; Aflags: UINT);
+procedure TD3D11_SHADER_RESOURCE_VIEW_DESC.Init(ABuffer: ID3D11Buffer; Aformat: TDXGI_FORMAT; AfirstElement: UINT; AnumElements: UINT; Aflags: UINT);
 begin
     Format := Aformat;
     ViewDimension := D3D11_SRV_DIMENSION_BUFFEREX;
@@ -5930,8 +5948,7 @@ begin
     lMipLevels := AmipLevels;
     lArraySize := AArraySize;
     ViewDimension := AviewDimension;
-    if (DXGI_FORMAT_UNKNOWN = Aformat) or (-1 = lMipLevels) or ((-1 = lArraySize) and
-        (D3D11_SRV_DIMENSION_TEXTURE1DARRAY = viewDimension)) then
+    if (DXGI_FORMAT_UNKNOWN = Aformat) or (-1 = lMipLevels) or ((-1 = lArraySize) and (D3D11_SRV_DIMENSION_TEXTURE1DARRAY = viewDimension)) then
     begin
         pTex1D.GetDesc(TexDesc);
         if (DXGI_FORMAT_UNKNOWN = Aformat) then
@@ -6181,16 +6198,14 @@ end;
 
 class operator TD3D11_BOX.Equal(a, b: TD3D11_BOX): longbool;
 begin
-    Result := (a.left = b.left) and (a.top = b.top) and (a.front = b.front) and (a.right = b.right) and
-        (a.bottom = b.bottom) and (a.back = b.back);
+    Result := (a.left = b.left) and (a.top = b.top) and (a.front = b.front) and (a.right = b.right) and (a.bottom = b.bottom) and (a.back = b.back);
 end;
 
 
 
 class operator TD3D11_BOX.NotEqual(a, b: TD3D11_BOX): longbool;
 begin
-    Result := (a.left <> b.left) or (a.top <> b.top) or (a.front <> b.front) or (a.right <> b.right) or
-        (a.bottom <> b.bottom) or (a.back <> b.back);
+    Result := (a.left <> b.left) or (a.top <> b.top) or (a.front <> b.front) or (a.right <> b.right) or (a.bottom <> b.bottom) or (a.back <> b.back);
 end;
 
 
@@ -6343,6 +6358,8 @@ end;
 
 procedure TD3D11_VIEWPORT.Init(pTex3D: ID3D11Texture3D; pRTView: ID3D11RenderTargetView; topLeftX: single;
     topLeftY: single; minDepth: single; maxDepth: single);
+
+
 var
     TexDesc: TD3D11_TEXTURE3D_DESC;
     RTVDesc: TD3D11_RENDER_TARGET_VIEW_DESC;

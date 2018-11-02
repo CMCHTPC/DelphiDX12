@@ -145,8 +145,8 @@ type
         function CheckOverlaySupport(EnumFormat: TDXGI_FORMAT; pConcernedDevice: IUnknown; out pFlags: UINT): HResult; stdcall;
     end;
 
-function CreateDXGIFactory2(Flags: UINT; riid: TGUID; out ppFactory: pointer): HResult; stdcall; external DLL_DXGI;
-function DXGIGetDebugInterface1(Flags: UINT; riid: TGUID; out pDebug: pointer): HResult; stdcall; external DLL_DXGI;
+function CreateDXGIFactory2(Flags: UINT; const riid: TGUID; out ppFactory): HResult; stdcall; external DLL_DXGI;
+function DXGIGetDebugInterface1(Flags: UINT; const riid: TGUID; out pDebug): HResult; stdcall; external DLL_DXGI;
 
 implementation
 

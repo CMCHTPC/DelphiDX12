@@ -50,19 +50,21 @@ const
     IID_ID3D11Device5: TGUID = '{8ffde202-a0e7-45df-9e01-e837801b5ea0}';
     IID_ID3D11Multithread: TGUID = '{9B7E4E00-342C-4106-A19F-4F2704F689F0}';
     IID_ID3D11VideoContext2: TGUID = '{C4E7374C-6243-4D1B-AE87-52B4F740E261}';
+    IID_ID3D11VideoDevice2: TGUID = '{59C0CB01-35F0-4A70-8F67-87905C906A53}';
+    IID_ID3D11VideoContext3: TGUID = '{A9E2FAA0-CB39-418F-A0B7-D8AAD4DE672E}';
 
 
 type
     ID3D11Device4 = interface(ID3D11Device3)
         ['{8992ab71-02e6-4b8d-ba48-b056dcda42c4}']
-        function RegisterDeviceRemovedEvent(hEvent: HANDLE; out pdwCookie: DWORD): HResult; stdcall;
+        function RegisterDeviceRemovedEvent(hEvent: THANDLE; out pdwCookie: DWORD): HResult; stdcall;
         procedure UnregisterDeviceRemoved(dwCookie: DWORD); stdcall;
     end;
 
 
     ID3D11Device5 = interface(ID3D11Device4)
         ['{8ffde202-a0e7-45df-9e01-e837801b5ea0}']
-        function OpenSharedFence(hFence: HANDLE; const ReturnedInterface: TGUID; out ppFence): HResult; stdcall;
+        function OpenSharedFence(hFence: THANDLE; const ReturnedInterface: TGUID; out ppFence): HResult; stdcall;
         function CreateFence(InitialValue: UINT64; Flags: TD3D11_FENCE_FLAG; const ReturnedInterface: TGUID;
             out ppFence): HResult; stdcall;
     end;
@@ -96,10 +98,84 @@ type
 
 
 
+    TD3D11_FEATURE_VIDEO = (
+        D3D11_FEATURE_VIDEO_DECODER_HISTOGRAM = 0
+        );
+
+    TD3D11_VIDEO_DECODER_HISTOGRAM_COMPONENT = (
+        D3D11_VIDEO_DECODER_HISTOGRAM_COMPONENT_Y = 0,
+        D3D11_VIDEO_DECODER_HISTOGRAM_COMPONENT_U = 1,
+        D3D11_VIDEO_DECODER_HISTOGRAM_COMPONENT_V = 2,
+        D3D11_VIDEO_DECODER_HISTOGRAM_COMPONENT_R = 0,
+        D3D11_VIDEO_DECODER_HISTOGRAM_COMPONENT_G = 1,
+        D3D11_VIDEO_DECODER_HISTOGRAM_COMPONENT_B = 2,
+        D3D11_VIDEO_DECODER_HISTOGRAM_COMPONENT_A = 3
+        );
+
+    TD3D11_VIDEO_DECODER_HISTOGRAM_COMPONENT_FLAGS = (
+        D3D11_VIDEO_DECODER_HISTOGRAM_COMPONENT_FLAG_NONE = 0,
+        D3D11_VIDEO_DECODER_HISTOGRAM_COMPONENT_FLAG_Y = (1 shl Ord(D3D11_VIDEO_DECODER_HISTOGRAM_COMPONENT_Y)),
+        D3D11_VIDEO_DECODER_HISTOGRAM_COMPONENT_FLAG_U = (1 shl Ord(D3D11_VIDEO_DECODER_HISTOGRAM_COMPONENT_U)),
+        D3D11_VIDEO_DECODER_HISTOGRAM_COMPONENT_FLAG_V = (1 shl Ord(D3D11_VIDEO_DECODER_HISTOGRAM_COMPONENT_V)),
+        D3D11_VIDEO_DECODER_HISTOGRAM_COMPONENT_FLAG_R = (1 shl Ord(D3D11_VIDEO_DECODER_HISTOGRAM_COMPONENT_R)),
+        D3D11_VIDEO_DECODER_HISTOGRAM_COMPONENT_FLAG_G = (1 shl Ord(D3D11_VIDEO_DECODER_HISTOGRAM_COMPONENT_G)),
+        D3D11_VIDEO_DECODER_HISTOGRAM_COMPONENT_FLAG_B = (1 shl Ord(D3D11_VIDEO_DECODER_HISTOGRAM_COMPONENT_B)),
+        D3D11_VIDEO_DECODER_HISTOGRAM_COMPONENT_FLAG_A = (1 shl Ord(D3D11_VIDEO_DECODER_HISTOGRAM_COMPONENT_A))
+        );
+
+
+    TD3D11_FEATURE_DATA_VIDEO_DECODER_HISTOGRAM = record
+        DecoderDesc: TD3D11_VIDEO_DECODER_DESC;
+        Components: TD3D11_VIDEO_DECODER_HISTOGRAM_COMPONENT_FLAGS;
+        BinCount: UINT;
+        CounterBitDepth: UINT;
+    end;
+
+    TD3D11_CRYPTO_SESSION_KEY_EXCHANGE_FLAGS = (
+        D3D11_CRYPTO_SESSION_KEY_EXCHANGE_FLAG_NONE = 0
+        );
+
+
+
+
+    ID3D11VideoDevice2 = interface(ID3D11VideoDevice1)
+        ['{59C0CB01-35F0-4A70-8F67-87905C906A53}']
+        function CheckFeatureSupport(Feature: TD3D11_FEATURE_VIDEO; out pFeatureSupportData: pointer;
+            FeatureSupportDataSize: UINT): HResult; stdcall;
+        function NegotiateCryptoSessionKeyExchangeMT(pCryptoSession: ID3D11CryptoSession;
+            flags: TD3D11_CRYPTO_SESSION_KEY_EXCHANGE_FLAGS; DataSize: UINT; var pData: pointer): HResult; stdcall;
+    end;
+
+
+    PD3D11_VIDEO_DECODER_BUFFER_DESC2 = ^TD3D11_VIDEO_DECODER_BUFFER_DESC2;
+
+    TD3D11_VIDEO_DECODER_BUFFER_DESC2 = record
+        BufferType: TD3D11_VIDEO_DECODER_BUFFER_TYPE;
+        DataOffset: UINT;
+        DataSize: UINT;
+        pIV: pointer;
+        IVSize: UINT;
+        pSubSampleMappingBlock: PD3D11_VIDEO_DECODER_SUB_SAMPLE_MAPPING_BLOCK; // SubSampleMappingCount
+        SubSampleMappingCount: UINT;
+        cBlocksStripeEncrypted: UINT;
+        cBlocksStripeClear: UINT;
+    end;
+
+
+
+
+    ID3D11VideoContext3 = interface(ID3D11VideoContext2)
+        ['{A9E2FAA0-CB39-418F-A0B7-D8AAD4DE672E}']
+        function DecoderBeginFrame1(pDecoder: ID3D11VideoDecoder; pView: ID3D11VideoDecoderOutputView;
+            ContentKeySize: UINT; const pContentKey: Pointer; NumComponentHistograms: UINT; const pHistogramOffsets: PUINT;
+            const ppHistogramBuffers: PID3D11Buffer): HResult; stdcall;
+
+        function SubmitDecoderBuffers2(pDecoder: ID3D11VideoDecoder; NumBuffers: UINT;
+            const pBufferDesc: PD3D11_VIDEO_DECODER_BUFFER_DESC2 {array of NumBuffers}): HResult; stdcall;
+
+    end;
+
+
 implementation
 
 end.
-
-
-
-

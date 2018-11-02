@@ -66,7 +66,8 @@ type
 
     TDXGI_HDR_METADATA_TYPE = (
         DXGI_HDR_METADATA_TYPE_NONE = 0,
-        DXGI_HDR_METADATA_TYPE_HDR10 = 1
+        DXGI_HDR_METADATA_TYPE_HDR10 = 1,
+        DXGI_HDR_METADATA_TYPE_HDR10PLUS = 2
         );
 
     TDXGI_HDR_METADATA_HDR10 = record
@@ -80,6 +81,9 @@ type
         MaxFrameAverageLightLevel: UINT16;
     end;
 
+    TDXGI_HDR_METADATA_HDR10PLUS = record
+        Data: array [0.. 71] of byte;
+    end;
 
 
 

@@ -1,0 +1,93 @@
+unit DX12.DCompTypes;
+//---------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation. All rights reserved.
+//---------------------------------------------------------------------------
+
+interface
+
+uses
+    Windows, Classes, SysUtils,
+    DX12.DXGI,
+    DX12.DXGI1_5;
+
+
+//{$IF  (NTDDI_VERSION >= NTDDI_WIN8) }
+
+// Composition object specific access flags
+
+const
+    COMPOSITIONOBJECT_READ = $0001;
+    COMPOSITIONOBJECT_WRITE = $0002;
+
+    COMPOSITIONOBJECT_ALL_ACCESS = (COMPOSITIONOBJECT_READ or COMPOSITIONOBJECT_WRITE);
+
+type
+    // DirectComposition types
+
+
+    TDCOMPOSITION_BITMAP_INTERPOLATION_MODE = (
+        DCOMPOSITION_BITMAP_INTERPOLATION_MODE_NEAREST_NEIGHBOR = 0,
+        DCOMPOSITION_BITMAP_INTERPOLATION_MODE_LINEAR = 1,
+
+        DCOMPOSITION_BITMAP_INTERPOLATION_MODE_INHERIT = $ffffffff
+        );
+
+    TDCOMPOSITION_BORDER_MODE = (
+        DCOMPOSITION_BORDER_MODE_SOFT = 0,
+        DCOMPOSITION_BORDER_MODE_HARD = 1,
+
+        DCOMPOSITION_BORDER_MODE_INHERIT = $ffffffff
+        );
+
+    TDCOMPOSITION_COMPOSITE_MODE = (
+        DCOMPOSITION_COMPOSITE_MODE_SOURCE_OVER = 0,
+        DCOMPOSITION_COMPOSITE_MODE_DESTINATION_INVERT = 1,
+        //{$IF  (_WIN32_WINNT >= _WIN32_WINNT_WINBLUE) }
+        DCOMPOSITION_COMPOSITE_MODE_MIN_BLEND = 2,
+        //{$ENDIF}// (_WIN32_WINNT >= _WIN32_WINNT_WINBLUE)
+
+        DCOMPOSITION_COMPOSITE_MODE_INHERIT = $ffffffff
+        );
+
+    //{$IF  (_WIN32_WINNT >= _WIN32_WINNT_WINBLUE) }
+    TDCOMPOSITION_BACKFACE_VISIBILITY = (
+        DCOMPOSITION_BACKFACE_VISIBILITY_VISIBLE = 0,
+        DCOMPOSITION_BACKFACE_VISIBILITY_HIDDEN = 1,
+
+        DCOMPOSITION_BACKFACE_VISIBILITY_INHERIT = $ffffffff
+        );
+
+    TDCOMPOSITION_OPACITY_MODE = (
+        DCOMPOSITION_OPACITY_MODE_LAYER = 0,
+        DCOMPOSITION_OPACITY_MODE_MULTIPLY = 1,
+
+        DCOMPOSITION_OPACITY_MODE_INHERIT = $ffffffff
+        );
+    //{$ENDIF}// (_WIN32_WINNT >= _WIN32_WINNT_WINBLUE)
+
+    //{$IF  (_WIN32_WINNT >= _WIN32_WINNT_WINTHRESHOLD) }
+    TDCOMPOSITION_DEPTH_MODE = (
+        DCOMPOSITION_DEPTH_MODE_TREE = 0,
+        DCOMPOSITION_DEPTH_MODE_SPATIAL = 1,
+        DCOMPOSITION_DEPTH_MODE_SORTED = 3,
+
+        DCOMPOSITION_DEPTH_MODE_INHERIT = $ffffffff
+        );
+    //{$ENDIF}// (_WIN32_WINNT >= _WIN32_WINNT_WINTHRESHOLD)
+
+    TDCOMPOSITION_FRAME_STATISTICS = record
+        lastFrameTime: LARGE_INTEGER;
+        currentCompositionRate: TDXGI_RATIONAL;
+        currentTime: LARGE_INTEGER;
+        timeFrequency: LARGE_INTEGER;
+        nextEstimatedFrameTime: LARGE_INTEGER;
+    end;
+    PDCOMPOSITION_FRAME_STATISTICS = ^TDCOMPOSITION_FRAME_STATISTICS;
+
+//{$ENDIF}// NTDDI_WIN8
+
+
+implementation
+
+end.
+ 

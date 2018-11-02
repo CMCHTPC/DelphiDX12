@@ -1,0 +1,159 @@
+program Tut02;
+
+{$mode delphiunicode}
+
+uses {$IFDEF UNIX} {$IFDEF UseCThreads}
+    cthreads, {$ENDIF} {$ENDIF}
+    Interfaces, // this includes the adLCL widgetset
+    MultiMon,
+    Windows;
+
+{$R *.res}
+
+const
+    // name of the window (not the title)
+    WindowName: WideString = 'BzTutsApp';
+
+    // title of the window
+    WindowTitle: WideString = 'Bz Window';
+
+
+var
+    // Handle to the window
+    Handle: HWnd = 0;
+
+    // width and height of the window
+    Width: integer = 800;
+    Height: integer = 600;
+
+    // is window full screen?
+    FullScreen: boolean = False;
+
+
+
+    function WndProc(Handle: HWND; msg: UINT; wParam: WPARAM; lParam: LPARAM): LRESULT; stdcall;
+    begin
+        case (msg) of
+            WM_KEYDOWN:
+            begin
+                if (wParam = VK_ESCAPE) then
+                begin
+                    if (MessageBox(0, 'Are you sure you want to exit?', 'Really?', MB_YESNO or MB_ICONQUESTION) = idYes) then
+                        DestroyWindow(Handle);
+                end;
+                Result := 0;
+            end;
+
+            WM_DESTROY:
+            begin
+                PostQuitMessage(0);
+                Result := 0;
+            end
+            else
+                Result := DefWindowProc(Handle, msg, wParam, lParam);
+        end;
+    end;
+
+
+
+    function InitializeWindow(Instance: PtrUInt; ShowWnd: integer; Width: integer; Height: integer; fullscreen: boolean): boolean;
+    var
+        hMon: HMonitor;
+        mi: TMONITORINFO;
+        wc: WNDCLASSEXW;
+    begin
+        Result := False;
+        if (fullscreen) then
+        begin
+            hmon := MonitorFromWindow(Handle, MONITOR_DEFAULTTONEAREST);
+            mi.cbSize := sizeof(mi);
+            GetMonitorInfo(hmon, @mi);
+
+            Width := mi.rcMonitor.right - mi.rcMonitor.left;
+            Height := mi.rcMonitor.bottom - mi.rcMonitor.top;
+        end;
+
+
+
+        wc.cbSize := sizeof(WNDCLASSEXW);
+        wc.style := CS_HREDRAW or CS_VREDRAW;
+        wc.lpfnWndProc := @WndProc;
+        wc.cbClsExtra := 0;
+        wc.cbWndExtra := 0;
+        wc.hInstance := hInstance;
+        wc.hIcon := LoadIcon(0, IDI_APPLICATION);
+        wc.hCursor := LoadCursor(0, IDC_ARROW);
+        wc.hbrBackground := (COLOR_WINDOW + 2);
+        wc.lpszMenuName := nil;
+        wc.lpszClassName := PWideChar(WindowName);
+        wc.hIconSm := LoadIcon(0, IDI_APPLICATION);
+
+        if (RegisterClassExW(wc) = 0) then
+        begin
+            MessageBox(0, 'Error registering class',
+                'Error', MB_OK or MB_ICONERROR);
+            Exit;
+        end;
+
+        Handle := CreateWindowExW(0, PWideChar(WindowName), PWideChar(WindowTitle), WS_OVERLAPPEDWINDOW, CW_USEDEFAULT,
+            CW_USEDEFAULT, Width, Height, 0, 0, hInstance, nil);
+
+        if (Handle = 0) then
+        begin
+            MessageBox(0, 'Error creating window',
+                'Error', MB_OK or MB_ICONERROR);
+            Exit;
+        end;
+
+        if (fullscreen) then
+        begin
+            SetWindowLong(Handle, GWL_STYLE, 0);
+        end;
+
+        ShowWindow(Handle, ShowWnd);
+        UpdateWindow(Handle);
+
+        Result := True;
+    end;
+
+
+
+    procedure mainloop();
+    var
+        msg: TMSG;
+    begin
+
+        ZeroMemory(@msg, sizeof(MSG));
+
+        while (True) do
+        begin
+            if (PeekMessage(msg, 0, 0, 0, PM_REMOVE)) then
+            begin
+                if (msg.message = WM_QUIT) then
+                    break;
+
+                TranslateMessage(msg);
+                DispatchMessage(msg);
+            end
+            else
+            begin
+                // run game code
+            end;
+        end;
+    end;
+
+
+
+
+begin
+    // create the window
+    if (not InitializeWindow(hInstance, SW_SHOW, Width, Height, FullScreen)) then
+    begin
+        MessageBox(0, 'Window Initialization - Failed',
+            'Error', MB_OK);
+        Exit;
+    end;
+
+    // start the main loop
+    mainloop();
+end.

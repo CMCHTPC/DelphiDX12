@@ -258,7 +258,7 @@ type
 
     IDXGIAdapter2 = interface(IDXGIAdapter1)
         ['{0AA1AE0A-FA0E-4B84-8644-E05FF8E5ACB5}']
-        function GetDesc2(out pDesc: PDXGI_ADAPTER_DESC2): HResult; stdcall;
+        function GetDesc2(out pDesc: TDXGI_ADAPTER_DESC2): HResult; stdcall;
     end;
 
 

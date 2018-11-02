@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <PathDelim Value="\"/>
+    <Version Value="11"/>
+    <BuildModes Active="Default"/>
+    <Units Count="10">
+      <Unit0>
+        <Filename Value="Tut06.ppr"/>
+        <IsPartOfProject Value="True"/>
+        <IsVisibleTab Value="True"/>
+        <TopLine Value="527"/>
+        <CursorPos X="47" Y="535"/>
+        <UsageCount Value="27"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit0>
+      <Unit1>
+        <Filename Value="..\..\..\..\Units\DX12.D3D12.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="2412"/>
+        <CursorPos X="6" Y="2418"/>
+        <UsageCount Value="27"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit1>
+      <Unit2>
+        <Filename Value="..\..\..\..\..\DirectXMath\Units\DirectX.Math.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="401"/>
+        <CursorPos X="63" Y="403"/>
+        <UsageCount Value="27"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit2>
+      <Unit3>
+        <Filename Value="C:\temp\testingaunit.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="3"/>
+        <TopLine Value="27"/>
+        <CursorPos X="13" Y="33"/>
+        <UsageCount Value="27"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit3>
+      <Unit4>
+        <Filename Value="C:\FreePascal\laz\components\lazutils\utf8process.pp"/>
+        <UnitName Value="UTF8Process"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="533"/>
+        <CursorPos X="30" Y="546"/>
+        <UsageCount Value="9"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit4>
+      <Unit5>
+        <Filename Value="C:\FreePascal\fpc\Trunk\packages\fcl-process\src\process.pp"/>
+        <EditorIndex Value="8"/>
+        <CursorPos X="21" Y="47"/>
+        <UsageCount Value="13"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit5>
+      <Unit6>
+        <Filename Value="..\..\..\..\Units\format_test_dx12.d3dx12.pas"/>
+        <EditorIndex Value="6"/>
+        <TopLine Value="1310"/>
+        <CursorPos X="43" Y="1322"/>
+        <UsageCount Value="13"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit6>
+      <Unit7>
+        <Filename Value="C:\FreePascal\laz\components\jcf2\Parse\Tokens.pas"/>
+        <EditorIndex Value="7"/>
+        <TopLine Value="269"/>
+        <CursorPos X="18" Y="272"/>
+        <UsageCount Value="13"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit7>
+      <Unit8>
+        <Filename Value="C:\FreePascal\laz\components\jcf2\Parse\ParseTreeNode.pas"/>
+        <EditorIndex Value="4"/>
+        <TopLine Value="142"/>
+        <CursorPos X="18" Y="142"/>
+        <UsageCount Value="13"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit8>
+      <Unit9>
+        <Filename Value="C:\FreePascal\laz\components\jcf2\Parse\BuildParseTree.pas"/>
+        <EditorIndex Value="5"/>
+        <TopLine Value="5274"/>
+        <CursorPos Y="5289"/>
+        <UsageCount Value="13"/>
+        <Bookmarks Count="2">
+          <Item0 Y="5255"/>
+          <Item1 X="49" Y="2426" ID="1"/>
+        </Bookmarks>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit9>
+    </Units>
+    <JumpHistory Count="30" HistoryIndex="29">
+      <Position1>
+        <Filename Value="C:\FreePascal\laz\components\jcf2\Parse\BuildParseTree.pas"/>
+        <Caret Line="110" Column="41" TopLine="100"/>
+      </Position1>
+      <Position2>
+        <Filename Value="C:\FreePascal\laz\components\jcf2\Parse\BuildParseTree.pas"/>
+        <Caret Line="2193" Column="35" TopLine="2173"/>
+      </Position2>
+      <Position3>
+        <Filename Value="C:\FreePascal\laz\components\jcf2\Parse\BuildParseTree.pas"/>
+        <Caret Line="2435" Column="16" TopLine="2423"/>
+      </Position3>
+      <Position4>
+        <Filename Value="C:\FreePascal\laz\components\jcf2\Parse\BuildParseTree.pas"/>
+        <Caret Line="234" Column="19" TopLine="224"/>
+      </Position4>
+      <Position5>
+        <Filename Value="C:\FreePascal\laz\components\jcf2\Parse\BuildParseTree.pas"/>
+        <Caret Line="5271" Column="96" TopLine="5263"/>
+      </Position5>
+      <Position6>
+        <Filename Value="C:\FreePascal\laz\components\jcf2\Parse\BuildParseTree.pas"/>
+        <Caret Line="5268" Column="23" TopLine="5257"/>
+      </Position6>
+      <Position7>
+        <Filename Value="C:\FreePascal\laz\components\jcf2\Parse\BuildParseTree.pas"/>
+        <Caret Line="44" Column="28" TopLine="37"/>
+      </Position7>
+      <Position8>
+        <Filename Value="C:\FreePascal\laz\components\jcf2\Parse\BuildParseTree.pas"/>
+        <Caret Line="5252" TopLine="5246"/>
+      </Position8>
+      <Position9>
+        <Filename Value="C:\temp\testingaunit.pas"/>
+        <Caret Line="39" Column="42" TopLine="27"/>
+      </Position9>
+      <Position10>
+        <Filename Value="C:\FreePascal\laz\components\jcf2\Parse\BuildParseTree.pas"/>
+        <Caret Line="2436" Column="30" TopLine="2423"/>
+      </Position10>
+      <Position11>
+        <Filename Value="C:\FreePascal\laz\components\jcf2\Parse\BuildParseTree.pas"/>
+        <Caret Line="5286" Column="61" TopLine="5268"/>
+      </Position11>
+      <Position12>
+        <Filename Value="C:\FreePascal\laz\components\jcf2\Parse\BuildParseTree.pas"/>
+        <Caret Line="2454" Column="41" TopLine="2423"/>
+      </Position12>
+      <Position13>
+        <Filename Value="C:\FreePascal\laz\components\jcf2\Parse\BuildParseTree.pas"/>
+        <Caret Line="2441" Column="62" TopLine="2432"/>
+      </Position13>
+      <Position14>
+        <Filename Value="C:\FreePascal\laz\components\jcf2\Parse\BuildParseTree.pas"/>
+        <Caret Line="2426" Column="49" TopLine="2414"/>
+      </Position14>
+      <Position15>
+        <Filename Value="..\..\..\..\..\DirectXMath\Units\DirectX.Math.pas"/>
+        <Caret Line="403" Column="63" TopLine="401"/>
+      </Position15>
+      <Position16>
+        <Filename Value="Tut06.ppr"/>
+        <Caret Line="119" Column="55" TopLine="113"/>
+      </Position16>
+      <Position17>
+        <Filename Value="Tut06.ppr"/>
+        <Caret Line="184" Column="39" TopLine="180"/>
+      </Position17>
+      <Position18>
+        <Filename Value="Tut06.ppr"/>
+        <Caret Line="607" Column="39" TopLine="589"/>
+      </Position18>
+      <Position19>
+        <Filename Value="Tut06.ppr"/>
+        <Caret Line="248" Column="44" TopLine="193"/>
+      </Position19>
+      <Position20>
+        <Filename Value="Tut06.ppr"/>
+        <Caret Line="249" Column="48" TopLine="235"/>
+      </Position20>
+      <Position21>
+        <Filename Value="Tut06.ppr"/>
+        <Caret Line="600" Column="29" TopLine="589"/>
+      </Position21>
+      <Position22>
+        <Filename Value="Tut06.ppr"/>
+        <Caret Line="606" Column="85" TopLine="595"/>
+      </Position22>
+      <Position23>
+        <Filename Value="Tut06.ppr"/>
+        <Caret Line="609" Column="24" TopLine="595"/>
+      </Position23>
+      <Position24>
+        <Filename Value="Tut06.ppr"/>
+        <Caret Line="600" Column="7" TopLine="595"/>
+      </Position24>
+      <Position25>
+        <Filename Value="Tut06.ppr"/>
+        <Caret Line="360" Column="36" TopLine="349"/>
+      </Position25>
+      <Position26>
+        <Filename Value="..\..\..\..\Units\DX12.D3D12.pas"/>
+        <Caret Line="3225" Column="73" TopLine="3219"/>
+      </Position26>
+      <Position27>
+        <Filename Value="..\..\..\..\Units\DX12.D3D12.pas"/>
+        <Caret Line="4570" Column="30" TopLine="4553"/>
+      </Position27>
+      <Position28>
+        <Filename Value="..\..\..\..\Units\DX12.D3D12.pas"/>
+        <Caret Line="4" Column="70"/>
+      </Position28>
+      <Position29>
+        <Filename Value="..\..\..\..\Units\DX12.D3D12.pas"/>
+        <Caret Line="2418" Column="6" TopLine="2412"/>
+      </Position29>
+      <Position30>
+        <Filename Value="Tut06.ppr"/>
+        <Caret Line="360" Column="44" TopLine="348"/>
+      </Position30>
+    </JumpHistory>
+    <RunParams>
+      <FormatVersion Value="2"/>
+      <Modes Count="0" ActiveMode="default"/>
+    </RunParams>
+  </ProjectSession>
+</CONFIG>

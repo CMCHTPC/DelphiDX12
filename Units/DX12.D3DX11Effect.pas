@@ -133,7 +133,6 @@ type
         RSRasterizerState: byte;
 
         SOBuffers: byte;
-
         Predication: byte;
     end;
 
@@ -230,8 +229,6 @@ type
     end;
 
 
-
-type
     // Cannot use 'interface' as the QueryInterface, AddRef and Release methods are missing.
     {$IFDEF FPC}
     {$interfaces corba}
@@ -247,6 +244,12 @@ type
         function GetMemberName(Index: UINT32): LPCSTR; stdcall;
         function GetMemberSemantic(Index: UINT32): LPCSTR; stdcall;
     end;
+    {$interfaces com}
+    {$ELSE}
+    ID3DX11EffectType = class
+
+    end;
+    {$ENDIF}
 
     PID3DX11EffectType = ^ID3DX11EffectType;
 
@@ -276,6 +279,7 @@ type
 
 
     // Forward defines
+    {$IFDEF FPC}
     ID3DX11EffectScalarVariable = interface;
     ID3DX11EffectVectorVariable = interface;
     ID3DX11EffectMatrixVariable = interface;
@@ -292,8 +296,28 @@ type
     ID3DX11EffectDepthStencilVariable = interface;
     ID3DX11EffectRasterizerVariable = interface;
     ID3DX11EffectSamplerVariable = interface;
+    {$ELSE}
+    ID3DX11EffectScalarVariable = class;
+    ID3DX11EffectVectorVariable = class;
+    ID3DX11EffectMatrixVariable = class;
+    ID3DX11EffectStringVariable = class;
+    ID3DX11EffectClassInstanceVariable = class;
+    ID3DX11EffectInterfaceVariable = class;
+    ID3DX11EffectShaderResourceVariable = class;
+    ID3DX11EffectUnorderedAccessViewVariable = class;
+    ID3DX11EffectRenderTargetViewVariable = class;
+    ID3DX11EffectDepthStencilViewVariable = class;
+    ID3DX11EffectConstantBuffer = class;
+    ID3DX11EffectShaderVariable = class;
+    ID3DX11EffectBlendVariable = class;
+    ID3DX11EffectDepthStencilVariable = class;
+    ID3DX11EffectRasterizerVariable = class;
+    ID3DX11EffectSamplerVariable = class;
+    {$ENDIF}
 
-
+    // Cannot use 'interface' as the QueryInterface, AddRef and Release methods are missing.
+    {$IFDEF FPC}
+    {$interfaces corba}
     ID3DX11EffectVariable = interface
         ['{036A777D-B56E-4B25-B313-CC3DDAB71873}']
         // IUnknown
@@ -328,6 +352,12 @@ type
         function SetRawValue(pData: Pointer; ByteOffset: UINT32; ByteCount: UINT32): HResult; stdcall;
         function GetRawValue(out pData: Pointer; ByteOffset: UINT32; ByteCount: UINT32): HResult; stdcall;
     end;
+    {$interfaces com}
+    {$ELSE}
+    ID3DX11EffectVariable = class
+
+    end;
+    {$ENDIF}
 
 
 
@@ -336,6 +366,9 @@ type
     // ID3DX11EffectScalarVariable ////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////
 
+    // Cannot use 'interface' as the QueryInterface, AddRef and Release methods are missing.
+    {$IFDEF FPC}
+    {$interfaces corba}
     ID3DX11EffectScalarVariable = interface(ID3DX11EffectVariable)
         ['{921EF2E5-A65D-4E92-9FC6-4E9CC09A4ADE}']
         // IUnknown
@@ -344,27 +377,31 @@ type
         // ID3DX11EffectScalarVariable
         function SetFloat(Value: single): HResult; stdcall;
         function GetFloat(out pValue: single): HResult; stdcall;
-
         function SetFloatArray(pData: PSingle; Offset: UINT32; Count: UINT32): HResult; stdcall;
         function GetFloatArray(out pData: PSingle; Offset: UINT32; Count: UINT32): HResult; stdcall;
-
         function SetInt(Value: integer): HResult; stdcall;
         function GetInt(out pValue: integer): HResult; stdcall;
-
         function SetIntArray(pData: PInteger; Offset: UINT32; Count: UINT32): HResult; stdcall;
         function GetIntArray(out pData: PInteger; Offset: UINT32; Count: UINT32): HResult; stdcall;
-
         function SetBool(const Value: boolean): HResult; stdcall;
         function GetBool(out pValue: boolean): HResult; stdcall;
-
         function SetBoolArray(pData: PBoolean; Offset: UINT32; Count: UINT32): HResult; stdcall;
         function GetBoolArray(out pData: PBoolean; Offset: UINT32; Count: UINT32): HResult; stdcall;
     end;
+    {$interfaces com}
+    {$ELSE}
+    ID3DX11EffectScalarVariable = class(ID3DX11EffectVariable)
+
+    end;
+    {$ENDIF}
 
     //////////////////////////////////////////////////////////////////////////////
     // ID3DX11EffectVectorVariable ////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////
 
+    // Cannot use 'interface' as the QueryInterface, AddRef and Release methods are missing.
+    {$IFDEF FPC}
+    {$interfaces corba}
     ID3DX11EffectVectorVariable = interface(ID3DX11EffectVariable)
         ['{5E785D4A-D87B-48D8-B6E6-0F8CA7E7467A}']
         // IUnknown
@@ -387,6 +424,12 @@ type
         function GetIntVectorArray(out pData: PIntVector; Offset: UINT32; Count: UINT32): HResult; stdcall;
         function GetFloatVectorArray(out pData: PFloatVector; Offset: UINT32; Count: UINT32): HResult; stdcall;
     end;
+    {$interfaces com}
+    {$ELSE}
+    ID3DX11EffectVectorVariable = class(ID3DX11EffectVariable)
+
+    end;
+    {$ENDIF}
 
     PID3DX11EffectVectorVariable = ^ID3DX11EffectVectorVariable;
 
@@ -394,6 +437,9 @@ type
     // ID3DX11EffectMatrixVariable ////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////
 
+    // Cannot use 'interface' as the QueryInterface, AddRef and Release methods are missing.
+    {$IFDEF FPC}
+    {$interfaces corba}
     ID3DX11EffectMatrixVariable = interface(ID3DX11EffectVariable)
         ['{E1096CF4-C027-419A-8D86-D29173DC803E}']
         // IUnknown
@@ -418,6 +464,12 @@ type
         function SetMatrixTransposePointerArray(ppData: PSingle; Offset: UINT32; Count: UINT32): HResult; stdcall;
         function GetMatrixTransposePointerArray(out ppData: Psingle; Offset: UINT32; Count: UINT32): HResult; stdcall;
     end;
+    {$interfaces com}
+    {$ELSE}
+    ID3DX11EffectMatrixVariable = class(ID3DX11EffectVariable)
+
+    end;
+    {$ENDIF}
 
     PID3DX11EffectMatrixVariable = ^ID3DX11EffectMatrixVariable;
 
@@ -426,6 +478,9 @@ type
     // ID3DX11EffectStringVariable ////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////
 
+    // Cannot use 'interface' as the QueryInterface, AddRef and Release methods are missing.
+    {$IFDEF FPC}
+    {$interfaces corba}
     ID3DX11EffectStringVariable = interface(ID3DX11EffectVariable)
         ['{F355C818-01BE-4653-A7CC-60FFFEDDC76D}']
         // IUnknown
@@ -435,6 +490,12 @@ type
         function GetString(out ppString: PAnsiChar): HResult; stdcall;
         function GetStringArray(out ppStrings: PAnsiChar; Offset: UINT32; Count: UINT32): HResult; stdcall;
     end;
+    {$interfaces com}
+    {$ELSE}
+    ID3DX11EffectStringVariable = class(ID3DX11EffectVariable)
+
+    end;
+    {$ENDIF}
 
     PID3DX11EffectStringVariable = ^ID3DX11EffectStringVariable;
 
@@ -442,6 +503,9 @@ type
     // ID3DX11EffectClassInstanceVariable ////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////
 
+    // Cannot use 'interface' as the QueryInterface, AddRef and Release methods are missing.
+    {$IFDEF FPC}
+    {$interfaces corba}
     ID3DX11EffectClassInstanceVariable = interface(ID3DX11EffectVariable)
         ['{926A8053-2A39-4DB4-9BDE-CF649ADEBDC1}']
         // IUnknown
@@ -450,11 +514,20 @@ type
         // ID3DX11EffectClassInstanceVariable
         function GetClassInstance(out ppClassInstance: ID3D11ClassInstance): HResult; stdcall;
     end;
+    {$interfaces com}
+    {$ELSE}
+    ID3DX11EffectClassInstanceVariable = class(ID3DX11EffectVariable)
+
+    end;
+    {$ENDIF}
 
     //////////////////////////////////////////////////////////////////////////////
     // ID3DX11EffectInterfaceVariable ////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////
 
+    // Cannot use 'interface' as the QueryInterface, AddRef and Release methods are missing.
+    {$IFDEF FPC}
+    {$interfaces corba}
     ID3DX11EffectInterfaceVariable = interface(ID3DX11EffectVariable)
         ['{516C8CD8-1C80-40A4-B19B-0688792F11A5}']
         // IUnknown
@@ -464,6 +537,12 @@ type
         function SetClassInstance(pEffectClassInstance: ID3DX11EffectClassInstanceVariable): HResult; stdcall;
         function GetClassInstance(out ppEffectClassInstance: ID3DX11EffectClassInstanceVariable): HResult; stdcall;
     end;
+    {$interfaces com}
+    {$ELSE}
+    ID3DX11EffectInterfaceVariable = class(ID3DX11EffectVariable)
+
+    end;
+    {$ENDIF}
 
 
 
@@ -471,6 +550,9 @@ type
     // ID3DX11EffectShaderResourceVariable ////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////
 
+    // Cannot use 'interface' as the QueryInterface, AddRef and Release methods are missing.
+    {$IFDEF FPC}
+    {$interfaces corba}
     ID3DX11EffectShaderResourceVariable = interface(ID3DX11EffectVariable)
         ['{350DB233-BBE0-485C-9BFE-C0026B844F89}']
         // IUnknown
@@ -483,11 +565,20 @@ type
         function SetResourceArray(ppResources: PID3D11ShaderResourceView; Offset: UINT32; Count: UINT32): HResult; stdcall;
         function GetResourceArray(out ppResources: PID3D11ShaderResourceView; Offset: UINT32; Count: UINT32): HResult; stdcall;
     end;
+    {$interfaces com}
+    {$ELSE}
+    ID3DX11EffectShaderResourceVariable = class(ID3DX11EffectVariable)
+
+    end;
+    {$ENDIF}
 
     //////////////////////////////////////////////////////////////////////////////
     // ID3DX11EffectUnorderedAccessViewVariable ////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////
 
+    // Cannot use 'interface' as the QueryInterface, AddRef and Release methods are missing.
+    {$IFDEF FPC}
+    {$interfaces corba}
     ID3DX11EffectUnorderedAccessViewVariable = interface(ID3DX11EffectVariable)
         ['{79B4AC8C-870A-47D2-B05A-8BD5CC3EE6C9}']
         // IUnknown
@@ -500,6 +591,12 @@ type
         function SetUnorderedAccessViewArray(ppResources: PID3D11UnorderedAccessView; Offset: UINT32; Count: UINT32): HResult; stdcall;
         function GetUnorderedAccessViewArray(out ppResources: ID3D11UnorderedAccessView; Offset: UINT32; Count: UINT32): HResult; stdcall;
     end;
+    {$interfaces com}
+    {$ELSE}
+    ID3DX11EffectUnorderedAccessViewVariable = class(ID3DX11EffectVariable)
+
+    end;
+    {$ENDIF}
 
     //////////////////////////////////////////////////////////////////////////////
     // ID3DX11EffectRenderTargetViewVariable //////////////////////////////////////
@@ -507,6 +604,9 @@ type
 
 
 
+    // Cannot use 'interface' as the QueryInterface, AddRef and Release methods are missing.
+    {$IFDEF FPC}
+    {$interfaces corba}
     ID3DX11EffectRenderTargetViewVariable = interface(ID3DX11EffectVariable)
         ['{D5066909-F40C-43F8-9DB5-057C2A208552}']
         // IUnknown
@@ -519,11 +619,20 @@ type
         function SetRenderTargetArray(ppResources: PID3D11RenderTargetView; Offset: UINT32; Count: UINT32): HResult; stdcall;
         function GetRenderTargetArray(out ppResources: PID3D11RenderTargetView; Offset: UINT32; Count: UINT32): HResult; stdcall;
     end;
+    {$interfaces com}
+    {$ELSE}
+    ID3DX11EffectRenderTargetViewVariable = class(ID3DX11EffectVariable)
+
+    end;
+    {$ENDIF}
 
     //////////////////////////////////////////////////////////////////////////////
     // ID3DX11EffectDepthStencilViewVariable //////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////
 
+    // Cannot use 'interface' as the QueryInterface, AddRef and Release methods are missing.
+    {$IFDEF FPC}
+    {$interfaces corba}
     ID3DX11EffectDepthStencilViewVariable = interface(ID3DX11EffectVariable)
         ['{33C648AC-2E9E-4A2E-9CD6-DE31ACC5B347}']
         // IUnknown
@@ -536,13 +645,21 @@ type
         function SetDepthStencilArray(ppResources: PID3D11DepthStencilView; Offset: UINT32; Count: UINT32): HResult; stdcall;
         function GetDepthStencilArray(out ppResources: PID3D11DepthStencilView; Offset: UINT32; Count: UINT32): HResult; stdcall;
     end;
+    {$interfaces com}
+    {$ELSE}
+    ID3DX11EffectDepthStencilViewVariable = class(ID3DX11EffectVariable)
+
+    end;
+    {$ENDIF}
 
     //////////////////////////////////////////////////////////////////////////////
     // ID3DX11EffectConstantBuffer ////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////
 
 
-
+    // Cannot use 'interface' as the QueryInterface, AddRef and Release methods are missing.
+    {$IFDEF FPC}
+    {$interfaces corba}
     ID3DX11EffectConstantBuffer = interface(ID3DX11EffectVariable)
         ['{2CB6C733-82D2-4000-B3DA-6219D9A99BF2}']
         // IUnknown
@@ -557,6 +674,12 @@ type
         function UndoSetTextureBuffer(): HResult; stdcall;
         function GetTextureBuffer(out ppTextureBuffer: ID3D11ShaderResourceView): HResult; stdcall;
     end;
+    {$interfaces com}
+    {$ELSE}
+    ID3DX11EffectConstantBuffer = class(ID3DX11EffectVariable)
+
+    end;
+    {$ENDIF}
 
     PID3DX11EffectConstantBuffer = ^ID3DX11EffectConstantBuffer;
 
@@ -586,7 +709,9 @@ type
 
 
 
-
+    // Cannot use 'interface' as the QueryInterface, AddRef and Release methods are missing.
+    {$IFDEF FPC}
+    {$interfaces corba}
     ID3DX11EffectShaderVariable = interface(ID3DX11EffectVariable)
         ['{7508B344-020A-4EC7-9118-62CDD36C88D7}']
         // IUnknown
@@ -607,11 +732,20 @@ type
         function GetPatchConstantSignatureElementDesc(ShaderIndex: UINT32; Element: UINT32;
             out pDesc: TD3D11_SIGNATURE_PARAMETER_DESC): HResult; stdcall;
     end;
+    {$interfaces com}
+    {$ELSE}
+    ID3DX11EffectShaderVariable = class(ID3DX11EffectVariable)
+
+    end;
+    {$ENDIF}
 
     //////////////////////////////////////////////////////////////////////////////
     // ID3DX11EffectBlendVariable /////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////
 
+    // Cannot use 'interface' as the QueryInterface, AddRef and Release methods are missing.
+    {$IFDEF FPC}
+    {$interfaces corba}
     ID3DX11EffectBlendVariable = interface(ID3DX11EffectVariable)
         ['{D664F4D7-3B81-4805-B277-C1DF58C39F53}']
         // IUnknown
@@ -623,11 +757,20 @@ type
         function UndoSetBlendState(Index: UINT32): HResult; stdcall;
         function GetBackingStore(Index: UINT32; out pDesc: TD3D11_BLEND_DESC): HResult; stdcall;
     end;
+    {$interfaces com}
+    {$ELSE}
+    ID3DX11EffectBlendVariable = class(ID3DX11EffectVariable)
+
+    end;
+    {$ENDIF}
 
     //////////////////////////////////////////////////////////////////////////////
     // ID3DX11EffectDepthStencilVariable //////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////
 
+    // Cannot use 'interface' as the QueryInterface, AddRef and Release methods are missing.
+    {$IFDEF FPC}
+    {$interfaces corba}
     ID3DX11EffectDepthStencilVariable = interface(ID3DX11EffectVariable)
         ['{69B5751B-61A5-48E5-BD41-D93988111563}']
         // IUnknown
@@ -639,12 +782,21 @@ type
         function UndoSetDepthStencilState(Index: UINT32): HResult; stdcall;
         function GetBackingStore(Index: UINT32; out pDesc: TD3D11_DEPTH_STENCIL_DESC): HResult; stdcall;
     end;
+    {$interfaces com}
+    {$ELSE}
+    ID3DX11EffectDepthStencilVariable = class(ID3DX11EffectVariable)
+
+    end;
+    {$ENDIF}
 
 
     //////////////////////////////////////////////////////////////////////////////
     // ID3DX11EffectRasterizerVariable ////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////
 
+    // Cannot use 'interface' as the QueryInterface, AddRef and Release methods are missing.
+    {$IFDEF FPC}
+    {$interfaces corba}
     ID3DX11EffectRasterizerVariable = interface(ID3DX11EffectVariable)
         ['{53A262F6-5F74-4151-A132-E3DD19A62C9D}']
         // IUnknown
@@ -656,11 +808,20 @@ type
         function UndoSetRasterizerState(Index: UINT32): HResult; stdcall;
         function GetBackingStore(Index: UINT32; out pDesc: TD3D11_RASTERIZER_DESC): HResult; stdcall;
     end;
+    {$interfaces com}
+    {$ELSE}
+    ID3DX11EffectRasterizerVariable = class(ID3DX11EffectVariable)
+
+    end;
+    {$ENDIF}
 
     //////////////////////////////////////////////////////////////////////////////
     // ID3DX11EffectSamplerVariable ///////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////
 
+    // Cannot use 'interface' as the QueryInterface, AddRef and Release methods are missing.
+    {$IFDEF FPC}
+    {$interfaces corba}
     ID3DX11EffectSamplerVariable = interface(ID3DX11EffectVariable)
         ['{C6402E55-1095-4D95-8931-F92660513DD9}']
         // IUnknown
@@ -672,6 +833,12 @@ type
         function UndoSetSampler(Index: UINT32): HResult; stdcall;
         function GetBackingStore(Index: UINT32; out pDesc: TD3D11_SAMPLER_DESC): HResult; stdcall;
     end;
+    {$interfaces com}
+    {$ELSE}
+    ID3DX11EffectSamplerVariable = class(ID3DX11EffectVariable)
+
+    end;
+    {$ENDIF}
 
 
 
@@ -722,7 +889,10 @@ type
 
 
 
-    ID3DX11EffectPass = interface(IUnknown)
+    // Cannot use 'interface' as the QueryInterface, AddRef and Release methods are missing.
+    {$IFDEF FPC}
+    {$interfaces corba}
+    ID3DX11EffectPass = interface {(IUnknown)}
         ['{3437CEC4-4AC1-4D87-8916-F4BD5A41380C}']
         // IUnknown
 
@@ -744,6 +914,12 @@ type
 
         function ComputeStateBlockMask(var pStateBlockMask: TD3DX11_STATE_BLOCK_MASK): HResult; stdcall;
     end;
+    {$interfaces com}
+    {$ELSE}
+    ID3DX11EffectPass = class
+
+    end;
+    {$ENDIF}
 
 
     //////////////////////////////////////////////////////////////////////////////
@@ -763,7 +939,8 @@ type
     end;
 
 
-
+    {$IFDEF FPC}
+    {$interfaces corba}
     ID3DX11EffectTechnique = interface(IUnknown)
         ['{51198831-1F1D-4F47-BD76-41CB0835B1DE}']
         // IUnknown
@@ -780,6 +957,12 @@ type
 
         function ComputeStateBlockMask(var pStateBlockMask: TD3DX11_STATE_BLOCK_MASK): HResult; stdcall;
     end;
+    {$interfaces com}
+    {$ELSE}
+    ID3DX11EffectTechnique = class
+
+    end;
+    {$ENDIF}
 
 
     //////////////////////////////////////////////////////////////////////////////
@@ -799,7 +982,8 @@ type
     end;
 
 
-
+    {$IFDEF FPC}
+    {$interfaces corba}
     ID3DX11EffectGroup = interface(IUnknown)
         ['{03074acf-97de-485f-b201-cb775264afd6}']
         // IUnknown
@@ -814,6 +998,12 @@ type
         function GetTechniqueByIndex(Index: UINT32): ID3DX11EffectTechnique; stdcall;
         function GetTechniqueByName(Name: LPCSTR): ID3DX11EffectTechnique; stdcall;
     end;
+    {$interfaces com}
+    {$ELSE}
+    ID3DX11EffectGroup = class
+
+    end;
+    {$ENDIF}
 
     //////////////////////////////////////////////////////////////////////////////
     // ID3DX11Effect //////////////////////////////////////////////////////////////
@@ -836,44 +1026,54 @@ type
 
 
 
+    {$IFDEF FPC}
+    {$interfaces corba}
     ID3DX11Effect = interface
         ['{FA61CA24-E4BA-4262-9DB8-B132E8CAE319}']
         // IUnknown
 
         // ID3DX11Effect
         function IsValid(): boolean; stdcall;
-
         function GetDevice(out ppDevice: ID3D11Device): HResult; stdcall;
-
         function GetDesc(out pDesc: TD3DX11_EFFECT_DESC): HResult; stdcall;
-
         function GetConstantBufferByIndex(Index: UINT32): ID3DX11EffectConstantBuffer; stdcall;
         function GetConstantBufferByName(Name: LPCSTR): ID3DX11EffectConstantBuffer; stdcall;
-
         function GetVariableByIndex(Index: UINT32): ID3DX11EffectVariable; stdcall;
         function GetVariableByName(Name: LPCSTR): ID3DX11EffectVariable; stdcall;
         function GetVariableBySemantic(Semantic: LPCSTR): ID3DX11EffectVariable; stdcall;
-
         function GetGroupByIndex(Index: UINT32): ID3DX11EffectGroup; stdcall;
         function GetGroupByName(Name: LPCSTR): ID3DX11EffectGroup; stdcall;
-
         function GetTechniqueByIndex(Index: UINT32): ID3DX11EffectTechnique; stdcall;
         function GetTechniqueByName(Name: LPCSTR): ID3DX11EffectTechnique; stdcall;
-
         function GetClassLinkage(): ID3D11ClassLinkage; stdcall;
-
         function CloneEffect(Flags: UINT32; out ppClonedEffect: ID3DX11Effect): HResult; stdcall;
         function Optimize(): HResult; stdcall;
         function IsOptimized(): boolean; stdcall;
     end;
-
-
-
-
     {$interfaces com}
+    {$ELSE}
+     ID3DX11Effect  = class // Cannot use 'interface'
+        // IUnknown
+
+        // ID3DX11Effect
+        function IsValid(): boolean;  virtual; stdcall; abstract;
+        function GetDevice(out ppDevice: ID3D11Device): HResult;  virtual; stdcall; abstract;
+        function GetDesc(out pDesc: TD3DX11_EFFECT_DESC): HResult;  virtual; stdcall; abstract;
+        function GetConstantBufferByIndex(Index: UINT32): ID3DX11EffectConstantBuffer;  virtual; stdcall; abstract;
+        function GetConstantBufferByName(Name: LPCSTR): ID3DX11EffectConstantBuffer;  virtual; stdcall; abstract;
+        function GetVariableByIndex(Index: UINT32): ID3DX11EffectVariable; virtual; stdcall; abstract;
+        function GetVariableByName(Name: LPCSTR): ID3DX11EffectVariable; virtual; stdcall; abstract;
+        function GetVariableBySemantic(Semantic: LPCSTR): ID3DX11EffectVariable; virtual; stdcall; abstract;
+        function GetGroupByIndex(Index: UINT32): ID3DX11EffectGroup; virtual; stdcall; abstract;
+        function GetGroupByName(Name: LPCSTR): ID3DX11EffectGroup; virtual; stdcall; abstract;
+        function GetTechniqueByIndex(Index: UINT32): ID3DX11EffectTechnique; virtual; stdcall; abstract;
+        function GetTechniqueByName(Name: LPCSTR): ID3DX11EffectTechnique; virtual; stdcall; abstract;
+        function GetClassLinkage(): ID3D11ClassLinkage; virtual; stdcall; abstract;
+        function CloneEffect(Flags: UINT32; out ppClonedEffect: ID3DX11Effect): HResult; virtual; stdcall; abstract;
+        function Optimize(): HResult; virtual; stdcall; abstract;
+        function IsOptimized(): boolean; virtual; stdcall; abstract;
+    end;
     {$ENDIF}
-
-
 
 
 
