@@ -86,6 +86,10 @@ const
     D3D_COMPONENT_MASK_Z = 4;
     D3D_COMPONENT_MASK_W = 8;
 
+    D3D_TEXTURE_LAYOUT_ROW_MAJOR: TGUID = '{b5dc234f-72bb-4bec-9705-8cf258df6b6c}';
+    D3D_TEXTURE_LAYOUT_64KB_STANDARD_SWIZZLE: TGUID = '{4c0f29e3-3f5f-4d35-84c9-bc0983b62c28}';
+
+
 type
     TFloatArray4 = array [0..3] of single;
     TFloatArray3 = array [0..2] of single;
@@ -112,9 +116,11 @@ type
 
     Unsigned_Bits11 = 0 .. (1 shl 11) - 1;
     Unsigned_Bits12 = 0 .. (1 shl 12) - 1;
+    Unsigned_Bits13 = 0 .. (1 shl 13) - 1;
     Unsigned_Bits15 = 0 .. (1 shl 15) - 1;
     Unsigned_Bits25 = 0 .. (1 shl 25) - 1;
     Unsigned_Bits26 = 0 .. (1 shl 26) - 1;
+    Unsigned_Bits28 = 0 .. (1 shl 28) - 1;
 
     Unsigned_Bits30 = 0 .. (1 shl 30) - 1;
 

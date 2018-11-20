@@ -280,6 +280,7 @@ type
 
     // Forward defines
     {$IFDEF FPC}
+    {$interfaces corba}
     ID3DX11EffectScalarVariable = interface;
     ID3DX11EffectVectorVariable = interface;
     ID3DX11EffectMatrixVariable = interface;
@@ -296,6 +297,7 @@ type
     ID3DX11EffectDepthStencilVariable = interface;
     ID3DX11EffectRasterizerVariable = interface;
     ID3DX11EffectSamplerVariable = interface;
+    {$interfaces com}
     {$ELSE}
     ID3DX11EffectScalarVariable = class;
     ID3DX11EffectVectorVariable = class;

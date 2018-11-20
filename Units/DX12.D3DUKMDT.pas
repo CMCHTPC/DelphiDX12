@@ -11,6 +11,14 @@ interface
 uses
     Windows, Classes, SysUtils;
 
+const
+
+
+    // Defines the maximum number of context a particular command buffer can
+    // be broadcast to.
+
+    D3DDDI_MAX_BROADCAST_CONTEXT = 64;
+
 type
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////

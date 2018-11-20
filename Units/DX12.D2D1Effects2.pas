@@ -36,6 +36,21 @@ const
     CLSID_D2D1CrossFade: TGUID = '{12f575e8-4db1-485f-9a84-03a07dd3829f}';
     CLSID_D2D1Tint: TGUID = '{36312b17-f7dd-4014-915d-ffca768cf211}';
 
+    // The number of nits that sRGB or scRGB color space uses for SDR white, or
+    // floating point values of 1.0f. Note that this value is only constant when the
+    // color space uses scene-referred luminance, which is true for HDR content. If
+    // the color space uses display-referred luminance instead, then the SDR white
+    // level should be queried from the display.
+    D2D1_SCENE_REFERRED_SDR_WHITE_LEVEL = 80.0;
+
+    //{$IF NTDDI_VERSION >= NTDDI_WIN10_RS5}
+
+    CLSID_D2D1WhiteLevelAdjustment: TGUID = '{44a1cadb-6cdd-4818-8ff4-26c1cfe95bdb}';
+    CLSID_D2D1HdrToneMap: TGUID = '{7b0b748d-4610-4486-a90c-999d9a2e2b11}';
+
+//{$endif} // #if NTDDI_VERSION >= NTDDI_WIN10_RS5
+
+
 
 type
     TD2D1_CONTRAST_PROP = (
@@ -353,9 +368,58 @@ type
 // endif // #if NTDDI_VERSION >= NTDDI_WIN10_RS1
 
 
+    //{$if NTDDI_VERSION >= NTDDI_WIN10_RS5}
+
+    /// The enumeration of the White Level Adjustment effect's top level properties.
+    /// Effect description: This effect adjusts the white level of the source image by
+    /// multiplying the source image color by the ratio of the input and output white
+    /// levels. Input and output white levels are specified in nits.
+    TD2D1_WHITELEVELADJUSTMENT_PROP = (
+        /// Property Name: "InputWhiteLevel"
+        /// Property Type: FLOAT
+        D2D1_WHITELEVELADJUSTMENT_PROP_INPUT_WHITE_LEVEL = 0,
+        /// Property Name: "OutputWhiteLevel"
+        /// Property Type: FLOAT
+        D2D1_WHITELEVELADJUSTMENT_PROP_OUTPUT_WHITE_LEVEL = 1,
+        D2D1_WHITELEVELADJUSTMENT_PROP_FORCE_DWORD = $ffffffff
+        );
+    PD2D1_WHITELEVELADJUSTMENT_PROP = ^TD2D1_WHITELEVELADJUSTMENT_PROP;
+
+
+    /// The enumeration of the HDR Tone Map effect's top level properties.
+    /// Effect description: Adjusts the maximum luminance of the source image to fit
+    /// within the maximum output luminance supported. Input and output luminance values
+    /// are specified in nits. Note that the color space of the image is assumed to be
+    /// scRGB.
+    TD2D1_HDRTONEMAP_PROP = (
+        /// Property Name: "InputMaxLuminance"
+        /// Property Type: FLOAT
+        D2D1_HDRTONEMAP_PROP_INPUT_MAX_LUMINANCE = 0,
+        /// Property Name: "OutputMaxLuminance"
+        /// Property Type: FLOAT
+        D2D1_HDRTONEMAP_PROP_OUTPUT_MAX_LUMINANCE = 1,
+        /// Property Name: "DisplayMode"
+        /// Property Type: D2D1_HDRTONEMAP_DISPLAY_MODE
+        D2D1_HDRTONEMAP_PROP_DISPLAY_MODE = 2,
+        D2D1_HDRTONEMAP_PROP_FORCE_DWORD = $ffffffff
+        );
+    PD2D1_HDRTONEMAP_PROP = ^TD2D1_HDRTONEMAP_PROP;
+
+    TD2D1_HDRTONEMAP_DISPLAY_MODE = (
+        D2D1_HDRTONEMAP_DISPLAY_MODE_SDR = 0,
+        D2D1_HDRTONEMAP_DISPLAY_MODE_HDR = 1,
+        D2D1_HDRTONEMAP_DISPLAY_MODE_FORCE_DWORD = $ffffffff
+        );
+    PD2D1_HDRTONEMAP_DISPLAY_MODE = ^TD2D1_HDRTONEMAP_DISPLAY_MODE;
+
+//{$endif}
+
 implementation
 
 end.
+
+
+
 
 
 

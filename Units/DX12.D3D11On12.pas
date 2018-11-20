@@ -48,6 +48,7 @@ uses
 const
     D3D11_DLL = 'd3d11.dll';
     IID_ID3D11On12Device: TGUID = '{85611e73-70a9-490e-9614-a9e302777904}';
+    IID_ID3D11On12Device1: TGUID = '{bdb64df4-ea2f-4c70-b861-aaab1258bb5d}';
 
 type
     TD3D11_RESOURCE_FLAGS = record
@@ -64,6 +65,11 @@ type
             InState: TD3D12_RESOURCE_STATES; OutState: TD3D12_RESOURCE_STATES; const riid: TGUID; out ppResource11): HResult; stdcall;
         procedure ReleaseWrappedResources(ppResources: PID3D11Resource; NumResources: UINT); stdcall;
         procedure AcquireWrappedResources(ppResources: PID3D11Resource; NumResources: UINT); stdcall;
+    end;
+
+    ID3D11On12Device1 = interface(ID3D11On12Device)
+        ['{bdb64df4-ea2f-4c70-b861-aaab1258bb5d}']
+        function GetD3D12Device(const riid: TGUID; out ppvDevice): HRESULT; stdcall;
     end;
 
 
@@ -123,6 +129,8 @@ function D3D11On12CreateDevice(pDevice: IUnknown; Flags: UINT; pFeatureLevels: P
 implementation
 
 end.
+
+
 
 
 

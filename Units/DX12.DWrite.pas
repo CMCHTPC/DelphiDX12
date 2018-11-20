@@ -1153,7 +1153,9 @@ type
 
     TDWRITE_SHAPING_TEXT_PROPERTIES = {bitpacked} record
         isShapedAlone: Unsigned_Bits1;
-        reserved: Unsigned_Bits15;
+        reserved1: Unsigned_Bits1; // Reserved for use by shaping engine.
+        canBreakShapingAfter: Unsigned_Bits1;
+        reserved: Unsigned_Bits13;
     end;
 
     TDWRITE_SHAPING_GLYPH_PROPERTIES ={bitpacked}  record

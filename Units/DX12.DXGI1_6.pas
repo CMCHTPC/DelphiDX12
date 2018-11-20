@@ -13,6 +13,7 @@ const
     IID_IDXGIAdapter4: TGUID = '{3c8d99d1-4fbf-4181-a82c-af66bf7bd24e}';
     IID_IDXGIOutput6: TGUID = '{068346e8-aaec-4b84-add7-137f513f77a1}';
     IID_IDXGIFactory6: TGUID = '{c1b6694f-ff09-44a9-b03c-77900a0a1d17}';
+    IID_IDXGIFactory7: TGUID = '{a4966eed-76db-44da-84c1-ee9a7afb20a8}';
 
 type
 
@@ -100,6 +101,12 @@ type
     IDXGIFactory6 = interface(IDXGIFactory5)
         ['{c1b6694f-ff09-44a9-b03c-77900a0a1d17}']
         function EnumAdapterByGpuPreference(Adapter: UINT; GpuPreference: TDXGI_GPU_PREFERENCE; const riid: TGUID; out ppvAdapter): HRESULT; stdcall;
+    end;
+
+    IDXGIFactory7 = interface(IDXGIFactory6)
+        ['{a4966eed-76db-44da-84c1-ee9a7afb20a8}']
+        function RegisterAdaptersChangedEvent(hEvent: THANDLE; out pdwCookie: DWORD): HRESULT; stdcall;
+        function UnregisterAdaptersChangedEvent(dwCookie: DWORD): HRESULT; stdcall;
     end;
 
 

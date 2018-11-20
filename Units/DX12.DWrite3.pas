@@ -58,6 +58,7 @@ const
     IID_IDWriteFontSet2: TGUID = '{DC7EAD19-E54C-43AF-B2DA-4E2B79BA3F7F}';
     IID_IDWriteFontCollection3: TGUID = '{A4D055A6-F9E3-4E25-93B7-9E309F3AF8E9}';
     IID_IDWriteFactory7: TGUID = '{35D0E0B3-9076-4D2E-A016-A91B568A06B4}';
+    IID_IDWriteFontSet3: TGUID = '{7C073EF2-A7F4-4045-8C32-8AB8AE640F90}';
 
 const
     /// A font resource could not be accessed because it was remote. This can happen
@@ -890,6 +891,40 @@ type
 
 
 //{$endif} // NTDDI_VERSION >= NTDDI_WIN10_RS4
+
+    //{$if NTDDI_VERSION >= NTDDI_WIN10_RS5}
+
+    /// The font source type identifies the mechanism by which a font came to be included in a font set.
+    TDWRITE_FONT_SOURCE_TYPE = (
+        /// The font source is unknown or is not any of the other defined font source types.
+        DWRITE_FONT_SOURCE_TYPE_UNKNOWN,
+        /// The font source is a font file, which is installed for all users on the device.
+        DWRITE_FONT_SOURCE_TYPE_PER_MACHINE,
+        /// The font source is a font file, which is installed for the current user.
+        DWRITE_FONT_SOURCE_TYPE_PER_USER,
+        /// The font source is an APPX package, which includes one or more font files.
+        /// The font source name is the full name of the package.
+        DWRITE_FONT_SOURCE_TYPE_APPX_PACKAGE,
+        /// The font source is a font provider for downloadable fonts.
+        DWRITE_FONT_SOURCE_TYPE_REMOTE_FONT_PROVIDER);
+
+
+    IDWriteFontSet3 = interface(IDWriteFontSet2)
+        ['{7C073EF2-A7F4-4045-8C32-8AB8AE640F90}']
+        /// Gets the font source type of the specified font.
+        function GetFontSourceType(fontIndex: UINT32): TDWRITE_FONT_SOURCE_TYPE; stdcall;
+        /// Gets the length of the font source name for the specified font.
+        function GetFontSourceNameLength(listIndex: UINT32): UINT32; stdcall;
+        /// Copies the font source name for the specified font to an output array.
+        function GetFontSourceName(listIndex: UINT32; out stringBuffer: PWideChar; stringBufferSize: UINT32): HResult; stdcall;
+    end;
+
+
+
+
+
+
+//{$endif} // NTDDI_VERSION >= NTDDI_WIN10_RS5
 
 
 implementation
