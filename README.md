@@ -1,6 +1,6 @@
 # DelphiDX12
 DirectX 12 Headers for Delphi and FPC
-based on SDK 10.0.16299.0
+based on SDK 10.0.17763.0 SDK Oct 2018
 
 The files are available under Apache License, Version 2.0.
 You may obtain a copy of the License at
@@ -28,6 +28,7 @@ This header translation is  NOT based on the JSB headers
   compiler switch.
   Also FPC supports BITPACKED RECORDS.
 
-  The inline functions of the interfaces (which is a nice feature in C++ are
-  not translated in the moment cause I don't know how.
-  A INLINE directive would be a cool feature for FPC. We will look forward...
+  The inline functions of the interfaces are
+  translated to FPC in some headers (still some work todo).
+  FPC supports now helper classes for interface.
+  In Delphi you miss this feature. Maybe someday...
