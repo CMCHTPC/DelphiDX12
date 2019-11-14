@@ -2060,7 +2060,7 @@ type
         ['{a2296057-ea42-4099-983b-539fb6505426}']
         function GetSize(): TD2D1_SIZE_F; stdcall;
         function GetPixelSize(): TD2D1_SIZE_U; stdcall;
-        function GetPixelFormat(): TD2D1_PIXEL_FORMAT; stdcall;
+        procedure GetPixelSize(out pixelSize: TD2D1_SIZE_U); stdcall;
         procedure GetDpi(out dpiX: single; out dpiY: single); stdcall;
         //        function CopyFromBitmap( destPoint: PD2D1_POINT_2U; bitmap: ID2D1Bitmap;  srcRect: PD2D1_RECT_U): HResult; stdcall;  // <- funkt
         function CopyFromBitmap(const destPoint: PD2D1_POINT_2U; bitmap: ID2D1Bitmap; const srcRect: PD2D1_RECT_U): HResult;
