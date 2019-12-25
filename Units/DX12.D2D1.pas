@@ -2058,9 +2058,9 @@ type
 
     ID2D1Bitmap = interface(ID2D1Image)
         ['{a2296057-ea42-4099-983b-539fb6505426}']
-        function GetSize(): TD2D1_SIZE_F; stdcall;
-        procedure GetPixelSize(out pixelSize: TD2D1_SIZE_U); stdcall;
-        function GetPixelFormat(): TD2D1_PIXEL_FORMAT; stdcall;
+        procedure GetSize(out size: TD2D1_SIZE_F); stdcall;                    
+        procedure GetPixelSize(out pixelSize: TD2D1_SIZE_U); stdcall;          
+        procedure GetPixelFormat(out PixelFormat: TD2D1_PIXEL_FORMAT); stdcall;
         procedure GetDpi(out dpiX: single; out dpiY: single); stdcall;
         //        function CopyFromBitmap( destPoint: PD2D1_POINT_2U; bitmap: ID2D1Bitmap;  srcRect: PD2D1_RECT_U): HResult; stdcall;  // <- funkt
         function CopyFromBitmap(const destPoint: PD2D1_POINT_2U; bitmap: ID2D1Bitmap; const srcRect: PD2D1_RECT_U): HResult;
@@ -2975,7 +2975,7 @@ type
         function CreateColorContextFromWicColorContext(wicColorContext: IWICColorContext; out colorContext: ID2D1ColorContext): HResult; stdcall;
         function CreateBitmapFromDxgiSurface(surface: IDXGISurface; const bitmapProperties: TD2D1_BITMAP_PROPERTIES1;
             out bitmap: ID2D1Bitmap1): HResult; stdcall;
-        function CreateEffect(effectId: TGUID; out effect: ID2D1Effect): HResult; stdcall;
+        function CreateEffect(effectId: PGUID; out effect: ID2D1Effect): HResult; stdcall;
         function CreateGradientStopCollection(straightAlphaGradientStops: PD2D1_GRADIENT_STOP; straightAlphaGradientStopsCount: UINT32;
             preInterpolationSpace: TD2D1_COLOR_SPACE; postInterpolationSpace: TD2D1_COLOR_SPACE; bufferPrecision: TD2D1_BUFFER_PRECISION;
             extendMode: TD2D1_EXTEND_MODE; colorInterpolationMode: TD2D1_COLOR_INTERPOLATION_MODE;
