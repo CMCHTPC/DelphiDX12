@@ -308,7 +308,10 @@ type
         DXGI_MSG_IDXGIOutput_DuplicateOutput_PerMonitorDpiShimApplied,
         DXGI_MSG_IDXGIOutput_DuplicateOutput1_PerMonitorDpiRequired,
         DXGI_MSG_IDXGIFactory7_UnregisterAdaptersChangedEvent_CookieNotFound,
-    DXGI_MSG_IDXGIFactory_CreateSwapChain_LegacyBltModelSwapEffect,
+        DXGI_MSG_IDXGIFactory_CreateSwapChain_LegacyBltModelSwapEffect,
+        DXGI_MSG_IDXGISwapChain4_SetHDRMetaData_MetadataUnchanged,
+        DXGI_MSG_IDXGISwapChain_Present_11On12_Released_Resource,
+        DXGI_MSG_IDXGIFactory_CreateSwapChain_MultipleSwapchainRefToSurface_DeferredDtr,
 
         DXGI_MSG_Phone_IDXGIFactory_CreateSwapChain_NotForegroundWindow = 1000,
         DXGI_MSG_Phone_IDXGIFactory_CreateSwapChain_DISCARD_BufferCount,

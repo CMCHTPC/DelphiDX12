@@ -51,6 +51,22 @@ const
     IID_ID3D12VideoProcessor: TGUID = '{304FDB32-BEDE-410A-8545-943AC6A46138}';
     IID_ID3D12VideoDecodeCommandList: TGUID = '{3B60536E-AD29-4E64-A269-F853837E5E53}';
     IID_ID3D12VideoProcessCommandList: TGUID = '{AEB2543A-167F-4682-ACC8-D159ED4A6209}';
+        IID_ID3D12VideoDecodeCommandList1 : TGUID = '{D52F011B-B56E-453C-A05A-A7F311C8F472}';
+      IID_ID3D12VideoProcessCommandList1 : TGUID ='{542C5C4D-7596-434F-8C93-4EFA6766F267}';
+     IID_ID3D12VideoMotionEstimator : TGUID = '{33FDAE0E-098B-428F-87BB-34B695DE08F8}';
+  IID_ID3D12VideoMotionVectorHeap : TGUID ='{5BE17987-743A-4061-834B-23D22DAEA505}';
+ IID_ID3D12VideoDevice1 : TGUID ='{981611AD-A144-4C83-9890-F30E26D658AB}';
+  IID_ID3D12VideoEncodeCommandList : TGUID ='{8455293A-0CBD-4831-9B39-FBDBAB724723}';
+ IID_ID3D12VideoDecoder1 : TGUID ='{79A2E5FB-CCD2-469A-9FDE-195D10951F7E}';
+ IID_ID3D12VideoDecoderHeap1 : TGUID ='{DA1D98C5-539F-41B2-BF6B-1198A03B6D26}';
+IID_ID3D12VideoProcessor1 : TGUID ='{F3CFE615-553F-425C-86D8-EE8C1B1FB01C}';
+ IID_ID3D12VideoExtensionCommand : TGUID ='{554E41E8-AE8E-4A8C-B7D2-5B4F274A30E4}';
+  IID_ID3D12VideoDevice2 : TGUID ='{F019AC49-F838-4A95-9B17-579437C8F513}';
+   IID_ID3D12VideoDecodeCommandList2 : TGUID ='{6e120880-c114-4153-8036-d247051e1729}';
+ IID_ID3D12VideoProcessCommandList2 : TGUID ='{db525ae4-6ad6-473c-baa7-59b2e37082e4}';
+ IID_ID3D12VideoEncodeCommandList1 : TGUID ='{94971eca-2bdb-4769-88cf-3675ea757ebc}';
+
+
 
     D3D12_VIDEO_DECODE_PROFILE_MPEG2: TGUID = '{ee27417f-5e28-4e65-beea-1d26b508adc9}';
     D3D12_VIDEO_DECODE_PROFILE_MPEG1_AND_MPEG2: TGUID = '{86695f12-340e-4f04-9fd3-9253dd327460}';
@@ -67,6 +83,13 @@ const
     D3D12_VIDEO_DECODE_PROFILE_VP9: TGUID = '{463707f8-a1d0-4585-876d-83aa6d60b89e}';
     D3D12_VIDEO_DECODE_PROFILE_VP9_10BIT_PROFILE2: TGUID = '{a4c749ef-6ecf-48aa-8448-50a7a1165ff7}';
     D3D12_VIDEO_DECODE_PROFILE_VP8: TGUID = '{90b899ea-3a62-4705-88b3-8df04b2744e7}';
+
+    D3D12_VIDEO_DECODE_PROFILE_AV1_PROFILE0:                                         TGUID = '{b8be4ccb-cf53-46ba-8d59-d6b8a6da5d2a}';
+    D3D12_VIDEO_DECODE_PROFILE_AV1_PROFILE1:                                         TGUID = '{6936ff0f-45b1-4163-9cc1-646ef6946108}';
+    D3D12_VIDEO_DECODE_PROFILE_AV1_PROFILE2:                                         TGUID = '{0c5f2aa1-e541-4089-bb7b-98110a19d7c8}';
+    D3D12_VIDEO_DECODE_PROFILE_AV1_12BIT_PROFILE2:                                   TGUID = '{17127009-a00f-4ce1-994e-bf4081f6f3f0}';
+    D3D12_VIDEO_DECODE_PROFILE_AV1_12BIT_PROFILE2_420:                               TGUID = '{2d80bed6-9cac-4835-9e91-327bbc4f9ee8}';
+
 
 type
 
@@ -114,7 +137,22 @@ type
         D3D12_FEATURE_VIDEO_PROCESSOR_SIZE = 9,
         D3D12_FEATURE_VIDEO_DECODE_PROFILE_COUNT = 10,
         D3D12_FEATURE_VIDEO_DECODE_FORMAT_COUNT = 11,
-        D3D12_FEATURE_VIDEO_ARCHITECTURE = 17
+        D3D12_FEATURE_VIDEO_ARCHITECTURE = 17,
+        D3D12_FEATURE_VIDEO_DECODE_HISTOGRAM	= 18,
+        D3D12_FEATURE_VIDEO_FEATURE_AREA_SUPPORT	= 19,
+        D3D12_FEATURE_VIDEO_MOTION_ESTIMATOR	= 20,
+        D3D12_FEATURE_VIDEO_MOTION_ESTIMATOR_SIZE	= 21,
+        D3D12_FEATURE_VIDEO_EXTENSION_COMMAND_COUNT	= 22,
+        D3D12_FEATURE_VIDEO_EXTENSION_COMMANDS	= 23,
+        D3D12_FEATURE_VIDEO_EXTENSION_COMMAND_PARAMETER_COUNT	= 24,
+        D3D12_FEATURE_VIDEO_EXTENSION_COMMAND_PARAMETERS	= 25,
+        D3D12_FEATURE_VIDEO_EXTENSION_COMMAND_SUPPORT	= 26,
+        D3D12_FEATURE_VIDEO_EXTENSION_COMMAND_SIZE	= 27,
+        D3D12_FEATURE_VIDEO_DECODE_PROTECTED_RESOURCES	= 28,
+        D3D12_FEATURE_VIDEO_PROCESS_PROTECTED_RESOURCES	= 29,
+        D3D12_FEATURE_VIDEO_MOTION_ESTIMATOR_PROTECTED_RESOURCES	= 30,
+        D3D12_FEATURE_VIDEO_DECODER_HEAP_SIZE1	= 31,
+        D3D12_FEATURE_VIDEO_PROCESSOR_SIZE1	= 32
         );
 
     TD3D12_BITSTREAM_ENCRYPTION_TYPE = (
@@ -300,7 +338,8 @@ type
         D3D12_VIDEO_DECODE_STATUS_OK = 0,
         D3D12_VIDEO_DECODE_STATUS_CONTINUE = 1,
         D3D12_VIDEO_DECODE_STATUS_CONTINUE_SKIP_DISPLAY = 2,
-        D3D12_VIDEO_DECODE_STATUS_RESTART = 3
+        D3D12_VIDEO_DECODE_STATUS_RESTART = 3,
+        D3D12_VIDEO_DECODE_STATUS_RATE_EXCEEDED	= 4
         );
 
     TD3D12_VIDEO_DECODE_ARGUMENT_TYPE = (
@@ -412,6 +451,8 @@ type
         BitRate: UINT;
     end;
     PD3D12_QUERY_DATA_VIDEO_DECODE_STATISTICS = ^TD3D12_QUERY_DATA_VIDEO_DECODE_STATISTICS;
+
+
 
     TD3D12_VIDEO_DECODE_SUB_SAMPLE_MAPPING_BLOCK = record
         ClearSize: UINT;
@@ -674,6 +715,634 @@ type
         procedure WriteBufferImmediate(Count: UINT; const pParams: PD3D12_WRITEBUFFERIMMEDIATE_PARAMETER;
             const pModes: PD3D12_WRITEBUFFERIMMEDIATE_MODE); stdcall;
     end;
+
+
+
+TD3D12_VIDEO_DECODE_OUTPUT_HISTOGRAM=record
+     Offset:UINT64;
+    pBuffer:ID3D12Resource;
+    end;
+PD3D12_VIDEO_DECODE_OUTPUT_HISTOGRAM = ^TD3D12_VIDEO_DECODE_OUTPUT_HISTOGRAM;
+
+TD3D12_VIDEO_DECODE_CONVERSION_ARGUMENTS1 =record
+     Enable:BOOLean;
+    pReferenceTexture2D:ID3D12Resource;
+     ReferenceSubresource:UINT;
+     OutputColorSpace:TDXGI_COLOR_SPACE_TYPE;
+     DecodeColorSpace:TDXGI_COLOR_SPACE_TYPE;
+     OutputWidth:UINT;
+     OutputHeight:UINT;
+    end;
+PD3D12_VIDEO_DECODE_CONVERSION_ARGUMENTS1 = ^TD3D12_VIDEO_DECODE_CONVERSION_ARGUMENTS1;
+
+TD3D12_VIDEO_DECODE_OUTPUT_STREAM_ARGUMENTS1=record
+    pOutputTexture2D:ID3D12Resource;
+     OutputSubresource:UINT;
+     ConversionArguments:TD3D12_VIDEO_DECODE_CONVERSION_ARGUMENTS1;
+     Histograms: array[0..3 ] of TD3D12_VIDEO_DECODE_OUTPUT_HISTOGRAM;
+    end;
+PD3D12_VIDEO_DECODE_OUTPUT_STREAM_ARGUMENTS1 = ^TD3D12_VIDEO_DECODE_OUTPUT_STREAM_ARGUMENTS1;
+
+
+
+
+
+
+
+    ID3D12VideoDecodeCommandList1 = interface ( ID3D12VideoDecodeCommandList)
+    ['{D52F011B-B56E-453C-A05A-A7F311C8F472}']
+        procedure  DecodeFrame1(
+              pDecoder:ID3D12VideoDecoder;
+              const  pOutputArguments:TD3D12_VIDEO_DECODE_OUTPUT_STREAM_ARGUMENTS1;
+              const  pInputArguments:TD3D12_VIDEO_DECODE_INPUT_STREAM_ARGUMENTS); stdcall;
+
+    end;
+
+
+
+    TD3D12_VIDEO_PROCESS_INPUT_STREAM_ARGUMENTS1 =record
+         InputStream: array[0..1 ] of TD3D12_VIDEO_PROCESS_INPUT_STREAM;
+         Transform:TD3D12_VIDEO_PROCESS_TRANSFORM;
+         Flags:TD3D12_VIDEO_PROCESS_INPUT_STREAM_FLAGS;
+         RateInfo:TD3D12_VIDEO_PROCESS_INPUT_STREAM_RATE;
+         FilterLevels: array[0.. 31 ] of INT32;
+         AlphaBlending:TD3D12_VIDEO_PROCESS_ALPHA_BLENDING;
+         FieldType:TD3D12_VIDEO_FIELD_TYPE;
+        end;
+    PD3D12_VIDEO_PROCESS_INPUT_STREAM_ARGUMENTS1 = ^TD3D12_VIDEO_PROCESS_INPUT_STREAM_ARGUMENTS1;
+
+
+
+
+
+    ID3D12VideoProcessCommandList1 = interface ( ID3D12VideoProcessCommandList)
+    ['{542C5C4D-7596-434F-8C93-4EFA6766F267}']
+        procedure  ProcessFrames1(
+        pVideoProcessor:ID3D12VideoProcessor;
+              const  pOutputArguments:TD3D12_VIDEO_PROCESS_OUTPUT_STREAM_ARGUMENTS;
+             NumInputStreams:UINT;
+             const  pInputArguments {NumInputStreams}: PD3D12_VIDEO_PROCESS_INPUT_STREAM_ARGUMENTS1 ); stdcall;
+
+    end;
+
+
+ TD3D12_VIDEO_MOTION_ESTIMATOR_SEARCH_BLOCK_SIZE =(
+        D3D12_VIDEO_MOTION_ESTIMATOR_SEARCH_BLOCK_SIZE_8X8	= 0,
+        D3D12_VIDEO_MOTION_ESTIMATOR_SEARCH_BLOCK_SIZE_16X16	= 1
+    );
+
+TD3D12_VIDEO_MOTION_ESTIMATOR_SEARCH_BLOCK_SIZE_FLAGS =(
+        D3D12_VIDEO_MOTION_ESTIMATOR_SEARCH_BLOCK_SIZE_FLAG_NONE	= 0,
+        D3D12_VIDEO_MOTION_ESTIMATOR_SEARCH_BLOCK_SIZE_FLAG_8X8	= ( 1 shl ord(D3D12_VIDEO_MOTION_ESTIMATOR_SEARCH_BLOCK_SIZE_8X8) ) ,
+        D3D12_VIDEO_MOTION_ESTIMATOR_SEARCH_BLOCK_SIZE_FLAG_16X16	= ( 1 shl ord(D3D12_VIDEO_MOTION_ESTIMATOR_SEARCH_BLOCK_SIZE_16X16) )
+    );
+
+
+
+TD3D12_VIDEO_MOTION_ESTIMATOR_VECTOR_PRECISION =(
+        D3D12_VIDEO_MOTION_ESTIMATOR_VECTOR_PRECISION_QUARTER_PEL	= 0
+    );
+
+TD3D12_VIDEO_MOTION_ESTIMATOR_VECTOR_PRECISION_FLAGS  =(
+        D3D12_VIDEO_MOTION_ESTIMATOR_VECTOR_PRECISION_FLAG_NONE	= 0,
+        D3D12_VIDEO_MOTION_ESTIMATOR_VECTOR_PRECISION_FLAG_QUARTER_PEL	= ( 1 shl ord(D3D12_VIDEO_MOTION_ESTIMATOR_VECTOR_PRECISION_QUARTER_PEL) )
+    );
+
+
+TD3D12_FEATURE_DATA_VIDEO_FEATURE_AREA_SUPPORT =record
+     NodeIndex:UINT;
+     VideoDecodeSupport:BOOLean;
+     VideoProcessSupport:BOOLean;
+     VideoEncodeSupport:BOOLean;
+     end; 	PD3D12_FEATURE_DATA_VIDEO_FEATURE_AREA_SUPPORT = ^TD3D12_FEATURE_DATA_VIDEO_FEATURE_AREA_SUPPORT;
+
+TD3D12_FEATURE_DATA_VIDEO_MOTION_ESTIMATOR =record
+     NodeIndex:UINT;
+     InputFormat:TDXGI_FORMAT;
+     BlockSizeFlags:TD3D12_VIDEO_MOTION_ESTIMATOR_SEARCH_BLOCK_SIZE_FLAGS;
+     PrecisionFlags:TD3D12_VIDEO_MOTION_ESTIMATOR_VECTOR_PRECISION_FLAGS;
+     SizeRange:TD3D12_VIDEO_SIZE_RANGE;
+    end;  	PD3D12_FEATURE_DATA_VIDEO_MOTION_ESTIMATOR = ^TD3D12_FEATURE_DATA_VIDEO_MOTION_ESTIMATOR;
+
+TD3D12_FEATURE_DATA_VIDEO_MOTION_ESTIMATOR_SIZE=record
+     NodeIndex:UINT;
+     InputFormat:TDXGI_FORMAT;
+     BlockSize:TD3D12_VIDEO_MOTION_ESTIMATOR_SEARCH_BLOCK_SIZE;
+     Precision:TD3D12_VIDEO_MOTION_ESTIMATOR_VECTOR_PRECISION;
+     SizeRange:TD3D12_VIDEO_SIZE_RANGE;
+ _Protected:BOOLean;
+     MotionVectorHeapMemoryPoolL0Size:UINT64;
+     MotionVectorHeapMemoryPoolL1Size:UINT64;
+     MotionEstimatorMemoryPoolL0Size:UINT64;
+     MotionEstimatorMemoryPoolL1Size:UINT64;
+    end;  	PD3D12_FEATURE_DATA_VIDEO_MOTION_ESTIMATOR_SIZE = ^TD3D12_FEATURE_DATA_VIDEO_MOTION_ESTIMATOR_SIZE;
+
+TD3D12_VIDEO_MOTION_ESTIMATOR_DESC =record
+     NodeMask:UINT;
+     InputFormat:TDXGI_FORMAT;
+     BlockSize:TD3D12_VIDEO_MOTION_ESTIMATOR_SEARCH_BLOCK_SIZE;
+     Precision:TD3D12_VIDEO_MOTION_ESTIMATOR_VECTOR_PRECISION;
+     SizeRange :TD3D12_VIDEO_SIZE_RANGE;
+    end;  	PD3D12_VIDEO_MOTION_ESTIMATOR_DESC = ^TD3D12_VIDEO_MOTION_ESTIMATOR_DESC;
+
+
+
+
+
+
+
+    ID3D12VideoMotionEstimator = interface ( ID3D12Pageable)
+    ['{33FDAE0E-098B-428F-87BB-34B695DE08F8}']
+        function GetDesc( ): TD3D12_VIDEO_MOTION_ESTIMATOR_DESC; stdcall;
+
+        function GetProtectedResourceSession(
+            const riid :TGUID;
+            out  ppProtectedSession): HResult; stdcall;
+
+    end;
+
+
+
+TD3D12_VIDEO_MOTION_VECTOR_HEAP_DESC=record
+     NodeMask:UINT;
+     InputFormat:TDXGI_FORMAT;
+     BlockSize:TD3D12_VIDEO_MOTION_ESTIMATOR_SEARCH_BLOCK_SIZE;
+     Precision:TD3D12_VIDEO_MOTION_ESTIMATOR_VECTOR_PRECISION;
+     SizeRange:TD3D12_VIDEO_SIZE_RANGE;
+     end; 	PD3D12_VIDEO_MOTION_VECTOR_HEAP_DESC = ^TD3D12_VIDEO_MOTION_VECTOR_HEAP_DESC;
+
+
+
+
+
+
+
+
+    ID3D12VideoMotionVectorHeap = interface ( ID3D12Pageable )
+    ['{5BE17987-743A-4061-834B-23D22DAEA505}']
+        function GetDesc( ): TD3D12_VIDEO_MOTION_VECTOR_HEAP_DESC; stdcall;
+
+        function GetProtectedResourceSession(
+            const riid: TGUID;
+            out   ppProtectedSession): HResult; stdcall;
+
+    end;
+
+
+
+
+    ID3D12VideoDevice1 = interface ( ID3D12VideoDevice )
+    ['{981611AD-A144-4C83-9890-F30E26D658AB}']
+        function  CreateVideoMotionEstimator(
+              const  pDesc:TD3D12_VIDEO_MOTION_ESTIMATOR_DESC;
+               pProtectedResourceSession:ID3D12ProtectedResourceSession;
+            const riid: TGUID;
+            out   ppVideoMotionEstimator): HResult; stdcall;
+
+        function  CreateVideoMotionVectorHeap(
+              const  pDesc:TD3D12_VIDEO_MOTION_VECTOR_HEAP_DESC;
+               pProtectedResourceSession:ID3D12ProtectedResourceSession;
+            const riid: TGUID;
+            out  ppVideoMotionVectorHeap): HResult; stdcall;
+
+     end;
+
+
+
+TD3D12_RESOURCE_COORDINATE=record
+     X:UINT64;
+     Y:UINT;
+     Z:UINT;
+     SubresourceIndex:UINT;
+     end;
+PD3D12_RESOURCE_COORDINATE = ^TD3D12_RESOURCE_COORDINATE;
+
+TD3D12_VIDEO_MOTION_ESTIMATOR_OUTPUT=record
+     pMotionVectorHeap:ID3D12VideoMotionVectorHeap;
+     end; 	PD3D12_VIDEO_MOTION_ESTIMATOR_OUTPUT = ^TD3D12_VIDEO_MOTION_ESTIMATOR_OUTPUT;
+
+TD3D12_VIDEO_MOTION_ESTIMATOR_INPUT=record
+     pInputTexture2D:ID3D12Resource;
+     InputSubresourceIndex:UINT;
+     pReferenceTexture2D:ID3D12Resource;
+     ReferenceSubresourceIndex:UINT;
+     pHintMotionVectorHeap:ID3D12VideoMotionVectorHeap;
+     end;
+PD3D12_VIDEO_MOTION_ESTIMATOR_INPUT = ^TD3D12_VIDEO_MOTION_ESTIMATOR_INPUT;
+
+TD3D12_RESOLVE_VIDEO_MOTION_VECTOR_HEAP_OUTPUT=record
+     pMotionVectorTexture2D:ID3D12Resource;
+     MotionVectorCoordinate:TD3D12_RESOURCE_COORDINATE;
+     end; 	PD3D12_RESOLVE_VIDEO_MOTION_VECTOR_HEAP_OUTPUT = ^TD3D12_RESOLVE_VIDEO_MOTION_VECTOR_HEAP_OUTPUT;
+
+TD3D12_RESOLVE_VIDEO_MOTION_VECTOR_HEAP_INPUT=record
+     pMotionVectorHeap:ID3D12VideoMotionVectorHeap;
+     PixelWidth:UINT;
+     PixelHeight:UINT;
+    end; 	PD3D12_RESOLVE_VIDEO_MOTION_VECTOR_HEAP_INPUT = ^TD3D12_RESOLVE_VIDEO_MOTION_VECTOR_HEAP_INPUT;
+
+
+
+
+
+
+
+    ID3D12VideoEncodeCommandList = interface ( ID3D12CommandList  )
+    ['{8455293A-0CBD-4831-9B39-FBDBAB724723}']
+        function  Close(): HResult; stdcall;
+
+        function  Reset(
+            pAllocator : ID3D12CommandAllocator): HResult; stdcall;
+
+        procedure  ClearState(); stdcall;
+
+        procedure  ResourceBarrier(
+               NumBarriers:UINT;
+const  pBarriers {NumBarriers} : PD3D12_RESOURCE_BARRIER); stdcall;
+
+        procedure  DiscardResource(
+            pResource:ID3D12Resource;
+              const  pRegion :TD3D12_DISCARD_REGION); stdcall;
+
+        procedure  BeginQuery(
+               pQueryHeap:ID3D12QueryHeap;
+               _Type:TD3D12_QUERY_TYPE;
+               Index:UINT); stdcall;
+
+        procedure  EndQuery(
+pQueryHeap:ID3D12QueryHeap;
+               _Type:TD3D12_QUERY_TYPE;
+               Index:UINT); stdcall;
+
+        procedure  ResolveQueryData(
+               pQueryHeap:ID3D12QueryHeap;
+               _Type:TD3D12_QUERY_TYPE;
+               StartIndex:UINT;
+               NumQueries:UINT;
+               pDestinationBuffer:ID3D12Resource;
+               AlignedDestinationBufferOffset:UINT64); stdcall;
+
+        procedure  SetPredication(
+               pBuffer:ID3D12Resource;
+               AlignedBufferOffset:UINT64;
+               Operation:TD3D12_PREDICATION_OP); stdcall;
+
+        procedure  SetMarker(
+             Metadata:UINT;
+             const  pData {Size}: Pointer;
+             Size:UINT); stdcall;
+
+        procedure  BeginEvent(
+             Metadata:UINT;
+            const  pData {Size}: Pointer;
+             Size:UINT); stdcall;
+
+        procedure  EndEvent(); stdcall;
+
+        procedure  EstimateMotion(
+               pMotionEstimator:ID3D12VideoMotionEstimator;
+              const  pOutputArguments :TD3D12_VIDEO_MOTION_ESTIMATOR_OUTPUT;
+              const  pInputArguments :TD3D12_VIDEO_MOTION_ESTIMATOR_INPUT); stdcall;
+
+        procedure  ResolveMotionVectorHeap(
+            const  pOutputArguments:TD3D12_RESOLVE_VIDEO_MOTION_VECTOR_HEAP_OUTPUT;
+            const  pInputArguments:TD3D12_RESOLVE_VIDEO_MOTION_VECTOR_HEAP_INPUT); stdcall;
+
+        procedure  WriteBufferImmediate(
+             Count:UINT;
+             const  pParams {Count} :PD3D12_WRITEBUFFERIMMEDIATE_PARAMETER;
+             const  pModes {Count}: PD3D12_WRITEBUFFERIMMEDIATE_MODE); stdcall;
+
+        procedure  SetProtectedResourceSession(
+               pProtectedResourceSession:ID3D12ProtectedResourceSession); stdcall;
+
+    end;
+
+
+
+TD3D12_VIDEO_PROTECTED_RESOURCE_SUPPORT_FLAGS=(
+        D3D12_VIDEO_PROTECTED_RESOURCE_SUPPORT_FLAG_NONE	= 0,
+        D3D12_VIDEO_PROTECTED_RESOURCE_SUPPORT_FLAG_SUPPORTED	= $1
+    );
+
+
+
+TD3D12_FEATURE_DATA_VIDEO_DECODE_PROTECTED_RESOURCES=record
+     NodeIndex:UINT;
+     Configuration:TD3D12_VIDEO_DECODE_CONFIGURATION;
+     SupportFlags:TD3D12_VIDEO_PROTECTED_RESOURCE_SUPPORT_FLAGS;
+     end; 	PD3D12_FEATURE_DATA_VIDEO_DECODE_PROTECTED_RESOURCES = ^TD3D12_FEATURE_DATA_VIDEO_DECODE_PROTECTED_RESOURCES;
+
+TD3D12_FEATURE_DATA_VIDEO_PROCESS_PROTECTED_RESOURCES=record
+     NodeIndex:UINT;
+     SupportFlags:TD3D12_VIDEO_PROTECTED_RESOURCE_SUPPORT_FLAGS;
+     end; 	PD3D12_FEATURE_DATA_VIDEO_PROCESS_PROTECTED_RESOURCES = ^TD3D12_FEATURE_DATA_VIDEO_PROCESS_PROTECTED_RESOURCES;
+
+TD3D12_FEATURE_DATA_VIDEO_MOTION_ESTIMATOR_PROTECTED_RESOURCES=record
+     NodeIndex:UINT;
+     SupportFlags:TD3D12_VIDEO_PROTECTED_RESOURCE_SUPPORT_FLAGS;
+     end; 	PD3D12_FEATURE_DATA_VIDEO_MOTION_ESTIMATOR_PROTECTED_RESOURCES = ^TD3D12_FEATURE_DATA_VIDEO_MOTION_ESTIMATOR_PROTECTED_RESOURCES;
+
+TD3D12_FEATURE_DATA_VIDEO_DECODER_HEAP_SIZE1=record
+     VideoDecoderHeapDesc:TD3D12_VIDEO_DECODER_HEAP_DESC;
+     _Protected: BOOLean;
+     MemoryPoolL0Size:UINT64;
+     MemoryPoolL1Size:UINT64;
+     end; 	PD3D12_FEATURE_DATA_VIDEO_DECODER_HEAP_SIZE1 = ^TD3D12_FEATURE_DATA_VIDEO_DECODER_HEAP_SIZE1;
+
+TD3D12_FEATURE_DATA_VIDEO_PROCESSOR_SIZE1=record
+     NodeMask:UINT;
+    pOutputStreamDesc :PD3D12_VIDEO_PROCESS_OUTPUT_STREAM_DESC;
+     NumInputStreamDescs:UINT;
+     pInputStreamDescs :PD3D12_VIDEO_PROCESS_INPUT_STREAM_DESC;
+     _Protected:BOOLean;
+     MemoryPoolL0Size:UINT64;
+     MemoryPoolL1Size:UINT64;
+     end;
+PD3D12_FEATURE_DATA_VIDEO_PROCESSOR_SIZE1 = ^TD3D12_FEATURE_DATA_VIDEO_PROCESSOR_SIZE1;
+
+
+TD3D12_VIDEO_EXTENSION_COMMAND_PARAMETER_STAGE=(
+        D3D12_VIDEO_EXTENSION_COMMAND_PARAMETER_STAGE_CREATION	= 0,
+        D3D12_VIDEO_EXTENSION_COMMAND_PARAMETER_STAGE_INITIALIZATION	= 1,
+        D3D12_VIDEO_EXTENSION_COMMAND_PARAMETER_STAGE_EXECUTION	= 2,
+        D3D12_VIDEO_EXTENSION_COMMAND_PARAMETER_STAGE_CAPS_INPUT	= 3,
+        D3D12_VIDEO_EXTENSION_COMMAND_PARAMETER_STAGE_CAPS_OUTPUT	= 4,
+        D3D12_VIDEO_EXTENSION_COMMAND_PARAMETER_STAGE_DEVICE_EXECUTE_INPUT	= 5,
+        D3D12_VIDEO_EXTENSION_COMMAND_PARAMETER_STAGE_DEVICE_EXECUTE_OUTPUT	= 6
+    );
+
+TD3D12_VIDEO_EXTENSION_COMMAND_PARAMETER_TYPE =(
+        D3D12_VIDEO_EXTENSION_COMMAND_PARAMETER_TYPE_UINT8	= 0,
+        D3D12_VIDEO_EXTENSION_COMMAND_PARAMETER_TYPE_UINT16	= 1,
+        D3D12_VIDEO_EXTENSION_COMMAND_PARAMETER_TYPE_UINT32	= 2,
+        D3D12_VIDEO_EXTENSION_COMMAND_PARAMETER_TYPE_UINT64	= 3,
+        D3D12_VIDEO_EXTENSION_COMMAND_PARAMETER_TYPE_SINT8	= 4,
+        D3D12_VIDEO_EXTENSION_COMMAND_PARAMETER_TYPE_SINT16	= 5,
+        D3D12_VIDEO_EXTENSION_COMMAND_PARAMETER_TYPE_SINT32	= 6,
+        D3D12_VIDEO_EXTENSION_COMMAND_PARAMETER_TYPE_SINT64	= 7,
+        D3D12_VIDEO_EXTENSION_COMMAND_PARAMETER_TYPE_FLOAT	= 8,
+        D3D12_VIDEO_EXTENSION_COMMAND_PARAMETER_TYPE_DOUBLE	= 9,
+        D3D12_VIDEO_EXTENSION_COMMAND_PARAMETER_TYPE_RESOURCE	= 10
+    );
+
+TD3D12_VIDEO_EXTENSION_COMMAND_PARAMETER_FLAGS =(
+        D3D12_VIDEO_EXTENSION_COMMAND_PARAMETER_FLAG_NONE	= 0,
+        D3D12_VIDEO_EXTENSION_COMMAND_PARAMETER_FLAG_READ	= $1,
+        D3D12_VIDEO_EXTENSION_COMMAND_PARAMETER_FLAG_WRITE	= $2
+    );
+
+
+
+TD3D12_FEATURE_DATA_VIDEO_EXTENSION_COMMAND_COUNT=record
+     NodeIndex:UINT;
+     CommandCount:UINT;
+     end;	PD3D12_FEATURE_DATA_VIDEO_EXTENSION_COMMAND_COUNT = ^TD3D12_FEATURE_DATA_VIDEO_EXTENSION_COMMAND_COUNT;
+
+TD3D12_VIDEO_EXTENSION_COMMAND_INFO=record
+     CommandId:TGUID;
+     Name:LPCWSTR;
+     CommandListSupportFlags:TD3D12_COMMAND_LIST_SUPPORT_FLAGS;
+     end;
+     PD3D12_VIDEO_EXTENSION_COMMAND_INFO = ^TD3D12_VIDEO_EXTENSION_COMMAND_INFO;
+
+TD3D12_FEATURE_DATA_VIDEO_EXTENSION_COMMANDS=record
+     NodeIndex:UINT;
+     CommandCount:UINT;
+     pCommandInfos {CommandCount} :PD3D12_VIDEO_EXTENSION_COMMAND_INFO;
+     end;
+PD3D12_FEATURE_DATA_VIDEO_EXTENSION_COMMANDS = ^TD3D12_FEATURE_DATA_VIDEO_EXTENSION_COMMANDS;
+
+TD3D12_FEATURE_DATA_VIDEO_EXTENSION_COMMAND_PARAMETER_COUNT =record
+     CommandId:TGUID;
+     Stage:TD3D12_VIDEO_EXTENSION_COMMAND_PARAMETER_STAGE;
+     ParameterCount:UINT;
+     ParameterPacking:UINT;
+     end;
+PD3D12_FEATURE_DATA_VIDEO_EXTENSION_COMMAND_PARAMETER_COUNT = ^TD3D12_FEATURE_DATA_VIDEO_EXTENSION_COMMAND_PARAMETER_COUNT;
+
+TD3D12_VIDEO_EXTENSION_COMMAND_PARAMETER_INFO =record
+     Name:LPCWSTR;
+     _Type:TD3D12_VIDEO_EXTENSION_COMMAND_PARAMETER_TYPE;
+     Flags:TD3D12_VIDEO_EXTENSION_COMMAND_PARAMETER_FLAGS;
+     end;
+PD3D12_VIDEO_EXTENSION_COMMAND_PARAMETER_INFO = ^TD3D12_VIDEO_EXTENSION_COMMAND_PARAMETER_INFO;
+
+
+TD3D12_FEATURE_DATA_VIDEO_EXTENSION_COMMAND_PARAMETERS=record
+     CommandId:TGUID;
+     Stage:TD3D12_VIDEO_EXTENSION_COMMAND_PARAMETER_STAGE;
+     ParameterCount:UINT;
+     pParameterInfos {ParameterCount} : PD3D12_VIDEO_EXTENSION_COMMAND_PARAMETER_INFO;
+     end;
+PD3D12_FEATURE_DATA_VIDEO_EXTENSION_COMMAND_PARAMETERS = ^TD3D12_FEATURE_DATA_VIDEO_EXTENSION_COMMAND_PARAMETERS;
+
+TD3D12_FEATURE_DATA_VIDEO_EXTENSION_COMMAND_SUPPORT=record
+     NodeIndex:UINT;
+     CommandId:TGUID;
+     pInputData {InputDataSizeInBytes}:Pointer;
+     InputDataSizeInBytes:SIZE_T;
+     pOutputData {OutputDataSizeInBytes} :pointer;
+     OutputDataSizeInBytes:SIZE_T;
+     end;
+PD3D12_FEATURE_DATA_VIDEO_EXTENSION_COMMAND_SUPPORT = ^TD3D12_FEATURE_DATA_VIDEO_EXTENSION_COMMAND_SUPPORT;
+
+TD3D12_FEATURE_DATA_VIDEO_EXTENSION_COMMAND_SIZE=record
+     NodeIndex:UINT;
+     CommandId:TGUID;
+     pCreationParameters {CreationParametersDataSizeInBytes} : Pointer;
+     CreationParametersSizeInBytes:SIZE_T;
+     MemoryPoolL0Size:UINT64;
+     MemoryPoolL1Size:UINT64;
+     end;
+PD3D12_FEATURE_DATA_VIDEO_EXTENSION_COMMAND_SIZE = ^TD3D12_FEATURE_DATA_VIDEO_EXTENSION_COMMAND_SIZE;
+
+TD3D12_VIDEO_EXTENSION_COMMAND_DESC =record
+     NodeMask:UINT;
+     CommandId:TGUID;
+    end;
+PD3D12_VIDEO_EXTENSION_COMMAND_DESC = ^TD3D12_VIDEO_EXTENSION_COMMAND_DESC;
+
+
+
+
+
+
+
+    ID3D12VideoDecoder1 = interface ( ID3D12VideoDecoder  )
+    ['{79A2E5FB-CCD2-469A-9FDE-195D10951F7E}']
+        function  GetProtectedResourceSession(
+            const riid :TGUID;
+            out  ppProtectedSession): HResult; stdcall;
+
+    end;
+
+
+
+
+
+
+
+
+    ID3D12VideoDecoderHeap1 = interface ( ID3D12VideoDecoderHeap)
+    ['{DA1D98C5-539F-41B2-BF6B-1198A03B6D26}']
+        function  GetProtectedResourceSession(
+            const riid :TGUID;
+            out   ppProtectedSession): HResult; stdcall;
+
+    end;
+
+
+
+
+
+
+
+
+    ID3D12VideoProcessor1 = interface ( ID3D12VideoProcessor)
+    ['{F3CFE615-553F-425C-86D8-EE8C1B1FB01C}']
+        function  GetProtectedResourceSession(
+            const riid :TGUID;
+            out   ppProtectedSession): HResult; stdcall;
+
+    end;
+
+
+
+
+
+    ID3D12VideoExtensionCommand = interface ( ID3D12Pageable )
+    ['{554E41E8-AE8E-4A8C-B7D2-5B4F274A30E4}']
+        function GetDesc(): TD3D12_VIDEO_EXTENSION_COMMAND_DESC; stdcall;
+
+        function  GetProtectedResourceSession(
+            const riid :TGUID;
+            out   ppProtectedSession): HResult; stdcall;
+
+    end;
+
+
+
+
+
+
+
+
+
+    ID3D12VideoDevice2 = interface ( ID3D12VideoDevice1)
+    ['{F019AC49-F838-4A95-9B17-579437C8F513}']
+        function  CreateVideoDecoder1(
+              const  pDesc:TD3D12_VIDEO_DECODER_DESC;
+               pProtectedResourceSession:ID3D12ProtectedResourceSession;
+            const riid: TGUID;
+            out   ppVideoDecoder): HResult; stdcall;
+
+        function  CreateVideoDecoderHeap1(
+              const  pVideoDecoderHeapDesc:TD3D12_VIDEO_DECODER_HEAP_DESC;
+               pProtectedResourceSession:ID3D12ProtectedResourceSession;
+            const riid: TGUID;
+            out   ppVideoDecoderHeap): HResult; stdcall;
+
+        function  CreateVideoProcessor1(
+             NodeMask:UINT;
+              const  pOutputStreamDesc:TD3D12_VIDEO_PROCESS_OUTPUT_STREAM_DESC;
+             NumInputStreamDescs:UINT;
+             const  pInputStreamDescs {NumInputStreamDescs}: PD3D12_VIDEO_PROCESS_INPUT_STREAM_DESC;
+               pProtectedResourceSession:ID3D12ProtectedResourceSession;
+            const riid: TGUID;
+            out   ppVideoProcessor): HResult; stdcall;
+
+        function  CreateVideoExtensionCommand(
+              const  pDesc:TD3D12_VIDEO_EXTENSION_COMMAND_DESC;
+              const pCreationParameters {CreationParametersDataSizeInBytes}: Pointer;
+             CreationParametersDataSizeInBytes:SIZE_T;
+               pProtectedResourceSession:ID3D12ProtectedResourceSession;
+            const riid: TGUID;
+            out   ppVideoExtensionCommand): HResult; stdcall;
+
+        function  ExecuteExtensionCommand(
+               pExtensionCommand:ID3D12VideoExtensionCommand;
+               const pExecutionParameters {ExecutionParametersSizeInBytes}: Pointer;
+             ExecutionParametersSizeInBytes:SIZE_T;
+            out pOutputData {OutputDataSizeInBytes}: Pointer;
+             OutputDataSizeInBytes:SIZE_T): HResult; stdcall;
+
+    end;
+
+
+
+
+
+
+
+    ID3D12VideoDecodeCommandList2 = interface ( ID3D12VideoDecodeCommandList1)
+    ['{6e120880-c114-4153-8036-d247051e1729}']
+        procedure  SetProtectedResourceSession(
+               pProtectedResourceSession:ID3D12ProtectedResourceSession); stdcall;
+
+        procedure  InitializeExtensionCommand(
+               pExtensionCommand:ID3D12VideoExtensionCommand;
+               const pInitializationParameters {InitializationParametersSizeInBytes}: pointer;
+             InitializationParametersSizeInBytes:SIZE_T); stdcall;
+
+        procedure  ExecuteExtensionCommand(
+               pExtensionCommand:ID3D12VideoExtensionCommand;
+                const pExecutionParameters {ExecutionParametersSizeInBytes}: pointer;
+             ExecutionParametersSizeInBytes:SIZE_T); stdcall;
+
+     end;
+
+
+
+
+
+
+    ID3D12VideoProcessCommandList2 = interface ( ID3D12VideoProcessCommandList1)
+    ['{db525ae4-6ad6-473c-baa7-59b2e37082e4}']
+        procedure  SetProtectedResourceSession(
+               pProtectedResourceSession:ID3D12ProtectedResourceSession); stdcall;
+
+        procedure  InitializeExtensionCommand(
+               pExtensionCommand:ID3D12VideoExtensionCommand;
+            const pInitializationParameters {InitializationParametersSizeInBytes}: pointer;
+             InitializationParametersSizeInBytes:SIZE_T); stdcall;
+
+        procedure  ExecuteExtensionCommand(
+               pExtensionCommand:ID3D12VideoExtensionCommand;
+               const pExecutionParameters {ExecutionParametersSizeInBytes}: pointer;
+             ExecutionParametersSizeInBytes:SIZE_T); stdcall;
+
+     end;
+
+
+
+
+
+
+
+
+        ID3D12VideoEncodeCommandList1 = interface ( ID3D12VideoEncodeCommandList)
+        ['{94971eca-2bdb-4769-88cf-3675ea757ebc}']
+            procedure  InitializeExtensionCommand(
+                   pExtensionCommand:ID3D12VideoExtensionCommand;
+                   const pInitializationParameters {InitializationParametersSizeInBytes}: pointer;
+                 InitializationParametersSizeInBytes:SIZE_T); stdcall;
+
+            procedure  ExecuteExtensionCommand(
+                   pExtensionCommand:ID3D12VideoExtensionCommand;
+                   const pExecutionParameters {ExecutionParametersSizeInBytes}: pointer;
+                 ExecutionParametersSizeInBytes:SIZE_T); stdcall;
+
+        end;
+
+
+
+
+
+
+
+
+
 
 
 implementation

@@ -49,6 +49,7 @@ const
     D3D11_DLL = 'd3d11.dll';
     IID_ID3D11On12Device: TGUID = '{85611e73-70a9-490e-9614-a9e302777904}';
     IID_ID3D11On12Device1: TGUID = '{bdb64df4-ea2f-4c70-b861-aaab1258bb5d}';
+    IID_ID3D11On12Device2: TGUID = '{dc90f331-4740-43fa-866e-67f12cb58223}';
 
 type
     TD3D11_RESOURCE_FLAGS = record
@@ -71,6 +72,22 @@ type
         ['{bdb64df4-ea2f-4c70-b861-aaab1258bb5d}']
         function GetD3D12Device(const riid: TGUID; out ppvDevice): HRESULT; stdcall;
     end;
+
+
+
+    ID3D11On12Device2 = interface(ID3D11On12Device1)
+    ['{dc90f331-4740-43fa-866e-67f12cb58223}']
+        function UnwrapUnderlyingResource( pResource11:ID3D11Resource; pCommandQueue:ID3D12CommandQueue;
+            const riid: TGUID; out ppvResource12) :HResult; stdcall;
+
+        function ReturnUnderlyingResource(
+              pResource11:ID3D11Resource;
+             NumSync:UINT;
+               pSignalValues {array of NumSync}:PUINT64;
+                 ppFences{array of NumSync}: PID3D12Fence) :HResult; stdcall;
+
+     end;
+
 
 
 ///////////////////////////////////////////////////////////////////////////
