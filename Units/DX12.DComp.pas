@@ -1,7 +1,42 @@
+{ **************************************************************************
+  FreePascal/Delphi DirectX 12 Header Files
+  
+  Copyright 2013-2021 Norbert Sonnleitner
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+   SOFTWARE.
+  ************************************************************************** }
+
+{ **************************************************************************
+  Additional Copyright (C) for this modul:
+
+  Copyright (c) Microsoft Corporation.  All rights reserved.
+
+  This unit consists of the following header files
+  File name: DCOMP.h
+             
+			 
+  Header version: 10.0.19041.0
+
+  ************************************************************************** }
 unit DX12.DComp;
-//---------------------------------------------------------------------------
-// Copyright (c) Microsoft Corporation. All rights reserved.
-//---------------------------------------------------------------------------
 
 interface
 
@@ -14,7 +49,7 @@ interface
 uses
     Windows, Classes, SysUtils,
     DX12.D2D1,
-    DX12.DXGI,
+    DX12.DXGI, 
     DX12.DXGI1_2,
     DX12.D3D9Types,
     DX12.DCompTypes,
@@ -403,6 +438,7 @@ type
 
         // Animates a single element of the matrix of this transform.
         function SetMatrixElement(row: integer; column: integer; animation: IDCompositionAnimation): HResult; stdcall; overload;
+		
         // Changes a single element of the matrix of this transform.
         function SetMatrixElement(row: integer; column: integer; Value: single): HResult; stdcall; overload;
     end;
@@ -1195,75 +1231,22 @@ type
         function SetSharpness(animation: IDCompositionAnimation): HResult; stdcall; overload;
     end;
 
-// {$ENDIF}  // (_WIN32_WINNT >= _WIN32_WINNT_WINTHRESHOLD)
 
 
-//+-----------------------------------------------------------------------------
-// Function:
-// DCompositionCreateDevice
-// Synopsis:
-// Creates a new DirectComposition device object; which can be used to create
-// other DirectComposition objects.
-//------------------------------------------------------------------------------
 function DCompositionCreateDevice(dxgiDevice: IDXGIDevice; const iid: TGUID; out dcompositionDevice): HResult; stdcall; external DComp_DLL;
 
-// {$IF  (_WIN32_WINNT >= _WIN32_WINNT_WINBLUE) }
-//+-----------------------------------------------------------------------------
-// Function:
-// DCompositionCreateDevice2
-// Synopsis:
-// Creates a new DirectComposition device object; which can be used to create
-// other DirectComposition objects.
-//------------------------------------------------------------------------------
-function DCompositionCreateDevice2(renderingDevice: IUnknown; const iid: TGUID; out dcompositionDevice): HResult; stdcall; external DComp_DLL;
-// {$ENDIF}// (_WIN32_WINNT >= _WIN32_WINNT_WINBLUE)
 
-// {$IF  (_WIN32_WINNT >= _WIN32_WINNT_WINTHRESHOLD) }
-//+-----------------------------------------------------------------------------
-// Function:
-// DCompositionCreateDevice3
-// Synopsis:
-// Creates a new DirectComposition device object; which can be used to create
-// other DirectComposition objects.
-//------------------------------------------------------------------------------
+function DCompositionCreateDevice2(renderingDevice: IUnknown; const iid: TGUID; out dcompositionDevice): HResult; stdcall; external DComp_DLL;
+
 function DCompositionCreateDevice3(renderingDevice: IUnknown; const iid: TGUID; out dcompositionDevice): HResult; stdcall; external DComp_DLL;
 
-// {$ENDIF}// (_WIN32_WINNT >= _WIN32_WINNT_WINTHRESHOLD)
-
-//+-----------------------------------------------------------------------------
-// Function:
-// DCompositionCreateSurfaceHandle
-// Synopsis:
-// Creates a new composition surface object; which can be bound to a
-// DirectX swap chain or swap buffer or to a GDI bitmap and associated
-// with a visual.
-//------------------------------------------------------------------------------
 function DCompositionCreateSurfaceHandle(desiredAccess: DWORD; securityAttributes: PSECURITY_ATTRIBUTES; out surfaceHandle: THANDLE): HResult;
     stdcall; external DComp_DLL;
 
-//+-----------------------------------------------------------------------------
-// Function:
-// DCompositionAttachMouseWheelToHwnd
-// Synopsis:
-// Creates an Interaction/InputSink to route mouse wheel messages to the
-// given HWND. After calling this API; the device owning the visual must
-// be committed.
-//------------------------------------------------------------------------------
 function DCompositionAttachMouseWheelToHwnd(visual: IDCompositionVisual; hwnd: HWND; enable: boolean): HResult; stdcall; external DComp_DLL;
 
-//+-----------------------------------------------------------------------------
-// Function:
-// DCompositionAttachMouseDragToHwnd
-// Synopsis:
-// Creates an Interaction/InputSink to route mouse button down and any
-// subsequent move and up events to the given HWND. There is no move
-// thresholding; when enabled; all events including and following the down
-// are unconditionally redirected to the specified window. After calling this
-// API; the device owning the visual must be committed.
-//------------------------------------------------------------------------------
 function DCompositionAttachMouseDragToHwnd(visual: IDCompositionVisual; hwnd: HWND; enable: boolean): HResult; stdcall; external DComp_DLL;
 
-// {$ENDIF} // NTDDI_WIN8
 
 implementation
 

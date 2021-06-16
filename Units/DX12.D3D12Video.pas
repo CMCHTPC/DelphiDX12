@@ -1,7 +1,7 @@
-unit DX12.D3D12Video;
-
 { **************************************************************************
-  Copyright 2017 Norbert Sonnleitner
+  FreePascal/Delphi DirectX 12 Header Files
+  
+  Copyright 2013-2021 Norbert Sonnleitner
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -31,9 +31,11 @@ unit DX12.D3D12Video;
 
   This unit consists of the following header files
   File name: D3D12Video.h
-  Header version: 10.0.16299.0
+			 
+  Header version: 10.0.19041.0
 
   ************************************************************************** }
+unit DX12.D3D12Video;
 
 {$IFDEF FPC}
 {$mode delphi}
@@ -224,13 +226,13 @@ type
 
 
     TD3D12_VIDEO_PROCESS_ALPHA_BLENDING = record
-        Enable: boolean;
+        Enable: longbool;
         Alpha: single;
     end;
     PD3D12_VIDEO_PROCESS_ALPHA_BLENDING = ^TD3D12_VIDEO_PROCESS_ALPHA_BLENDING;
 
     TD3D12_VIDEO_PROCESS_LUMA_KEY = record
-        Enable: boolean;
+        Enable: longbool;
         Lower: single;
         Upper: single;
     end;
@@ -372,7 +374,7 @@ type
     TD3D12_FEATURE_DATA_VIDEO_DECODE_PROFILES = record
         NodeIndex: UINT;
         ProfileCount: UINT;
-        pProfiles: PGUID;
+        pProfiles{ProfileCount}: PGUID;
     end;
     PD3D12_FEATURE_DATA_VIDEO_DECODE_PROFILES = ^TD3D12_FEATURE_DATA_VIDEO_DECODE_PROFILES;
 
@@ -387,7 +389,7 @@ type
         NodeIndex: UINT;
         Configuration: TD3D12_VIDEO_DECODE_CONFIGURATION;
         FormatCount: UINT;
-        pOutputFormats: PDXGI_FORMAT;
+        pOutputFormats{FormatCount}: PDXGI_FORMAT;
     end;
     PD3D12_FEATURE_DATA_VIDEO_DECODE_FORMATS = ^TD3D12_FEATURE_DATA_VIDEO_DECODE_FORMATS;
 
@@ -395,6 +397,46 @@ type
         IOCoherent: boolean;
     end;
     PD3D12_FEATURE_DATA_VIDEO_ARCHITECTURE = ^TD3D12_FEATURE_DATA_VIDEO_ARCHITECTURE;
+
+
+
+TD3D12_VIDEO_DECODE_HISTOGRAM_COMPONENT=(
+        D3D12_VIDEO_DECODE_HISTOGRAM_COMPONENT_Y	= 0,
+        D3D12_VIDEO_DECODE_HISTOGRAM_COMPONENT_U	= 1,
+        D3D12_VIDEO_DECODE_HISTOGRAM_COMPONENT_V	= 2,
+        D3D12_VIDEO_DECODE_HISTOGRAM_COMPONENT_R	= 0,
+        D3D12_VIDEO_DECODE_HISTOGRAM_COMPONENT_G	= 1,
+        D3D12_VIDEO_DECODE_HISTOGRAM_COMPONENT_B	= 2,
+        D3D12_VIDEO_DECODE_HISTOGRAM_COMPONENT_A	= 3
+    );
+	PD3D12_VIDEO_DECODE_HISTOGRAM_COMPONENT = ^TD3D12_VIDEO_DECODE_HISTOGRAM_COMPONENT;
+
+TD3D12_VIDEO_DECODE_HISTOGRAM_COMPONENT_FLAGS=(
+        D3D12_VIDEO_DECODE_HISTOGRAM_COMPONENT_FLAG_NONE	= 0,
+        D3D12_VIDEO_DECODE_HISTOGRAM_COMPONENT_FLAG_Y	=  1 SHL ord(D3D12_VIDEO_DECODE_HISTOGRAM_COMPONENT_Y ) ,
+        D3D12_VIDEO_DECODE_HISTOGRAM_COMPONENT_FLAG_U	=  1 SHL ord(D3D12_VIDEO_DECODE_HISTOGRAM_COMPONENT_U ) ,
+        D3D12_VIDEO_DECODE_HISTOGRAM_COMPONENT_FLAG_V	=  1 SHL ord(D3D12_VIDEO_DECODE_HISTOGRAM_COMPONENT_V ) ,
+        D3D12_VIDEO_DECODE_HISTOGRAM_COMPONENT_FLAG_R	=  1 SHL ord(D3D12_VIDEO_DECODE_HISTOGRAM_COMPONENT_R ) ,
+        D3D12_VIDEO_DECODE_HISTOGRAM_COMPONENT_FLAG_G	= 1 SHL ord(D3D12_VIDEO_DECODE_HISTOGRAM_COMPONENT_G ) ,
+        D3D12_VIDEO_DECODE_HISTOGRAM_COMPONENT_FLAG_B	=  1 SHL ord(D3D12_VIDEO_DECODE_HISTOGRAM_COMPONENT_B ) ,
+        D3D12_VIDEO_DECODE_HISTOGRAM_COMPONENT_FLAG_A	=  1 SHL ord(D3D12_VIDEO_DECODE_HISTOGRAM_COMPONENT_A )
+    );
+	PD3D12_VIDEO_DECODE_HISTOGRAM_COMPONENT_FLAGS = ^TD3D12_VIDEO_DECODE_HISTOGRAM_COMPONENT_FLAGS;
+
+
+TD3D12_FEATURE_DATA_VIDEO_DECODE_HISTOGRAM=record
+     NodeIndex:UINT;
+     DecodeProfile:TGUID;
+     Width:UINT;
+     Height:UINT;
+     DecodeFormat:TDXGI_FORMAT;
+     Components :TD3D12_VIDEO_DECODE_HISTOGRAM_COMPONENT_FLAGS;
+     BinCount:UINT;
+     CounterBitDepth:UINT;
+   end;
+   PD3D12_FEATURE_DATA_VIDEO_DECODE_HISTOGRAM = ^TD3D12_FEATURE_DATA_VIDEO_DECODE_HISTOGRAM;
+
+
 
     TD3D12_VIDEO_DECODE_CONVERSION_SUPPORT_FLAGS = (
         D3D12_VIDEO_DECODE_CONVERSION_SUPPORT_FLAG_NONE = 0,
@@ -513,7 +555,7 @@ type
         ['{304FDB32-BEDE-410A-8545-943AC6A46138}']
         function GetNodeMask(): UINT; stdcall;
         function GetNumInputStreamDescs(): UINT; stdcall;
-        function GetInputStreamDescs(NumInputStreamDescs: UINT; out pInputStreamDescs: PD3D12_VIDEO_PROCESS_INPUT_STREAM_DESC): HResult;
+        function GetInputStreamDescs(NumInputStreamDescs: UINT; out pInputStreamDescs{NumInputStreamDescs}: PD3D12_VIDEO_PROCESS_INPUT_STREAM_DESC): HResult;
             stdcall;
         function GetOutputStreamDesc(): TD3D12_VIDEO_PROCESS_OUTPUT_STREAM_DESC; stdcall;
     end;

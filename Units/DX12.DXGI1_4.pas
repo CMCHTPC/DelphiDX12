@@ -1,5 +1,7 @@
 { **************************************************************************
-  Copyright 2016 Norbert Sonnleitner
+  FreePascal/Delphi DirectX 12 Header Files
+  
+  Copyright 2013-2021 Norbert Sonnleitner
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -29,7 +31,7 @@
 
   This unit consists of the following header files
   File name: DXGI1_4.h
-  Header version: 10.0.14393.0
+  Header version: 10.0.19041.0
 
   ************************************************************************** }
 unit DX12.DXGI1_4;
@@ -65,7 +67,7 @@ type
         function CheckColorSpaceSupport(ColorSpace: TDXGI_COLOR_SPACE_TYPE; out pColorSpaceSupport: UINT): HRESULT; stdcall;
         function SetColorSpace1(ColorSpace: TDXGI_COLOR_SPACE_TYPE): HRESULT; stdcall;
         function ResizeBuffers1(BufferCount: UINT; Width: UINT; Height: UINT; Format: TDXGI_FORMAT;
-            SwapChainFlags: UINT; pCreationNodeMask: PUINT; ppPresentQueue: PIUnknown): HRESULT; stdcall;
+            SwapChainFlags: UINT; pCreationNodeMask{BufferCount}: PUINT; ppPresentQueue{BufferCount}: PIUnknown): HRESULT; stdcall;
     end;
 
 

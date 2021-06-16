@@ -1,19 +1,27 @@
-{$REGION 'Copyright (C) CMC Development Team'}
 { **************************************************************************
-  Copyright (C) 2015 CMC Development Team
+  FreePascal/Delphi DirectX 12 Header Files
 
-  CMC is free software: you can redistribute it and/or modify
-  it under the terms of the GNU General Public License as published by
-  the Free Software Foundation, either version 2 of the License, or
-  (at your option) any later version.
+  Copyright 2013-2021 Norbert Sonnleitner
 
-  CMC is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-  GNU General Public License for more details.
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
 
-  You should have received a copy of the GNU General Public License
-  along with CMC. If not, see <http://www.gnu.org/licenses/>.
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+   SOFTWARE.
   ************************************************************************** }
 
 { **************************************************************************
@@ -23,23 +31,25 @@
 
   This unit consists of the following header files
   File name: D2D1.h
-  File name: D2D1_Helper.h
-  File name: D2D1_1.h
-  File name: D2D1_1Helper.h
-  File name: D2D1_2.h
-  File name: D2D1_2Helper.h
-  File name: D2D1EffectAuthor.h
-  File name: D2D1Effects.h
-  File name: D2D1Effects_1.h
-  File name: D2DBaseTypes.h
+       D2D1_Helper.h
+       D2D1_1.h
+       D2D1_1Helper.h
+       D2D1_2.h
+       D2D1_2Helper.h
+       D2D1_3Helper.h
+       D2D1EffectAuthor.h
+       D2D1Effects.h
+       D2D1Effects_1.h
+       D2DBaseTypes.h
+       D2DErr.h
+
+  Header version: 10.0.19041.0
 
   ************************************************************************** }
-{$ENDREGION}
+
 {$REGION 'Notes'}
 { **************************************************************************
   Use the DirectX libaries from CMC. They are NOT based on the JSB headers
-
-  Version 0.9 2015.02.18 - First release
 
   The HelperFiles are translated to be used with Delphi/FPC. Therefore there are
   more functions then in the original header file since Pascal syntax doesn't
@@ -57,11 +67,7 @@
   cause interfaces not based on IUnknown are solved with abstract classes
   in Delphi, which will not work on FPC. FPC has the CORBA Interface
   compiler switch.
-  Also FPC supports BITPACKED RECORDS.
-
-  The inline functions of the interfaces (which is a nice feature in C++ are
-  not translated in the moment cause I don't know how.
-  A INLINE directive would be a cool feature for FPC. We will look forward...
+  Also FPC supports BITPACKED RECORDS and INLINE functions in COM Interfaces.
 
   ************************************************************************** }
 {$ENDREGION}
@@ -90,13 +96,27 @@ const
 const
     // defined in IntSafe.h
     UINT_MAX = UINT($ffffffff);
-    ULONGLONG_MAX = UINT64($ffffffffffffffff);
+    ULONGLONG_MAX = uint64($ffffffffffffffff);
 
     D2D1_INVALID_PROPERTY_INDEX = UINT_MAX;
     FACILITY_D2D = $899;
 
     MAKE_D2DHR_ERR = longword(1 shl 31) or longword(FACILITY_D2D shl 16);
-// D2D specific codes now live in winerror.h
+    // D2D specific codes now live in winerror.h
+
+    // Set to alignedByteOffset within D2D1_INPUT_ELEMENT_DESC for elements that
+    // immediately follow preceding elements in memory
+    D2D1_APPEND_ALIGNED_ELEMENT = $ffffffff;
+
+    // The pixel format is not supported.
+    WINCODEC_ERR_UNSUPPORTEDPIXELFORMAT = $88982F80;
+    D2DERR_UNSUPPORTED_PIXEL_FORMAT = WINCODEC_ERR_UNSUPPORTEDPIXELFORMAT;
+    // The supplied buffer was too small to accommodate the data.
+    D2DERR_INSUFFICIENT_BUFFER = (ERROR_INSUFFICIENT_BUFFER and $0000FFFF) or (FACILITY_WIN32 shl 16) or $80000000;
+    // The file specified was not found.
+    D2DERR_FILE_NOT_FOUND = (ERROR_FILE_NOT_FOUND and $0000FFFF) or (FACILITY_WIN32 shl 16) or $80000000;
+
+    // D2D specific codes now live in winerror.h
 
 const
     { D2D1.h }
@@ -229,151 +249,155 @@ const
     CLSID_D2D1YCbCr: TGUID = '{99503cc1-66c7-45c9-a875-8ad8a7914401}';
 
 const
-    AliceBlue = $F0F8FF;
-    AntiqueWhite = $FAEBD7;
-    Aqua = $00FFFF;
-    Aquamarine = $7FFFD4;
-    Azure = $F0FFFF;
-    Beige = $F5F5DC;
-    Bisque = $FFE4C4;
-    Black = $000000;
-    BlanchedAlmond = $FFEBCD;
-    Blue = $0000FF;
-    BlueViolet = $8A2BE2;
-    Brown = $A52A2A;
-    BurlyWood = $DEB887;
-    CadetBlue = $5F9EA0;
-    Chartreuse = $7FFF00;
-    Chocolate = $D2691E;
-    Coral = $FF7F50;
-    CornflowerBlue = $6495ED;
-    Cornsilk = $FFF8DC;
-    Crimson = $DC143C;
-    Cyan = $00FFFF;
-    DarkBlue = $00008B;
-    DarkCyan = $008B8B;
-    DarkGoldenrod = $B8860B;
-    DarkGray = $A9A9A9;
-    DarkGreen = $006400;
-    DarkKhaki = $BDB76B;
-    DarkMagenta = $8B008B;
-    DarkOliveGreen = $556B2F;
-    DarkOrange = $FF8C00;
-    DarkOrchid = $9932CC;
-    DarkRed = $8B0000;
-    DarkSalmon = $E9967A;
-    DarkSeaGreen = $8FBC8F;
-    DarkSlateBlue = $483D8B;
-    DarkSlateGray = $2F4F4F;
-    DarkTurquoise = $00CED1;
-    DarkViolet = $9400D3;
-    DeepPink = $FF1493;
-    DeepSkyBlue = $00BFFF;
-    DimGray = $696969;
-    DodgerBlue = $1E90FF;
-    Firebrick = $B22222;
-    FloralWhite = $FFFAF0;
-    ForestGreen = $228B22;
-    Fuchsia = $FF00FF;
-    Gainsboro = $DCDCDC;
-    GhostWhite = $F8F8FF;
-    Gold = $FFD700;
-    Goldenrod = $DAA520;
-    Gray = $808080;
-    Green = $008000;
-    GreenYellow = $ADFF2F;
-    Honeydew = $F0FFF0;
-    HotPink = $FF69B4;
-    IndianRed = $CD5C5C;
-    Indigo = $4B0082;
-    Ivory = $FFFFF0;
-    Khaki = $F0E68C;
-    Lavender = $E6E6FA;
-    LavenderBlush = $FFF0F5;
-    LawnGreen = $7CFC00;
-    LemonChiffon = $FFFACD;
-    LightBlue = $ADD8E6;
-    LightCoral = $F08080;
-    LightCyan = $E0FFFF;
-    LightGoldenrodYellow = $FAFAD2;
-    LightGreen = $90EE90;
-    LightGray = $D3D3D3;
-    LightPink = $FFB6C1;
-    LightSalmon = $FFA07A;
-    LightSeaGreen = $20B2AA;
-    LightSkyBlue = $87CEFA;
-    LightSlateGray = $778899;
-    LightSteelBlue = $B0C4DE;
-    LightYellow = $FFFFE0;
-    Lime = $00FF00;
-    LimeGreen = $32CD32;
-    Linen = $FAF0E6;
-    Magenta = $FF00FF;
-    Maroon = $800000;
-    MediumAquamarine = $66CDAA;
-    MediumBlue = $0000CD;
-    MediumOrchid = $BA55D3;
-    MediumPurple = $9370DB;
-    MediumSeaGreen = $3CB371;
-    MediumSlateBlue = $7B68EE;
-    MediumSpringGreen = $00FA9A;
-    MediumTurquoise = $48D1CC;
-    MediumVioletRed = $C71585;
-    MidnightBlue = $191970;
-    MintCream = $F5FFFA;
-    MistyRose = $FFE4E1;
-    Moccasin = $FFE4B5;
-    NavajoWhite = $FFDEAD;
-    Navy = $000080;
-    OldLace = $FDF5E6;
-    Olive = $808000;
-    OliveDrab = $6B8E23;
-    Orange = $FFA500;
-    OrangeRed = $FF4500;
-    Orchid = $DA70D6;
-    PaleGoldenrod = $EEE8AA;
-    PaleGreen = $98FB98;
-    PaleTurquoise = $AFEEEE;
-    PaleVioletRed = $DB7093;
-    PapayaWhip = $FFEFD5;
-    PeachPuff = $FFDAB9;
-    Peru = $CD853F;
-    Pink = $FFC0CB;
-    Plum = $DDA0DD;
-    PowderBlue = $B0E0E6;
-    Purple = $800080;
-    Red = $FF0000;
-    RosyBrown = $BC8F8F;
-    RoyalBlue = $4169E1;
-    SaddleBrown = $8B4513;
-    Salmon = $FA8072;
-    SandyBrown = $F4A460;
-    SeaGreen = $2E8B57;
-    SeaShell = $FFF5EE;
-    Sienna = $A0522D;
-    Silver = $C0C0C0;
-    SkyBlue = $87CEEB;
-    SlateBlue = $6A5ACD;
-    SlateGray = $708090;
-    Snow = $FFFAFA;
-    SpringGreen = $00FF7F;
-    SteelBlue = $4682B4;
-    Tan = $D2B48C;
-    Teal = $008080;
-    Thistle = $D8BFD8;
-    Tomato = $FF6347;
-    Turquoise = $40E0D0;
-    Violet = $EE82EE;
-    Wheat = $F5DEB3;
-    White = $FFFFFF;
-    WhiteSmoke = $F5F5F5;
-    Yellow = $FFFF00;
-    YellowGreen = $9ACD32;
+    // Common color constants from GDIPlusColor.h
+    // Values are in ARGB
+    AliceBlue = $FFF0F8FF;
+    AntiqueWhite = $FFFAEBD7;
+    Aqua = $FF00FFFF;
+    Aquamarine = $FF7FFFD4;
+    Azure = $FFF0FFFF;
+    Beige = $FFF5F5DC;
+    Bisque = $FFFFE4C4;
+    Black = $FF000000;
+    BlanchedAlmond = $FFFFEBCD;
+    Blue = $FF0000FF;
+    BlueViolet = $FF8A2BE2;
+    Brown = $FFA52A2A;
+    BurlyWood = $FFDEB887;
+    CadetBlue = $FF5F9EA0;
+    Chartreuse = $FF7FFF00;
+    Chocolate = $FFD2691E;
+    Coral = $FFFF7F50;
+    CornflowerBlue = $FF6495ED;
+    Cornsilk = $FFFFF8DC;
+    Crimson = $FFDC143C;
+    Cyan = $FF00FFFF;
+    DarkBlue = $FF00008B;
+    DarkCyan = $FF008B8B;
+    DarkGoldenrod = $FFB8860B;
+    DarkGray = $FFA9A9A9;
+    DarkGreen = $FF006400;
+    DarkKhaki = $FFBDB76B;
+    DarkMagenta = $FF8B008B;
+    DarkOliveGreen = $FF556B2F;
+    DarkOrange = $FFFF8C00;
+    DarkOrchid = $FF9932CC;
+    DarkRed = $FF8B0000;
+    DarkSalmon = $FFE9967A;
+    DarkSeaGreen = $FF8FBC8F;
+    DarkSlateBlue = $FF483D8B;
+    DarkSlateGray = $FF2F4F4F;
+    DarkTurquoise = $FF00CED1;
+    DarkViolet = $FF9400D3;
+    DeepPink = $FFFF1493;
+    DeepSkyBlue = $FF00BFFF;
+    DimGray = $FF696969;
+    DodgerBlue = $FF1E90FF;
+    Firebrick = $FFB22222;
+    FloralWhite = $FFFFFAF0;
+    ForestGreen = $FF228B22;
+    Fuchsia = $FFFF00FF;
+    Gainsboro = $FFDCDCDC;
+    GhostWhite = $FFF8F8FF;
+    Gold = $FFFFD700;
+    Goldenrod = $FFDAA520;
+    Gray = $FF808080;
+    Green = $FF008000;
+    GreenYellow = $FFADFF2F;
+    Honeydew = $FFF0FFF0;
+    HotPink = $FFFF69B4;
+    IndianRed = $FFCD5C5C;
+    Indigo = $FF4B0082;
+    Ivory = $FFFFFFF0;
+    Khaki = $FFF0E68C;
+    Lavender = $FFE6E6FA;
+    LavenderBlush = $FFFFF0F5;
+    LawnGreen = $FF7CFC00;
+    LemonChiffon = $FFFFFACD;
+    LightBlue = $FFADD8E6;
+    LightCoral = $FFF08080;
+    LightCyan = $FFE0FFFF;
+    LightGoldenrodYellow = $FFFAFAD2;
+    LightGreen = $FF90EE90;
+    LightGray = $FFD3D3D3;
+    LightPink = $FFFFB6C1;
+    LightSalmon = $FFFFA07A;
+    LightSeaGreen = $FF20B2AA;
+    LightSkyBlue = $FF87CEFA;
+    LightSlateGray = $FF778899;
+    LightSteelBlue = $FFB0C4DE;
+    LightYellow = $FFFFFFE0;
+    Lime = $FF00FF00;
+    LimeGreen = $FF32CD32;
+    Linen = $FFFAF0E6;
+    Magenta = $FFFF00FF;
+    Maroon = $FF800000;
+    MediumAquamarine = $FF66CDAA;
+    MediumBlue = $FF0000CD;
+    MediumOrchid = $FFBA55D3;
+    MediumPurple = $FF9370DB;
+    MediumSeaGreen = $FF3CB371;
+    MediumSlateBlue = $FF7B68EE;
+    MediumSpringGreen = $FF00FA9A;
+    MediumTurquoise = $FF48D1CC;
+    MediumVioletRed = $FFC71585;
+    MidnightBlue = $FF191970;
+    MintCream = $FFF5FFFA;
+    MistyRose = $FFFFE4E1;
+    Moccasin = $FFFFE4B5;
+    NavajoWhite = $FFFFDEAD;
+    Navy = $FF000080;
+    OldLace = $FFFDF5E6;
+    Olive = $FF808000;
+    OliveDrab = $FF6B8E23;
+    Orange = $FFFFA500;
+    OrangeRed = $FFFF4500;
+    Orchid = $FFDA70D6;
+    PaleGoldenrod = $FFEEE8AA;
+    PaleGreen = $FF98FB98;
+    PaleTurquoise = $FFAFEEEE;
+    PaleVioletRed = $FFDB7093;
+    PapayaWhip = $FFFFEFD5;
+    PeachPuff = $FFFFDAB9;
+    Peru = $FFCD853F;
+    Pink = $FFFFC0CB;
+    Plum = $FFDDA0DD;
+    PowderBlue = $FFB0E0E6;
+    Purple = $FF800080;
+    Red = $FFFF0000;
+    RosyBrown = $FFBC8F8F;
+    RoyalBlue = $FF4169E1;
+    SaddleBrown = $FF8B4513;
+    Salmon = $FFFA8072;
+    SandyBrown = $FFF4A460;
+    SeaGreen = $FF2E8B57;
+    SeaShell = $FFFFF5EE;
+    Sienna = $FFA0522D;
+    Silver = $FFC0C0C0;
+    SkyBlue = $FF87CEEB;
+    SlateBlue = $FF6A5ACD;
+    SlateGray = $FF708090;
+    Snow = $FFFFFAFA;
+    SpringGreen = $FF00FF7F;
+    SteelBlue = $FF4682B4;
+    Tan = $FFD2B48C;
+    Teal = $FF008080;
+    Thistle = $FFD8BFD8;
+    Tomato = $FFFF6347;
+    Turquoise = $FF40E0D0;
+    Violet = $FFEE82EE;
+    Wheat = $FFF5DEB3;
+    White = $FFFFFFFF;
+    WhiteSmoke = $FFF5F5F5;
+    Yellow = $FFFFFF00;
+    YellowGreen = $FF9ACD32;
 
 const
     D2D1_INVALID_TAG = ULONGLONG_MAX;
     D2D1_DEFAULT_FLATTENING_TOLERANCE = (0.25);
 
+    // This defines the superset of interpolation mode supported by D2D APIs
+    // and built-in effects
     D2D1_INTERPOLATION_MODE_DEFINITION_NEAREST_NEIGHBOR = 0;
     D2D1_INTERPOLATION_MODE_DEFINITION_LINEAR = 1;
     D2D1_INTERPOLATION_MODE_DEFINITION_CUBIC = 2;
@@ -386,8 +410,8 @@ const
 type
 
     TD2D_POINT_2U = record
-        x: UINT32;
-        y: UINT32;
+        x: uint32;
+        y: uint32;
     end;
 
     TD2D_POINT_2F = record
@@ -428,10 +452,10 @@ type
     { TD2D_RECT_U }
 
     TD2D_RECT_U = record
-        left: UINT32;
-        top: UINT32;
-        right: UINT32;
-        bottom: UINT32;
+        left: uint32;
+        top: uint32;
+        right: uint32;
+        bottom: uint32;
         class operator Equal(a, b: TD2D_RECT_U): longbool;
     end;
 
@@ -445,8 +469,8 @@ type
     { TD2D_SIZE_U }
 
     TD2D_SIZE_U = record
-        Width: UINT32;
-        Height: UINT32;
+        Width: uint32;
+        Height: uint32;
         class operator Equal(a, b: TD2D_SIZE_U): longbool;
     end;
 
@@ -463,7 +487,7 @@ type
         _32: single;
         class operator Multiply(a: TD2D_MATRIX_3X2_F; b: TD2D_MATRIX_3X2_F): TD2D_MATRIX_3X2_F; overload;
         class operator Multiply(a: TD2D_POINT_2F; b: TD2D_MATRIX_3X2_F): TD2D_POINT_2F;
-                overload;
+            overload;
 
 
         procedure Identity;
@@ -473,7 +497,7 @@ type
         procedure Rotation(angle: single; x, y: single); overload;
         procedure Rotation(angle: single); overload;
         procedure Skew(angleX, angleY: single; center: TD2D_POINT_2F);
-                overload;
+            overload;
         procedure Skew(angleX, angleY: single); overload;
         procedure Scale(size: TD2D_SIZE_F; center: TD2D_POINT_2F); overload;
         procedure Scale(x, y: single; center: TD2D_POINT_2F); overload;
@@ -533,7 +557,7 @@ type
     TD2D_MATRIX_5X4_F = record
         procedure Init; overload;
         procedure Init(m11, m12, m13, m14, m21, m22, m23, m24, m31, m32, m33, m34, m41, m42, m43, m44, m51, m52, m53, m54: single);
-                overload;
+            overload;
         case integer of
             0: (_11, _12, _13, _14: single;
                 _21, _22, _23, _24: single;
@@ -569,7 +593,7 @@ type
     TD2D1_MATRIX_3X2_F = TD2D_MATRIX_3X2_F;
     PD2D1_MATRIX_3X2_F = ^TD2D1_MATRIX_3X2_F;
 
-    TD2D1_TAG = UINT64;
+    TD2D1_TAG = uint64;
     PD2D1_TAG = ^TD2D1_TAG;
 
     TD2D1_GAMMA = (D2D1_GAMMA_2_2 = 0, D2D1_GAMMA_1_0 = 1,
@@ -779,10 +803,17 @@ type
 
     { D2D1Effects.h }
 
+    // Specifies how the Crop effect handles the crop rectangle falling on fractional
+    // pixel coordinates.
+
     TD2D1_BORDER_MODE = (
         D2D1_BORDER_MODE_SOFT = 0,
         D2D1_BORDER_MODE_HARD = 1,
         D2D1_BORDER_MODE_FORCE_DWORD = $ffffffff);
+
+
+    // Specifies the color channel the Displacement map effect extracts the intensity
+    // from and uses it to spatially displace the image in the X or Y direction.
 
     TD2D1_CHANNEL_SELECTOR = (
         D2D1_CHANNEL_SELECTOR_R = 0,
@@ -792,6 +823,9 @@ type
         D2D1_CHANNEL_SELECTOR_FORCE_DWORD = $ffffffff
         );
 
+
+    // Speficies whether a flip and/or rotation operation should be performed by the
+    // Bitmap source effect
 
     TD2D1_BITMAPSOURCE_ORIENTATION = (
         D2D1_BITMAPSOURCE_ORIENTATION_DEFAULT = 1,
@@ -805,11 +839,20 @@ type
         D2D1_BITMAPSOURCE_ORIENTATION_FORCE_DWORD = $ffffffff
         );
 
+
+    // The enumeration of the Gaussian Blur effect's top level properties.
+    // Effect description: Applies a gaussian blur to a bitmap with the specified blur
+    // radius and angle.
+
     TD2D1_GAUSSIANBLUR_PROP = (
-
-
+        // Property Name: "StandardDeviation"
+        // Property Type: FLOAT
         D2D1_GAUSSIANBLUR_PROP_STANDARD_DEVIATION = 0,
+        // Property Name: "Optimization"
+        // Property Type: D2D1_GAUSSIANBLUR_OPTIMIZATION
         D2D1_GAUSSIANBLUR_PROP_OPTIMIZATION = 1,
+        // Property Name: "BorderMode"
+        // Property Type: D2D1_BORDER_MODE
         D2D1_GAUSSIANBLUR_PROP_BORDER_MODE = 2,
         D2D1_GAUSSIANBLUR_PROP_FORCE_DWORD = $ffffffff
         );
@@ -821,10 +864,23 @@ type
         D2D1_GAUSSIANBLUR_OPTIMIZATION_FORCE_DWORD = $ffffffff
         );
 
+
+    // The enumeration of the Directional Blur effect's top level properties.
+    // Effect description: Applies a directional blur to a bitmap with the specified
+    // blur radius and angle.
+
     TD2D1_DIRECTIONALBLUR_PROP = (
+        // Property Name: "StandardDeviation"
+        // Property Type: FLOAT
         D2D1_DIRECTIONALBLUR_PROP_STANDARD_DEVIATION = 0,
+        // Property Name: "Angle"
+        // Property Type: FLOAT
         D2D1_DIRECTIONALBLUR_PROP_ANGLE = 1,
+        // Property Name: "Optimization"
+        // Property Type: D2D1_DIRECTIONALBLUR_OPTIMIZATION
         D2D1_DIRECTIONALBLUR_PROP_OPTIMIZATION = 2,
+        // Property Name: "BorderMode"
+        // Property Type: D2D1_BORDER_MODE
         D2D1_DIRECTIONALBLUR_PROP_BORDER_MODE = 3,
         D2D1_DIRECTIONALBLUR_PROP_FORCE_DWORD = $ffffffff
         );
@@ -834,12 +890,21 @@ type
         D2D1_DIRECTIONALBLUR_OPTIMIZATION_BALANCED = 1,
         D2D1_DIRECTIONALBLUR_OPTIMIZATION_QUALITY = 2,
         D2D1_DIRECTIONALBLUR_OPTIMIZATION_FORCE_DWORD = $ffffffff
-
         );
 
+
+    // The enumeration of the Shadow effect's top level properties.
+    // Effect description: Applies a shadow to a bitmap based on its alpha channel.
+
     TD2D1_SHADOW_PROP = (
+        // Property Name: "BlurStandardDeviation"
+        // Property Type: FLOAT
         D2D1_SHADOW_PROP_BLUR_STANDARD_DEVIATION = 0,
+        // Property Name: "Color"
+        // Property Type: D2D1_VECTOR_4F
         D2D1_SHADOW_PROP_COLOR = 1,
+        // Property Name: "Optimization"
+        // Property Type: D2D1_SHADOW_OPTIMIZATION
         D2D1_SHADOW_PROP_OPTIMIZATION = 2,
         D2D1_SHADOW_PROP_FORCE_DWORD = $ffffffff
         );
@@ -852,8 +917,14 @@ type
         );
 
 
+    // The enumeration of the Blend effect's top level properties.
+    // Effect description: Blends a foreground and background using a pre-defined blend
+    // mode.
+
     TD2D1_BLEND_PROP = (
         D2D1_BLEND_PROP_MODE = 0,
+        // Property Name: "Mode"
+        // Property Type: D2D1_BLEND_MODE
         D2D1_BLEND_PROP_FORCE_DWORD = $ffffffff
         );
 
@@ -888,13 +959,25 @@ type
         D2D1_BLEND_MODE_FORCE_DWORD = $ffffffff
         );
 
+
+    // The enumeration of the Saturation effect's top level properties.
+    // Effect description: Alters the saturation of the bitmap based on the user
+    // specified saturation value.
+
     TD2D1_SATURATION_PROP = (
+        // Property Name: "Saturation"
+        // Property Type: FLOAT
         D2D1_SATURATION_PROP_SATURATION = 0,
         D2D1_SATURATION_PROP_FORCE_DWORD = $ffffffff
         );
 
+    // The enumeration of the Hue Rotation effect's top level properties.
+    // Effect description: Changes the Hue of a bitmap based on a user specified Hue
+    // Rotation angle.
 
     TD2D1_HUEROTATION_PROP = (
+        // Property Name: "Angle"
+        // Property Type: FLOAT
         D2D1_HUEROTATION_PROP_ANGLE = 0,
         D2D1_HUEROTATION_PROP_FORCE_DWORD = $ffffffff
         );
@@ -1410,10 +1493,18 @@ type
         );
 
 
+    // The enumeration of the Opacity Metadata effect's top level properties.
+    // Effect description: Changes the rectangle which is assumed to be opaque.
+    // Provides optimizations in certain scenarios.
+
     TD2D1_OPACITYMETADATA_PROP = (
+        // Property Name: "InputOpaqueRect"
+        // Property Type: D2D1_VECTOR_4F
         D2D1_OPACITYMETADATA_PROP_INPUT_OPAQUE_RECT = 0,
         D2D1_OPACITYMETADATA_PROP_FORCE_DWORD = $ffffffff
         );
+
+
 
     TD2D1_DC_INITIALIZE_MODE = (D2D1_DC_INITIALIZE_MODE_COPY =
         0, D2D1_DC_INITIALIZE_MODE_CLEAR = 1,
@@ -1428,15 +1519,28 @@ type
         D2D1_FACTORY_TYPE_FORCE_DWORD =
         $FFFFFFFF);
 
+
     { D2D1Effects_1.h }
 
+    // The enumeration of the YCbCr effect's top level properties.
+    // Effect description: An effect that takes a Y plane as input 0 and a CbCr plane
+    // as input 1 and outputs RGBA.  The CbCr plane can be chroma subsampled.  Useful
+    // for JPEG color conversion.
+
     TD2D1_YCBCR_PROP = (
+        // Property Name: "ChromaSubsampling"
+        // Property Type: D2D1_YCBCR_CHROMA_SUBSAMPLING
         D2D1_YCBCR_PROP_CHROMA_SUBSAMPLING = 0,
+        // Property Name: "TransformMatrix"
+        // Property Type: D2D1_MATRIX_3X2_F
         D2D1_YCBCR_PROP_TRANSFORM_MATRIX = 1,
+        // Property Name: "InterpolationMode"
+        // Property Type: D2D1_YCBCR_INTERPOLATION_MODE
         D2D1_YCBCR_PROP_INTERPOLATION_MODE = 2,
         D2D1_YCBCR_PROP_FORCE_DWORD = $ffffffff
         );
 
+    PD2D1_YCBCR_PROP = ^TD2D1_YCBCR_PROP;
 
     TD2D1_YCBCR_CHROMA_SUBSAMPLING = (
         D2D1_YCBCR_CHROMA_SUBSAMPLING_AUTO = 0,
@@ -1446,6 +1550,8 @@ type
         D2D1_YCBCR_CHROMA_SUBSAMPLING_440 = 4,
         D2D1_YCBCR_CHROMA_SUBSAMPLING_FORCE_DWORD = $ffffffff
         );
+
+    PD2D1_YCBCR_CHROMA_SUBSAMPLING = ^TD2D1_YCBCR_CHROMA_SUBSAMPLING;
 
 
     TD2D1_YCBCR_INTERPOLATION_MODE = (
@@ -1458,18 +1564,38 @@ type
         D2D1_YCBCR_INTERPOLATION_MODE_FORCE_DWORD = $ffffffff
         );
 
+    PD2D1_YCBCR_INTERPOLATION_MODE = ^TD2D1_YCBCR_INTERPOLATION_MODE;
+
+
     { D2D1EffectAuthor.h}
+
+    // Indicates what has changed since the last time the effect was asked to prepare
+    // to render.
+
     TD2D1_CHANGE_TYPE = (
+        // Nothing has changed.
         D2D1_CHANGE_TYPE_NONE = 0,
+        // The effect's properties have changed.
         D2D1_CHANGE_TYPE_PROPERTIES = 1,
+        // The internal context has changed and should be inspected.
         D2D1_CHANGE_TYPE_CONTEXT = 2,
+        // A new graph has been set due to a change in the input count.
         D2D1_CHANGE_TYPE_GRAPH = 3,
         D2D1_CHANGE_TYPE_FORCE_DWORD = $ffffffff);
 
+
+    // Indicates options for drawing using a pixel shader.
+
     TD2D1_PIXEL_OPTIONS = (
+        // Default pixel processing.
         D2D1_PIXEL_OPTIONS_NONE = 0,
+        // Indicates that the shader samples its inputs only at exactly the same scene
+        // coordinate as the output pixel, and that it returns transparent black whenever
+        // the input pixels are also transparent black.
         D2D1_PIXEL_OPTIONS_TRIVIAL_SAMPLING = 1,
         D2D1_PIXEL_OPTIONS_FORCE_DWORD = $ffffffff);
+
+
 
     TD2D1_VERTEX_OPTIONS = (
         D2D1_VERTEX_OPTIONS_NONE = 0,
@@ -1709,8 +1835,8 @@ type
 
 
     TD2D1_MAPPED_RECT = record
-        pitch: UINT32;
-        bits: PBYTE;
+        pitch: uint32;
+        bits: pbyte;
     end;
 
     PD2D1_MAPPED_RECT = ^TD2D1_MAPPED_RECT;
@@ -1736,7 +1862,7 @@ type
 
     TD2D1_EFFECT_INPUT_DESCRIPTION = record
         effect: ID2D1Effect;
-        inputIndex: UINT32;
+        inputIndex: uint32;
         inputRectangle: TD2D1_RECT_F;
     end;
 
@@ -1761,8 +1887,8 @@ type
     TD2D1_POINT_DESCRIPTION = record
         point: TD2D1_POINT_2F;
         unitTangentVector: TD2D1_POINT_2F;
-        endSegment: UINT32;
-        endFigure: UINT32;
+        endSegment: uint32;
+        endFigure: uint32;
         lengthToEndSegment: single;
     end;
 
@@ -1859,66 +1985,82 @@ type
 
     { D2D1EffectAuthor.h }
 
-    PD2D1_PROPERTY_SET_FUNCTION = function(effect: IUnknown; Data: PBYTE; dataSize: UINT32): HResult; stdcall;
+    // Function pointer that sets a property on an effect.
+    PD2D1_PROPERTY_SET_FUNCTION = function(effect: IUnknown; Data{dataSize}: pbyte; dataSize: uint32): HResult; stdcall;
 
-    PD2D1_PROPERTY_GET_FUNCTION = function(effect: IUnknown; out Data: PBYTE; dataSize: UINT32; out actualSize: UINT32): HResult; stdcall;
+    // Function pointer that gets a property from an effect.
+    PD2D1_PROPERTY_GET_FUNCTION = function(effect: IUnknown; out Data{dataSize}: pbyte; dataSize: uint32; out actualSize: uint32): HResult; stdcall;
 
+
+    // Defines a property binding to a function. The name must match the property
+    // defined in the registration schema.
 
     TD2D1_PROPERTY_BINDING = record
-        propertyName: PWideChar;
+        // The name of the property.
+        propertyName: pwidechar;
+        // The function that will receive the data to set.
         setFunction: PD2D1_PROPERTY_SET_FUNCTION;
+        // The function that will be asked to write the output data.
         getFunction: PD2D1_PROPERTY_GET_FUNCTION;
     end;
+
     PD2D1_PROPERTY_BINDING = ^TD2D1_PROPERTY_BINDING;
 
 
+    // This is used to define a resource texture when that resource texture is created.
+
     TD2D1_RESOURCE_TEXTURE_PROPERTIES = record
-        extents: PUINT32;
-        dimensions: UINT32;
+        extents{dimensions}: PUINT32;
+        dimensions: uint32;
         bufferPrecision: TD2D1_BUFFER_PRECISION;
         channelDepth: TD2D1_CHANNEL_DEPTH;
         filter: TD2D1_FILTER;
-        extendModes: PD2D1_EXTEND_MODE;
+        extendModes{dimensions}: PD2D1_EXTEND_MODE;
     end;
 
     PD2D1_RESOURCE_TEXTURE_PROPERTIES = ^TD2D1_RESOURCE_TEXTURE_PROPERTIES;
 
 
+    // This defines a single element of the vertex layout.
+
     TD2D1_INPUT_ELEMENT_DESC = record
-        semanticName: PAnsiChar;
-        semanticIndex: UINT32;
+        semanticName: pansichar;
+        semanticIndex: uint32;
         format: TDXGI_FORMAT;
-        inputSlot: UINT32;
-        alignedByteOffset: UINT32;
+        inputSlot: uint32;
+        alignedByteOffset: uint32;
     end;
 
     PD2D1_INPUT_ELEMENT_DESC = ^TD2D1_INPUT_ELEMENT_DESC;
 
 
+    // This defines the properties of a vertex buffer which uses the default vertex
+    // layout.
+
     TD2D1_VERTEX_BUFFER_PROPERTIES = record
-        inputCount: UINT32;
+        inputCount: uint32;
         usage: TD2D1_VERTEX_USAGE;
-        Data: PByte;
-        byteWidth: UINT32;
+        Data{byteWidth}: pbyte;
+        byteWidth: uint32;
     end;
 
     PD2D1_VERTEX_BUFFER_PROPERTIES = ^TD2D1_VERTEX_BUFFER_PROPERTIES;
 
 
     TD2D1_CUSTOM_VERTEX_BUFFER_PROPERTIES = record
-        shaderBufferWithInputSignature: PBYTE;
-        shaderBufferSize: UINT32;
+        shaderBufferWithInputSignature: pbyte;
+        shaderBufferSize: uint32;
         inputElements: PD2D1_INPUT_ELEMENT_DESC;
-        elementCount: UINT32;
-        stride: UINT32;
+        elementCount: uint32;
+        stride: uint32;
     end;
 
     PD2D1_CUSTOM_VERTEX_BUFFER_PROPERTIES = ^TD2D1_CUSTOM_VERTEX_BUFFER_PROPERTIES;
 
 
     TD2D1_VERTEX_RANGE = record
-        startVertex: UINT32;
-        vertexCount: UINT32;
+        startVertex: uint32;
+        vertexCount: uint32;
     end;
 
     PD2D1_VERTEX_RANGE = ^TD2D1_VERTEX_RANGE;
@@ -1939,7 +2081,7 @@ type
 
     TD2D1_INPUT_DESCRIPTION = record
         filter: TD2D1_FILTER;
-        levelOfDetailCount: UINT32;
+        levelOfDetailCount: uint32;
     end;
 
     PD2D1_INPUT_DESCRIPTION = ^TD2D1_INPUT_DESCRIPTION;
@@ -1957,7 +2099,7 @@ type
 
     { D2D1_2.h }
 
-
+    // Specifies the extent to which D2D will throttle work sent to the GPU.
     TD2D1_RENDERING_PRIORITY = (
         D2D1_RENDERING_PRIORITY_NORMAL = 0,
         D2D1_RENDERING_PRIORITY_LOW = 1,
@@ -1978,14 +2120,21 @@ type
 
     PD2D1_LAYER_PARAMETERS = ^TD2D1_LAYER_PARAMETERS;
 
+
+    // Describes whether a window is occluded.
+
     TD2D1_WINDOW_STATE = (D2D1_WINDOW_STATE_NONE = $0000000,
         D2D1_WINDOW_STATE_OCCLUDED = $0000001, D2D1_WINDOW_STATE_FORCE_DWORD =
         $FFFFFFFF);
+
+    // Describes whether a render target uses hardware or software rendering, or if
+    // Direct2D should select the rendering mode.
 
     TD2D1_RENDER_TARGET_TYPE = (D2D1_RENDER_TARGET_TYPE_DEFAULT =
         0, D2D1_RENDER_TARGET_TYPE_SOFTWARE = 1,
         D2D1_RENDER_TARGET_TYPE_HARDWARE = 2,
         D2D1_RENDER_TARGET_TYPE_FORCE_DWORD = $FFFFFFFF);
+
 
     TD2D1_FEATURE_LEVEL = (D2D1_FEATURE_LEVEL_DEFAULT = 0,
         D2D1_FEATURE_LEVEL_9 = Ord(D3D_FEATURE_LEVEL_9_1),
@@ -2047,8 +2196,11 @@ type
 
     { D2D1.h }
 
+    // The root interface for all resources in D2D.
+
     ID2D1Resource = interface(IUnknown)
         ['{2cd90691-12e2-11dc-9fed-001143a055f9}']
+        // Retrieve the factory associated with this resource.
         procedure GetFactory(out factory: ID2D1Factory); stdcall;
     end;
 
@@ -2067,8 +2219,9 @@ type
             stdcall;
         function CopyFromRenderTarget(const destPoint: PD2D1_POINT_2U; renderTarget: ID2D1RenderTarget;
             const srcRect: PD2D1_RECT_U): HResult; stdcall;
-        function CopyFromMemory(const dstRect: PD2D1_RECT_U; srcData: Pointer; pitch: UINT32): HResult; stdcall;
+        function CopyFromMemory(const dstRect: PD2D1_RECT_U; srcData: Pointer; pitch: uint32): HResult; stdcall;
     end;
+
     {$IFDEF FPC}
     { ID2D1BitmapHelper }
 
@@ -2084,11 +2237,14 @@ type
 
     ID2D1GradientStopCollection = interface(ID2D1Resource)
         ['{2cd906a7-12e2-11dc-9fed-001143a055f9}']
-        function GetGradientStopCount(): UINT32; stdcall;
-        procedure GetGradientStops(out gradientStops: PD2D1_GRADIENT_STOP; gradientStopsCount: UINT32); stdcall;
+        function GetGradientStopCount(): uint32; stdcall;
+        procedure GetGradientStops(out gradientStops: PD2D1_GRADIENT_STOP; gradientStopsCount: uint32); stdcall;
         function GetColorInterpolationGamma(): TD2D1_GAMMA; stdcall;
         function GetExtendMode(): TD2D1_EXTEND_MODE; stdcall;
     end;
+
+
+    // The root brush interface. All brushes can be used to fill or pen a geometry.
 
     ID2D1Brush = interface(ID2D1Resource)
         ['{2cd906a8-12e2-11dc-9fed-001143a055f9}']
@@ -2106,6 +2262,9 @@ type
             stdcall; overload;
     end;
     {$ENDIF}
+
+
+    // A bitmap brush allows a bitmap to be used to fill a geometry.
 
     ID2D1BitmapBrush = interface(ID2D1Brush)
         ['{2cd906aa-12e2-11dc-9fed-001143a055f9}']
@@ -2128,13 +2287,10 @@ type
 
     {$IFDEF FPC}
     //{$IF FPC_FULLVERSION >= 30101}
-
     { ID2D1SolidColorBrushHelper }
-
     ID2D1SolidColorBrushHelper = type helper for ID2D1SolidColorBrush
         procedure SetColor(color: TD2D1_COLOR_F); stdcall; overload;
     end;
-
     {$ENDIF}
 
 
@@ -2170,9 +2326,14 @@ type
         function GetLineJoin(): TD2D1_LINE_JOIN; stdcall;
         function GetDashOffset(): single; stdcall;
         function GetDashStyle(): TD2D1_DASH_STYLE; stdcall;
-        function GetDashesCount(): UINT32; stdcall;
-        procedure GetDashes(out dashes: Psingle; dashesCount: UINT32); stdcall;
+        function GetDashesCount(): uint32; stdcall;
+        procedure GetDashes(out dashes: Psingle; dashesCount: uint32); stdcall;
     end;
+
+
+    // Represents a geometry resource and defines a set of helper methods for
+    // manipulating and measuring geometric shapes. Interfaces that inherit from
+    // ID2D1Geometry define specific shapes.
 
     ID2D1Geometry = interface(ID2D1Resource)
         ['{2cd906a1-12e2-11dc-9fed-001143a055f9}']
@@ -2208,9 +2369,7 @@ type
 
     {$IFDEF FPC}
     //{$IF FPC_FULLVERSION >= 30101}
-
     { ID2D1GeometryHelper }
-
     ID2D1GeometryHelper = type helper for ID2D1Geometry
         function GetBounds(worldTransform: TD2D1_MATRIX_3X2_F; out bounds: TD2D1_RECT_F): HRESULT; stdcall; overload;
         function GetBounds(out bounds: TD2D1_RECT_F): HRESULT;
@@ -2350,8 +2509,8 @@ type
     ID2D1GeometryGroup = interface(ID2D1Geometry)
         ['{2cd906a6-12e2-11dc-9fed-001143a055f9}']
         function GetFillMode(): TD2D1_FILL_MODE; stdcall;
-        function GetSourceGeometryCount(): UINT32; stdcall;
-        procedure GetSourceGeometries(out geometries: PID2D1Geometry{array count geometriesCount}; geometriesCount: UINT32); stdcall;
+        function GetSourceGeometryCount(): uint32; stdcall;
+        procedure GetSourceGeometries(out geometries: PID2D1Geometry{array count geometriesCount}; geometriesCount: uint32); stdcall;
     end;
 
     ID2D1TransformedGeometry = interface(ID2D1Geometry)
@@ -2366,8 +2525,8 @@ type
         procedure SetFillMode(fillMode: TD2D1_FILL_MODE); stdcall;
         procedure SetSegmentFlags(vertexFlags: TD2D1_PATH_SEGMENT); stdcall;
         procedure BeginFigure(startPoint: TD2D1_POINT_2F; figureBegin: TD2D1_FIGURE_BEGIN); stdcall;
-        procedure AddLines(points: PD2D1_POINT_2F; pointsCount: UINT32); stdcall;
-        procedure AddBeziers(beziers: PD2D1_BEZIER_SEGMENT; beziersCount: UINT32); stdcall;
+        procedure AddLines(points: PD2D1_POINT_2F; pointsCount: uint32); stdcall;
+        procedure AddBeziers(beziers: PD2D1_BEZIER_SEGMENT; beziersCount: uint32); stdcall;
         procedure EndFigure(figureEnd: TD2D1_FIGURE_END); stdcall;
         function Close(): HResult; stdcall;
     end;
@@ -2378,17 +2537,15 @@ type
         procedure AddBezier(bezier: PD2D1_BEZIER_SEGMENT); stdcall;
         procedure AddQuadraticBezier(bezier: PD2D1_QUADRATIC_BEZIER_SEGMENT);
             stdcall;
-        procedure AddQuadraticBeziers(beziers: PD2D1_QUADRATIC_BEZIER_SEGMENT; beziersCount: UINT32); stdcall;
+        procedure AddQuadraticBeziers(beziers: PD2D1_QUADRATIC_BEZIER_SEGMENT; beziersCount: uint32); stdcall;
         procedure AddArc(const arc: PD2D1_ARC_SEGMENT); stdcall;
 
     end;
 
     {$IFDEF FPC}
     //{$IF FPC_FULLVERSION >= 30101}
-
-    { ID2D1GeometrySinkelper }
-
-    ID2D1GeometrySinkelper = type helper for ID2D1GeometrySink
+    { ID2D1GeometrySinkHelper }
+    ID2D1GeometrySinkHelper = type helper for ID2D1GeometrySink
         procedure AddBezier(const bezier: TD2D1_BEZIER_SEGMENT);
             stdcall; overload;
         procedure AddQuadraticBezier(const bezier: TD2D1_QUADRATIC_BEZIER_SEGMENT);
@@ -2401,7 +2558,7 @@ type
 
     ID2D1TessellationSink = interface(IUnknown)
         ['{2cd906c1-12e2-11dc-9fed-001143a055f9}']
-        procedure AddTriangles(triangles: PD2D1_TRIANGLE; trianglesCount: UINT32); stdcall;
+        procedure AddTriangles(triangles: PD2D1_TRIANGLE; trianglesCount: uint32); stdcall;
         function Close(): HResult; stdcall;
     end;
 
@@ -2409,8 +2566,8 @@ type
         ['{2cd906a5-12e2-11dc-9fed-001143a055f9}']
         function Open(out geometrySink: ID2D1GeometrySink): HResult; stdcall;
         function Stream(geometrySink: ID2D1GeometrySink): HResult; stdcall;
-        function GetSegmentCount(out Count: UINT32): HResult; stdcall;
-        function GetFigureCount(out Count: UINT32): HResult; stdcall;
+        function GetSegmentCount(out Count: uint32): HResult; stdcall;
+        function GetFigureCount(out Count: uint32): HResult; stdcall;
     end;
 
     ID2D1Mesh = interface(ID2D1Resource)
@@ -2449,7 +2606,7 @@ type
 
     ID2D1RenderTarget = interface(ID2D1Resource)
         ['{2cd90694-12e2-11dc-9fed-001143a055f9}']
-        function CreateBitmap(size: TD2D1_SIZE_U; srcData: Pointer; pitch: UINT32; const bitmapProperties: PD2D1_BITMAP_PROPERTIES;
+        function CreateBitmap(size: TD2D1_SIZE_U; srcData: Pointer; pitch: uint32; const bitmapProperties: PD2D1_BITMAP_PROPERTIES;
             out bitmap: ID2D1Bitmap): HResult; stdcall;
         function CreateBitmapFromWicBitmap(wicBitmapSource: IWICBitmapSource; const bitmapProperties: PD2D1_BITMAP_PROPERTIES;
             out bitmap: ID2D1Bitmap): HResult;
@@ -2461,7 +2618,7 @@ type
         function CreateSolidColorBrush(const color: PD2D1_COLOR_F; const brushProperties: PD2D1_BRUSH_PROPERTIES;
             out solidColorBrush: ID2D1SolidColorBrush): HResult;
             stdcall;
-        function CreateGradientStopCollection(const gradientStops: PD2D1_GRADIENT_STOP; gradientStopsCount: UINT32;
+        function CreateGradientStopCollection(const gradientStops: PD2D1_GRADIENT_STOP; gradientStopsCount: uint32;
             colorInterpolationGamma: TD2D1_GAMMA; extendMode: TD2D1_EXTEND_MODE; out gradientStopCollection: ID2D1GradientStopCollection): HResult;
             stdcall;
         function CreateLinearGradientBrush(const linearGradientBrushProperties: PD2D1_LINEAR_GRADIENT_BRUSH_PROPERTIES;
@@ -2498,7 +2655,7 @@ type
         procedure DrawBitmap(bitmap: ID2D1Bitmap; destinationRectangle: PD2D1_RECT_F = nil; opacity: single = 1.0;
             interpolationMode: TD2D1_BITMAP_INTERPOLATION_MODE = D2D1_BITMAP_INTERPOLATION_MODE_LINEAR;
             sourceRectangle: PD2D1_RECT_F = nil); stdcall;
-        procedure DrawText(Text: PWideChar; stringLength: UINT32; textFormat: IDWriteTextFormat; layoutRect: PD2D1_RECT_F;
+        procedure DrawText(Text: pwidechar; stringLength: uint32; textFormat: IDWriteTextFormat; layoutRect: PD2D1_RECT_F;
             defaultFillBrush: ID2D1Brush; options: TD2D1_DRAW_TEXT_OPTIONS = D2D1_DRAW_TEXT_OPTIONS_NONE;
             measuringMode: TDWRITE_MEASURING_MODE = DWRITE_MEASURING_MODE_NATURAL); stdcall;
         procedure DrawTextLayout(origin: TD2D1_POINT_2F; textLayout: IDWriteTextLayout; defaultFillBrush: ID2D1Brush;
@@ -2535,7 +2692,7 @@ type
         function GetSize(): TD2D1_SIZE_F; stdcall;
         function GetPixelSize(): TD2D1_SIZE_U; stdcall;
 
-        function GetMaximumBitmapSize(): UINT32; stdcall;
+        function GetMaximumBitmapSize(): uint32; stdcall;
         function IsSupported(const renderTargetProperties: PD2D1_RENDER_TARGET_PROPERTIES): longbool; stdcall;
     end;
 
@@ -2547,142 +2704,85 @@ type
             out bitmap: ID2D1Bitmap): HResult; stdcall; overload;
         function CreateBitmap(size: TD2D1_SIZE_U; const bitmapProperties: TD2D1_BITMAP_PROPERTIES; out bitmap: ID2D1Bitmap): HResult;
             stdcall; overload;
-
         function CreateBitmapFromWicBitmap(wicBitmapSource: IWICBitmapSource; const bitmapProperties: TD2D1_BITMAP_PROPERTIES;
             out bitmap: ID2D1Bitmap): HResult;
             stdcall; overload;
-
         function CreateBitmapFromWicBitmap(wicBitmapSource: IWICBitmapSource; out bitmap: ID2D1Bitmap): HResult; stdcall; overload;
-
-
-
         function CreateBitmapBrush(bitmap: ID2D1Bitmap; out bitmapBrush: ID2D1BitmapBrush): HResult;
             stdcall; overload;
-
-
         function CreateBitmapBrush(bitmap: ID2D1Bitmap; const bitmapBrushProperties: TD2D1_BITMAP_BRUSH_PROPERTIES;
             out bitmapBrush: ID2D1BitmapBrush): HResult;
             stdcall; overload;
-
         function CreateBitmapBrush(bitmap: ID2D1Bitmap; const bitmapBrushProperties: TD2D1_BITMAP_BRUSH_PROPERTIES;
             const brushProperties: TD2D1_BRUSH_PROPERTIES; out bitmapBrush: ID2D1BitmapBrush): HResult;
             stdcall; overload;
-
-
-
-
         function CreateSolidColorBrush(const color: TD2D1_COLOR_F; out solidColorBrush: ID2D1SolidColorBrush): HRESULT;
             stdcall; overload;
-
         function CreateSolidColorBrush(const color: TD2D1_COLOR_F; const brushProperties: TD2D1_BRUSH_PROPERTIES;
             out solidColorBrush: ID2D1SolidColorBrush): HResult;
             stdcall; overload;
-
         function CreateGradientStopCollection(const gradientStops: PD2D1_GRADIENT_STOP; gradientStopsCount: UINT32;
             out gradientStopCollection: ID2D1GradientStopCollection): HResult; stdcall; overload;
-
         function CreateLinearGradientBrush(const linearGradientBrushProperties: TD2D1_LINEAR_GRADIENT_BRUSH_PROPERTIES;
             gradientStopCollection: ID2D1GradientStopCollection; out linearGradientBrush: ID2D1LinearGradientBrush): HResult;
             stdcall; overload;
-
-
         function CreateLinearGradientBrush(const linearGradientBrushProperties: TD2D1_LINEAR_GRADIENT_BRUSH_PROPERTIES;
             const brushProperties: TD2D1_BRUSH_PROPERTIES; gradientStopCollection: ID2D1GradientStopCollection;
             out linearGradientBrush: ID2D1LinearGradientBrush): HResult;
             stdcall; overload;
-
         function CreateRadialGradientBrush(const radialGradientBrushProperties: TD2D1_RADIAL_GRADIENT_BRUSH_PROPERTIES;
             gradientStopCollection: ID2D1GradientStopCollection; out radialGradientBrush: ID2D1RadialGradientBrush): HResult;
             stdcall; overload;
-
         function CreateRadialGradientBrush(const radialGradientBrushProperties: TD2D1_RADIAL_GRADIENT_BRUSH_PROPERTIES;
             const brushProperties: TD2D1_BRUSH_PROPERTIES; gradientStopCollection: ID2D1GradientStopCollection;
             out radialGradientBrush: ID2D1RadialGradientBrush): HResult;
             stdcall; overload;
-
         function CreateCompatibleRenderTarget(out bitmapRenderTarget: ID2D1BitmapRenderTarget): HResult;
             stdcall; overload;
-
-
         function CreateCompatibleRenderTarget(desiredSize: TD2D1_SIZE_F; out bitmapRenderTarget: ID2D1BitmapRenderTarget): HResult;
             stdcall; overload;
-
         function CreateCompatibleRenderTarget(desiredSize: TD2D1_SIZE_F; desiredPixelSize: TD2D1_SIZE_U;
             out bitmapRenderTarget: ID2D1BitmapRenderTarget): HResult;
             stdcall; overload;
-
-
         function CreateCompatibleRenderTarget(desiredSize: TD2D1_SIZE_F; desiredPixelSize: TD2D1_SIZE_U;
             desiredFormat: TD2D1_PIXEL_FORMAT; out bitmapRenderTarget: ID2D1BitmapRenderTarget): HResult;
             stdcall; overload;
-
         function CreateCompatibleRenderTarget(desiredSize: TD2D1_SIZE_F; desiredPixelSize: TD2D1_SIZE_U;
             desiredFormat: TD2D1_PIXEL_FORMAT; options: TD2D1_COMPATIBLE_RENDER_TARGET_OPTIONS;
             out bitmapRenderTarget: ID2D1BitmapRenderTarget): HResult;
             stdcall; overload;
-
         function CreateLayer(size: TD2D1_SIZE_F; out layer: ID2D1Layer): HResult; stdcall; overload;
-
-
         function CreateLayer(out layer: ID2D1Layer): HResult;
             stdcall; overload;
-
-
         procedure DrawRectangle(const rect: TD2D1_RECT_F; brush: ID2D1Brush; strokeWidth: single = 1.0; strokeStyle: ID2D1StrokeStyle = nil);
             stdcall; overload;
-
-
         procedure FillRectangle(const rect: TD2D1_RECT_F; brush: ID2D1Brush); stdcall; overload;
-
         procedure DrawRoundedRectangle(const roundedRect: TD2D1_ROUNDED_RECT; brush: ID2D1Brush; strokeWidth: single = 1.0;
             strokeStyle: ID2D1StrokeStyle = nil); stdcall; overload;
-
         procedure FillRoundedRectangle(const roundedRect: TD2D1_ROUNDED_RECT; brush: ID2D1Brush); stdcall; overload;
-
         procedure DrawEllipse(const ellipse: TD2D1_ELLIPSE; brush: ID2D1Brush; strokeWidth: single = 1.0; strokeStyle: ID2D1StrokeStyle = nil);
             stdcall; overload;
-
         procedure FillEllipse(const ellipse: TD2D1_ELLIPSE; brush: ID2D1Brush); stdcall; overload;
-
-
         procedure FillOpacityMask(opacityMask: ID2D1Bitmap; brush: ID2D1Brush; content: TD2D1_OPACITY_MASK_CONTENT;
             const destinationRectangle: TD2D1_RECT_F; const sourceRectangle: TD2D1_RECT_F); stdcall; overload;
-
-
         procedure DrawBitmap(bitmap: ID2D1Bitmap; const destinationRectangle: TD2D1_RECT_F; opacity: single = 1.0;
             interpolationMode: TD2D1_BITMAP_INTERPOLATION_MODE = D2D1_BITMAP_INTERPOLATION_MODE_LINEAR; const sourceRectangle: PD2D1_RECT_F = nil);
             stdcall; overload;
-
-
         procedure DrawBitmap(bitmap: ID2D1Bitmap; const destinationRectangle: TD2D1_RECT_F; opacity: single;
             interpolationMode: TD2D1_BITMAP_INTERPOLATION_MODE; const sourceRectangle: TD2D1_RECT_F); stdcall; overload;
-
         procedure SetTransform(const transform: TD2D1_MATRIX_3X2_F);
             stdcall; overload;
-
         procedure PushLayer(const layerParameters: TD2D1_LAYER_PARAMETERS; layer: ID2D1Layer); stdcall; overload;
-
-
         procedure PushAxisAlignedClip(const clipRect: TD2D1_RECT_F; antialiasMode: TD2D1_ANTIALIAS_MODE); stdcall; overload;
-
         procedure Clear(const clearColor: TD2D1_COLOR_F);
             stdcall; overload;
-
-
         procedure DrawText(const Astring: PWideChar; stringLength: UINT32; textFormat: IDWriteTextFormat;
             const layoutRect: TD2D1_RECT_F; defaultFillBrush: ID2D1Brush; options: TD2D1_DRAW_TEXT_OPTIONS = D2D1_DRAW_TEXT_OPTIONS_NONE;
             measuringMode: TDWRITE_MEASURING_MODE = DWRITE_MEASURING_MODE_NATURAL); stdcall; overload;
-
-
-
         function IsSupported(const renderTargetProperties: TD2D1_RENDER_TARGET_PROPERTIES): longbool; stdcall; overload;
-
-
-
-
     end;
 
-     {$ENDIF}
+    {$ENDIF}
 
     ID2D1BitmapRenderTarget = interface(ID2D1RenderTarget)
         ['{2cd90695-12e2-11dc-9fed-001143a055f9}']
@@ -2698,9 +2798,7 @@ type
 
     {$IFDEF FPC}
     // {$IF FPC_FULLVERSION >= 30101}
-
     { ID2D1HwndRenderTargetHelper }
-
     ID2D1HwndRenderTargetHelper = type helper for ID2D1HwndRenderTarget
         function Resize(const pixelSize: TD2D1_SIZE_U): HResult;
             stdcall; overload;
@@ -2729,14 +2827,14 @@ type
             stdcall;
         function CreateEllipseGeometry(ellipse: PD2D1_ELLIPSE; out ellipseGeometry: ID2D1EllipseGeometry): HResult; stdcall;
         //{$Warning: ToDo Example, wegen geometries: PID2D1Geometry; [array]}
-        function CreateGeometryGroup(fillMode: TD2D1_FILL_MODE; geometries: PID2D1Geometry; geometriesCount: UINT32;
+        function CreateGeometryGroup(fillMode: TD2D1_FILL_MODE; geometries: PID2D1Geometry; geometriesCount: uint32;
             out geometryGroup: ID2D1GeometryGroup): HResult; stdcall;
         function CreateTransformedGeometry(sourceGeometry: ID2D1Geometry; const transform: PD2D1_MATRIX_3X2_F;
             out transformedGeometry: ID2D1TransformedGeometry): HResult;
             stdcall;
         function CreatePathGeometry(out pathGeometry: ID2D1PathGeometry): HResult; stdcall;
         function CreateStrokeStyle(const strokeStyleProperties: PD2D1_STROKE_STYLE_PROPERTIES; dashes: Psingle;
-            dashesCount: UINT32; out strokeStyle: ID2D1StrokeStyle): HResult; stdcall;
+            dashesCount: uint32; out strokeStyle: ID2D1StrokeStyle): HResult; stdcall;
         function CreateDrawingStateBlock(const drawingStateDescription: PD2D1_DRAWING_STATE_DESCRIPTION;
             textRenderingParams: IDWriteRenderingParams; out drawingStateBlock: ID2D1DrawingStateBlock): HResult; stdcall;
         function CreateWicBitmapRenderTarget(target: IWICBitmap; const renderTargetProperties: PD2D1_RENDER_TARGET_PROPERTIES;
@@ -2751,9 +2849,7 @@ type
 
     {$IFDEF FPC}
     //{$IF FPC_FULLVERSION >= 30101}
-
     { ID2D1FactoryHelper }
-
     ID2D1FactoryHelper = type helper for ID2D1Factory
         function CreateRectangleGeometry(const rectangle: TD2D1_RECT_F; out rectangleGeometry: ID2D1RectangleGeometry): HResult;
             stdcall; overload;
@@ -2764,31 +2860,23 @@ type
         function CreateTransformedGeometry(sourceGeometry: ID2D1Geometry; const transform: TD2D1_MATRIX_3X2_F;
             out transformedGeometry: ID2D1TransformedGeometry): HResult;
             stdcall; overload;
-
         function CreateStrokeStyle(const strokeStyleProperties: TD2D1_STROKE_STYLE_PROPERTIES; const dashes: Psingle;
             dashesCount: UINT32; out strokeStyle: ID2D1StrokeStyle): HResult;
             stdcall; overload;
-
         function CreateDrawingStateBlock(const drawingStateDescription: TD2D1_DRAWING_STATE_DESCRIPTION;
             out drawingStateBlock: ID2D1DrawingStateBlock): HResult;
             stdcall; overload;
-
         function CreateDrawingStateBlock(out drawingStateBlock: ID2D1DrawingStateBlock): HResult;
             stdcall; overload;
         function CreateWicBitmapRenderTarget(target: IWICBitmap; const renderTargetProperties: TD2D1_RENDER_TARGET_PROPERTIES;
             out renderTarget: ID2D1RenderTarget): HResult;
             stdcall; overload;
-
         function CreateHwndRenderTarget(const renderTargetProperties: TD2D1_RENDER_TARGET_PROPERTIES;
             const hwndRenderTargetProperties: TD2D1_HWND_RENDER_TARGET_PROPERTIES; out hwndRenderTarget: ID2D1HwndRenderTarget): HResult;
             stdcall; overload;
-
         function CreateDxgiSurfaceRenderTarget(dxgiSurface: IDXGISurface; const renderTargetProperties: TD2D1_RENDER_TARGET_PROPERTIES;
             out renderTarget: ID2D1RenderTarget): HResult;
             stdcall; overload;
-
-
-
     end;
 
     {$ENDIF}
@@ -2894,36 +2982,80 @@ type
 
     ID2D1PathGeometry1 = interface(ID2D1PathGeometry)
         ['{62baa2d2-ab54-41b7-b872-787e0106a421}']
-        function ComputePointAndSegmentAtLength(length: single; startSegment: UINT32; worldTransform: PD2D1_MATRIX_3X2_F;
+        function ComputePointAndSegmentAtLength(length: single; startSegment: uint32; worldTransform: PD2D1_MATRIX_3X2_F;
             flatteningTolerance: single; out pointDescription: TD2D1_POINT_DESCRIPTION): HResult; stdcall;
     end;
+
+    {$IFDEF FPC}
+    { ID2D1PathGeometry1Helper }
+
+    ID2D1PathGeometry1Helper = type helper for ID2D1PathGeometry1
+        function ComputePointAndSegmentAtLength(length:single; startSegment:UINT32;
+            CONST worldTransform :TD2D1_MATRIX_3X2_F; flatteningTolerance:single;
+            out pointDescription :TD2D1_POINT_DESCRIPTION) : HResult; stdcall; overload;
+    end;
+    {$ENDIF}
 
 
     ID2D1Properties = interface(IUnknown)
         ['{483473d7-cd46-4f9d-9d3a-3112aa80159d}']
-        function GetPropertyCount(): UINT32; stdcall;
-        function GetPropertyName(index: UINT32; out Name: PWideChar; nameCount: UINT32): HResult; stdcall;
-        function GetPropertyNameLength(index: UINT32): UINT32; stdcall;
-        function GetType(index: UINT32): TD2D1_PROPERTY_TYPE; stdcall;
-        function GetPropertyIndex(Name: PWideChar): UINT32; stdcall;
-        function SetValueByName(Name: PWideChar; _type: TD2D1_PROPERTY_TYPE; Data: PBYTE; dataSize: UINT32): HResult; stdcall;
-        function SetValue(index: UINT32; _type: TD2D1_PROPERTY_TYPE; Data: PBYTE; dataSize: UINT32): HResult; stdcall;
-        function GetValueByName(Name: PWideChar; _type: TD2D1_PROPERTY_TYPE; out Data: PBYTE; dataSize: UINT32): HResult; stdcall;
-        function GetValue(index: UINT32; _type: TD2D1_PROPERTY_TYPE; out Data: PBYTE; dataSize: UINT32): HResult; stdcall;
-        function GetValueSize(index: UINT32): UINT32; stdcall;
-        function GetSubProperties(index: UINT32; out subProperties: ID2D1Properties): HResult; stdcall;
+        function GetPropertyCount(): uint32; stdcall;
+        function GetPropertyName(index: uint32; out Name: pwidechar; nameCount: uint32): HResult; stdcall;
+        function GetPropertyNameLength(index: uint32): uint32; stdcall;
+        function GetType(index: uint32): TD2D1_PROPERTY_TYPE; stdcall;
+        function GetPropertyIndex(Name: pwidechar): uint32; stdcall;
+        function SetValueByName(Name: pwidechar; _type: TD2D1_PROPERTY_TYPE; Data: pbyte; dataSize: uint32): HResult; stdcall;
+        function SetValue(index: uint32; _type: TD2D1_PROPERTY_TYPE; Data: pbyte; dataSize: uint32): HResult; stdcall;
+        function GetValueByName(Name: pwidechar; _type: TD2D1_PROPERTY_TYPE; out Data: pbyte; dataSize: uint32): HResult; stdcall;
+        function GetValue(index: uint32; _type: TD2D1_PROPERTY_TYPE; out Data: pbyte; dataSize: uint32): HResult; stdcall;
+        function GetValueSize(index: uint32): uint32; stdcall;
+        function GetSubProperties(index: uint32; out subProperties: ID2D1Properties): HResult; stdcall;
     end;
+
+    {$IFDEF FPC}
+    { ID2D1PropertiesHelper }
+
+    ID2D1PropertiesHelper = type helper for ID2D1Properties
+        function SetValueByName(name:PCWSTR; CONST data :PBYTE; dataSize:UINT32) : HResult; stdcall; overload;
+	function SetValue(index:UINT32;CONST data:PBYTE; dataSize:UINT32) : HResult; stdcall;overload;
+	function GetValueByName(name:PCWSTR; out data:PBYTE; dataSize :UINT32) : HResult; stdcall; overload;
+	function GetValue(index:UINT32; out data:PBYTE;dataSize :UINT32): HResult; stdcall;overload;
+        // Templatized helper functions:
+        function GetValueByName<T>(propertyName:PCWSTR; out value:T): HResult; overload;
+        function GetValueByName<T>(propertyName:PCWSTR):T; overload;
+        function SetValueByName<T>(propertyName:PCWSTR; const value:T):HResult;
+        function GetValue<U>(index:U; out data:PBYTE; dataSize:UINT32) :HResult;
+        function GetValue<T,U>(index:U; out value:T) :HResult; overload;
+        function GetValue<T,U>(index:U):T; overload;
+	function SetValue<U>(Index:U; CONST data:PBYTE;dataSize:UINT32):Hresult; overload;
+	function SetValue<T,U>(index:U;const value:T):Hresult; overload;
+	function GetPropertyName<U>(index:U;out name:PWSTR;nameCount:UINT32) :Hresult; overload;
+	function GetPropertyNameLength<U>(index:U) :UINT32; overload;
+	function GetType<U>(index:U) :TD2D1_PROPERTY_TYPE; overload;
+	function GetValueSize<U>(index:U) :UINT32; overload;
+	function GetSubProperties<U>(index:U;out subProperties:ID2D1Properties) :Hresult; overload;
+    end;
+    {$ENDIF}
 
     { ID2D1Effect }
 
     ID2D1Effect = interface(ID2D1Properties)
         ['{28211a43-7d89-476f-8181-2d6159b220ad}']
-        procedure SetInput(index: UINT32; input: ID2D1Image; invalidate: longbool = True); stdcall;
-        function SetInputCount(inputCount: UINT32): HResult; stdcall;
-        procedure GetInput(index: UINT32; out input: ID2D1Image); stdcall;
-        function GetInputCount(): UINT32; stdcall;
+        procedure SetInput(index: uint32; input: ID2D1Image; invalidate: longbool = True); stdcall;
+        function SetInputCount(inputCount: uint32): HResult; stdcall;
+        procedure GetInput(index: uint32; out input: ID2D1Image); stdcall;
+        function GetInputCount(): uint32; stdcall;
         procedure GetOutput(out outputImage: ID2D1Image); stdcall;
     end;
+
+    {$IFDEF FPC}
+    { ID2D1EffectHelper }
+
+    ID2D1EffectHelper = type helper for ID2D1Effect
+        procedure SetInputEffect(index:UINT32;inputEffect:ID2D1Effect =nil;invalidate:longbool=TRUE 
+        ); stdcall;
+    end;
+    {$ENDIF}
 
 
     ID2D1Bitmap1 = interface(ID2D1Bitmap)
@@ -2940,14 +3072,14 @@ type
     ID2D1ColorContext = interface(ID2D1Resource)
         ['{1c4820bb-5771-4518-a581-2fe4dd0ec657}']
         function GetColorSpace(): TD2D1_COLOR_SPACE; stdcall;
-        function GetProfileSize(): UINT32; stdcall;
-        function GetProfile(out profile: PBYTE; profileSize: UINT32): HResult; stdcall;
+        function GetProfileSize(): uint32; stdcall;
+        function GetProfile(out profile: pbyte; profileSize: uint32): HResult; stdcall;
     end;
 
 
     ID2D1GradientStopCollection1 = interface(ID2D1GradientStopCollection)
         ['{ae1572f4-5dd0-4777-998b-9279472ae63b}']
-        procedure GetGradientStops1(out gradientStops: PD2D1_GRADIENT_STOP; gradientStopsCount: UINT32); stdcall;
+        procedure GetGradientStops1(out gradientStops: PD2D1_GRADIENT_STOP; gradientStopsCount: uint32); stdcall;
         function GetPreInterpolationSpace(): TD2D1_COLOR_SPACE; stdcall;
         function GetPostInterpolationSpace(): TD2D1_COLOR_SPACE; stdcall;
         function GetBufferPrecision(): TD2D1_BUFFER_PRECISION; stdcall;
@@ -2965,20 +3097,20 @@ type
 
     ID2D1DeviceContext = interface(ID2D1RenderTarget)
         ['{e8f7fe7a-191c-466d-ad95-975678bda998}']
-        function CreateBitmap(size: TD2D1_SIZE_U; sourceData: Pointer; pitch: UINT32; bitmapProperties: PD2D1_BITMAP_PROPERTIES1;
+        function CreateBitmap(size: TD2D1_SIZE_U; sourceData: Pointer; pitch: uint32; bitmapProperties: PD2D1_BITMAP_PROPERTIES1;
             out bitmap: ID2D1Bitmap1): HResult; stdcall;
         function CreateBitmapFromWicBitmap(wicBitmapSource: IWICBitmapSource; bitmapProperties: PD2D1_BITMAP_PROPERTIES1;
             out bitmap: ID2D1Bitmap1): HResult; stdcall;
-        function CreateColorContext(space: TD2D1_COLOR_SPACE; profile: PBYTE; profileSize: UINT32;
+        function CreateColorContext(space: TD2D1_COLOR_SPACE; profile: pbyte; profileSize: uint32;
             out colorContext: ID2D1ColorContext): HResult; stdcall;
-        function CreateColorContextFromFilename(filename: PWideChar; out colorContext: ID2D1ColorContext): HResult; stdcall;
+        function CreateColorContextFromFilename(filename: pwidechar; out colorContext: ID2D1ColorContext): HResult; stdcall;
         function CreateColorContextFromWicColorContext(wicColorContext: IWICColorContext; out colorContext: ID2D1ColorContext): HResult; stdcall;
-        function CreateBitmapFromDxgiSurface(surface: IDXGISurface; const bitmapProperties: TD2D1_BITMAP_PROPERTIES1;
+        function CreateBitmapFromDxgiSurface(surface: IDXGISurface; const bitmapProperties: PD2D1_BITMAP_PROPERTIES1;
             out bitmap: ID2D1Bitmap1): HResult; stdcall;
         function CreateEffect(effectId: TGUID; out effect: ID2D1Effect): HResult; stdcall;
-        function CreateGradientStopCollection(straightAlphaGradientStops: PD2D1_GRADIENT_STOP; straightAlphaGradientStopsCount: UINT32;
-            preInterpolationSpace: TD2D1_COLOR_SPACE; postInterpolationSpace: TD2D1_COLOR_SPACE; bufferPrecision: TD2D1_BUFFER_PRECISION;
-            extendMode: TD2D1_EXTEND_MODE; colorInterpolationMode: TD2D1_COLOR_INTERPOLATION_MODE;
+        function CreateGradientStopCollection(straightAlphaGradientStops: PD2D1_GRADIENT_STOP; straightAlphaGradientStopsCount: uint32;
+            preInterpolationSpace: TD2D1_COLOR_SPACE; postInterpolationSpace: TD2D1_COLOR_SPACE;
+            bufferPrecision: TD2D1_BUFFER_PRECISION; extendMode: TD2D1_EXTEND_MODE; colorInterpolationMode: TD2D1_COLOR_INTERPOLATION_MODE;
             out gradientStopCollection1: ID2D1GradientStopCollection1): HResult;
             stdcall;
         function CreateImageBrush(image: ID2D1Image; imageBrushProperties: PD2D1_IMAGE_BRUSH_PROPERTIES;
@@ -2992,8 +3124,8 @@ type
         function IsBufferPrecisionSupported(bufferPrecision: TD2D1_BUFFER_PRECISION): longbool; stdcall;
         function GetImageLocalBounds(image: ID2D1Image; out localBounds: TD2D1_RECT_F): HResult; stdcall;
         function GetImageWorldBounds(image: ID2D1Image; out worldBounds: TD2D1_RECT_F): HResult; stdcall;
-        function GetGlyphRunWorldBounds(baselineOrigin: TD2D1_POINT_2F; glyphRun: PDWRITE_GLYPH_RUN; measuringMode: TDWRITE_MEASURING_MODE;
-            out bounds: TD2D1_RECT_F): HResult; stdcall;
+        function GetGlyphRunWorldBounds(baselineOrigin: TD2D1_POINT_2F; glyphRun: PDWRITE_GLYPH_RUN;
+            measuringMode: TDWRITE_MEASURING_MODE; out bounds: TD2D1_RECT_F): HResult; stdcall;
         procedure GetDevice(out device: ID2D1Device); stdcall;
         procedure SetTarget(image: ID2D1Image); stdcall;
         procedure GetTarget(out image: ID2D1Image); stdcall;
@@ -3004,8 +3136,9 @@ type
         function GetPrimitiveBlend(): TD2D1_PRIMITIVE_BLEND; stdcall;
         procedure SetUnitMode(unitMode: TD2D1_UNIT_MODE); stdcall;
         function GetUnitMode(): TD2D1_UNIT_MODE; stdcall;
-        procedure DrawGlyphRun(baselineOrigin: TD2D1_POINT_2F; glyphRun: PDWRITE_GLYPH_RUN; glyphRunDescription: PDWRITE_GLYPH_RUN_DESCRIPTION;
-            foregroundBrush: ID2D1Brush; measuringMode: TDWRITE_MEASURING_MODE = DWRITE_MEASURING_MODE_NATURAL); stdcall;
+        procedure DrawGlyphRun(baselineOrigin: TD2D1_POINT_2F; glyphRun: PDWRITE_GLYPH_RUN;
+            glyphRunDescription: PDWRITE_GLYPH_RUN_DESCRIPTION; foregroundBrush: ID2D1Brush;
+            measuringMode: TDWRITE_MEASURING_MODE = DWRITE_MEASURING_MODE_NATURAL); stdcall;
         procedure DrawImage(image: ID2D1Image; targetOffset: PD2D1_POINT_2F = nil; imageRectangle: PD2D1_RECT_F = nil;
             interpolationMode: TD2D1_INTERPOLATION_MODE = D2D1_INTERPOLATION_MODE_LINEAR;
             compositeMode: TD2D1_COMPOSITE_MODE = D2D1_COMPOSITE_MODE_SOURCE_OVER); stdcall;
@@ -3014,15 +3147,74 @@ type
             interpolationMode: TD2D1_INTERPOLATION_MODE; sourceRectangle: PD2D1_RECT_F = nil;
             perspectiveTransform: PD2D1_MATRIX_4X4_F = nil); stdcall;
         procedure PushLayer(layerParameters: PD2D1_LAYER_PARAMETERS1; layer: ID2D1Layer); stdcall;
-        function InvalidateEffectInputRectangle(effect: ID2D1Effect; input: UINT32; inputRectangle: PD2D1_RECT_F): HResult; stdcall;
-        function GetEffectInvalidRectangleCount(effect: ID2D1Effect; out rectangleCount: UINT32): HResult; stdcall;
-        function GetEffectInvalidRectangles(effect: ID2D1Effect; out rectangles: PD2D1_RECT_F; rectanglesCount: UINT32): HResult;
+        function InvalidateEffectInputRectangle(effect: ID2D1Effect; input: uint32; inputRectangle: PD2D1_RECT_F): HResult; stdcall;
+        function GetEffectInvalidRectangleCount(effect: ID2D1Effect; out rectangleCount: uint32): HResult; stdcall;
+        function GetEffectInvalidRectangles(effect: ID2D1Effect; out rectangles: PD2D1_RECT_F; rectanglesCount: uint32): HResult;
             stdcall;
         function GetEffectRequiredInputRectangles(renderEffect: ID2D1Effect; renderImageRectangle: PD2D1_RECT_F;
-            inputDescriptions: PD2D1_EFFECT_INPUT_DESCRIPTION; out requiredInputRects: PD2D1_RECT_F; inputCount: UINT32): HResult; stdcall;
+            inputDescriptions: PD2D1_EFFECT_INPUT_DESCRIPTION; out requiredInputRects: PD2D1_RECT_F; inputCount: uint32): HResult; stdcall;
         procedure FillOpacityMask(opacityMask: ID2D1Bitmap; brush: ID2D1Brush; destinationRectangle: PD2D1_RECT_F = nil;
             sourceRectangle: PD2D1_RECT_F = nil); stdcall;
     end;
+
+    {$IFDEF FPC}
+    { ID2D1DeviceContextHelper }
+
+    ID2D1DeviceContextHelper = type helper for ID2D1DeviceContext
+	function CreateBitmap(size:TD2D1_SIZE_U;CONST sourceData:pointer; pitch:UINT32;
+            CONST bitmapProperties:TD2D1_BITMAP_PROPERTIES1; out bitmap: ID2D1Bitmap1) :HResult; stdcall; overload;
+        function CreateBitmapFromWicBitmap(wicBitmapSource: IWICBitmapSource; const bitmapProperties: TD2D1_BITMAP_PROPERTIES1;
+            out bitmap: ID2D1Bitmap1): HResult; stdcall; overload;
+        function CreateBitmapFromWicBitmap(wicBitmapSource: IWICBitmapSource; out bitmap: ID2D1Bitmap1): HResult;
+            stdcall; overload;
+        function CreateBitmapFromDxgiSurface(surface: IDXGISurface; const bitmapProperties: TD2D1_BITMAP_PROPERTIES1;
+            out bitmap: ID2D1Bitmap1): HResult; stdcall; overload;
+        function CreateImageBrush(image: ID2D1Image; const imageBrushProperties: TD2D1_IMAGE_BRUSH_PROPERTIES;
+           const brushProperties: TD2D1_BRUSH_PROPERTIES; out imageBrush: ID2D1ImageBrush): HResult; stdcall; overload;
+        function CreateImageBrush(image: ID2D1Image; const imageBrushProperties: TD2D1_IMAGE_BRUSH_PROPERTIES; out imageBrush: ID2D1ImageBrush): HResult;
+           stdcall; overload;
+        function CreateBitmapBrush(bitmap: ID2D1Bitmap; out bitmapBrush: ID2D1BitmapBrush1): HResult; stdcall; overload;
+        function CreateBitmapBrush(bitmap: ID2D1Bitmap; const bitmapBrushProperties: TD2D1_BITMAP_BRUSH_PROPERTIES1;
+            out bitmapBrush: ID2D1BitmapBrush1): HResult; stdcall; overload;
+        function CreateBitmapBrush(bitmap: ID2D1Bitmap; const bitmapBrushProperties: TD2D1_BITMAP_BRUSH_PROPERTIES1;
+            const brushProperties: TD2D1_BRUSH_PROPERTIES; out bitmapBrush: ID2D1BitmapBrush1): HResult; stdcall; overload;
+        procedure DrawImage(effect: ID2D1Effect; const targetOffset: PD2D1_POINT_2F = nil; const imageRectangle: PD2D1_RECT_F = nil;
+            interpolationMode: TD2D1_INTERPOLATION_MODE = D2D1_INTERPOLATION_MODE_LINEAR;
+            compositeMode: TD2D1_COMPOSITE_MODE = D2D1_COMPOSITE_MODE_SOURCE_OVER); stdcall; overload;
+        procedure DrawImage(image: ID2D1Image; interpolationMode: TD2D1_INTERPOLATION_MODE;
+            compositeMode: TD2D1_COMPOSITE_MODE = D2D1_COMPOSITE_MODE_SOURCE_OVER); stdcall; overload;
+        procedure DrawImage(effect: ID2D1Effect; interpolationMode: TD2D1_INTERPOLATION_MODE;
+            compositeMode: TD2D1_COMPOSITE_MODE = D2D1_COMPOSITE_MODE_SOURCE_OVER); stdcall; overload;
+        procedure DrawImage(image: ID2D1Image; targetOffset: TD2D1_POINT_2F; interpolationMode: TD2D1_INTERPOLATION_MODE = D2D1_INTERPOLATION_MODE_LINEAR;
+            compositeMode: TD2D1_COMPOSITE_MODE = D2D1_COMPOSITE_MODE_SOURCE_OVER); stdcall; overload;
+        procedure DrawImage(effect: ID2D1Effect; targetOffset: TD2D1_POINT_2F;
+            interpolationMode: TD2D1_INTERPOLATION_MODE = D2D1_INTERPOLATION_MODE_LINEAR;
+            compositeMode: TD2D1_COMPOSITE_MODE = D2D1_COMPOSITE_MODE_SOURCE_OVER); stdcall; overload;
+        procedure DrawImage(image: ID2D1Image; targetOffset: TD2D1_POINT_2F; const imageRectangle: TD2D1_RECT_F;
+            interpolationMode: TD2D1_INTERPOLATION_MODE = D2D1_INTERPOLATION_MODE_LINEAR;
+            compositeMode: TD2D1_COMPOSITE_MODE = D2D1_COMPOSITE_MODE_SOURCE_OVER); stdcall; overload;
+        procedure DrawImage(effect: ID2D1Effect; targetOffset: TD2D1_POINT_2F; const imageRectangle: TD2D1_RECT_F;
+            interpolationMode: TD2D1_INTERPOLATION_MODE = D2D1_INTERPOLATION_MODE_LINEAR;
+            compositeMode: TD2D1_COMPOSITE_MODE = D2D1_COMPOSITE_MODE_SOURCE_OVER); stdcall; overload;
+        procedure PushLayer(const layerParameters: TD2D1_LAYER_PARAMETERS1; layer: ID2D1Layer); stdcall; overload;
+        procedure DrawGdiMetafile(gdiMetafile: ID2D1GdiMetafile; targetOffset: TD2D1_POINT_2F); stdcall; overload;
+        procedure DrawBitmap(bitmap: ID2D1Bitmap; const destinationRectangle: TD2D1_RECT_F; opacity: single;
+            interpolationMode: TD2D1_INTERPOLATION_MODE; const sourceRectangle: PD2D1_RECT_F = nil;
+            const perspectiveTransform: PD2D1_MATRIX_4X4_F = nil); stdcall; overload;
+        procedure DrawBitmap(bitmap: ID2D1Bitmap; const destinationRectangle: TD2D1_RECT_F; opacity: single;
+            interpolationMode: TD2D1_INTERPOLATION_MODE; const sourceRectangle: TD2D1_RECT_F;
+            const perspectiveTransform: PD2D1_MATRIX_4X4_F = nil); stdcall; overload;
+        procedure DrawBitmap(bitmap: ID2D1Bitmap; const destinationRectangle: TD2D1_RECT_F; opacity: single;
+            interpolationMode: TD2D1_INTERPOLATION_MODE; const sourceRectangle: TD2D1_RECT_F;
+            const perspectiveTransform: TD2D1_MATRIX_4X4_F); stdcall; overload;
+        procedure FillOpacityMask(opacityMask: ID2D1Bitmap; brush: ID2D1Brush; const destinationRectangle: TD2D1_RECT_F;
+            const sourceRectangle: PD2D1_RECT_F = nil); stdcall; overload;
+        procedure FillOpacityMask(opacityMask: ID2D1Bitmap; brush: ID2D1Brush; const destinationRectangle: TD2D1_RECT_F;
+            const sourceRectangle: TD2D1_RECT_F); stdcall; overload;
+        procedure SetRenderingControls(const renderingControls: TD2D1_RENDERING_CONTROLS); stdcall; overload;
+    end;
+    {$ENDIF}
+
 
 
     ID2D1Device = interface(ID2D1Resource)
@@ -3030,20 +3222,22 @@ type
         function CreateDeviceContext(options: TD2D1_DEVICE_CONTEXT_OPTIONS; out deviceContext: ID2D1DeviceContext): HResult; stdcall;
         function CreatePrintControl(wicFactory: IWICImagingFactory; documentTarget: IPrintDocumentPackageTarget;
             printControlProperties: PD2D1_PRINT_CONTROL_PROPERTIES; out printControl: ID2D1PrintControl): HResult; stdcall;
-        procedure SetMaximumTextureMemory(maximumInBytes: UINT64); stdcall;
-        function GetMaximumTextureMemory(): UINT64; stdcall;
-        procedure ClearResources(millisecondsSinceUse: UINT32 = 0); stdcall;
+        procedure SetMaximumTextureMemory(maximumInBytes: uint64); stdcall;
+        function GetMaximumTextureMemory(): uint64; stdcall;
+        procedure ClearResources(millisecondsSinceUse: uint32 = 0); stdcall;
     end;
 
-    //+-----------------------------------------------------------------------------
+    {$IFDEF FPC}
+    { ID2D1DeviceHelper }
 
-    //  Function Pointer:
-    //      PD2D1_EFFECT_FACTORY
+    ID2D1DeviceHelper = type helper for ID2D1Device
+        function CreatePrintControl(wicFactory:IWICImagingFactory;documentTarget:IPrintDocumentPackageTarget; CONST printControlProperties:TD2D1_PRINT_CONTROL_PROPERTIES;
+        out  printControl:ID2D1PrintControl) : HResult; stdcall; overload;
+    end;
+    {$ENDIF}
 
-    //  Synopsis:
-    //      Function pointer to construct a new effect once registered.
 
-    //------------------------------------------------------------------------------
+    // Function pointer to construct a new effect once registered.
     PD2D1_EFFECT_FACTORY = function(out effectImpl: IUnknown): HResult;
         stdcall; // callback
 
@@ -3051,22 +3245,36 @@ type
     ID2D1Factory1 = interface(ID2D1Factory)
         ['{bb12d362-daee-4b9a-aa1d-14ba401cfa1f}']
         function CreateDevice(dxgiDevice: IDXGIDevice; out d2dDevice: ID2D1Device): HResult; stdcall;
-        function CreateStrokeStyle(strokeStyleProperties: PD2D1_STROKE_STYLE_PROPERTIES1; dashes: Psingle; dashesCount: UINT32;
-            out strokeStyle: ID2D1StrokeStyle1): HResult;
+        function CreateStrokeStyle(strokeStyleProperties: PD2D1_STROKE_STYLE_PROPERTIES1; dashes: Psingle;
+            dashesCount: uint32; out strokeStyle: ID2D1StrokeStyle1): HResult;
             stdcall;
         function CreatePathGeometry(out pathGeometry: ID2D1PathGeometry1): HResult; stdcall;
         function CreateDrawingStateBlock(drawingStateDescription: PD2D1_DRAWING_STATE_DESCRIPTION1;
             textRenderingParams: IDWriteRenderingParams; out drawingStateBlock: ID2D1DrawingStateBlock1): HResult; stdcall;
         function CreateGdiMetafile(metafileStream: IStream; out metafile: ID2D1GdiMetafile): HResult; stdcall;
         function RegisterEffectFromStream(classId: TGUID; propertyXml: IStream; bindings: PD2D1_PROPERTY_BINDING;
-            bindingsCount: UINT32; effectFactory: PD2D1_EFFECT_FACTORY): HResult; stdcall;
-        function RegisterEffectFromString(classId: TGUID; propertyXml: PWideChar; bindings: PD2D1_PROPERTY_BINDING;
-            bindingsCount: UINT32; effectFactory: PD2D1_EFFECT_FACTORY): HResult; stdcall;
+            bindingsCount: uint32; effectFactory: PD2D1_EFFECT_FACTORY): HResult; stdcall;
+        function RegisterEffectFromString(classId: TGUID; propertyXml: pwidechar; bindings: PD2D1_PROPERTY_BINDING;
+            bindingsCount: uint32; effectFactory: PD2D1_EFFECT_FACTORY): HResult; stdcall;
         function UnregisterEffect(classId: TGUID): HResult; stdcall;
-        function GetRegisteredEffects(out effects: PGUID; effectsCount: UINT32; out effectsReturned: UINT32;
-            out effectsRegistered: UINT32): HResult; stdcall;
+        function GetRegisteredEffects(out effects: PGUID; effectsCount: uint32; out effectsReturned: uint32;
+            out effectsRegistered: uint32): HResult; stdcall;
         function GetEffectProperties(effectId: TGUID; out properties: ID2D1Properties): HResult; stdcall;
     end;
+
+    {$IFDEF FPC}
+    { ID2D1Factory1Helper }
+
+    ID2D1Factory1Helper = type helper for ID2D1Factory1
+        function CreateStrokeStyle(const strokeStyleProperties: TD2D1_STROKE_STYLE_PROPERTIES1;
+            const dashes{dashesCount}: Psingle; dashesCount: uint32; out strokeStyle: ID2D1StrokeStyle1): HResult;
+            stdcall; overload;
+        function CreateDrawingStateBlock(const drawingStateDescription: TD2D1_DRAWING_STATE_DESCRIPTION1;
+            out drawingStateBlock: ID2D1DrawingStateBlock1): HResult; stdcall; overload;
+        function CreateDrawingStateBlock(out drawingStateBlock: ID2D1DrawingStateBlock1): HResult; stdcall; overload;
+    end;
+    {$ENDIF}
+
 
 
     ID2D1Multithread = interface(IUnknown)
@@ -3078,35 +3286,36 @@ type
 
     { D2D1EffectAuthor.h }
 
+    // A transform uses this interface to write new vertices to a vertex buffer.
 
     ID2D1VertexBuffer = interface(IUnknown)
         ['{9b8b1336-00a5-4668-92b7-ced5d8bf9b7b}']
-        function Map(out Data: PBYTE; bufferSize: UINT32): HResult; stdcall;
+        function Map(out Data: pbyte; bufferSize: uint32): HResult; stdcall;
         function Unmap(): HResult; stdcall;
     end;
 
 
     ID2D1ResourceTexture = interface(IUnknown)
         ['{688d15c3-02b0-438d-b13a-d1b44c32c39a}']
-        function Update(minimumExtents: PUINT32; maximimumExtents: PUINT32; strides: PUINT32; dimensions: UINT32;
-            Data: PBYTE; dataCount: UINT32): HResult; stdcall;
+        function Update(minimumExtents: PUINT32; maximimumExtents: PUINT32; strides: PUINT32; dimensions: uint32;
+            Data: pbyte; dataCount: uint32): HResult; stdcall;
     end;
 
 
     ID2D1RenderInfo = interface(IUnknown)
         ['{519ae1bd-d19a-420d-b849-364f594776b7}']
-        function SetInputDescription(inputIndex: UINT32; inputDescription: TD2D1_INPUT_DESCRIPTION): HResult; stdcall;
+        function SetInputDescription(inputIndex: uint32; inputDescription: TD2D1_INPUT_DESCRIPTION): HResult; stdcall;
         function SetOutputBuffer(bufferPrecision: TD2D1_BUFFER_PRECISION; channelDepth: TD2D1_CHANNEL_DEPTH): HResult; stdcall;
         procedure SetCached(isCached: longbool); stdcall;
-        procedure SetInstructionCountHint(instructionCount: UINT32); stdcall;
+        procedure SetInstructionCountHint(instructionCount: uint32); stdcall;
     end;
 
 
     ID2D1DrawInfo = interface(ID2D1RenderInfo)
         ['{693ce632-7f2f-45de-93fe-18d88b37aa21}']
-        function SetPixelShaderConstantBuffer(buffer: PBYTE; bufferCount: UINT32): HResult; stdcall;
-        function SetResourceTexture(textureIndex: UINT32; resourceTexture: ID2D1ResourceTexture): HResult; stdcall;
-        function SetVertexShaderConstantBuffer(buffer: PBYTE; bufferCount: UINT32): HResult; stdcall;
+        function SetPixelShaderConstantBuffer(buffer: pbyte; bufferCount: uint32): HResult; stdcall;
+        function SetResourceTexture(textureIndex: uint32; resourceTexture: ID2D1ResourceTexture): HResult; stdcall;
+        function SetVertexShaderConstantBuffer(buffer: pbyte; bufferCount: uint32): HResult; stdcall;
         function SetPixelShader(shaderId: TGUID; pixelOptions: TD2D1_PIXEL_OPTIONS = D2D1_PIXEL_OPTIONS_NONE): HResult;
             stdcall;
         function SetVertexProcessing(vertexBuffer: ID2D1VertexBuffer; vertexOptions: TD2D1_VERTEX_OPTIONS;
@@ -3116,44 +3325,44 @@ type
 
     ID2D1ComputeInfo = interface(ID2D1RenderInfo)
         ['{5598b14b-9fd7-48b7-9bdb-8f0964eb38bc}']
-        function SetComputeShaderConstantBuffer(buffer: PBYTE; bufferCount: UINT32): HResult; stdcall;
+        function SetComputeShaderConstantBuffer(buffer: pbyte; bufferCount: uint32): HResult; stdcall;
         function SetComputeShader(shaderId: TGUID): HResult; stdcall;
-        function SetResourceTexture(textureIndex: UINT32; resourceTexture: ID2D1ResourceTexture): HResult; stdcall;
+        function SetResourceTexture(textureIndex: uint32; resourceTexture: ID2D1ResourceTexture): HResult; stdcall;
     end;
 
 
     ID2D1TransformNode = interface(IUnknown)
         ['{b2efe1e7-729f-4102-949f-505fa21bf666}']
-        function GetInputCount(): UINT32; stdcall;
+        function GetInputCount(): uint32; stdcall;
     end;
 
 
     ID2D1TransformGraph = interface(IUnknown)
         ['{13d29038-c3e6-4034-9081-13b53a417992}']
-        function GetInputCount(): UINT32; stdcall;
+        function GetInputCount(): uint32; stdcall;
         function SetSingleTransformNode(node: ID2D1TransformNode): HResult;
             stdcall;
         function AddNode(node: ID2D1TransformNode): HResult; stdcall;
         function RemoveNode(node: ID2D1TransformNode): HResult; stdcall;
         function SetOutputNode(node: ID2D1TransformNode): HResult; stdcall;
-        function ConnectNode(fromNode: ID2D1TransformNode; toNode: ID2D1TransformNode; toNodeInputIndex: UINT32): HResult;
+        function ConnectNode(fromNode: ID2D1TransformNode; toNode: ID2D1TransformNode; toNodeInputIndex: uint32): HResult;
             stdcall;
-        function ConnectToEffectInput(toEffectInputIndex: UINT32; node: ID2D1TransformNode; toNodeInputIndex: UINT32): HResult;
+        function ConnectToEffectInput(toEffectInputIndex: uint32; node: ID2D1TransformNode; toNodeInputIndex: uint32): HResult;
             stdcall;
         procedure Clear(); stdcall;
-        function SetPassthroughGraph(effectInputIndex: UINT32): HResult;
+        function SetPassthroughGraph(effectInputIndex: uint32): HResult;
             stdcall;
     end;
 
 
     ID2D1Transform = interface(ID2D1TransformNode)
         ['{ef1a287d-342a-4f76-8fdb-da0d6ea9f92b}']
-        function MapOutputRectToInputRects(outputRect: PD2D1_RECT_L; out inputRects: PD2D1_RECT_L; inputRectsCount: UINT32): HResult;
+        function MapOutputRectToInputRects(outputRect: PD2D1_RECT_L; out inputRects: PD2D1_RECT_L; inputRectsCount: uint32): HResult;
             stdcall;
-        function MapInputRectsToOutputRect(inputRects: PD2D1_RECT_L; inputOpaqueSubRects: PD2D1_RECT_L; inputRectCount: UINT32;
+        function MapInputRectsToOutputRect(inputRects: PD2D1_RECT_L; inputOpaqueSubRects: PD2D1_RECT_L; inputRectCount: uint32;
             out outputRect: TD2D1_RECT_L; out outputOpaqueSubRect: TD2D1_RECT_L): HResult;
             stdcall;
-        function MapInvalidRect(inputIndex: UINT32; invalidInputRect: TD2D1_RECT_L; out invalidOutputRect: TD2D1_RECT_L): HResult; stdcall;
+        function MapInvalidRect(inputIndex: uint32; invalidInputRect: TD2D1_RECT_L; out invalidOutputRect: TD2D1_RECT_L): HResult; stdcall;
     end;
 
 
@@ -3167,14 +3376,14 @@ type
         ['{0d85573c-01e3-4f7d-bfd9-0d60608bf3c3}']
         function SetComputeInfo(computeInfo: ID2D1ComputeInfo): HResult;
             stdcall;
-        function CalculateThreadgroups(outputRect: PD2D1_RECT_L; out dimensionX: UINT32; out dimensionY: UINT32;
-            out dimensionZ: UINT32): HResult; stdcall;
+        function CalculateThreadgroups(outputRect: PD2D1_RECT_L; out dimensionX: uint32; out dimensionY: uint32;
+            out dimensionZ: uint32): HResult; stdcall;
     end;
 
 
     ID2D1AnalysisTransform = interface(IUnknown)
         ['{0359dc30-95e6-4568-9055-27720d130e93}']
-        function ProcessAnalysisResults(analysisData: PBYTE; analysisDataCount: UINT32): HResult; stdcall;
+        function ProcessAnalysisResults(analysisData: pbyte; analysisDataCount: uint32): HResult; stdcall;
     end;
 
 
@@ -3239,45 +3448,46 @@ type
         ['{3d9f916b-27dc-4ad7-b4f1-64945340f563}']
         procedure GetDpi(out dpiX: single; out dpiY: single); stdcall;
         function CreateEffect(effectId: TGUID; out effect: ID2D1Effect): HResult; stdcall;
-        function GetMaximumSupportedFeatureLevel(featureLevels: PD3D_FEATURE_LEVEL; featureLevelsCount: UINT32;
+        function GetMaximumSupportedFeatureLevel(featureLevels: PD3D_FEATURE_LEVEL; featureLevelsCount: uint32;
             out maximumSupportedFeatureLevel: TD3D_FEATURE_LEVEL): HResult;
             stdcall;
         function CreateTransformNodeFromEffect(effect: ID2D1Effect; out transformNode: ID2D1TransformNode): HResult;
             stdcall;
-        function CreateBlendTransform(numInputs: UINT32; blendDescription: PD2D1_BLEND_DESCRIPTION;
+        function CreateBlendTransform(numInputs: uint32; blendDescription: PD2D1_BLEND_DESCRIPTION;
             out transform: ID2D1BlendTransform): HResult; stdcall;
         function CreateBorderTransform(extendModeX: TD2D1_EXTEND_MODE; extendModeY: TD2D1_EXTEND_MODE;
             out transform: ID2D1BorderTransform): HResult; stdcall;
         function CreateOffsetTransform(offset: TD2D1_POINT_2L; out transform: ID2D1OffsetTransform): HResult; stdcall;
         function CreateBoundsAdjustmentTransform(outputRectangle: PD2D1_RECT_L; out transform: ID2D1BoundsAdjustmentTransform): HResult; stdcall;
-        function LoadPixelShader(shaderId: TGUID; shaderBuffer: PBYTE; shaderBufferCount: UINT32): HResult; stdcall;
-        function LoadVertexShader(resourceId: TGUID; shaderBuffer: PBYTE; shaderBufferCount: UINT32): HResult; stdcall;
-        function LoadComputeShader(resourceId: TGUID; shaderBuffer: PBYTE; shaderBufferCount: UINT32): HResult; stdcall;
+        function LoadPixelShader(shaderId: TGUID; shaderBuffer: pbyte; shaderBufferCount: uint32): HResult; stdcall;
+        function LoadVertexShader(resourceId: TGUID; shaderBuffer: pbyte; shaderBufferCount: uint32): HResult; stdcall;
+        function LoadComputeShader(resourceId: TGUID; shaderBuffer: pbyte; shaderBufferCount: uint32): HResult; stdcall;
         function IsShaderLoaded(shaderId: TGUID): longbool; stdcall;
         function CreateResourceTexture(resourceId: PGUID; resourceTextureProperties: PD2D1_RESOURCE_TEXTURE_PROPERTIES;
-            Data: PBYTE; strides: PUINT32; dataSize: UINT32; out resourceTexture: ID2D1ResourceTexture): HResult;
+            Data: pbyte; strides: PUINT32; dataSize: uint32; out resourceTexture: ID2D1ResourceTexture): HResult;
             stdcall;
         function FindResourceTexture(resourceId: PGUID; out resourceTexture: ID2D1ResourceTexture): HResult; stdcall;
         function CreateVertexBuffer(vertexBufferProperties: PD2D1_VERTEX_BUFFER_PROPERTIES; resourceId: PGUID;
             customVertexBufferProperties: PD2D1_CUSTOM_VERTEX_BUFFER_PROPERTIES; out buffer: ID2D1VertexBuffer): HResult; stdcall;
         function FindVertexBuffer(resourceId: PGUID; out buffer: ID2D1VertexBuffer): HResult; stdcall;
-        function CreateColorContext(space: TD2D1_COLOR_SPACE; profile: PBYTE; profileSize: UINT32;
+        function CreateColorContext(space: TD2D1_COLOR_SPACE; profile: pbyte; profileSize: uint32;
             out colorContext: ID2D1ColorContext): HResult; stdcall;
-        function CreateColorContextFromFilename(filename: PWideChar; out colorContext: ID2D1ColorContext): HResult;
+        function CreateColorContextFromFilename(filename: pwidechar; out colorContext: ID2D1ColorContext): HResult;
             stdcall;
         function CreateColorContextFromWicColorContext(wicColorContext: IWICColorContext; out colorContext: ID2D1ColorContext): HResult; stdcall;
-        function CheckFeatureSupport(feature: TD2D1_FEATURE; out featureSupportData: Pointer; featureSupportDataSize: UINT32): HResult; stdcall;
+        function CheckFeatureSupport(feature: TD2D1_FEATURE; out featureSupportData: Pointer; featureSupportDataSize: uint32): HResult; stdcall;
         function IsBufferPrecisionSupported(bufferPrecision: TD2D1_BUFFER_PRECISION): longbool; stdcall;
     end;
 
 
     { D2D1_2.h }
-
+    // Encapsulates a device- and transform-dependent representation of a filled or
+    // stroked geometry.
     ID2D1GeometryRealization = interface(ID2D1Resource)
         ['{a16907d7-bc02-4801-99e8-8cf7f485f774}']
     end;
 
-
+    // Enables creation and drawing of geometry realization objects.
     ID2D1DeviceContext1 = interface(ID2D1DeviceContext)
         ['{d37f57e4-6908-459f-a199-e72f24f79987}']
         function CreateFilledGeometryRealization(geometry: ID2D1Geometry; flatteningTolerance: single;
@@ -3289,7 +3499,8 @@ type
         procedure DrawGeometryRealization(geometryRealization: ID2D1GeometryRealization; brush: ID2D1Brush); stdcall;
     end;
 
-
+    // Represents a resource domain whose objects and device contexts can be used
+    // together.
     ID2D1Device1 = interface(ID2D1Device)
         ['{d21768e1-23a4-4823-a14b-7c3eba85d658}']
         function GetRenderingPriority(): TD2D1_RENDERING_PRIORITY; stdcall;
@@ -3297,13 +3508,16 @@ type
         function CreateDeviceContext(options: TD2D1_DEVICE_CONTEXT_OPTIONS; out deviceContext1: ID2D1DeviceContext1): HResult; stdcall;
     end;
 
-
+    // Creates Direct2D resources. This interface also enables the creation of
+    // ID2D1Device1 objects.
     ID2D1Factory2 = interface(ID2D1Factory1)
         ['{94f81a73-9212-4376-9c58-b16a3a0d3992}']
         function CreateDevice(dxgiDevice: IDXGIDevice; out d2dDevice1: ID2D1Device1): HResult; stdcall;
     end;
 
-
+    // This interface performs all the same functions as the existing ID2D1CommandSink
+    // interface. It also enables access to the new primitive blend modes, MIN and ADD,
+    // through its SetPrimitiveBlend1 method.
     ID2D1CommandSink1 = interface(ID2D1CommandSink)
         ['{9eb767fd-4269-4467-b8c2-eb30cb305743}']
         function SetPrimitiveBlend1(primitiveBlend: TD2D1_PRIMITIVE_BLEND): HResult; stdcall;
@@ -3328,7 +3542,8 @@ type
 
 
 { D2D1.h }
-function D2D1CreateFactory(factoryType: TD2D1_FACTORY_TYPE; const riid: TGUID; pFactoryOptions: PD2D1_FACTORY_OPTIONS; out ppIFactory): HResult; stdcall;
+function D2D1CreateFactory(factoryType: TD2D1_FACTORY_TYPE; const riid: TGUID; pFactoryOptions: PD2D1_FACTORY_OPTIONS;
+    out ppIFactory): HResult; stdcall;
     external D2D1_DLL;
 
 procedure D2D1MakeRotateMatrix(angle: single; center: TD2D1_POINT_2F; out matrix: TD2D1_MATRIX_3X2_F); stdcall; external D2D1_DLL;
@@ -3344,11 +3559,18 @@ function D2D1InvertMatrix(var matrix: TD2D1_MATRIX_3X2_F): longbool;
 
 { D2D1_1.h }
 function D2D1CreateDevice(dxgiDevice: IDXGIDevice; creationProperties: PD2D1_CREATION_PROPERTIES; out d2dDevice: ID2D1Device): HResult;
-    stdcall; external D2D1_DLL;
+    stdcall; external D2D1_DLL; overload;
+
+function D2D1CreateDevice(dxgiDevice: IDXGIDevice; const creationProperties: TD2D1_CREATION_PROPERTIES; out d2dDevice: ID2D1Device): HResult;
+    inline; overload;
+
 
 function D2D1CreateDeviceContext(dxgiSurface: IDXGISurface; creationProperties: PD2D1_CREATION_PROPERTIES;
     out d2dDeviceContext: ID2D1DeviceContext): HResult; stdcall;
-    external D2D1_DLL;
+    external D2D1_DLL; overload;
+
+function D2D1CreateDeviceContext(dxgiSurface: IDXGISurface; const creationProperties: TD2D1_CREATION_PROPERTIES;
+    out d2dDeviceContext: ID2D1DeviceContext): HResult; overload; inline;
 
 function D2D1ConvertColorSpace(sourceColorSpace: TD2D1_COLOR_SPACE; destinationColorSpace: TD2D1_COLOR_SPACE; color: PD2D1_COLOR_F): TD2D1_COLOR_F;
     stdcall; external D2D1_DLL;
@@ -3378,20 +3600,20 @@ function _D2D1CreateFactory  <TFactory>(factoryType: TD2D1_FACTORY_TYPE; const f
 { D2D1 Helper functions }
 
 function FloatMax: single;
-function Point2(x, y: UINT32): TD2D1_POINT_2U; overload;
+function Point2(x, y: uint32): TD2D1_POINT_2U; overload;
 function Point2(x, y: single): TD2D1_POINT_2F; overload;
 
-function Size(Width, Height: UINT32): TD2D1_SIZE_U; overload;
+function Size(Width, Height: uint32): TD2D1_SIZE_U; overload;
 function Size(Width, Height: single): TD2D1_SIZE_F; overload;
 
-function Rect(left, top, right, bottom: UINT32): TD2D1_RECT_U; overload;
+function Rect(left, top, right, bottom: uint32): TD2D1_RECT_U; overload;
 function Rect(left, top, right, bottom: single): TD2D1_RECT_F; overload;
 
 
-function RectU(left: UINT32 = 0; top: UINT32 = 0; right: UINT32 = 0; bottom: UINT32 = 0): TD2D1_RECT_U;
+function RectU(left: uint32 = 0; top: uint32 = 0; right: uint32 = 0; bottom: uint32 = 0): TD2D1_RECT_U;
 function RectF(left: single = 0; top: single = 0; right: single = 0; bottom: single = 0): TD2D1_RECT_F;
 function InfiniteRect: TD2D1_RECT_F;
-function SizeU(Width: UINT32 = 0; Height: UINT32 = 0): TD2D1_SIZE_U;
+function SizeU(Width: uint32 = 0; Height: uint32 = 0): TD2D1_SIZE_U;
 
 function PixelFormat(dxgiFormat: TDXGI_FORMAT = DXGI_FORMAT_UNKNOWN; alphaMode: TD2D1_ALPHA_MODE = D2D1_ALPHA_MODE_UNKNOWN): TD2D1_PIXEL_FORMAT;
 
@@ -3404,15 +3626,16 @@ function RenderTargetProperties(_type: TD2D1_RENDER_TARGET_TYPE = D2D1_RENDER_TA
 
 function HwndRenderTargetProperties(hwnd: HWND; pixelSize: TD2D1_SIZE_U;
     presentOptions: TD2D1_PRESENT_OPTIONS = D2D1_PRESENT_OPTIONS_NONE): TD2D1_HWND_RENDER_TARGET_PROPERTIES; overload;
-function HwndRenderTargetProperties(hwnd: HWND; presentOptions: TD2D1_PRESENT_OPTIONS = D2D1_PRESENT_OPTIONS_NONE): TD2D1_HWND_RENDER_TARGET_PROPERTIES;
+function HwndRenderTargetProperties(hwnd: HWND; presentOptions: TD2D1_PRESENT_OPTIONS = D2D1_PRESENT_OPTIONS_NONE):
+    TD2D1_HWND_RENDER_TARGET_PROPERTIES;
     overload;
 
-function ColorF(rgb: UINT32; a: single = 1.0): TD2D1_COLOR_F; overload;
+function ColorF(rgb: uint32; a: single = 1.0): TD2D1_COLOR_F; overload;
 function ColorF(r, g, b: single; a: single = 1.0): TD2D1_COLOR_F; overload;
 
 function SizeF(Width: single = 0.0; Height: single = 0.0): TD2D1_SIZE_F;
 function Point2F(x: single = 0.0; y: single = 0.0): TD2D1_POINT_2F;
-function Point2U(x: UINT32 = 0; y: UINT32 = 0): TD2D1_POINT_2U;
+function Point2U(x: uint32 = 0; y: uint32 = 0): TD2D1_POINT_2U;
 
 function ArcSegment(point: TD2D1_POINT_2F; size: TD2D1_SIZE_F; rotationAngle: single; sweepDirection: TD2D1_SWEEP_DIRECTION;
     arcSize: TD2D1_ARC_SIZE): TD2D1_ARC_SEGMENT;
@@ -3442,8 +3665,8 @@ function BitmapProperties(pixelFormat: TD2D1_PIXEL_FORMAT; dpiX: single = 96.0; 
 function BitmapProperties(dpiX: single = 96.0; dpiY: single = 96.0): TD2D1_BITMAP_PROPERTIES; overload;
 
 function LayerParameters(contentBounds: TD2D1_RECT_F; maskTransform: TD2D1_MATRIX_3X2_F; geometricMask: ID2D1Geometry = nil;
-    maskAntialiasMode: TD2D1_ANTIALIAS_MODE = D2D1_ANTIALIAS_MODE_PER_PRIMITIVE; opacity: single = 1.0; opacityBrush: ID2D1Brush = nil;
-    layerOptions: TD2D1_LAYER_OPTIONS = D2D1_LAYER_OPTIONS_NONE): TD2D1_LAYER_PARAMETERS; overload;
+    maskAntialiasMode: TD2D1_ANTIALIAS_MODE = D2D1_ANTIALIAS_MODE_PER_PRIMITIVE; opacity: single = 1.0;
+    opacityBrush: ID2D1Brush = nil; layerOptions: TD2D1_LAYER_OPTIONS = D2D1_LAYER_OPTIONS_NONE): TD2D1_LAYER_PARAMETERS; overload;
 
 function LayerParameters(geometricMask: ID2D1Geometry = nil; maskAntialiasMode: TD2D1_ANTIALIAS_MODE = D2D1_ANTIALIAS_MODE_PER_PRIMITIVE;
     opacity: single = 1.0; opacityBrush: ID2D1Brush = nil; layerOptions: TD2D1_LAYER_OPTIONS = D2D1_LAYER_OPTIONS_NONE): TD2D1_LAYER_PARAMETERS;
@@ -3471,12 +3694,12 @@ function IdentityMatrix: TD2D1_MATRIX_3X2_F;
 { D2D1_1Helper.h }
 function ConvertColorSpace(sourceColorSpace: TD2D1_COLOR_SPACE; destinationColorSpace: TD2D1_COLOR_SPACE; color: TD2D1_COLOR_F): TD2D1_COLOR_F;
 function DrawingStateDescription1(transform: TD2D1_MATRIX_3X2_F; antialiasMode: TD2D1_ANTIALIAS_MODE = D2D1_ANTIALIAS_MODE_PER_PRIMITIVE;
-    textAntialiasMode: TD2D1_TEXT_ANTIALIAS_MODE = D2D1_TEXT_ANTIALIAS_MODE_DEFAULT; tag1: TD2D1_TAG = 0; tag2: TD2D1_TAG = 0;
-    primitiveBlend: TD2D1_PRIMITIVE_BLEND = D2D1_PRIMITIVE_BLEND_SOURCE_OVER;
+    textAntialiasMode: TD2D1_TEXT_ANTIALIAS_MODE = D2D1_TEXT_ANTIALIAS_MODE_DEFAULT; tag1: TD2D1_TAG = 0;
+    tag2: TD2D1_TAG = 0; primitiveBlend: TD2D1_PRIMITIVE_BLEND = D2D1_PRIMITIVE_BLEND_SOURCE_OVER;
     unitMode: TD2D1_UNIT_MODE = D2D1_UNIT_MODE_DIPS): TD2D1_DRAWING_STATE_DESCRIPTION1; overload;
 function DrawingStateDescription1(antialiasMode: TD2D1_ANTIALIAS_MODE = D2D1_ANTIALIAS_MODE_PER_PRIMITIVE;
-    textAntialiasMode: TD2D1_TEXT_ANTIALIAS_MODE = D2D1_TEXT_ANTIALIAS_MODE_DEFAULT; tag1: TD2D1_TAG = 0; tag2: TD2D1_TAG = 0;
-    primitiveBlend: TD2D1_PRIMITIVE_BLEND = D2D1_PRIMITIVE_BLEND_SOURCE_OVER;
+    textAntialiasMode: TD2D1_TEXT_ANTIALIAS_MODE = D2D1_TEXT_ANTIALIAS_MODE_DEFAULT; tag1: TD2D1_TAG = 0;
+    tag2: TD2D1_TAG = 0; primitiveBlend: TD2D1_PRIMITIVE_BLEND = D2D1_PRIMITIVE_BLEND_SOURCE_OVER;
     unitMode: TD2D1_UNIT_MODE = D2D1_UNIT_MODE_DIPS): TD2D1_DRAWING_STATE_DESCRIPTION1; overload;
 function DrawingStateDescription1(desc: TD2D1_DRAWING_STATE_DESCRIPTION; primitiveBlend: TD2D1_PRIMITIVE_BLEND = D2D1_PRIMITIVE_BLEND_SOURCE_OVER;
     unitMode: TD2D1_UNIT_MODE = D2D1_UNIT_MODE_DIPS): TD2D1_DRAWING_STATE_DESCRIPTION1; overload;
@@ -3485,12 +3708,12 @@ function BitmapProperties1(pixelFormat: TD2D1_PIXEL_FORMAT; bitmapOptions: TD2D1
     dpiX: single = 96.0; dpiY: single = 96.0; colorContext: ID2D1ColorContext = nil): TD2D1_BITMAP_PROPERTIES1;
     overload;
 
-function BitmapProperties1(bitmapOptions: TD2D1_BITMAP_OPTIONS = D2D1_BITMAP_OPTIONS_NONE; dpiX: single = 96.0; dpiY: single = 96.0;
-    colorContext: ID2D1ColorContext = nil): TD2D1_BITMAP_PROPERTIES1;
+function BitmapProperties1(bitmapOptions: TD2D1_BITMAP_OPTIONS = D2D1_BITMAP_OPTIONS_NONE; dpiX: single = 96.0;
+    dpiY: single = 96.0; colorContext: ID2D1ColorContext = nil): TD2D1_BITMAP_PROPERTIES1;
     overload;
 function LayerParameters1(contentBounds: TD2D1_RECT_F; maskTransform: TD2D1_MATRIX_3X2_F; geometricMask: ID2D1Geometry = nil;
-    maskAntialiasMode: TD2D1_ANTIALIAS_MODE = D2D1_ANTIALIAS_MODE_PER_PRIMITIVE; opacity: single = 1.0; opacityBrush: ID2D1Brush = nil;
-    layerOptions: TD2D1_LAYER_OPTIONS1 = D2D1_LAYER_OPTIONS1_NONE): TD2D1_LAYER_PARAMETERS1; overload;
+    maskAntialiasMode: TD2D1_ANTIALIAS_MODE = D2D1_ANTIALIAS_MODE_PER_PRIMITIVE; opacity: single = 1.0;
+    opacityBrush: ID2D1Brush = nil; layerOptions: TD2D1_LAYER_OPTIONS1 = D2D1_LAYER_OPTIONS1_NONE): TD2D1_LAYER_PARAMETERS1; overload;
 function LayerParameters1(geometricMask: ID2D1Geometry = nil; maskAntialiasMode: TD2D1_ANTIALIAS_MODE = D2D1_ANTIALIAS_MODE_PER_PRIMITIVE;
     opacity: single = 1.0; opacityBrush: ID2D1Brush = nil; layerOptions: TD2D1_LAYER_OPTIONS1 = D2D1_LAYER_OPTIONS1_NONE): TD2D1_LAYER_PARAMETERS1;
     overload;
@@ -3506,7 +3729,7 @@ function BitmapBrushProperties1(extendModeX: TD2D1_EXTEND_MODE = D2D1_EXTEND_MOD
 function PrintControlProperties(fontSubsetMode: TD2D1_PRINT_FONT_SUBSET_MODE = D2D1_PRINT_FONT_SUBSET_MODE_DEFAULT;
     rasterDpi: single = 150.0; colorSpace: TD2D1_COLOR_SPACE = D2D1_COLOR_SPACE_SRGB): TD2D1_PRINT_CONTROL_PROPERTIES;
 function RenderingControls(bufferPrecision: TD2D1_BUFFER_PRECISION; tileSize: TD2D1_SIZE_U): TD2D1_RENDERING_CONTROLS;
-function EffectInputDescription(effect: ID2D1Effect; inputIndex: UINT32; inputRectangle: TD2D1_RECT_F): TD2D1_EFFECT_INPUT_DESCRIPTION;
+function EffectInputDescription(effect: ID2D1Effect; inputIndex: uint32; inputRectangle: TD2D1_RECT_F): TD2D1_EFFECT_INPUT_DESCRIPTION;
 function CreationProperties(threadingMode: TD2D1_THREADING_MODE; debugLevel: TD2D1_DEBUG_LEVEL;
     options: TD2D1_DEVICE_CONTEXT_OPTIONS): TD2D1_CREATION_PROPERTIES;
 function Vector2F(x: single = 0.0; y: single = 0.0): TD2D1_VECTOR_2F;
@@ -3515,11 +3738,11 @@ function Vector3F(x: single = 0.0; y: single = 0.0; z: single = 0.0): TD2D1_VECT
 
 function Vector4F(x: single = 0.0; y: single = 0.0; z: single = 0.0; w: single = 0.0): TD2D1_VECTOR_4F;
 
-function Point2L(x: INT32 = 0; y: INT32 = 0): TD2D1_POINT_2L;
+function Point2L(x: int32 = 0; y: int32 = 0): TD2D1_POINT_2L;
 
-function RectL(left: INT32 = 0; top: INT32 = 0; right: INT32 = 0; bottom: INT32 = 0): TD2D1_RECT_L;
+function RectL(left: int32 = 0; top: int32 = 0; right: int32 = 0; bottom: int32 = 0): TD2D1_RECT_L;
 
-function SetDpiCompensatedEffectInput(deviceContext: ID2D1DeviceContext; effect: ID2D1Effect; inputIndex: UINT32;
+function SetDpiCompensatedEffectInput(deviceContext: ID2D1DeviceContext; effect: ID2D1Effect; inputIndex: uint32;
     inputBitmap: ID2D1Bitmap = nil; interpolationMode: TD2D1_INTERPOLATION_MODE = D2D1_INTERPOLATION_MODE_LINEAR;
     borderMode: TD2D1_BORDER_MODE = D2D1_BORDER_MODE_HARD): HRESULT;
 
@@ -3529,6 +3752,22 @@ function ComputeFlatteningTolerance(matrix: TD2D1_MATRIX_3X2_F; dpiX: single = 9
 
 
 implementation
+
+
+
+function D2D1CreateDevice(dxgiDevice: IDXGIDevice; const creationProperties: TD2D1_CREATION_PROPERTIES;
+    out d2dDevice: ID2D1Device): HResult; overload;
+begin
+    Result := D2D1CreateDevice(dxgiDevice, @creationProperties, d2dDevice);
+end;
+
+
+
+function D2D1CreateDeviceContext(dxgiSurface: IDXGISurface; const creationProperties: TD2D1_CREATION_PROPERTIES;
+    out d2dDeviceContext: ID2D1DeviceContext): HResult; overload;
+begin
+    Result := D2D1CreateDeviceContext(dxgiSurface, @creationProperties, d2dDeviceContext);
+end;
 
 
 
@@ -3570,7 +3809,7 @@ end;
 
 
 
-function Point2(x, y: UINT32): TD2D1_POINT_2U;
+function Point2(x, y: uint32): TD2D1_POINT_2U;
 begin
     Result.x := x;
     Result.y := y;
@@ -3586,7 +3825,7 @@ end;
 
 
 
-function Size(Width, Height: UINT32): TD2D1_SIZE_U;
+function Size(Width, Height: uint32): TD2D1_SIZE_U;
 begin
     Result.Width := Width;
     Result.Height := Height;
@@ -3602,7 +3841,7 @@ end;
 
 
 
-function Rect(left, top, right, bottom: UINT32): TD2D1_RECT_U;
+function Rect(left, top, right, bottom: uint32): TD2D1_RECT_U;
 begin
     Result.left := left;
     Result.top := top;
@@ -3622,7 +3861,7 @@ end;
 
 
 
-function RectU(left: UINT32; top: UINT32; right: UINT32; bottom: UINT32): TD2D1_RECT_U;
+function RectU(left: uint32; top: uint32; right: uint32; bottom: uint32): TD2D1_RECT_U;
 begin
     Result.left := left;
     Result.bottom := bottom;
@@ -3652,7 +3891,7 @@ end;
 
 
 
-function SizeU(Width: UINT32; Height: UINT32): TD2D1_SIZE_U;
+function SizeU(Width: uint32; Height: uint32): TD2D1_SIZE_U;
 begin
     Result.Width := Width;
     Result.Height := Height;
@@ -3668,8 +3907,8 @@ end;
 
 
 
-function RenderTargetProperties(pixelFormat: TD2D1_PIXEL_FORMAT; _type: TD2D1_RENDER_TARGET_TYPE; dpiX: single; dpiY: single;
-    usage: TD2D1_RENDER_TARGET_USAGE; minLevel: TD2D1_FEATURE_LEVEL): TD2D1_RENDER_TARGET_PROPERTIES;
+function RenderTargetProperties(pixelFormat: TD2D1_PIXEL_FORMAT; _type: TD2D1_RENDER_TARGET_TYPE; dpiX: single;
+    dpiY: single; usage: TD2D1_RENDER_TARGET_USAGE; minLevel: TD2D1_FEATURE_LEVEL): TD2D1_RENDER_TARGET_PROPERTIES;
 begin
     Result._type := _type;
     Result.pixelFormat := pixelFormat;
@@ -3706,13 +3945,13 @@ end;
 function HwndRenderTargetProperties(hwnd: HWND; presentOptions: TD2D1_PRESENT_OPTIONS): TD2D1_HWND_RENDER_TARGET_PROPERTIES;
 begin
     Result.hwnd := hwnd;
-    Result.pixelSize := Size(UINT32(0), UINT32(0));
+    Result.pixelSize := Size(uint32(0), uint32(0));
     Result.presentOptions := presentOptions;
 end;
 
 
 
-function ColorF(rgb: UINT32; a: single): TD2D1_COLOR_F;
+function ColorF(rgb: uint32; a: single): TD2D1_COLOR_F;
 begin
     Result.Init(rgb, a);
 end;
@@ -3745,7 +3984,7 @@ end;
 
 
 
-function Point2U(x: UINT32; y: UINT32): TD2D1_POINT_2U;
+function Point2U(x: uint32; y: uint32): TD2D1_POINT_2U;
 begin
     Result.x := x;
     Result.y := y;
@@ -3824,8 +4063,8 @@ end;
 
 
 
-function StrokeStyleProperties(startCap: TD2D1_CAP_STYLE; endCap: TD2D1_CAP_STYLE; dashCap: TD2D1_CAP_STYLE; lineJoin: TD2D1_LINE_JOIN;
-    miterLimit: single; dashStyle: TD2D1_DASH_STYLE; dashOffset: single): TD2D1_STROKE_STYLE_PROPERTIES;
+function StrokeStyleProperties(startCap: TD2D1_CAP_STYLE; endCap: TD2D1_CAP_STYLE; dashCap: TD2D1_CAP_STYLE;
+    lineJoin: TD2D1_LINE_JOIN; miterLimit: single; dashStyle: TD2D1_DASH_STYLE; dashOffset: single): TD2D1_STROKE_STYLE_PROPERTIES;
 begin
     Result.startCap := startCap;
     Result.endCap := endCap;
@@ -4000,8 +4239,9 @@ end;
 
 
 
-function DrawingStateDescription1(transform: TD2D1_MATRIX_3X2_F; antialiasMode: TD2D1_ANTIALIAS_MODE; textAntialiasMode: TD2D1_TEXT_ANTIALIAS_MODE;
-    tag1: TD2D1_TAG; tag2: TD2D1_TAG; primitiveBlend: TD2D1_PRIMITIVE_BLEND; unitMode: TD2D1_UNIT_MODE): TD2D1_DRAWING_STATE_DESCRIPTION1;
+function DrawingStateDescription1(transform: TD2D1_MATRIX_3X2_F; antialiasMode: TD2D1_ANTIALIAS_MODE;
+    textAntialiasMode: TD2D1_TEXT_ANTIALIAS_MODE; tag1: TD2D1_TAG; tag2: TD2D1_TAG; primitiveBlend: TD2D1_PRIMITIVE_BLEND;
+    unitMode: TD2D1_UNIT_MODE): TD2D1_DRAWING_STATE_DESCRIPTION1;
 begin
     Result.antialiasMode := antialiasMode;
     Result.textAntialiasMode := textAntialiasMode;
@@ -4056,7 +4296,8 @@ end;
 
 
 
-function BitmapProperties1(bitmapOptions: TD2D1_BITMAP_OPTIONS; dpiX: single; dpiY: single; colorContext: ID2D1ColorContext): TD2D1_BITMAP_PROPERTIES1;
+function BitmapProperties1(bitmapOptions: TD2D1_BITMAP_OPTIONS; dpiX: single; dpiY: single;
+    colorContext: ID2D1ColorContext): TD2D1_BITMAP_PROPERTIES1;
 begin
     Result.bitmapOptions := bitmapOptions;
     Result.colorContext := colorContext;
@@ -4150,7 +4391,7 @@ end;
 
 
 
-function EffectInputDescription(effect: ID2D1Effect; inputIndex: UINT32; inputRectangle: TD2D1_RECT_F): TD2D1_EFFECT_INPUT_DESCRIPTION;
+function EffectInputDescription(effect: ID2D1Effect; inputIndex: uint32; inputRectangle: TD2D1_RECT_F): TD2D1_EFFECT_INPUT_DESCRIPTION;
 begin
     Result.effect := effect;
     Result.inputIndex := inputIndex;
@@ -4196,7 +4437,7 @@ end;
 
 
 
-function Point2L(x: INT32; y: INT32): TD2D1_POINT_2L;
+function Point2L(x: int32; y: int32): TD2D1_POINT_2L;
 begin
     Result.x := x;
     Result.y := y;
@@ -4204,7 +4445,7 @@ end;
 
 
 
-function RectL(left: INT32; top: INT32; right: INT32; bottom: INT32): TD2D1_RECT_L;
+function RectL(left: int32; top: int32; right: int32; bottom: int32): TD2D1_RECT_L;
 begin
     Result.Left := left;
     Result.Top := top;
@@ -4214,7 +4455,7 @@ end;
 
 
 
-function SetDpiCompensatedEffectInput(deviceContext: ID2D1DeviceContext; effect: ID2D1Effect; inputIndex: UINT32;
+function SetDpiCompensatedEffectInput(deviceContext: ID2D1DeviceContext; effect: ID2D1Effect; inputIndex: uint32;
     inputBitmap: ID2D1Bitmap; interpolationMode: TD2D1_INTERPOLATION_MODE; borderMode: TD2D1_BORDER_MODE): HRESULT;
 var
     dpiCompensationEffect: ID2D1Effect;
@@ -4222,7 +4463,7 @@ var
 
 
 
-    procedure SetInputEffect(index: UINT32; inputEffect: ID2D1Effect = nil; invalidate: longbool = True);
+    procedure SetInputEffect(index: uint32; inputEffect: ID2D1Effect = nil; invalidate: longbool = True);
     var
         output: ID2D1Image;
     begin
@@ -4293,6 +4534,383 @@ begin
     else
         absMaxZoomFactor := -maxZoomFactor;
     Result := D2D1_DEFAULT_FLATTENING_TOLERANCE / (absMaxZoomFactor * D2D1ComputeMaximumScaleFactor(dpiDependentTransform));
+end;
+
+{ ID2D1Factory1Helper }
+
+function ID2D1Factory1Helper.CreateStrokeStyle(const strokeStyleProperties: TD2D1_STROKE_STYLE_PROPERTIES1;
+    const dashes: Psingle; dashesCount: uint32; out strokeStyle: ID2D1StrokeStyle1): HResult; stdcall;
+begin
+    Result := CreateStrokeStyle(@strokeStyleProperties, dashes, dashesCount, strokeStyle);
+end;
+
+
+
+function ID2D1Factory1Helper.CreateDrawingStateBlock(const drawingStateDescription: TD2D1_DRAWING_STATE_DESCRIPTION1;
+    out drawingStateBlock: ID2D1DrawingStateBlock1): HResult; stdcall;
+begin
+    Result := CreateDrawingStateBlock(@drawingStateDescription, nil, drawingStateBlock);
+end;
+
+
+
+function ID2D1Factory1Helper.CreateDrawingStateBlock(out drawingStateBlock: ID2D1DrawingStateBlock1): HResult; stdcall;
+begin
+    Result := CreateDrawingStateBlock(nil, nil, drawingStateBlock);
+end;
+
+{ ID2D1DeviceHelper }
+
+function ID2D1DeviceHelper.CreatePrintControl(wicFactory: IWICImagingFactory; documentTarget: IPrintDocumentPackageTarget;
+    const printControlProperties: TD2D1_PRINT_CONTROL_PROPERTIES; out printControl: ID2D1PrintControl): HResult; stdcall;
+begin
+    Result := CreatePrintControl(wicFactory, documentTarget, @printControlProperties, printControl);
+end;
+
+{ ID2D1DeviceContextHelper }
+
+function ID2D1DeviceContextHelper.CreateBitmap(size: TD2D1_SIZE_U; const sourceData: pointer; pitch: uint32;
+    const bitmapProperties: TD2D1_BITMAP_PROPERTIES1; out bitmap: ID2D1Bitmap1): HResult; stdcall;
+begin
+    Result := CreateBitmap(size, sourceData, pitch, @bitmapProperties, bitmap);
+end;
+
+
+
+function ID2D1DeviceContextHelper.CreateBitmapFromWicBitmap(wicBitmapSource: IWICBitmapSource;
+    const bitmapProperties: TD2D1_BITMAP_PROPERTIES1; out bitmap: ID2D1Bitmap1): HResult; stdcall;
+begin
+    Result := CreateBitmapFromWicBitmap(wicBitmapSource, @bitmapProperties, bitmap);
+end;
+
+
+
+function ID2D1DeviceContextHelper.CreateBitmapFromWicBitmap(wicBitmapSource: IWICBitmapSource; out bitmap: ID2D1Bitmap1): HResult;
+    stdcall;
+begin
+    Result := CreateBitmapFromWicBitmap(wicBitmapSource, nil, bitmap);
+end;
+
+
+
+function ID2D1DeviceContextHelper.CreateBitmapFromDxgiSurface(surface: IDXGISurface; const bitmapProperties: TD2D1_BITMAP_PROPERTIES1;
+    out bitmap: ID2D1Bitmap1): HResult; stdcall;
+begin
+    Result := CreateBitmapFromDxgiSurface(surface, @bitmapProperties, bitmap);
+end;
+
+
+
+function ID2D1DeviceContextHelper.CreateImageBrush(image: ID2D1Image; const imageBrushProperties: TD2D1_IMAGE_BRUSH_PROPERTIES;
+    const brushProperties: TD2D1_BRUSH_PROPERTIES; out imageBrush: ID2D1ImageBrush): HResult; stdcall;
+begin
+    Result := CreateImageBrush(image, @imageBrushProperties, @brushProperties, imageBrush);
+end;
+
+
+
+function ID2D1DeviceContextHelper.CreateImageBrush(image: ID2D1Image; const imageBrushProperties: TD2D1_IMAGE_BRUSH_PROPERTIES;
+    out imageBrush: ID2D1ImageBrush): HResult; stdcall;
+begin
+    Result := CreateImageBrush(image, @imageBrushProperties, nil, imageBrush);
+end;
+
+
+
+function ID2D1DeviceContextHelper.CreateBitmapBrush(bitmap: ID2D1Bitmap; out bitmapBrush: ID2D1BitmapBrush1): HResult; stdcall;
+begin
+    Result := CreateBitmapBrush(bitmap, nil, nil, bitmapBrush);
+end;
+
+
+
+function ID2D1DeviceContextHelper.CreateBitmapBrush(bitmap: ID2D1Bitmap; const bitmapBrushProperties: TD2D1_BITMAP_BRUSH_PROPERTIES1;
+    out bitmapBrush: ID2D1BitmapBrush1): HResult; stdcall;
+begin
+    Result := CreateBitmapBrush(bitmap, @bitmapBrushProperties, nil, bitmapBrush);
+end;
+
+
+
+function ID2D1DeviceContextHelper.CreateBitmapBrush(bitmap: ID2D1Bitmap; const bitmapBrushProperties: TD2D1_BITMAP_BRUSH_PROPERTIES1;
+    const brushProperties: TD2D1_BRUSH_PROPERTIES; out bitmapBrush: ID2D1BitmapBrush1): HResult; stdcall;
+begin
+    Result := CreateBitmapBrush(bitmap, @bitmapBrushProperties, @brushProperties, bitmapBrush);
+end;
+
+
+
+procedure ID2D1DeviceContextHelper.DrawImage(effect: ID2D1Effect; const targetOffset: PD2D1_POINT_2F;
+    const imageRectangle: PD2D1_RECT_F; interpolationMode: TD2D1_INTERPOLATION_MODE; compositeMode: TD2D1_COMPOSITE_MODE); stdcall;
+var
+    output: ID2D1Image;
+begin
+
+    effect.GetOutput(&output);
+    DrawImage(output, targetOffset, imageRectangle, interpolationMode, compositeMode);
+    output := nil;
+end;
+
+
+
+procedure ID2D1DeviceContextHelper.DrawImage(image: ID2D1Image; interpolationMode: TD2D1_INTERPOLATION_MODE;
+    compositeMode: TD2D1_COMPOSITE_MODE); stdcall;
+begin
+    DrawImage(image, nil, nil, interpolationMode, compositeMode);
+end;
+
+
+
+procedure ID2D1DeviceContextHelper.DrawImage(effect: ID2D1Effect; interpolationMode: TD2D1_INTERPOLATION_MODE;
+    compositeMode: TD2D1_COMPOSITE_MODE); stdcall;
+begin
+    DrawImage(effect, nil, nil, interpolationMode, compositeMode);
+end;
+
+
+
+procedure ID2D1DeviceContextHelper.DrawImage(image: ID2D1Image; targetOffset: TD2D1_POINT_2F;
+    interpolationMode: TD2D1_INTERPOLATION_MODE; compositeMode: TD2D1_COMPOSITE_MODE); stdcall;
+begin
+    DrawImage(image, @targetOffset, nil, interpolationMode, compositeMode);
+end;
+
+
+
+procedure ID2D1DeviceContextHelper.DrawImage(effect: ID2D1Effect; targetOffset: TD2D1_POINT_2F;
+    interpolationMode: TD2D1_INTERPOLATION_MODE; compositeMode: TD2D1_COMPOSITE_MODE); stdcall;
+begin
+    DrawImage(effect, @targetOffset, nil, interpolationMode, compositeMode);
+end;
+
+
+
+procedure ID2D1DeviceContextHelper.DrawImage(image: ID2D1Image; targetOffset: TD2D1_POINT_2F; const imageRectangle: TD2D1_RECT_F;
+    interpolationMode: TD2D1_INTERPOLATION_MODE; compositeMode: TD2D1_COMPOSITE_MODE); stdcall;
+begin
+    DrawImage(image, @targetOffset, @imageRectangle, interpolationMode, compositeMode);
+end;
+
+
+
+procedure ID2D1DeviceContextHelper.DrawImage(effect: ID2D1Effect; targetOffset: TD2D1_POINT_2F; const imageRectangle: TD2D1_RECT_F;
+    interpolationMode: TD2D1_INTERPOLATION_MODE; compositeMode: TD2D1_COMPOSITE_MODE); stdcall;
+begin
+    DrawImage(effect, @targetOffset, @imageRectangle, interpolationMode, compositeMode);
+end;
+
+
+
+procedure ID2D1DeviceContextHelper.PushLayer(const layerParameters: TD2D1_LAYER_PARAMETERS1; layer: ID2D1Layer); stdcall;
+begin
+    PushLayer(@layerParameters, layer);
+end;
+
+
+
+procedure ID2D1DeviceContextHelper.DrawGdiMetafile(gdiMetafile: ID2D1GdiMetafile; targetOffset: TD2D1_POINT_2F); stdcall;
+begin
+    DrawGdiMetafile(gdiMetafile, @targetOffset);
+end;
+
+
+
+procedure ID2D1DeviceContextHelper.DrawBitmap(bitmap: ID2D1Bitmap; const destinationRectangle: TD2D1_RECT_F;
+    opacity: single; interpolationMode: TD2D1_INTERPOLATION_MODE; const sourceRectangle: PD2D1_RECT_F;
+    const perspectiveTransform: PD2D1_MATRIX_4X4_F); stdcall;
+begin
+    DrawBitmap(bitmap, @destinationRectangle, opacity, interpolationMode, sourceRectangle, perspectiveTransform);
+end;
+
+
+
+procedure ID2D1DeviceContextHelper.DrawBitmap(bitmap: ID2D1Bitmap; const destinationRectangle: TD2D1_RECT_F;
+    opacity: single; interpolationMode: TD2D1_INTERPOLATION_MODE; const sourceRectangle: TD2D1_RECT_F;
+    const perspectiveTransform: PD2D1_MATRIX_4X4_F); stdcall;
+begin
+    DrawBitmap(bitmap, @destinationRectangle, opacity, interpolationMode, @sourceRectangle, perspectiveTransform);
+end;
+
+
+
+procedure ID2D1DeviceContextHelper.DrawBitmap(bitmap: ID2D1Bitmap; const destinationRectangle: TD2D1_RECT_F;
+    opacity: single; interpolationMode: TD2D1_INTERPOLATION_MODE; const sourceRectangle: TD2D1_RECT_F;
+    const perspectiveTransform: TD2D1_MATRIX_4X4_F); stdcall;
+begin
+    DrawBitmap(bitmap, @destinationRectangle, opacity, interpolationMode, @sourceRectangle, @perspectiveTransform);
+end;
+
+
+
+procedure ID2D1DeviceContextHelper.FillOpacityMask(opacityMask: ID2D1Bitmap; brush: ID2D1Brush;
+    const destinationRectangle: TD2D1_RECT_F; const sourceRectangle: PD2D1_RECT_F); stdcall;
+begin
+    FillOpacityMask(opacityMask, brush, @destinationRectangle, sourceRectangle);
+end;
+
+
+
+procedure ID2D1DeviceContextHelper.FillOpacityMask(opacityMask: ID2D1Bitmap; brush: ID2D1Brush;
+    const destinationRectangle: TD2D1_RECT_F; const sourceRectangle: TD2D1_RECT_F); stdcall;
+begin
+    FillOpacityMask(opacityMask, brush, @destinationRectangle, @sourceRectangle);
+end;
+
+
+
+procedure ID2D1DeviceContextHelper.SetRenderingControls(const renderingControls: TD2D1_RENDERING_CONTROLS); stdcall;
+begin
+    SetRenderingControls(@renderingControls);
+end;
+
+{ ID2D1EffectHelper }
+
+procedure ID2D1EffectHelper.SetInputEffect(index: uint32; inputEffect: ID2D1Effect; invalidate: longbool); stdcall;
+var
+    output: ID2D1Image;
+begin
+    if (inputEffect <> nil) then
+    begin
+        inputEffect.GetOutput(output);
+    end;
+    SetInput(index, output, invalidate);
+    output := nil;
+end;
+
+{ ID2D1PropertiesHelper }
+
+function ID2D1PropertiesHelper.SetValueByName(Name: PCWSTR; const Data: pbyte; dataSize: uint32): HResult; stdcall;
+begin
+    Result := SetValueByName(Name, D2D1_PROPERTY_TYPE_UNKNOWN, Data, dataSize);
+end;
+
+
+
+function ID2D1PropertiesHelper.SetValue(index: uint32; const Data: pbyte; dataSize: uint32): HResult; stdcall;
+begin
+    Result := SetValue(index, D2D1_PROPERTY_TYPE_UNKNOWN, Data, dataSize);
+end;
+
+
+
+function ID2D1PropertiesHelper.GetValueByName(Name: PCWSTR; out Data: pbyte; dataSize: uint32): HResult; stdcall;
+begin
+    Result := GetValueByName(Name, D2D1_PROPERTY_TYPE_UNKNOWN, Data, dataSize);
+end;
+
+
+
+function ID2D1PropertiesHelper.GetValue(index: uint32; out Data: pbyte; dataSize: uint32): HResult; stdcall;
+begin
+    Result := GetValue(index, D2D1_PROPERTY_TYPE_UNKNOWN, Data, dataSize);
+end;
+
+
+
+function ID2D1PropertiesHelper.GetValueByName<T>(propertyName: PCWSTR; out Value: T): HResult;
+begin
+    Result := GetValueByName(propertyName, pbyte(Value), sizeof(Value));
+end;
+
+
+
+function ID2D1PropertiesHelper.GetValueByName<T>(propertyName: PCWSTR): T;
+var
+    ignoreHr: HRESULT;
+    Value: T;
+begin
+    ignoreHr := GetValueByName(propertyName, pbyte(Value), sizeof(Value));
+    Result := Value;
+end;
+
+
+
+function ID2D1PropertiesHelper.SetValueByName<T>(propertyName: PCWSTR; const Value: T): HResult;
+begin
+    Result := SetValueByName(propertyName, pbyte(Value), sizeof(Value));
+end;
+
+
+
+function ID2D1PropertiesHelper.GetValue<U>(index: U; out Data: pbyte; dataSize: uint32): HResult;
+begin
+    Result := GetValue(uint32(index), Data, dataSize);
+end;
+
+
+
+function ID2D1PropertiesHelper.GetValue<T, U>(index: U; out Value: T): HResult;
+begin
+    Result := GetValue(uint32(index), pbyte(Value), sizeof(Value));
+end;
+
+
+
+function ID2D1PropertiesHelper.GetValue<T, U>(index: U): T;
+var
+    Value: T;
+    ignoreHr: HRESULT;
+begin
+    ignoreHr := GetValue(uint32(index), pbyte(Value), sizeof(Value));
+    Result := Value;
+end;
+
+
+
+function ID2D1PropertiesHelper.SetValue<U>(Index: U; const Data: pbyte; dataSize: uint32): Hresult;
+begin
+    Result := SetValue(uint32(index), Data, dataSize);
+end;
+
+
+
+function ID2D1PropertiesHelper.SetValue<T, U>(index: U; const Value: T): Hresult;
+begin
+    Result := SetValue(uint32(index), pbyte(Value), sizeof(Value));
+end;
+
+
+
+function ID2D1PropertiesHelper.GetPropertyName<U>(index: U; out Name: PWSTR; nameCount: uint32): Hresult;
+begin
+    Result := GetPropertyName(uint32(index), Name, nameCount);
+end;
+
+
+
+function ID2D1PropertiesHelper.GetPropertyNameLength<U>(index: U): uint32;
+begin
+    Result := GetPropertyNameLength(uint32(index));
+end;
+
+
+
+function ID2D1PropertiesHelper.GetType<U>(index: U): TD2D1_PROPERTY_TYPE;
+begin
+    Result := GetType(uint32(index));
+end;
+
+
+
+function ID2D1PropertiesHelper.GetValueSize<U>(index: U): uint32;
+begin
+    Result := GetValueSize(uint32(index));
+end;
+
+
+
+function ID2D1PropertiesHelper.GetSubProperties<U>(index: U; out subProperties: ID2D1Properties): Hresult;
+begin
+    Result := GetSubProperties(uint32(index), subProperties);
+end;
+
+
+{ ID2D1PathGeometry1Helper }
+
+function ID2D1PathGeometry1Helper.ComputePointAndSegmentAtLength(length: single; startSegment: uint32;
+    const worldTransform: TD2D1_MATRIX_3X2_F; flatteningTolerance: single; out pointDescription: TD2D1_POINT_DESCRIPTION): HResult; stdcall;
+begin
+    Result := ComputePointAndSegmentAtLength(length, startSegment, worldTransform, flatteningTolerance, pointDescription);
 end;
 
 {$IFDEF FPC}
@@ -4389,9 +5007,9 @@ begin
     SetDescription(@stateDescription);
 end;
 
-{ ID2D1GeometrySinkelper }
+{ ID2D1GeometrySinkHelper }
 
-procedure ID2D1GeometrySinkelper.AddBezier(const bezier: TD2D1_BEZIER_SEGMENT);
+procedure ID2D1GeometrySinkHelper.AddBezier(const bezier: TD2D1_BEZIER_SEGMENT);
     stdcall;
 begin
     AddBezier(@bezier);
@@ -4399,14 +5017,14 @@ end;
 
 
 
-procedure ID2D1GeometrySinkelper.AddQuadraticBezier(const bezier: TD2D1_QUADRATIC_BEZIER_SEGMENT); stdcall;
+procedure ID2D1GeometrySinkHelper.AddQuadraticBezier(const bezier: TD2D1_QUADRATIC_BEZIER_SEGMENT); stdcall;
 begin
     AddQuadraticBezier(@bezier);
 end;
 
 
 
-procedure ID2D1GeometrySinkelper.AddArc(const arc: TD2D1_ARC_SEGMENT); stdcall;
+procedure ID2D1GeometrySinkHelper.AddArc(const arc: TD2D1_ARC_SEGMENT); stdcall;
 begin
     AddArc(@arc);
 end;
@@ -5444,8 +6062,9 @@ end;
 
 function TD2D_MATRIX_4X4_F.IsIdentity: longbool;
 begin
-    Result := (_11 = 1.0) and (_12 = 0.0) and (_13 = 0.0) and (_14 = 0.0) and (_21 = 0.0) and (_22 = 1.0) and (_23 = 0.0) and
-        (_24 = 0.0) and (_31 = 0.0) and (_32 = 0.0) and (_33 = 1.0) and (_34 = 0.0) and (_41 = 0.0) and (_42 = 0.0) and (_43 = 0.0) and (_44 = 1.0);
+    Result := (_11 = 1.0) and (_12 = 0.0) and (_13 = 0.0) and (_14 = 0.0) and (_21 = 0.0) and (_22 = 1.0) and
+        (_23 = 0.0) and (_24 = 0.0) and (_31 = 0.0) and (_32 = 0.0) and (_33 = 1.0) and (_34 = 0.0) and (_41 = 0.0) and
+        (_42 = 0.0) and (_43 = 0.0) and (_44 = 1.0);
 end;
 
 
@@ -5488,8 +6107,8 @@ end;
 class operator TD2D_MATRIX_4X4_F.Equal(a, b: TD2D_MATRIX_4X4_F): longbool;
 begin
     Result := (a._11 = b._11) and (a._12 = b._12) and (a._13 = b._13) and (a._14 = b._14) and (a._21 = b._21) and
-        (a._22 = b._22) and (a._23 = b._23) and (a._24 = b._24) and (a._31 = b._31) and (a._32 = b._32) and (a._33 = b._33) and
-        (a._34 = b._34) and (a._41 = b._41) and (a._42 = b._42) and (a._43 = b._43) and (a._44 = b._44);
+        (a._22 = b._22) and (a._23 = b._23) and (a._24 = b._24) and (a._31 = b._31) and (a._32 = b._32) and
+        (a._33 = b._33) and (a._34 = b._34) and (a._41 = b._41) and (a._42 = b._42) and (a._43 = b._43) and (a._44 = b._44);
 end;
 
 
@@ -5497,8 +6116,8 @@ end;
 class operator TD2D_MATRIX_4X4_F.NotEqual(a, b: TD2D_MATRIX_4X4_F): longbool;
 begin
     Result := (a._11 <> b._11) or (a._12 <> b._12) or (a._13 <> b._13) or (a._14 <> b._14) or (a._21 <> b._21) or
-        (a._22 <> b._22) or (a._23 <> b._23) or (a._24 <> b._24) or (a._31 <> b._31) or (a._32 <> b._32) or (a._33 <> b._33) or
-        (a._34 <> b._34) or (a._41 <> b._41) or (a._42 <> b._42) or (a._43 <> b._43) or (a._44 <> b._44);
+        (a._22 <> b._22) or (a._23 <> b._23) or (a._24 <> b._24) or (a._31 <> b._31) or (a._32 <> b._32) or
+        (a._33 <> b._33) or (a._34 <> b._34) or (a._41 <> b._41) or (a._42 <> b._42) or (a._43 <> b._43) or (a._44 <> b._44);
 end;
 
 

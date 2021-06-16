@@ -1,5 +1,7 @@
 { **************************************************************************
-  Copyright 2016 Norbert Sonnleitner
+  FreePascal/Delphi DirectX 12 Header Files
+  
+  Copyright 2013-2021 Norbert Sonnleitner
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -29,7 +31,7 @@
 
   This unit consists of the following header files
   File name: DXGI1_5.h
-  Header version: 10.0.10586
+  Header version: 10.0.19041.0
 
   ************************************************************************** }
 unit DX12.DXGI1_5;
@@ -54,15 +56,17 @@ const
 
 
 type
+	TDXGI_OUTDUPL_FLAG=(
+        DXGI_OUTDUPL_COMPOSITED_UI_CAPTURE_ONLY	= 1
+    );
+
+
     IDXGIOutput5 = interface(IDXGIOutput4)
         ['{80A07424-AB52-42EB-833C-0C42FD282D98}']
-        function DuplicateOutput1(pDevice: IUnknown; SupportedFormatsCount: UINT; pSupportedFormats: PDXGI_FORMAT;
+        function DuplicateOutput1(pDevice: IUnknown; SupportedFormatsCount: UINT; pSupportedFormats{SupportedFormatsCount}: PDXGI_FORMAT;
             out ppOutputDuplication: IDXGIOutputDuplication): HResult;
             stdcall;
     end;
-
-
-
 
     TDXGI_HDR_METADATA_TYPE = (
         DXGI_HDR_METADATA_TYPE_NONE = 0,
@@ -89,7 +93,7 @@ type
 
     IDXGISwapChain4 = interface(IDXGISwapChain3)
         ['{3D585D5A-BD4A-489E-B1F4-3DBCB6452FFB}']
-        function SetHDRMetaData(AType: TDXGI_HDR_METADATA_TYPE; Size: UINT; pMetaData: Pointer): HResult; stdcall;
+        function SetHDRMetaData(AType: TDXGI_HDR_METADATA_TYPE; Size: UINT; pMetaData{Size}: Pointer): HResult; stdcall;
     end;
 
 
@@ -109,10 +113,10 @@ type
 
     IDXGIDevice4 = interface(IDXGIDevice3)
         ['{95B4F95F-D8DA-4CA4-9EE6-3B76D5968A10}']
-        function OfferResources1(NumResources: UINT; const ppResources: PIDXGIResource; Priority: TDXGI_OFFER_RESOURCE_PRIORITY;
+        function OfferResources1(NumResources: UINT; const ppResources{NumResources}: PIDXGIResource; Priority: TDXGI_OFFER_RESOURCE_PRIORITY;
             Flags: UINT): HResult; stdcall;
-        function ReclaimResources1(NumResources: UINT; const ppResources: PIDXGIResource;
-            out pResults: PDXGI_RECLAIM_RESOURCE_RESULTS): HResult; stdcall;
+        function ReclaimResources1(NumResources: UINT; const ppResources{NumResources}: PIDXGIResource;
+            out pResults{NumResources}: PDXGI_RECLAIM_RESOURCE_RESULTS): HResult; stdcall;
     end;
 
 
@@ -123,7 +127,7 @@ type
 
     IDXGIFactory5 = interface(IDXGIFactory4)
         ['{7632e1f5-ee65-4dca-87fd-84cd75f8838d}']
-        function CheckFeatureSupport(Feature: TDXGI_FEATURE; var pFeatureSupportData: PByte;
+        function CheckFeatureSupport(Feature: TDXGI_FEATURE; var pFeatureSupportData{FeatureSupportDataSize}: PByte;
             FeatureSupportDataSize: UINT): HResult; stdcall;
     end;
 

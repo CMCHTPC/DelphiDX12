@@ -1,3 +1,39 @@
+{ **************************************************************************
+  FreePascal/Delphi DirectX 12 Header Files
+  
+  Copyright 2013-2021 Norbert Sonnleitner
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+   SOFTWARE.
+  ************************************************************************** }
+
+{ **************************************************************************
+  Additional Copyright (C) for this modul:
+
+  Copyright (c) Microsoft Corporation.  All rights reserved.
+
+  This unit consists of the following header files
+  File name: DXGI1_6.h
+  Header version: 10.0.19041.0
+
+  ************************************************************************** }
 unit DX12.DXGI1_6;
 
 {$IFDEF FPC}
@@ -14,6 +50,8 @@ const
     IID_IDXGIOutput6: TGUID = '{068346e8-aaec-4b84-add7-137f513f77a1}';
     IID_IDXGIFactory6: TGUID = '{c1b6694f-ff09-44a9-b03c-77900a0a1d17}';
     IID_IDXGIFactory7: TGUID = '{a4966eed-76db-44da-84c1-ee9a7afb20a8}';
+	
+	DXGI1_6_DLL ='dxgi.dll';
 
 type
 
@@ -112,7 +150,7 @@ type
 
 
 
-function DXGIDeclareAdapterRemovalSupport(): HRESULT; stdcall; external '';
+function DXGIDeclareAdapterRemovalSupport(): HRESULT; stdcall; external DXGI1_6_DLL;
 
 implementation
 
