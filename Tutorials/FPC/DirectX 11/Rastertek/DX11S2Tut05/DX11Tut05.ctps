@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <PathDelim Value="\"/>
+    <Version Value="12"/>
+    <BuildModes Active="Default"/>
+    <Units Count="26">
+      <Unit0>
+        <Filename Value="DX11Tut05.ppr"/>
+        <FRMtype Value="0"/>
+        <IsPartOfProject Value="True"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="4"/>
+        <CursorPos X="56" Y="22"/>
+        <UsageCount Value="29"/>
+        <Loaded Value="True"/>
+      </Unit0>
+      <Unit1>
+        <Filename Value="..\..\..\..\..\..\DirectXMath\Units\DirectX.Math.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="115"/>
+        <CursorPos X="3" Y="123"/>
+        <UsageCount Value="29"/>
+      </Unit1>
+      <Unit2>
+        <Filename Value="..\..\..\..\..\Units\DX12.D3D11.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="719"/>
+        <CursorPos X="9" Y="731"/>
+        <UsageCount Value="29"/>
+      </Unit2>
+      <Unit3>
+        <Filename Value="TextureClass.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="37"/>
+        <CursorPos Y="59"/>
+        <UsageCount Value="28"/>
+        <Loaded Value="True"/>
+      </Unit3>
+      <Unit4>
+        <Filename Value="TextureShaderClass.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="309"/>
+        <CursorPos Y="326"/>
+        <UsageCount Value="28"/>
+      </Unit4>
+      <Unit5>
+        <Filename Value="GraphicsClass.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="89"/>
+        <CursorPos X="33" Y="95"/>
+        <UsageCount Value="25"/>
+      </Unit5>
+      <Unit6>
+        <Filename Value="ModelClass.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="196"/>
+        <CursorPos Y="213"/>
+        <UsageCount Value="25"/>
+      </Unit6>
+      <Unit7>
+        <Filename Value="CameraClass.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <CursorPos Y="128"/>
+        <UsageCount Value="25"/>
+      </Unit7>
+      <Unit8>
+        <Filename Value="D3DClass.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="86"/>
+        <CursorPos X="37" Y="96"/>
+        <UsageCount Value="25"/>
+      </Unit8>
+      <Unit9>
+        <Filename Value="InputClass.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="25"/>
+      </Unit9>
+      <Unit10>
+        <Filename Value="SystemClass.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="140"/>
+        <CursorPos X="41" Y="162"/>
+        <UsageCount Value="25"/>
+      </Unit10>
+      <Unit11>
+        <Filename Value="..\..\..\..\..\..\DirectXToolKit\DirectXTK.Targa.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="2"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="4"/>
+        <UsageCount Value="20"/>
+        <Loaded Value="True"/>
+      </Unit11>
+      <Unit12>
+        <Filename Value="..\..\..\..\..\..\..\DirectX GUI\DirectXToolKit\DirectXTK.DDSTextureLoader.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="804"/>
+        <CursorPos Y="816"/>
+        <UsageCount Value="24"/>
+      </Unit12>
+      <Unit13>
+        <Filename Value="..\DX11S2Tut04\CameraClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="122"/>
+        <CursorPos Y="131"/>
+        <UsageCount Value="23"/>
+      </Unit13>
+      <Unit14>
+        <Filename Value="..\DX11S2Tut04\ColorShaderClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="182"/>
+        <CursorPos X="123" Y="197"/>
+        <UsageCount Value="23"/>
+      </Unit14>
+      <Unit15>
+        <Filename Value="..\DX11S2Tut04\InputClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="10"/>
+        <CursorPos X="40" Y="19"/>
+        <UsageCount Value="23"/>
+      </Unit15>
+      <Unit16>
+        <Filename Value="..\DX11S2Tut04\ModelClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="28"/>
+        <CursorPos X="26"/>
+        <UsageCount Value="22"/>
+      </Unit16>
+      <Unit17>
+        <Filename Value="..\DX11S2Tut04\SystemClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="32"/>
+        <CursorPos Y="235"/>
+        <UsageCount Value="23"/>
+      </Unit17>
+      <Unit18>
+        <Filename Value="..\DX11S2Tut04\GraphicsClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="84"/>
+        <CursorPos Y="95"/>
+        <UsageCount Value="22"/>
+      </Unit18>
+      <Unit19>
+        <Filename Value="..\DX11S2Tut04\D3DClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <CursorPos X="16" Y="13"/>
+        <UsageCount Value="23"/>
+      </Unit19>
+      <Unit20>
+        <Filename Value="..\..\..\DirectXMath-master\Units\DirectX.Math.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="109"/>
+        <CursorPos X="6" Y="122"/>
+        <UsageCount Value="19"/>
+      </Unit20>
+      <Unit21>
+        <Filename Value="..\..\..\DelphiDX12-master\Units\DX12.D3D11.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <UsageCount Value="19"/>
+      </Unit21>
+      <Unit22>
+        <Filename Value="..\..\..\..\..\Units\DX12.DXGI.pas"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="680"/>
+        <CursorPos X="38" Y="480"/>
+        <UsageCount Value="12"/>
+      </Unit22>
+      <Unit23>
+        <Filename Value="..\..\..\..\..\..\..\DirectX GUI\BaseFrameWork\DirectX\DirectX.Device.pas"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="599"/>
+        <CursorPos X="9" Y="615"/>
+        <UsageCount Value="9"/>
+      </Unit23>
+      <Unit24>
+        <Filename Value="..\..\..\..\..\..\DirectXMath\Units\DirectX.Math.XM_NO_INTRINSICS.inc"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="2095"/>
+        <CursorPos Y="2105"/>
+        <UsageCount Value="13"/>
+      </Unit24>
+      <Unit25>
+        <Filename Value="..\..\..\..\..\..\..\DirectX GUI\DirectXToolKit\DirectXTK.LoadHelpers.pas"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="886"/>
+        <CursorPos Y="900"/>
+        <UsageCount Value="11"/>
+      </Unit25>
+    </Units>
+    <OtherDefines Count="1">
+      <Define0 Value="UseDirectXMath"/>
+    </OtherDefines>
+    <JumpHistory HistoryIndex="-1"/>
+    <RunParams>
+      <FormatVersion Value="2"/>
+      <Modes ActiveMode=""/>
+    </RunParams>
+  </ProjectSession>
+  <Debugging>
+    <BreakPoints>
+      <Item>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="..\..\..\..\..\..\..\DirectX GUI\DirectXToolKit\DirectXTK.DDSTextureLoader.pas"/>
+        <Line Value="319"/>
+      </Item>
+      <Item>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="..\..\..\..\..\..\..\DirectX GUI\DirectXToolKit\DirectXTK.DDSTextureLoader.pas"/>
+        <Line Value="524"/>
+      </Item>
+      <Item>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="..\..\..\..\..\..\..\DirectX GUI\DirectXToolKit\DirectXTK.DDSTextureLoader.pas"/>
+        <Line Value="913"/>
+      </Item>
+      <Item>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="..\..\..\..\..\..\..\DirectX GUI\DirectXToolKit\DirectXTK.DDSTextureLoader.pas"/>
+        <Line Value="919"/>
+      </Item>
+    </BreakPoints>
+  </Debugging>
+</CONFIG>
