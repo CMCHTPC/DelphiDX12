@@ -1,0 +1,3417 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <PathDelim Value="\"/>
+    <Version Value="12"/>
+    <BuildModes Active="Debug"/>
+    <Units Count="384">
+      <Unit0>
+        <Filename Value="DX11S2Ter09.ppr"/>
+        <FRMtype Value="0"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="4"/>
+        <CursorPos X="73" Y="14"/>
+        <UsageCount Value="61"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit0>
+      <Unit1>
+        <Filename Value="..\..\..\..\..\Units\DX12.D3D11.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="5475"/>
+        <CursorPos X="21" Y="5486"/>
+        <UsageCount Value="61"/>
+      </Unit1>
+      <Unit2>
+        <Filename Value="..\..\..\..\..\..\DirectXToolKit\DirectXTK.DDS.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="42"/>
+      </Unit2>
+      <Unit3>
+        <Filename Value="..\..\..\..\..\..\WindowsAPI\Units\Win32.Pdh.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="83"/>
+        <CursorPos X="46" Y="90"/>
+        <UsageCount Value="36"/>
+      </Unit3>
+      <Unit4>
+        <Filename Value="..\..\..\..\..\..\DirectXMathPAS_20211102\DirectXMathPAS_20211028\DirectXMath_unit\DirectX.Math.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="7164"/>
+        <CursorPos Y="7178"/>
+        <UsageCount Value="23"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit4>
+      <Unit5>
+        <Filename Value="..\DX11S2Ter05\ApplicationClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="99"/>
+        <CursorPos X="131" Y="116"/>
+        <UsageCount Value="20"/>
+      </Unit5>
+      <Unit6>
+        <Filename Value="..\DX11S2Ter05\Basetypes.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit6>
+      <Unit7>
+        <Filename Value="..\DX11S2Ter05\CameraClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit7>
+      <Unit8>
+        <Filename Value="..\DX11S2Ter05\ColorShaderClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit8>
+      <Unit9>
+        <Filename Value="..\DX11S2Ter05\D3DClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit9>
+      <Unit10>
+        <Filename Value="..\DX11S2Ter05\FontClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit10>
+      <Unit11>
+        <Filename Value="..\DX11S2Ter05\FontShaderClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit11>
+      <Unit12>
+        <Filename Value="..\DX11S2Ter05\FPSClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit12>
+      <Unit13>
+        <Filename Value="..\DX11S2Ter05\InputClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit13>
+      <Unit14>
+        <Filename Value="..\DX11S2Ter05\LightClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit14>
+      <Unit15>
+        <Filename Value="..\DX11S2Ter05\LightShaderClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="381"/>
+        <CursorPos X="58" Y="389"/>
+        <UsageCount Value="20"/>
+      </Unit15>
+      <Unit16>
+        <Filename Value="..\DX11S2Ter05\PositionClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit16>
+      <Unit17>
+        <Filename Value="..\DX11S2Ter05\shadermanagerclass.pas"/>
+        <UnitName Value="ShaderManagerClass"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="166"/>
+        <CursorPos Y="192"/>
+        <UsageCount Value="20"/>
+      </Unit17>
+      <Unit18>
+        <Filename Value="..\DX11S2Ter05\SystemClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit18>
+      <Unit19>
+        <Filename Value="..\DX11S2Ter05\terrainclass.pas"/>
+        <UnitName Value="TerrainClass"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="555"/>
+        <CursorPos X="95" Y="585"/>
+        <UsageCount Value="20"/>
+      </Unit19>
+      <Unit20>
+        <Filename Value="..\DX11S2Ter05\TextClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit20>
+      <Unit21>
+        <Filename Value="..\DX11S2Ter05\TextureClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="67"/>
+        <CursorPos Y="94"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit21>
+      <Unit22>
+        <Filename Value="..\DX11S2Ter05\texturemanagerclass.pas"/>
+        <UnitName Value="TextureManagerClass"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="67"/>
+        <CursorPos Y="94"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit22>
+      <Unit23>
+        <Filename Value="..\DX11S2Ter05\TextureShaderClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit23>
+      <Unit24>
+        <Filename Value="..\DX11S2Ter05\TimerClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit24>
+      <Unit25>
+        <Filename Value="..\DX11S2Ter05\UserInterfaceClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit25>
+      <Unit26>
+        <Filename Value="..\DX11S2Ter05\zoneclass.pas"/>
+        <UnitName Value="ZoneClass"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="261"/>
+        <CursorPos X="48" Y="274"/>
+        <UsageCount Value="20"/>
+      </Unit26>
+      <Unit27>
+        <Filename Value="..\DX11S2Ter05\TerrainShaderClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="359"/>
+        <CursorPos X="5" Y="361"/>
+        <UsageCount Value="20"/>
+      </Unit27>
+      <Unit28>
+        <Filename Value="..\DX11S2Ter03\ApplicationClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="131"/>
+        <CursorPos Y="146"/>
+        <UsageCount Value="21"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit28>
+      <Unit29>
+        <Filename Value="..\DX11S2Ter03\Basetypes.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="21"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit29>
+      <Unit30>
+        <Filename Value="..\DX11S2Ter03\CameraClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="21"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit30>
+      <Unit31>
+        <Filename Value="..\DX11S2Ter03\ColorShaderClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="21"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit31>
+      <Unit32>
+        <Filename Value="..\DX11S2Ter03\D3DClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="520"/>
+        <CursorPos Y="530"/>
+        <UsageCount Value="21"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit32>
+      <Unit33>
+        <Filename Value="..\DX11S2Ter03\FontClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="102"/>
+        <CursorPos Y="130"/>
+        <UsageCount Value="21"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit33>
+      <Unit34>
+        <Filename Value="..\DX11S2Ter03\FontShaderClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="21"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit34>
+      <Unit35>
+        <Filename Value="..\DX11S2Ter03\FPSClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="21"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit35>
+      <Unit36>
+        <Filename Value="..\DX11S2Ter03\InputClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="21"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit36>
+      <Unit37>
+        <Filename Value="..\DX11S2Ter03\PositionClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="21"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit37>
+      <Unit38>
+        <Filename Value="..\DX11S2Ter03\shadermanagerclass.pas"/>
+        <UnitName Value="ShaderManagerClass"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="19"/>
+        <CursorPos X="32" Y="23"/>
+        <UsageCount Value="21"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit38>
+      <Unit39>
+        <Filename Value="..\DX11S2Ter03\SystemClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="21"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit39>
+      <Unit40>
+        <Filename Value="..\DX11S2Ter03\terrainclass.pas"/>
+        <UnitName Value="TerrainClass"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="75"/>
+        <CursorPos Y="97"/>
+        <UsageCount Value="21"/>
+      </Unit40>
+      <Unit41>
+        <Filename Value="..\DX11S2Ter03\TextClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="21"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit41>
+      <Unit42>
+        <Filename Value="..\DX11S2Ter03\TextureClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="59"/>
+        <CursorPos Y="75"/>
+        <UsageCount Value="21"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit42>
+      <Unit43>
+        <Filename Value="..\DX11S2Ter03\TextureShaderClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="284"/>
+        <CursorPos X="5" Y="304"/>
+        <UsageCount Value="21"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit43>
+      <Unit44>
+        <Filename Value="..\DX11S2Ter03\TimerClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="21"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit44>
+      <Unit45>
+        <Filename Value="..\DX11S2Ter03\UserInterfaceClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="75"/>
+        <CursorPos Y="90"/>
+        <UsageCount Value="21"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit45>
+      <Unit46>
+        <Filename Value="..\DX11S2Ter03\zoneclass.pas"/>
+        <UnitName Value="ZoneClass"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="241"/>
+        <CursorPos Y="257"/>
+        <UsageCount Value="21"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit46>
+      <Unit47>
+        <Filename Value="..\..\..\..\..\..\DirectXMath\Units\DirectX.Math.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="3867"/>
+        <CursorPos X="19" Y="3884"/>
+        <UsageCount Value="58"/>
+      </Unit47>
+      <Unit48>
+        <Filename Value="..\DX11S2Ter01\FontClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="118"/>
+        <CursorPos X="27" Y="130"/>
+        <UsageCount Value="31"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit48>
+      <Unit49>
+        <Filename Value="..\DX11S2Ter01\FontShaderClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="342"/>
+        <CursorPos Y="346"/>
+        <UsageCount Value="31"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit49>
+      <Unit50>
+        <Filename Value="..\DX11S2Ter01\ApplicationClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <UsageCount Value="31"/>
+      </Unit50>
+      <Unit51>
+        <Filename Value="..\DX11S2Ter01\InputClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <CursorPos X="110" Y="324"/>
+        <UsageCount Value="31"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit51>
+      <Unit52>
+        <Filename Value="..\DX11S2Ter01\D3DClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="619"/>
+        <CursorPos X="5" Y="559"/>
+        <UsageCount Value="31"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit52>
+      <Unit53>
+        <Filename Value="..\DX11S2Ter01\shadermanagerclass.pas"/>
+        <UnitName Value="ShaderManagerClass"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="93"/>
+        <CursorPos X="17" Y="5"/>
+        <UsageCount Value="31"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit53>
+      <Unit54>
+        <Filename Value="..\DX11S2Ter01\zoneclass.pas"/>
+        <UnitName Value="ZoneClass"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="7"/>
+        <CursorPos X="16" Y="15"/>
+        <UsageCount Value="31"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit54>
+      <Unit55>
+        <Filename Value="..\DX11S2Ter01\FPSClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="31"/>
+      </Unit55>
+      <Unit56>
+        <Filename Value="..\DX11S2Ter01\TimerClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="86"/>
+        <CursorPos X="62" Y="105"/>
+        <UsageCount Value="31"/>
+      </Unit56>
+      <Unit57>
+        <Filename Value="..\DX11S2Ter01\ColorShaderClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="217"/>
+        <CursorPos Y="228"/>
+        <UsageCount Value="31"/>
+      </Unit57>
+      <Unit58>
+        <Filename Value="..\DX11S2Ter01\PositionClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="340"/>
+        <CursorPos Y="42"/>
+        <UsageCount Value="31"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit58>
+      <Unit59>
+        <Filename Value="..\DX11S2Ter01\terrainclass.pas"/>
+        <UnitName Value="TerrainClass"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <CursorPos Y="86"/>
+        <UsageCount Value="31"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit59>
+      <Unit60>
+        <Filename Value="..\DX11S2Ter01\UserInterfaceClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <UsageCount Value="31"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit60>
+      <Unit61>
+        <Filename Value="..\DX11S2Ter01\SystemClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <CursorPos X="57" Y="101"/>
+        <UsageCount Value="31"/>
+      </Unit61>
+      <Unit62>
+        <Filename Value="..\DX11S2Ter01\CameraClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="141"/>
+        <CursorPos Y="159"/>
+        <UsageCount Value="31"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit62>
+      <Unit63>
+        <Filename Value="..\DX11S2Ter01\TextClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="57"/>
+        <CursorPos X="37" Y="59"/>
+        <UsageCount Value="30"/>
+      </Unit63>
+      <Unit64>
+        <Filename Value="..\DX11S2Ter01\Basetypes.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <CursorPos X="26" Y="13"/>
+        <UsageCount Value="29"/>
+      </Unit64>
+      <Unit65>
+        <Filename Value="..\DX11S2Ter01\TextureClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="67"/>
+        <CursorPos Y="73"/>
+        <UsageCount Value="27"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit65>
+      <Unit66>
+        <Filename Value="..\..\Rastertek\DX11S2Tut27\CameraClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="159"/>
+        <CursorPos X="17" Y="173"/>
+        <UsageCount Value="21"/>
+      </Unit66>
+      <Unit67>
+        <Filename Value="..\..\Rastertek\DX11S2Tut27\D3DClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="21"/>
+      </Unit67>
+      <Unit68>
+        <Filename Value="..\..\Rastertek\DX11S2Tut27\GraphicsClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="142"/>
+        <CursorPos Y="159"/>
+        <UsageCount Value="21"/>
+      </Unit68>
+      <Unit69>
+        <Filename Value="..\..\Rastertek\DX11S2Tut27\InputClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="21"/>
+      </Unit69>
+      <Unit70>
+        <Filename Value="..\..\Rastertek\DX11S2Tut27\ModelClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="196"/>
+        <CursorPos Y="208"/>
+        <UsageCount Value="21"/>
+      </Unit70>
+      <Unit71>
+        <Filename Value="..\..\Rastertek\DX11S2Tut27\SystemClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="21"/>
+      </Unit71>
+      <Unit72>
+        <Filename Value="..\..\Rastertek\DX11S2Tut27\TextureClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="21"/>
+      </Unit72>
+      <Unit73>
+        <Filename Value="..\..\Rastertek\DX11S2Tut27\TextureShaderClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="21"/>
+      </Unit73>
+      <Unit74>
+        <Filename Value="..\..\Rastertek\DX11S2Tut26\CameraClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit74>
+      <Unit75>
+        <Filename Value="..\..\Rastertek\DX11S2Tut26\D3DClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="399"/>
+        <CursorPos X="59" Y="407"/>
+        <UsageCount Value="20"/>
+      </Unit75>
+      <Unit76>
+        <Filename Value="..\..\Rastertek\DX11S2Tut26\GraphicsClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="217"/>
+        <CursorPos X="34" Y="173"/>
+        <UsageCount Value="20"/>
+      </Unit76>
+      <Unit77>
+        <Filename Value="..\..\Rastertek\DX11S2Tut26\InputClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit77>
+      <Unit78>
+        <Filename Value="..\..\Rastertek\DX11S2Tut26\ModelClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit78>
+      <Unit79>
+        <Filename Value="..\..\Rastertek\DX11S2Tut26\SystemClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit79>
+      <Unit80>
+        <Filename Value="..\..\Rastertek\DX11S2Tut26\TextureClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit80>
+      <Unit81>
+        <Filename Value="..\..\Rastertek\DX11S2Tut26\TextureShaderClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit81>
+      <Unit82>
+        <Filename Value="..\..\Rastertek\DX11S2Tut26\TransparentShaderClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="119"/>
+        <CursorPos X="53" Y="256"/>
+        <UsageCount Value="20"/>
+      </Unit82>
+      <Unit83>
+        <Filename Value="..\..\Rastertek\DX11S2Tut24\CameraClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit83>
+      <Unit84>
+        <Filename Value="..\..\Rastertek\DX11S2Tut24\D3DClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit84>
+      <Unit85>
+        <Filename Value="..\..\Rastertek\DX11S2Tut24\GraphicsClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="46"/>
+        <CursorPos X="59" Y="56"/>
+        <UsageCount Value="20"/>
+      </Unit85>
+      <Unit86>
+        <Filename Value="..\..\Rastertek\DX11S2Tut24\InputClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit86>
+      <Unit87>
+        <Filename Value="..\..\Rastertek\DX11S2Tut24\ModelClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="170"/>
+        <CursorPos X="28" Y="177"/>
+        <UsageCount Value="20"/>
+      </Unit87>
+      <Unit88>
+        <Filename Value="..\..\Rastertek\DX11S2Tut24\SystemClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="73"/>
+        <CursorPos Y="92"/>
+        <UsageCount Value="20"/>
+      </Unit88>
+      <Unit89>
+        <Filename Value="..\..\Rastertek\DX11S2Tut24\TextureClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="75"/>
+        <CursorPos Y="85"/>
+        <UsageCount Value="20"/>
+      </Unit89>
+      <Unit90>
+        <Filename Value="..\..\Rastertek\DX11S2Tut24\ClipPlaneShaderClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="172"/>
+        <CursorPos X="70" Y="184"/>
+        <FoldState Value=" T3m00Q;"/>
+        <UsageCount Value="20"/>
+      </Unit90>
+      <Unit91>
+        <Filename Value="..\..\Rastertek\DX11S2Tut22\CameraClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="109"/>
+        <CursorPos X="37" Y="99"/>
+        <UsageCount Value="23"/>
+      </Unit91>
+      <Unit92>
+        <Filename Value="..\..\Rastertek\DX11S2Tut22\D3DClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="49"/>
+        <CursorPos Y="499"/>
+        <UsageCount Value="23"/>
+      </Unit92>
+      <Unit93>
+        <Filename Value="..\..\Rastertek\DX11S2Tut22\InputClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="23"/>
+      </Unit93>
+      <Unit94>
+        <Filename Value="..\..\Rastertek\DX11S2Tut22\LightClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="23"/>
+      </Unit94>
+      <Unit95>
+        <Filename Value="..\..\Rastertek\DX11S2Tut22\SystemClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="77"/>
+        <CursorPos Y="92"/>
+        <UsageCount Value="23"/>
+      </Unit95>
+      <Unit96>
+        <Filename Value="..\..\Rastertek\DX11S2Tut22\TextureClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="82"/>
+        <CursorPos Y="102"/>
+        <UsageCount Value="23"/>
+      </Unit96>
+      <Unit97>
+        <Filename Value="..\..\Rastertek\DX11S2Tut22\GraphicsClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="112"/>
+        <CursorPos X="33" Y="88"/>
+        <UsageCount Value="23"/>
+      </Unit97>
+      <Unit98>
+        <Filename Value="..\..\Rastertek\DX11S2Tut22\TextureShaderClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="306"/>
+        <CursorPos X="5" Y="321"/>
+        <UsageCount Value="23"/>
+      </Unit98>
+      <Unit99>
+        <Filename Value="..\..\Rastertek\DX11S2Tut18\CameraClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit99>
+      <Unit100>
+        <Filename Value="..\..\Rastertek\DX11S2Tut18\D3DClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit100>
+      <Unit101>
+        <Filename Value="..\..\Rastertek\DX11S2Tut18\GraphicsClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="58"/>
+        <CursorPos X="90" Y="66"/>
+        <UsageCount Value="20"/>
+      </Unit101>
+      <Unit102>
+        <Filename Value="..\..\Rastertek\DX11S2Tut18\InputClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit102>
+      <Unit103>
+        <Filename Value="..\..\Rastertek\DX11S2Tut18\LightMapShaderClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="66"/>
+        <CursorPos X="87" Y="86"/>
+        <UsageCount Value="20"/>
+      </Unit103>
+      <Unit104>
+        <Filename Value="..\..\Rastertek\DX11S2Tut18\ModelClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit104>
+      <Unit105>
+        <Filename Value="..\..\Rastertek\DX11S2Tut18\SystemClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit105>
+      <Unit106>
+        <Filename Value="..\..\Rastertek\DX11S2Tut18\TextureArrayClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit106>
+      <Unit107>
+        <Filename Value="..\..\Rastertek\DX11S2Tut14\CameraClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="21"/>
+      </Unit107>
+      <Unit108>
+        <Filename Value="..\..\Rastertek\DX11S2Tut14\D3DClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="21"/>
+      </Unit108>
+      <Unit109>
+        <Filename Value="..\..\Rastertek\DX11S2Tut14\GraphicsClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="61"/>
+        <CursorPos X="80" Y="81"/>
+        <UsageCount Value="21"/>
+      </Unit109>
+      <Unit110>
+        <Filename Value="..\..\Rastertek\DX11S2Tut14\InputClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="122"/>
+        <CursorPos X="60" Y="132"/>
+        <UsageCount Value="21"/>
+      </Unit110>
+      <Unit111>
+        <Filename Value="..\..\Rastertek\DX11S2Tut14\SystemClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="77"/>
+        <CursorPos X="36" Y="90"/>
+        <UsageCount Value="21"/>
+      </Unit111>
+      <Unit112>
+        <Filename Value="..\..\Rastertek\DX11S2Tut14\SoundClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="231"/>
+        <CursorPos X="60" Y="250"/>
+        <UsageCount Value="21"/>
+      </Unit112>
+      <Unit113>
+        <Filename Value="..\..\Rastertek\DX11S2Tut13\Basetypes.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="21"/>
+      </Unit113>
+      <Unit114>
+        <Filename Value="..\..\Rastertek\DX11S2Tut13\CameraClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="21"/>
+      </Unit114>
+      <Unit115>
+        <Filename Value="..\..\Rastertek\DX11S2Tut13\D3DClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="21"/>
+      </Unit115>
+      <Unit116>
+        <Filename Value="..\..\Rastertek\DX11S2Tut13\FontClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="21"/>
+      </Unit116>
+      <Unit117>
+        <Filename Value="..\..\Rastertek\DX11S2Tut13\FontShaderClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="21"/>
+      </Unit117>
+      <Unit118>
+        <Filename Value="..\..\Rastertek\DX11S2Tut13\GraphicsClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="161"/>
+        <CursorPos X="64" Y="168"/>
+        <UsageCount Value="21"/>
+      </Unit118>
+      <Unit119>
+        <Filename Value="..\..\Rastertek\DX11S2Tut13\InputClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="116"/>
+        <CursorPos Y="116"/>
+        <UsageCount Value="21"/>
+      </Unit119>
+      <Unit120>
+        <Filename Value="..\..\Rastertek\DX11S2Tut13\SystemClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="298"/>
+        <CursorPos X="15" Y="319"/>
+        <UsageCount Value="21"/>
+      </Unit120>
+      <Unit121>
+        <Filename Value="..\..\Rastertek\DX11S2Tut13\TextClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="341"/>
+        <CursorPos X="108" Y="342"/>
+        <UsageCount Value="21"/>
+      </Unit121>
+      <Unit122>
+        <Filename Value="..\..\Rastertek\DX11S2Tut13\TextureClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="21"/>
+      </Unit122>
+      <Unit123>
+        <Filename Value="..\..\..\..\..\Units\DX12.DInput.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="24"/>
+        <CursorPos X="39" Y="23"/>
+        <UsageCount Value="21"/>
+      </Unit123>
+      <Unit124>
+        <Filename Value="..\..\Rastertek\DX11S2Tut11\CameraClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="22"/>
+        <CursorPos X="12" Y="32"/>
+        <UsageCount Value="23"/>
+      </Unit124>
+      <Unit125>
+        <Filename Value="..\..\Rastertek\DX11S2Tut11\D3DClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="357"/>
+        <CursorPos Y="372"/>
+        <UsageCount Value="23"/>
+      </Unit125>
+      <Unit126>
+        <Filename Value="..\..\Rastertek\DX11S2Tut11\GraphicsClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="103"/>
+        <CursorPos X="38" Y="120"/>
+        <UsageCount Value="23"/>
+      </Unit126>
+      <Unit127>
+        <Filename Value="..\..\Rastertek\DX11S2Tut11\InputClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="23"/>
+      </Unit127>
+      <Unit128>
+        <Filename Value="..\..\Rastertek\DX11S2Tut11\SystemClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="23"/>
+      </Unit128>
+      <Unit129>
+        <Filename Value="..\..\Rastertek\DX11S2Tut11\TextureClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="81"/>
+        <CursorPos X="23" Y="95"/>
+        <UsageCount Value="23"/>
+      </Unit129>
+      <Unit130>
+        <Filename Value="..\..\Rastertek\DX11S2Tut11\BitmapClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="142"/>
+        <CursorPos Y="142"/>
+        <UsageCount Value="23"/>
+      </Unit130>
+      <Unit131>
+        <Filename Value="..\..\Rastertek\DX11S2Tut11\LightClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit131>
+      <Unit132>
+        <Filename Value="..\..\Rastertek\DX11S2Tut11\LightShaderClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit132>
+      <Unit133>
+        <Filename Value="..\..\Rastertek\DX11S2Tut11\ModelClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit133>
+      <Unit134>
+        <Filename Value="..\..\Rastertek\DX11S2Tut10\CameraClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="22"/>
+      </Unit134>
+      <Unit135>
+        <Filename Value="..\..\Rastertek\DX11S2Tut10\D3DClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="22"/>
+      </Unit135>
+      <Unit136>
+        <Filename Value="..\..\Rastertek\DX11S2Tut10\GraphicsClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="48"/>
+        <CursorPos X="80" Y="74"/>
+        <UsageCount Value="22"/>
+      </Unit136>
+      <Unit137>
+        <Filename Value="..\..\Rastertek\DX11S2Tut10\InputClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="22"/>
+      </Unit137>
+      <Unit138>
+        <Filename Value="..\..\Rastertek\DX11S2Tut10\LightClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <CursorPos Y="90"/>
+        <UsageCount Value="22"/>
+      </Unit138>
+      <Unit139>
+        <Filename Value="..\..\Rastertek\DX11S2Tut10\LightShaderClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="416"/>
+        <CursorPos X="64" Y="433"/>
+        <UsageCount Value="22"/>
+      </Unit139>
+      <Unit140>
+        <Filename Value="..\..\Rastertek\DX11S2Tut10\ModelClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="22"/>
+      </Unit140>
+      <Unit141>
+        <Filename Value="..\..\Rastertek\DX11S2Tut10\SystemClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="22"/>
+      </Unit141>
+      <Unit142>
+        <Filename Value="..\..\Rastertek\DX11S2Tut10\TextureClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="174"/>
+        <CursorPos X="114" Y="186"/>
+        <FoldState Value=" T3iP0{4&apos;"/>
+        <UsageCount Value="22"/>
+      </Unit142>
+      <Unit143>
+        <Filename Value="..\..\..\..\..\..\..\DirectX GUI\DirectXToolKit\DirectXTK.DDSTextureLoader.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="19"/>
+        <CursorPos X="16" Y="29"/>
+        <UsageCount Value="34"/>
+      </Unit143>
+      <Unit144>
+        <Filename Value="..\..\Rastertek\DX11S2Tut09\CameraClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="130"/>
+        <CursorPos X="39" Y="98"/>
+        <UsageCount Value="26"/>
+      </Unit144>
+      <Unit145>
+        <Filename Value="..\..\Rastertek\DX11S2Tut09\D3DClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="10"/>
+        <CursorPos X="52" Y="23"/>
+        <UsageCount Value="26"/>
+      </Unit145>
+      <Unit146>
+        <Filename Value="..\..\Rastertek\DX11S2Tut09\GraphicsClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="27"/>
+        <CursorPos Y="70"/>
+        <UsageCount Value="26"/>
+      </Unit146>
+      <Unit147>
+        <Filename Value="..\..\Rastertek\DX11S2Tut09\InputClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="26"/>
+      </Unit147>
+      <Unit148>
+        <Filename Value="..\..\Rastertek\DX11S2Tut09\LightClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="34"/>
+        <CursorPos X="123" Y="61"/>
+        <UsageCount Value="26"/>
+      </Unit148>
+      <Unit149>
+        <Filename Value="..\..\Rastertek\DX11S2Tut09\LightShaderClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="300"/>
+        <CursorPos X="6" Y="309"/>
+        <UsageCount Value="26"/>
+      </Unit149>
+      <Unit150>
+        <Filename Value="..\..\Rastertek\DX11S2Tut09\ModelClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <CursorPos X="15" Y="13"/>
+        <UsageCount Value="26"/>
+      </Unit150>
+      <Unit151>
+        <Filename Value="..\..\Rastertek\DX11S2Tut09\SystemClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="135"/>
+        <CursorPos X="31" Y="99"/>
+        <UsageCount Value="26"/>
+      </Unit151>
+      <Unit152>
+        <Filename Value="..\..\Rastertek\DX11S2Tut09\TextureClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="90"/>
+        <CursorPos Y="148"/>
+        <UsageCount Value="26"/>
+      </Unit152>
+      <Unit153>
+        <Filename Value="..\..\Rastertek\DX11S2Tut07\CameraClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="22"/>
+      </Unit153>
+      <Unit154>
+        <Filename Value="..\..\Rastertek\DX11S2Tut07\D3DClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="22"/>
+      </Unit154>
+      <Unit155>
+        <Filename Value="..\..\Rastertek\DX11S2Tut07\GraphicsClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="112"/>
+        <CursorPos X="99" Y="117"/>
+        <UsageCount Value="22"/>
+      </Unit155>
+      <Unit156>
+        <Filename Value="..\..\Rastertek\DX11S2Tut07\InputClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="22"/>
+      </Unit156>
+      <Unit157>
+        <Filename Value="..\..\Rastertek\DX11S2Tut07\LightClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="22"/>
+      </Unit157>
+      <Unit158>
+        <Filename Value="..\..\Rastertek\DX11S2Tut07\LightShaderClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="22"/>
+      </Unit158>
+      <Unit159>
+        <Filename Value="..\..\Rastertek\DX11S2Tut07\ModelClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="290"/>
+        <CursorPos Y="296"/>
+        <UsageCount Value="22"/>
+      </Unit159>
+      <Unit160>
+        <Filename Value="..\..\Rastertek\DX11S2Tut07\SystemClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="22"/>
+      </Unit160>
+      <Unit161>
+        <Filename Value="..\..\Rastertek\DX11S2Tut07\TextureClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="22"/>
+      </Unit161>
+      <Unit162>
+        <Filename Value="..\..\Rastertek\DX11S2Tut06\CameraClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="21"/>
+      </Unit162>
+      <Unit163>
+        <Filename Value="..\..\Rastertek\DX11S2Tut06\D3DClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="340"/>
+        <UsageCount Value="21"/>
+      </Unit163>
+      <Unit164>
+        <Filename Value="..\..\Rastertek\DX11S2Tut06\GraphicsClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="191"/>
+        <CursorPos X="36" Y="196"/>
+        <UsageCount Value="21"/>
+      </Unit164>
+      <Unit165>
+        <Filename Value="..\..\Rastertek\DX11S2Tut06\InputClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="21"/>
+      </Unit165>
+      <Unit166>
+        <Filename Value="..\..\Rastertek\DX11S2Tut06\ModelClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="64"/>
+        <CursorPos X="38" Y="74"/>
+        <UsageCount Value="21"/>
+      </Unit166>
+      <Unit167>
+        <Filename Value="..\..\Rastertek\DX11S2Tut06\SystemClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="21"/>
+      </Unit167>
+      <Unit168>
+        <Filename Value="..\..\Rastertek\DX11S2Tut06\TextureClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="21"/>
+      </Unit168>
+      <Unit169>
+        <Filename Value="..\..\Rastertek\DX11S2Tut06\LightShaderClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="310"/>
+        <CursorPos X="58" Y="315"/>
+        <FoldState Value=" T3mC0Q011i"/>
+        <UsageCount Value="21"/>
+      </Unit169>
+      <Unit170>
+        <Filename Value="..\..\Rastertek\DX11S2Tut06\LightClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <CursorPos X="34" Y="17"/>
+        <UsageCount Value="21"/>
+      </Unit170>
+      <Unit171>
+        <Filename Value="..\..\Rastertek\DX11S2Tut05\TextureClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="191"/>
+        <CursorPos X="39" Y="209"/>
+        <FoldState Value=" T3iF0{4r"/>
+        <UsageCount Value="28"/>
+      </Unit171>
+      <Unit172>
+        <Filename Value="..\..\Rastertek\DX11S2Tut05\TextureShaderClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="232"/>
+        <CursorPos X="65" Y="238"/>
+        <UsageCount Value="28"/>
+      </Unit172>
+      <Unit173>
+        <Filename Value="..\..\Rastertek\DX11S2Tut05\GraphicsClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="89"/>
+        <CursorPos X="33" Y="95"/>
+        <UsageCount Value="25"/>
+      </Unit173>
+      <Unit174>
+        <Filename Value="..\..\Rastertek\DX11S2Tut05\ModelClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="196"/>
+        <CursorPos Y="213"/>
+        <UsageCount Value="25"/>
+      </Unit174>
+      <Unit175>
+        <Filename Value="..\..\Rastertek\DX11S2Tut05\CameraClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <CursorPos Y="128"/>
+        <UsageCount Value="25"/>
+      </Unit175>
+      <Unit176>
+        <Filename Value="..\..\Rastertek\DX11S2Tut05\D3DClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="86"/>
+        <CursorPos X="37" Y="96"/>
+        <UsageCount Value="25"/>
+      </Unit176>
+      <Unit177>
+        <Filename Value="..\..\Rastertek\DX11S2Tut05\InputClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="25"/>
+      </Unit177>
+      <Unit178>
+        <Filename Value="..\..\Rastertek\DX11S2Tut05\SystemClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="140"/>
+        <CursorPos X="41" Y="162"/>
+        <UsageCount Value="25"/>
+      </Unit178>
+      <Unit179>
+        <Filename Value="..\..\Rastertek\DX11S2Tut04\CameraClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="122"/>
+        <CursorPos Y="131"/>
+        <UsageCount Value="23"/>
+      </Unit179>
+      <Unit180>
+        <Filename Value="..\..\Rastertek\DX11S2Tut04\ColorShaderClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="182"/>
+        <CursorPos X="123" Y="197"/>
+        <UsageCount Value="23"/>
+      </Unit180>
+      <Unit181>
+        <Filename Value="..\..\Rastertek\DX11S2Tut04\InputClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="10"/>
+        <CursorPos X="40" Y="19"/>
+        <UsageCount Value="23"/>
+      </Unit181>
+      <Unit182>
+        <Filename Value="..\..\Rastertek\DX11S2Tut04\ModelClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="28"/>
+        <CursorPos X="26"/>
+        <UsageCount Value="22"/>
+      </Unit182>
+      <Unit183>
+        <Filename Value="..\..\Rastertek\DX11S2Tut04\SystemClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="32"/>
+        <CursorPos Y="235"/>
+        <UsageCount Value="23"/>
+      </Unit183>
+      <Unit184>
+        <Filename Value="..\..\Rastertek\DX11S2Tut04\GraphicsClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="84"/>
+        <CursorPos Y="95"/>
+        <UsageCount Value="22"/>
+      </Unit184>
+      <Unit185>
+        <Filename Value="..\..\Rastertek\DX11S2Tut04\D3DClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <CursorPos X="16" Y="13"/>
+        <UsageCount Value="23"/>
+      </Unit185>
+      <Unit186>
+        <Filename Value="..\..\..\DirectXMath-master\Units\DirectX.Math.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="109"/>
+        <CursorPos X="6" Y="122"/>
+        <UsageCount Value="19"/>
+      </Unit186>
+      <Unit187>
+        <Filename Value="..\..\..\DelphiDX12-master\Units\DX12.D3D11.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <UsageCount Value="19"/>
+      </Unit187>
+      <Unit188>
+        <Filename Value="..\..\..\..\..\Units\DX12.DXGI.pas"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="491"/>
+        <CursorPos X="21" Y="480"/>
+        <UsageCount Value="12"/>
+      </Unit188>
+      <Unit189>
+        <Filename Value="..\..\..\..\..\..\..\DirectX GUI\BaseFrameWork\DirectX\DirectX.Device.pas"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="599"/>
+        <CursorPos X="9" Y="615"/>
+        <UsageCount Value="9"/>
+      </Unit189>
+      <Unit190>
+        <Filename Value="..\..\..\..\..\..\DirectXMath\Units\DirectX.Math.XM_NO_INTRINSICS.inc"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="2093"/>
+        <CursorPos Y="2103"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit190>
+      <Unit191>
+        <Filename Value="..\..\..\..\..\..\..\DirectX GUI\DirectXToolKit\DirectXTK.LoadHelpers.pas"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="886"/>
+        <CursorPos Y="900"/>
+        <UsageCount Value="11"/>
+      </Unit191>
+      <Unit192>
+        <Filename Value="..\..\Rastertek\DX11S2Tut06\TextureShaderClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit192>
+      <Unit193>
+        <Filename Value="C:\codetyphon\fpcsrc\rtl\objpas\classes\classesh.inc"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1081"/>
+        <CursorPos X="3" Y="1165"/>
+        <UsageCount Value="13"/>
+      </Unit193>
+      <Unit194>
+        <Filename Value="..\..\..\..\..\..\..\DirectX GUI\DirectXToolKit\DirectXTK.DDS.pas"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="327"/>
+        <CursorPos Y="343"/>
+        <UsageCount Value="12"/>
+      </Unit194>
+      <Unit195>
+        <Filename Value="..\..\..\..\..\..\DirectXToolKit\DirectXTK.Targa.pas"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="133"/>
+        <CursorPos Y="148"/>
+        <UsageCount Value="12"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit195>
+      <Unit196>
+        <Filename Value="..\..\Rastertek\DX11S2Tut11\TextureShaderClass.pas"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="226"/>
+        <CursorPos X="30" Y="15"/>
+        <UsageCount Value="11"/>
+      </Unit196>
+      <Unit197>
+        <Filename Value="..\..\Rastertek\DX11S2Tut12\CameraClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="108"/>
+        <CursorPos X="90" Y="124"/>
+        <UsageCount Value="20"/>
+      </Unit197>
+      <Unit198>
+        <Filename Value="..\..\Rastertek\DX11S2Tut12\D3DClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="40"/>
+        <CursorPos X="2" Y="43"/>
+        <UsageCount Value="20"/>
+      </Unit198>
+      <Unit199>
+        <Filename Value="..\..\Rastertek\DX11S2Tut12\GraphicsClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="20"/>
+        <CursorPos X="54" Y="42"/>
+        <UsageCount Value="20"/>
+      </Unit199>
+      <Unit200>
+        <Filename Value="..\..\Rastertek\DX11S2Tut12\InputClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit200>
+      <Unit201>
+        <Filename Value="..\..\Rastertek\DX11S2Tut12\SystemClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="74"/>
+        <CursorPos X="34" Y="86"/>
+        <UsageCount Value="20"/>
+      </Unit201>
+      <Unit202>
+        <Filename Value="..\..\Rastertek\DX11S2Tut12\TextureClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="72"/>
+        <CursorPos Y="86"/>
+        <UsageCount Value="20"/>
+      </Unit202>
+      <Unit203>
+        <Filename Value="..\..\Rastertek\DX11S2Tut12\TextClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="178"/>
+        <CursorPos Y="189"/>
+        <UsageCount Value="20"/>
+      </Unit203>
+      <Unit204>
+        <Filename Value="..\..\Rastertek\DX11S2Tut12\FontClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="220"/>
+        <CursorPos Y="241"/>
+        <UsageCount Value="20"/>
+      </Unit204>
+      <Unit205>
+        <Filename Value="..\..\Rastertek\DX11S2Tut12\FontShaderClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="19"/>
+        <CursorPos X="40" Y="323"/>
+        <UsageCount Value="20"/>
+      </Unit205>
+      <Unit206>
+        <Filename Value="..\..\Rastertek\DX11S2Tut12\Basetypes.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <CursorPos Y="18"/>
+        <UsageCount Value="20"/>
+      </Unit206>
+      <Unit207>
+        <Filename Value="C:\codetyphon\typhon\components\pl_Win_DirectX\source\DirectInput.pas"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="2554"/>
+        <CursorPos X="30" Y="2563"/>
+        <UsageCount Value="10"/>
+      </Unit207>
+      <Unit208>
+        <Filename Value="C:\codetyphon\typhon\components\pl_Win_DirectX\source\DirectSound.pas"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="415"/>
+        <CursorPos X="21" Y="415"/>
+        <UsageCount Value="10"/>
+      </Unit208>
+      <Unit209>
+        <Filename Value="..\..\Rastertek\DX11S2Tut15\Basetypes.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit209>
+      <Unit210>
+        <Filename Value="..\..\Rastertek\DX11S2Tut15\CameraClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit210>
+      <Unit211>
+        <Filename Value="..\..\Rastertek\DX11S2Tut15\D3DClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit211>
+      <Unit212>
+        <Filename Value="..\..\Rastertek\DX11S2Tut15\FontClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit212>
+      <Unit213>
+        <Filename Value="..\..\Rastertek\DX11S2Tut15\FontShaderClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit213>
+      <Unit214>
+        <Filename Value="..\..\Rastertek\DX11S2Tut15\GraphicsClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="164"/>
+        <CursorPos X="65" Y="176"/>
+        <UsageCount Value="20"/>
+      </Unit214>
+      <Unit215>
+        <Filename Value="..\..\Rastertek\DX11S2Tut15\InputClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="119"/>
+        <CursorPos X="37" Y="128"/>
+        <UsageCount Value="20"/>
+      </Unit215>
+      <Unit216>
+        <Filename Value="..\..\Rastertek\DX11S2Tut15\SystemClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="26"/>
+        <CursorPos X="29" Y="31"/>
+        <UsageCount Value="20"/>
+      </Unit216>
+      <Unit217>
+        <Filename Value="..\..\Rastertek\DX11S2Tut15\TextClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="378"/>
+        <CursorPos X="54" Y="394"/>
+        <UsageCount Value="20"/>
+      </Unit217>
+      <Unit218>
+        <Filename Value="..\..\Rastertek\DX11S2Tut15\TextureClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit218>
+      <Unit219>
+        <Filename Value="..\..\Rastertek\DX11S2Tut15\FPSClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="43"/>
+        <CursorPos X="87" Y="55"/>
+        <UsageCount Value="20"/>
+      </Unit219>
+      <Unit220>
+        <Filename Value="..\..\Rastertek\DX11S2Tut15\CPUClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="89"/>
+        <CursorPos Y="102"/>
+        <UsageCount Value="20"/>
+      </Unit220>
+      <Unit221>
+        <Filename Value="..\..\Rastertek\DX11S2Tut15\TimerClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <CursorPos X="31" Y="8"/>
+        <UsageCount Value="20"/>
+      </Unit221>
+      <Unit222>
+        <Filename Value="C:\codetyphon\fpcsrc\rtl\win\wininc\base.inc"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="264"/>
+        <CursorPos X="57" Y="270"/>
+        <UsageCount Value="13"/>
+      </Unit222>
+      <Unit223>
+        <Filename Value="..\..\Rastertek\DX11S2Tut16\Basetypes.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit223>
+      <Unit224>
+        <Filename Value="..\..\Rastertek\DX11S2Tut16\CameraClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit224>
+      <Unit225>
+        <Filename Value="..\..\Rastertek\DX11S2Tut16\D3DClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit225>
+      <Unit226>
+        <Filename Value="..\..\Rastertek\DX11S2Tut16\FontClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit226>
+      <Unit227>
+        <Filename Value="..\..\Rastertek\DX11S2Tut16\FontShaderClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit227>
+      <Unit228>
+        <Filename Value="..\..\Rastertek\DX11S2Tut16\LightClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit228>
+      <Unit229>
+        <Filename Value="..\..\Rastertek\DX11S2Tut16\LightShaderClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="7"/>
+        <CursorPos X="77" Y="16"/>
+        <UsageCount Value="20"/>
+      </Unit229>
+      <Unit230>
+        <Filename Value="..\..\Rastertek\DX11S2Tut16\TextureClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit230>
+      <Unit231>
+        <Filename Value="..\..\Rastertek\DX11S2Tut16\TimerClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit231>
+      <Unit232>
+        <Filename Value="..\..\Rastertek\DX11S2Tut16\FrustumClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="124"/>
+        <CursorPos X="44" Y="137"/>
+        <UsageCount Value="20"/>
+      </Unit232>
+      <Unit233>
+        <Filename Value="..\..\..\..\..\Units\DX12.D3DX10.pas"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="319"/>
+        <CursorPos X="5" Y="325"/>
+        <UsageCount Value="10"/>
+      </Unit233>
+      <Unit234>
+        <Filename Value="..\..\Rastertek\DX11S2Tut17\CameraClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit234>
+      <Unit235>
+        <Filename Value="..\..\Rastertek\DX11S2Tut17\D3DClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit235>
+      <Unit236>
+        <Filename Value="..\..\Rastertek\DX11S2Tut17\GraphicsClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="169"/>
+        <CursorPos X="38" Y="179"/>
+        <UsageCount Value="20"/>
+      </Unit236>
+      <Unit237>
+        <Filename Value="..\..\Rastertek\DX11S2Tut17\InputClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="137"/>
+        <CursorPos X="40" Y="147"/>
+        <UsageCount Value="20"/>
+      </Unit237>
+      <Unit238>
+        <Filename Value="..\..\Rastertek\DX11S2Tut17\SystemClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="51"/>
+        <CursorPos Y="89"/>
+        <UsageCount Value="20"/>
+      </Unit238>
+      <Unit239>
+        <Filename Value="..\..\Rastertek\DX11S2Tut17\ModelClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="24"/>
+        <CursorPos X="30" Y="36"/>
+        <UsageCount Value="20"/>
+      </Unit239>
+      <Unit240>
+        <Filename Value="..\..\Rastertek\DX11S2Tut17\TextureArrayClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="57"/>
+        <CursorPos X="44" Y="75"/>
+        <UsageCount Value="20"/>
+      </Unit240>
+      <Unit241>
+        <Filename Value="..\..\Rastertek\DX11S2Tut17\MultiTextureShaderClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="288"/>
+        <CursorPos X="78" Y="305"/>
+        <UsageCount Value="20"/>
+      </Unit241>
+      <Unit242>
+        <Filename Value="..\..\Rastertek\DX11S2Tut19\CameraClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit242>
+      <Unit243>
+        <Filename Value="..\..\Rastertek\DX11S2Tut19\D3DClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit243>
+      <Unit244>
+        <Filename Value="..\..\Rastertek\DX11S2Tut19\GraphicsClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="54"/>
+        <CursorPos X="83" Y="69"/>
+        <UsageCount Value="20"/>
+      </Unit244>
+      <Unit245>
+        <Filename Value="..\..\Rastertek\DX11S2Tut19\InputClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit245>
+      <Unit246>
+        <Filename Value="..\..\Rastertek\DX11S2Tut19\ModelClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="318"/>
+        <CursorPos X="81" Y="331"/>
+        <UsageCount Value="20"/>
+      </Unit246>
+      <Unit247>
+        <Filename Value="..\..\Rastertek\DX11S2Tut19\SystemClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit247>
+      <Unit248>
+        <Filename Value="..\..\Rastertek\DX11S2Tut19\TextureArrayClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="42"/>
+        <CursorPos X="36" Y="55"/>
+        <UsageCount Value="20"/>
+      </Unit248>
+      <Unit249>
+        <Filename Value="..\..\Rastertek\DX11S2Tut19\AlphaMapShaderClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="258"/>
+        <CursorPos X="44" Y="262"/>
+        <UsageCount Value="20"/>
+      </Unit249>
+      <Unit250>
+        <Filename Value="..\..\Rastertek\DX11S2Tut20\CameraClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit250>
+      <Unit251>
+        <Filename Value="..\..\Rastertek\DX11S2Tut20\D3DClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit251>
+      <Unit252>
+        <Filename Value="..\..\Rastertek\DX11S2Tut20\InputClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit252>
+      <Unit253>
+        <Filename Value="..\..\Rastertek\DX11S2Tut20\SystemClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="10"/>
+        <CursorPos X="9" Y="26"/>
+        <UsageCount Value="20"/>
+      </Unit253>
+      <Unit254>
+        <Filename Value="..\..\Rastertek\DX11S2Tut20\TextureArrayClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit254>
+      <Unit255>
+        <Filename Value="..\..\Rastertek\DX11S2Tut20\GraphicsClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="72"/>
+        <CursorPos X="57" Y="75"/>
+        <UsageCount Value="20"/>
+      </Unit255>
+      <Unit256>
+        <Filename Value="..\..\Rastertek\DX11S2Tut20\ModelClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="415"/>
+        <CursorPos X="76" Y="426"/>
+        <UsageCount Value="20"/>
+      </Unit256>
+      <Unit257>
+        <Filename Value="..\..\Rastertek\DX11S2Tut20\BumpMapShaderClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="318"/>
+        <CursorPos X="58" Y="329"/>
+        <UsageCount Value="20"/>
+      </Unit257>
+      <Unit258>
+        <Filename Value="..\..\Rastertek\DX11S2Tut20\LightClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit258>
+      <Unit259>
+        <Filename Value="..\..\Rastertek\DX11S2Tut21\CameraClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="12"/>
+        <CursorPos X="66" Y="116"/>
+        <UsageCount Value="20"/>
+      </Unit259>
+      <Unit260>
+        <Filename Value="..\..\Rastertek\DX11S2Tut21\D3DClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit260>
+      <Unit261>
+        <Filename Value="..\..\Rastertek\DX11S2Tut21\GraphicsClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="84"/>
+        <CursorPos X="5" Y="84"/>
+        <UsageCount Value="20"/>
+      </Unit261>
+      <Unit262>
+        <Filename Value="..\..\Rastertek\DX11S2Tut21\InputClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit262>
+      <Unit263>
+        <Filename Value="..\..\Rastertek\DX11S2Tut21\LightClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit263>
+      <Unit264>
+        <Filename Value="..\..\Rastertek\DX11S2Tut21\ModelClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="427"/>
+        <CursorPos X="5" Y="94"/>
+        <UsageCount Value="20"/>
+      </Unit264>
+      <Unit265>
+        <Filename Value="..\..\Rastertek\DX11S2Tut21\SpecMapShaderClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="315"/>
+        <CursorPos X="44" Y="335"/>
+        <UsageCount Value="20"/>
+      </Unit265>
+      <Unit266>
+        <Filename Value="..\..\Rastertek\DX11S2Tut21\SystemClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit266>
+      <Unit267>
+        <Filename Value="..\..\Rastertek\DX11S2Tut21\TextureArrayClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit267>
+      <Unit268>
+        <Filename Value="..\..\Rastertek\DX11S2Tut22\RenderTextureClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="11"/>
+        <CursorPos X="91" Y="138"/>
+        <UsageCount Value="22"/>
+      </Unit268>
+      <Unit269>
+        <Filename Value="..\..\Rastertek\DX11S2Tut22\DebugWindowClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="261"/>
+        <CursorPos X="5" Y="92"/>
+        <UsageCount Value="22"/>
+      </Unit269>
+      <Unit270>
+        <Filename Value="..\..\Rastertek\DX11S2Tut22\LightShaderClass.pas"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="40"/>
+        <CursorPos X="5" Y="40"/>
+        <UsageCount Value="11"/>
+      </Unit270>
+      <Unit271>
+        <Filename Value="..\..\Rastertek\DX11S2Tut22\ModelClass.pas"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="356"/>
+        <CursorPos Y="376"/>
+        <UsageCount Value="11"/>
+      </Unit271>
+      <Unit272>
+        <Filename Value="..\..\Rastertek\DX11S2Tut25\CameraClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit272>
+      <Unit273>
+        <Filename Value="..\..\Rastertek\DX11S2Tut25\D3DClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit273>
+      <Unit274>
+        <Filename Value="..\..\Rastertek\DX11S2Tut25\GraphicsClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="21"/>
+        <CursorPos X="33" Y="33"/>
+        <UsageCount Value="20"/>
+      </Unit274>
+      <Unit275>
+        <Filename Value="..\..\Rastertek\DX11S2Tut25\InputClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit275>
+      <Unit276>
+        <Filename Value="..\..\Rastertek\DX11S2Tut25\ModelClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit276>
+      <Unit277>
+        <Filename Value="..\..\Rastertek\DX11S2Tut25\SystemClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit277>
+      <Unit278>
+        <Filename Value="..\..\Rastertek\DX11S2Tut25\TextureClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit278>
+      <Unit279>
+        <Filename Value="..\..\Rastertek\DX11S2Tut25\TranslateShaderClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="339"/>
+        <CursorPos X="72" Y="347"/>
+        <UsageCount Value="20"/>
+      </Unit279>
+      <Unit280>
+        <Filename Value="..\..\Rastertek\DX11S2Tut27\ReflectionShaderClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="356"/>
+        <CursorPos X="136" Y="372"/>
+        <UsageCount Value="21"/>
+      </Unit280>
+      <Unit281>
+        <Filename Value="..\..\Rastertek\DX11S2Tut27\RenderTextureClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="115"/>
+        <CursorPos X="37" Y="62"/>
+        <UsageCount Value="21"/>
+      </Unit281>
+      <Unit282>
+        <Filename Value="..\..\Rastertek\DX11S2Tut28\CameraClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit282>
+      <Unit283>
+        <Filename Value="..\..\Rastertek\DX11S2Tut28\D3DClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit283>
+      <Unit284>
+        <Filename Value="..\..\Rastertek\DX11S2Tut28\GraphicsClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="351"/>
+        <CursorPos X="59" Y="354"/>
+        <UsageCount Value="20"/>
+      </Unit284>
+      <Unit285>
+        <Filename Value="..\..\Rastertek\DX11S2Tut28\InputClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit285>
+      <Unit286>
+        <Filename Value="..\..\Rastertek\DX11S2Tut28\RenderTextureClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit286>
+      <Unit287>
+        <Filename Value="..\..\Rastertek\DX11S2Tut28\SystemClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="82"/>
+        <CursorPos X="26" Y="96"/>
+        <UsageCount Value="20"/>
+      </Unit287>
+      <Unit288>
+        <Filename Value="..\..\Rastertek\DX11S2Tut28\TextureClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit288>
+      <Unit289>
+        <Filename Value="..\..\Rastertek\DX11S2Tut28\TextureShaderClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit289>
+      <Unit290>
+        <Filename Value="..\..\Rastertek\DX11S2Tut28\ModelClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="91"/>
+        <CursorPos X="9" Y="86"/>
+        <UsageCount Value="20"/>
+      </Unit290>
+      <Unit291>
+        <Filename Value="..\..\Rastertek\DX11S2Tut28\BitmapClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="276"/>
+        <CursorPos X="34" Y="297"/>
+        <UsageCount Value="20"/>
+      </Unit291>
+      <Unit292>
+        <Filename Value="..\..\Rastertek\DX11S2Tut28\TimerClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit292>
+      <Unit293>
+        <Filename Value="..\..\Rastertek\DX11S2Tut28\FadeShaderClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="344"/>
+        <CursorPos X="112" Y="366"/>
+        <UsageCount Value="20"/>
+      </Unit293>
+      <Unit294>
+        <Filename Value="..\..\Rastertek\DX11S2Tut29\CameraClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="159"/>
+        <CursorPos X="15" Y="88"/>
+        <UsageCount Value="20"/>
+      </Unit294>
+      <Unit295>
+        <Filename Value="..\..\Rastertek\DX11S2Tut29\D3DClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit295>
+      <Unit296>
+        <Filename Value="..\..\Rastertek\DX11S2Tut29\GraphicsClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="131"/>
+        <CursorPos X="59" Y="150"/>
+        <UsageCount Value="20"/>
+      </Unit296>
+      <Unit297>
+        <Filename Value="..\..\Rastertek\DX11S2Tut29\InputClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit297>
+      <Unit298>
+        <Filename Value="..\..\Rastertek\DX11S2Tut29\ModelClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="193"/>
+        <CursorPos Y="208"/>
+        <UsageCount Value="20"/>
+      </Unit298>
+      <Unit299>
+        <Filename Value="..\..\Rastertek\DX11S2Tut29\RenderTextureClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit299>
+      <Unit300>
+        <Filename Value="..\..\Rastertek\DX11S2Tut29\SystemClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <CursorPos X="26" Y="11"/>
+        <UsageCount Value="20"/>
+      </Unit300>
+      <Unit301>
+        <Filename Value="..\..\Rastertek\DX11S2Tut29\TextureClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit301>
+      <Unit302>
+        <Filename Value="..\..\Rastertek\DX11S2Tut29\LightShaderClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="397"/>
+        <CursorPos Y="419"/>
+        <UsageCount Value="20"/>
+      </Unit302>
+      <Unit303>
+        <Filename Value="..\..\Rastertek\DX11S2Tut29\RefractionShaderClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="378"/>
+        <CursorPos X="28" Y="319"/>
+        <UsageCount Value="20"/>
+      </Unit303>
+      <Unit304>
+        <Filename Value="..\..\Rastertek\DX11S2Tut29\WaterShaderClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <CursorPos X="64" Y="406"/>
+        <UsageCount Value="20"/>
+      </Unit304>
+      <Unit305>
+        <Filename Value="C:\codetyphon\fpcsrc\rtl\inc\systemh.inc"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="493"/>
+        <CursorPos X="3" Y="508"/>
+        <UsageCount Value="13"/>
+      </Unit305>
+      <Unit306>
+        <Filename Value="..\..\..\..\..\Units\DX12.D3DX11.pas"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="400"/>
+        <CursorPos X="14" Y="410"/>
+        <UsageCount Value="12"/>
+      </Unit306>
+      <Unit307>
+        <Filename Value="..\..\..\..\..\Units\DX12.D3DCommon.pas"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="726"/>
+        <CursorPos X="70" Y="736"/>
+        <UsageCount Value="12"/>
+      </Unit307>
+      <Unit308>
+        <Filename Value="..\DX11S2Ter02\ApplicationClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit308>
+      <Unit309>
+        <Filename Value="..\DX11S2Ter02\Basetypes.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit309>
+      <Unit310>
+        <Filename Value="..\DX11S2Ter02\CameraClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit310>
+      <Unit311>
+        <Filename Value="..\DX11S2Ter02\ColorShaderClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit311>
+      <Unit312>
+        <Filename Value="..\DX11S2Ter02\D3DClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="515"/>
+        <CursorPos Y="530"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit312>
+      <Unit313>
+        <Filename Value="..\DX11S2Ter02\FontClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="55"/>
+        <CursorPos Y="70"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit313>
+      <Unit314>
+        <Filename Value="..\DX11S2Ter02\FontShaderClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit314>
+      <Unit315>
+        <Filename Value="..\DX11S2Ter02\FPSClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit315>
+      <Unit316>
+        <Filename Value="..\DX11S2Ter02\InputClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit316>
+      <Unit317>
+        <Filename Value="..\DX11S2Ter02\PositionClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit317>
+      <Unit318>
+        <Filename Value="..\DX11S2Ter02\shadermanagerclass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit318>
+      <Unit319>
+        <Filename Value="..\DX11S2Ter02\SystemClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit319>
+      <Unit320>
+        <Filename Value="..\DX11S2Ter02\terrainclass.pas"/>
+        <UnitName Value="TerrainClass"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="150"/>
+        <CursorPos Y="174"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit320>
+      <Unit321>
+        <Filename Value="..\DX11S2Ter02\TextClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit321>
+      <Unit322>
+        <Filename Value="..\DX11S2Ter02\TextureClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="63"/>
+        <CursorPos X="27" Y="70"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit322>
+      <Unit323>
+        <Filename Value="..\DX11S2Ter02\TimerClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit323>
+      <Unit324>
+        <Filename Value="..\DX11S2Ter02\UserInterfaceClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="64"/>
+        <CursorPos X="98" Y="79"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit324>
+      <Unit325>
+        <Filename Value="..\DX11S2Ter02\zoneclass.pas"/>
+        <UnitName Value="ZoneClass"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="96"/>
+        <CursorPos Y="112"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit325>
+      <Unit326>
+        <Filename Value="..\DX11S2Ter03\texturemanagerclass.pas"/>
+        <UnitName Value="TextureManagerClass"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="41"/>
+        <CursorPos X="37" Y="37"/>
+        <FoldState Value=" T3iM0DS"/>
+        <UsageCount Value="21"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit326>
+      <Unit327>
+        <Filename Value="..\DX11S2Ter04\ApplicationClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit327>
+      <Unit328>
+        <Filename Value="..\DX11S2Ter04\Basetypes.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit328>
+      <Unit329>
+        <Filename Value="..\DX11S2Ter04\CameraClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit329>
+      <Unit330>
+        <Filename Value="..\DX11S2Ter04\ColorShaderClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit330>
+      <Unit331>
+        <Filename Value="..\DX11S2Ter04\D3DClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit331>
+      <Unit332>
+        <Filename Value="..\DX11S2Ter04\FontClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit332>
+      <Unit333>
+        <Filename Value="..\DX11S2Ter04\FontShaderClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit333>
+      <Unit334>
+        <Filename Value="..\DX11S2Ter04\FPSClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit334>
+      <Unit335>
+        <Filename Value="..\DX11S2Ter04\InputClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit335>
+      <Unit336>
+        <Filename Value="..\DX11S2Ter04\PositionClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit336>
+      <Unit337>
+        <Filename Value="..\DX11S2Ter04\shadermanagerclass.pas"/>
+        <UnitName Value="ShaderManagerClass"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="146"/>
+        <CursorPos X="34" Y="170"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit337>
+      <Unit338>
+        <Filename Value="..\DX11S2Ter04\SystemClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit338>
+      <Unit339>
+        <Filename Value="..\DX11S2Ter04\terrainclass.pas"/>
+        <UnitName Value="TerrainClass"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="175"/>
+        <CursorPos X="47" Y="189"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit339>
+      <Unit340>
+        <Filename Value="..\DX11S2Ter04\TextClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit340>
+      <Unit341>
+        <Filename Value="..\DX11S2Ter04\TextureClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit341>
+      <Unit342>
+        <Filename Value="..\DX11S2Ter04\texturemanagerclass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit342>
+      <Unit343>
+        <Filename Value="..\DX11S2Ter04\TextureShaderClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="143"/>
+        <CursorPos X="56" Y="160"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit343>
+      <Unit344>
+        <Filename Value="..\DX11S2Ter04\TimerClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit344>
+      <Unit345>
+        <Filename Value="..\DX11S2Ter04\UserInterfaceClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit345>
+      <Unit346>
+        <Filename Value="..\DX11S2Ter04\zoneclass.pas"/>
+        <UnitName Value="ZoneClass"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="291"/>
+        <CursorPos X="109" Y="295"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit346>
+      <Unit347>
+        <Filename Value="..\DX11S2Ter04\LightClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="81"/>
+        <CursorPos X="45" Y="84"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit347>
+      <Unit348>
+        <Filename Value="..\DX11S2Ter04\LightShaderClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="381"/>
+        <CursorPos Y="404"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit348>
+      <Unit349>
+        <Filename Value="..\DX11S2Ter06\ApplicationClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="98"/>
+        <CursorPos Y="121"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit349>
+      <Unit350>
+        <Filename Value="..\DX11S2Ter06\Basetypes.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit350>
+      <Unit351>
+        <Filename Value="..\DX11S2Ter06\CameraClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit351>
+      <Unit352>
+        <Filename Value="..\DX11S2Ter06\ColorShaderClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit352>
+      <Unit353>
+        <Filename Value="..\DX11S2Ter06\D3DClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit353>
+      <Unit354>
+        <Filename Value="..\DX11S2Ter06\FontClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit354>
+      <Unit355>
+        <Filename Value="..\DX11S2Ter06\FontShaderClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit355>
+      <Unit356>
+        <Filename Value="..\DX11S2Ter06\FPSClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit356>
+      <Unit357>
+        <Filename Value="..\DX11S2Ter06\InputClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit357>
+      <Unit358>
+        <Filename Value="..\DX11S2Ter06\LightClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit358>
+      <Unit359>
+        <Filename Value="..\DX11S2Ter06\LightShaderClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit359>
+      <Unit360>
+        <Filename Value="..\DX11S2Ter06\PositionClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit360>
+      <Unit361>
+        <Filename Value="..\DX11S2Ter06\shadermanagerclass.pas"/>
+        <UnitName Value="ShaderManagerClass"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="169"/>
+        <CursorPos X="106" Y="198"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit361>
+      <Unit362>
+        <Filename Value="..\DX11S2Ter06\SystemClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit362>
+      <Unit363>
+        <Filename Value="..\DX11S2Ter06\terrainclass.pas"/>
+        <UnitName Value="TerrainClass"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="914"/>
+        <CursorPos X="19" Y="934"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit363>
+      <Unit364>
+        <Filename Value="..\DX11S2Ter06\TerrainShaderClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="348"/>
+        <CursorPos X="47" Y="351"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit364>
+      <Unit365>
+        <Filename Value="..\DX11S2Ter06\TextClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit365>
+      <Unit366>
+        <Filename Value="..\DX11S2Ter06\TextureClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit366>
+      <Unit367>
+        <Filename Value="..\DX11S2Ter06\texturemanagerclass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit367>
+      <Unit368>
+        <Filename Value="..\DX11S2Ter06\TextureShaderClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit368>
+      <Unit369>
+        <Filename Value="..\DX11S2Ter06\TimerClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit369>
+      <Unit370>
+        <Filename Value="..\DX11S2Ter06\UserInterfaceClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit370>
+      <Unit371>
+        <Filename Value="..\DX11S2Ter06\zoneclass.pas"/>
+        <UnitName Value="ZoneClass"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="261"/>
+        <CursorPos X="83" Y="275"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit371>
+      <Unit372>
+        <Filename Value="..\DX11S2Ter07\SkyDomeClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <CursorPos X="95" Y="9"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit372>
+      <Unit373>
+        <Filename Value="..\DX11S2Ter07\SkyDomeShaderClass.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="310"/>
+        <CursorPos X="29" Y="329"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit373>
+      <Unit374>
+        <Filename Value="..\DX11S2Ter07\shadermanagerclass.pas"/>
+        <FRMtype Value="0"/>
+        <UnitName Value="ShaderManagerClass"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="7"/>
+        <CursorPos Y="14"/>
+        <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit374>
+      <Unit375>
+        <Filename Value="..\DX11S2Ter07\zoneclass.pas"/>
+        <FRMtype Value="0"/>
+        <UnitName Value="ZoneClass"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="272"/>
+        <CursorPos X="72" Y="279"/>
+        <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit375>
+      <Unit376>
+        <Filename Value="..\DX11S2Ter08\ApplicationClass.pas"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <CursorPos X="76" Y="17"/>
+        <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit376>
+      <Unit377>
+        <Filename Value="..\DX11S2Ter08\terrainclass.pas"/>
+        <FRMtype Value="0"/>
+        <UnitName Value="TerrainClass"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="295"/>
+        <CursorPos Y="320"/>
+        <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit377>
+      <Unit378>
+        <Filename Value="..\DX11S2Ter08\zoneclass.pas"/>
+        <FRMtype Value="0"/>
+        <UnitName Value="ZoneClass"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="99"/>
+        <CursorPos X="70" Y="120"/>
+        <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit378>
+      <Unit379>
+        <Filename Value="terrainclass.pas"/>
+        <FRMtype Value="0"/>
+        <UnitName Value="TerrainClass"/>
+        <EditorIndex Value="3"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="68"/>
+        <CursorPos X="25" Y="74"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit379>
+      <Unit380>
+        <Filename Value="TerrainCellClass.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="78"/>
+        <CursorPos Y="93"/>
+        <UsageCount Value="20"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit380>
+      <Unit381>
+        <Filename Value="InputClass.pas"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="2"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="339"/>
+        <CursorPos X="77" Y="347"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit381>
+      <Unit382>
+        <Filename Value="zoneclass.pas"/>
+        <FRMtype Value="0"/>
+        <UnitName Value="ZoneClass"/>
+        <EditorIndex Value="4"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="316"/>
+        <CursorPos Y="332"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit382>
+      <Unit383>
+        <Filename Value="ApplicationClass.pas"/>
+        <FRMtype Value="0"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="5"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="10"/>
+        <CursorPos X="35" Y="22"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit383>
+    </Units>
+    <OtherDefines Count="1">
+      <Define0 Value="UseDirectXMath"/>
+    </OtherDefines>
+    <JumpHistory Count="30" HistoryIndex="29">
+      <Position1>
+        <Filename Value="TerrainCellClass.pas"/>
+        <Caret Line="484" TopLine="475"/>
+      </Position1>
+      <Position2>
+        <Filename Value="TerrainCellClass.pas"/>
+        <Caret Line="486" TopLine="475"/>
+      </Position2>
+      <Position3>
+        <Filename Value="terrainclass.pas"/>
+        <Caret Line="1069" TopLine="1048"/>
+      </Position3>
+      <Position4>
+        <Filename Value="TerrainCellClass.pas"/>
+        <Caret Line="506" TopLine="486"/>
+      </Position4>
+      <Position5>
+        <Filename Value="TerrainCellClass.pas"/>
+        <Caret Line="81" Column="34" TopLine="68"/>
+      </Position5>
+      <Position6>
+        <Filename Value="TerrainCellClass.pas"/>
+        <Caret Line="54" Column="28" TopLine="38"/>
+      </Position6>
+      <Position7>
+        <Filename Value="TerrainCellClass.pas"/>
+        <Caret Line="81" Column="36" TopLine="69"/>
+      </Position7>
+      <Position8>
+        <Filename Value="TerrainCellClass.pas"/>
+        <Caret Line="54" Column="28" TopLine="50"/>
+      </Position8>
+      <Position9>
+        <Filename Value="TerrainCellClass.pas"/>
+        <Caret Line="507" TopLine="492"/>
+      </Position9>
+      <Position10>
+        <Filename Value="zoneclass.pas"/>
+        <Caret Line="121" TopLine="109"/>
+      </Position10>
+      <Position11>
+        <Filename Value="zoneclass.pas"/>
+        <Caret Line="124" TopLine="109"/>
+      </Position11>
+      <Position12>
+        <Filename Value="terrainclass.pas"/>
+        <Caret Line="136" TopLine="120"/>
+      </Position12>
+      <Position13>
+        <Filename Value="terrainclass.pas"/>
+        <Caret Line="144" TopLine="130"/>
+      </Position13>
+      <Position14>
+        <Filename Value="terrainclass.pas"/>
+        <Caret Line="153" TopLine="130"/>
+      </Position14>
+      <Position15>
+        <Filename Value="terrainclass.pas"/>
+        <Caret Line="1051" TopLine="1035"/>
+      </Position15>
+      <Position16>
+        <Filename Value="terrainclass.pas"/>
+        <Caret Line="1059" TopLine="1051"/>
+      </Position16>
+      <Position17>
+        <Filename Value="terrainclass.pas"/>
+        <Caret Line="1070" TopLine="1051"/>
+      </Position17>
+      <Position18>
+        <Filename Value="TerrainCellClass.pas"/>
+        <Caret Line="503" TopLine="492"/>
+      </Position18>
+      <Position19>
+        <Filename Value="TerrainCellClass.pas"/>
+        <Caret Line="507" TopLine="492"/>
+      </Position19>
+      <Position20>
+        <Filename Value="TerrainCellClass.pas"/>
+        <Caret Line="90" TopLine="75"/>
+      </Position20>
+      <Position21>
+        <Filename Value="TerrainCellClass.pas"/>
+        <Caret Line="141" TopLine="118"/>
+      </Position21>
+      <Position22>
+        <Filename Value="TerrainCellClass.pas"/>
+        <Caret Line="93" TopLine="80"/>
+      </Position22>
+      <Position23>
+        <Filename Value="TerrainCellClass.pas"/>
+        <Caret Line="141" TopLine="127"/>
+      </Position23>
+      <Position24>
+        <Filename Value="terrainclass.pas"/>
+        <Caret Line="1070" TopLine="1051"/>
+      </Position24>
+      <Position25>
+        <Filename Value="TerrainCellClass.pas"/>
+        <Caret Line="507" TopLine="491"/>
+      </Position25>
+      <Position26>
+        <Filename Value="TerrainCellClass.pas"/>
+        <Caret Line="93" TopLine="78"/>
+      </Position26>
+      <Position27>
+        <Filename Value="terrainclass.pas"/>
+        <Caret Line="154" TopLine="139"/>
+      </Position27>
+      <Position28>
+        <Filename Value="zoneclass.pas"/>
+        <Caret Line="124" TopLine="109"/>
+      </Position28>
+      <Position29>
+        <Filename Value="zoneclass.pas"/>
+        <Caret Line="331" Column="31" TopLine="316"/>
+      </Position29>
+      <Position30>
+        <Filename Value="terrainclass.pas"/>
+        <Caret Line="74" Column="25" TopLine="68"/>
+      </Position30>
+    </JumpHistory>
+    <RunParams>
+      <FormatVersion Value="2"/>
+      <Modes ActiveMode=""/>
+    </RunParams>
+  </ProjectSession>
+  <Debugging>
+    <BreakPoints>
+      <Item>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="..\..\..\..\..\..\..\DirectX GUI\DirectXToolKit\DirectXTK.DDSTextureLoader.pas"/>
+        <Line Value="319"/>
+      </Item>
+      <Item>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="..\..\..\..\..\..\..\DirectX GUI\DirectXToolKit\DirectXTK.DDSTextureLoader.pas"/>
+        <Line Value="524"/>
+      </Item>
+      <Item>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="..\..\..\..\..\..\..\DirectX GUI\DirectXToolKit\DirectXTK.DDSTextureLoader.pas"/>
+        <Line Value="913"/>
+      </Item>
+      <Item>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="..\..\..\..\..\..\..\DirectX GUI\DirectXToolKit\DirectXTK.DDSTextureLoader.pas"/>
+        <Line Value="919"/>
+      </Item>
+    </BreakPoints>
+  </Debugging>
+</CONFIG>
