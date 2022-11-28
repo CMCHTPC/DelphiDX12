@@ -30,7 +30,7 @@
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir)"/>
-            <OtherUnitFiles Value="..\..\..\..\..\Units;..\..\..\..\..\..\DirectXToolKit;..\..\..\..\..\..\WindowsAPI\Units;..\..\..\..\..\..\DirectXMathPAS_20211102\DirectXMathPAS_20211028\DirectXMath_unit"/>
+            <OtherUnitFiles Value="..\..\..\..\..\..\DirectXToolKit;..\..\..\..\..\..\WindowsAPI\Units"/>
             <UnitOutputDirectory Value="c:\temp\lib\$(TargetCPU)-$(TargetOS)"/>
           </SearchPaths>
           <Parsing>
@@ -65,7 +65,7 @@
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir)"/>
-            <OtherUnitFiles Value="..\..\..\..\..\Units;..\..\..\..\..\..\DirectXToolKit;..\..\..\..\..\..\WindowsAPI\Units;..\..\..\..\..\..\DirectXMathPAS_20211102\DirectXMathPAS_20211028\DirectXMath_unit"/>
+            <OtherUnitFiles Value="..\..\..\..\..\..\DirectXToolKit;..\..\..\..\..\..\WindowsAPI\Units"/>
             <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
           </SearchPaths>
           <Parsing>
@@ -108,36 +108,20 @@
         <PackageName Value="adLCL"/>
       </Item2>
     </RequiredPackages>
-    <Units Count="7">
+    <Units Count="3">
       <Unit0>
         <Filename Value="DX11S2Ter07_BC.ppr"/>
         <FRMtype Value="0"/>
         <IsPartOfProject Value="True"/>
       </Unit0>
       <Unit1>
-        <Filename Value="..\..\..\..\..\Units\DX12.D3D11.pas"/>
+        <Filename Value="..\..\..\..\..\..\DirectXToolKit\DirectXTK.DDS.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit1>
       <Unit2>
-        <Filename Value="..\..\..\..\..\..\DirectXToolKit\DirectXTK.DDS.pas"/>
-        <IsPartOfProject Value="True"/>
-      </Unit2>
-      <Unit3>
         <Filename Value="..\..\..\..\..\..\WindowsAPI\Units\Win32.Pdh.pas"/>
         <IsPartOfProject Value="True"/>
-      </Unit3>
-      <Unit4>
-        <Filename Value="..\..\..\..\..\..\DirectXMathPAS_20211102\DirectXMathPAS_20211028\DirectXMath_unit\DirectX.Math.pas"/>
-        <IsPartOfProject Value="True"/>
-      </Unit4>
-      <Unit5>
-        <Filename Value="SkyPlaneClass.pas"/>
-        <IsPartOfProject Value="True"/>
-      </Unit5>
-      <Unit6>
-        <Filename Value="SkyPlaneShaderClass.pas"/>
-        <IsPartOfProject Value="True"/>
-      </Unit6>
+      </Unit2>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -148,7 +132,7 @@
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
-      <OtherUnitFiles Value="..\..\..\..\..\Units;..\..\..\..\..\..\DirectXToolKit;..\..\..\..\..\..\WindowsAPI\Units;..\..\..\..\..\..\DirectXMathPAS_20211102\DirectXMathPAS_20211028\DirectXMath_unit"/>
+      <OtherUnitFiles Value="..\..\..\..\..\..\DirectXToolKit;..\..\..\..\..\..\WindowsAPI\Units"/>
       <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Parsing>

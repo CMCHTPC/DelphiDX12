@@ -1,0 +1,562 @@
+program Lesson09;
+
+{$mode delphi}{$H+}
+
+uses
+    Classes,
+    SysUtils,
+    Windows,
+    DX12.D3D11,
+    DX12.D3D10,
+    DX12.D3DCommon,
+    DX12.D3DCompiler,
+    DirectX.Math,
+    DX12.DXGI;
+
+{$R *.res}
+
+
+const
+    Width: integer = 800;
+    Height: integer = 600;
+
+var
+    //Global Declarations - Interfaces//
+    SwapChain: IDXGISwapChain;
+    d3d11Device: ID3D11Device;
+    d3d11DevCon: ID3D11DeviceContext;
+    renderTargetView: ID3D11RenderTargetView;
+
+    ///////////////**************new**************////////////////////
+    cbPerObjectBuffer: ID3D11Buffer;
+    ///////////////**************new**************////////////////////
+    depthStencilView: ID3D11DepthStencilView;
+    depthStencilBuffer: ID3D11Texture2D;
+
+    squareIndexBuffer: ID3D11Buffer;
+    squareVertBuffer: ID3D11Buffer;
+
+    VS: ID3D11VertexShader;
+    PS: ID3D11PixelShader;
+    VS_Buffer: ID3D10Blob;
+    PS_Buffer: ID3D10Blob;
+    vertLayout: ID3D11InputLayout;
+
+
+    ///////////////**************new**************////////////////////
+    WVP: TXMMATRIX;
+    cube1World: TXMMATRIX;
+    cube2World: TXMMATRIX;
+    camView: TXMMATRIX;
+    camProjection: TXMMATRIX;
+
+    camPosition: TXMVECTOR;
+    camTarget: TXMVECTOR;
+    camUp: TXMVECTOR;
+    ///////////////**************new**************////////////////////
+    Rotation: TXMMATRIX;
+    Scale: TXMMATRIX;
+    Translation: TXMMATRIX;
+    rot: single = 0.01;
+
+
+    //Global Declarations - Others//
+    WndClassName: LPCWSTR = 'firstwindow';
+    mhwnd: THandle = 0;
+    hr: HRESULT;
+    nShowCmd: integer;
+    mInstance: HINST;
+
+type
+    ///////////////**************new**************////////////////////
+    //Vertex Structure and Vertex Layout (Input Layout)//
+    TVertex = record    //Overloaded Vertex Structure
+        case byte of
+            0: (f: array[0..6] of single);
+            1: (x, y, z: single;
+                cr, cg, cb, ca: single);
+            2: (pos: TXMFLOAT3;
+                color: TXMFLOAT4);
+
+    end;
+
+    ///////////////**************new**************////////////////////
+    //Create effects constant buffer's structure//
+    TcbPerObject = record
+        WVP: TXMMATRIX;
+    end;
+
+var
+    cbPerObj: TcbPerObject;
+    ///////////////**************new**************////////////////////
+
+
+var
+    layout: array [0..1] of TD3D11_INPUT_ELEMENT_DESC = ((SemanticName: 'POSITION'; SemanticIndex: 0;
+        Format: DXGI_FORMAT_R32G32B32_FLOAT; InputSlot: 0;
+        AlignedByteOffset: 0; InputSlotClass: D3D11_INPUT_PER_VERTEX_DATA; InstanceDataStepRate: 0), (SemanticName: 'COLOR'; SemanticIndex: 0;
+        Format: DXGI_FORMAT_R32G32B32A32_FLOAT; InputSlot: 0;
+        AlignedByteOffset: 12; InputSlotClass: D3D11_INPUT_PER_VERTEX_DATA; InstanceDataStepRate: 0));
+    numElements: UINT = Length(layout);
+    ///////////////**************new**************////////////////////
+
+
+
+    //Function Prototypes//
+
+    function WndProc(hWnd: THandle; msg: UINT; wParam: WPARAM; lParam: LPARAM): LRESULT; stdcall;
+    begin
+        case (msg) of
+            WM_KEYDOWN:
+            begin
+                if (wParam = VK_ESCAPE) then
+                begin
+                    DestroyWindow(hwnd);
+                end;
+                Result := 0;
+            end;
+
+            WM_DESTROY:
+            begin
+                PostQuitMessage(0);
+                Result := 0;
+            end;
+            else
+                Result := DefWindowProcW(hwnd, msg, wParam, lParam);
+        end;
+    end;
+
+
+
+    function InitializeDirect3d11App(): boolean;
+    var
+        bufferDesc: TDXGI_MODE_DESC;
+        swapChainDesc: TDXGI_SWAP_CHAIN_DESC;
+        BackBuffer: ID3D11Texture2D;
+        featureLevel: TD3D_FEATURE_LEVEL;
+        depthStencilDesc: TD3D11_TEXTURE2D_DESC;
+    begin
+        //Describe our SwapChain Buffer
+        ZeroMemory(@bufferDesc, sizeof(TDXGI_MODE_DESC));
+
+        bufferDesc.Width := Width;
+        bufferDesc.Height := Height;
+        bufferDesc.RefreshRate.Numerator := 60;
+        bufferDesc.RefreshRate.Denominator := 1;
+        bufferDesc.Format := DXGI_FORMAT_R8G8B8A8_UNORM;
+        bufferDesc.ScanlineOrdering := DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
+        bufferDesc.Scaling := DXGI_MODE_SCALING_UNSPECIFIED;
+
+        //Describe our SwapChain
+
+
+        ZeroMemory(@swapChainDesc, sizeof(TDXGI_SWAP_CHAIN_DESC));
+        swapChainDesc.BufferDesc := bufferDesc;
+        swapChainDesc.SampleDesc.Count := 1;
+        swapChainDesc.SampleDesc.Quality := 0;
+        swapChainDesc.BufferUsage := DXGI_USAGE_RENDER_TARGET_OUTPUT;
+        swapChainDesc.BufferCount := 1;
+        swapChainDesc.OutputWindow := mhwnd;
+        swapChainDesc.Windowed := True;
+        swapChainDesc.SwapEffect := DXGI_SWAP_EFFECT_DISCARD;
+
+
+        //Create our SwapChain
+        hr := D3D11CreateDeviceAndSwapChain(nil, D3D_DRIVER_TYPE_HARDWARE, 0, 0, nil, 0, D3D11_SDK_VERSION,
+            @swapChainDesc, SwapChain, d3d11Device, featureLevel, d3d11DevCon);
+
+        //Create our BackBuffer
+
+        hr := SwapChain.GetBuffer(0, IID_ID3D11Texture2D, BackBuffer);
+
+        //Create our Render Target
+        hr := d3d11Device.CreateRenderTargetView(BackBuffer, nil, renderTargetView);
+        BackBuffer := nil;
+
+
+        ///////////////**************new**************////////////////////
+        //Describe our Depth/Stencil Buffer
+
+
+        depthStencilDesc.Width := Width;
+        depthStencilDesc.Height := Height;
+        depthStencilDesc.MipLevels := 1;
+        depthStencilDesc.ArraySize := 1;
+        depthStencilDesc.Format := DXGI_FORMAT_D24_UNORM_S8_UINT;
+        depthStencilDesc.SampleDesc.Count := 1;
+        depthStencilDesc.SampleDesc.Quality := 0;
+        depthStencilDesc.Usage := D3D11_USAGE_DEFAULT;
+        depthStencilDesc.BindFlags := Ord(D3D11_BIND_DEPTH_STENCIL);
+        depthStencilDesc.CPUAccessFlags := 0;
+        depthStencilDesc.MiscFlags := 0;
+
+        //Create the Depth/Stencil View
+        d3d11Device.CreateTexture2D(depthStencilDesc, nil, depthStencilBuffer);
+        d3d11Device.CreateDepthStencilView(depthStencilBuffer, nil, depthStencilView);
+
+        //Set our Render Target
+        d3d11DevCon.OMSetRenderTargets(1, @renderTargetView, depthStencilView);
+        ///////////////**************new**************////////////////////
+
+
+        Result := True;
+    end;
+
+
+
+    procedure CleanUp();
+    begin
+        //Release the COM Objects we created
+        SwapChain := nil;
+        d3d11Device := nil;
+        d3d11DevCon := nil;
+        renderTargetView := nil;
+        ///////////////**************new**************////////////////////
+        cbPerObjectBuffer := nil;
+        ///////////////**************new**************////////////////////
+        depthStencilView := nil;
+        depthStencilBuffer := nil;
+
+        squareVertBuffer := nil;
+        squareIndexBuffer := nil;
+
+        VS := nil;
+        PS := nil;
+        VS_Buffer := nil;
+        PS_Buffer := nil;
+        vertLayout := nil;
+
+    end;
+
+
+
+    function InitScene(): boolean;
+    var
+        pError: ID3DBlob;
+        vertexBufferDesc: TD3D11_BUFFER_DESC;
+        indexBufferDesc: TD3D11_BUFFER_DESC;
+        vertexBufferData: TD3D11_SUBRESOURCE_DATA;
+        iinitData: TD3D11_SUBRESOURCE_DATA;
+        stride: uint32;
+        offset: uint32;
+        viewport: TD3D11_VIEWPORT;
+        cbbd: TD3D11_BUFFER_DESC;
+        //Create the vertex buffer
+        v: array [0..7] of TVertex = ((f: ( -1.0, -1.0, -1.0, 1.0, 0.0, 0.0, 1.0 )),
+		(f: ( -1.0, +1.0, -1.0, 0.0, 1.0, 0.0, 1.0 )),
+		(f: ( +1.0, +1.0, -1.0, 0.0, 0.0, 1.0, 1.0 )),
+		(f: ( +1.0, -1.0, -1.0, 1.0, 1.0, 0.0, 1.0 )),
+		(f: ( -1.0, -1.0, +1.0, 0.0, 1.0, 1.0, 1.0 )),
+		(f: ( -1.0, +1.0, +1.0, 1.0, 1.0, 1.0, 1.0 )),
+		(f: ( +1.0, +1.0, +1.0, 1.0, 0.0, 1.0, 1.0 )),
+		(f: ( +1.0, -1.0, +1.0, 1.0, 0.0, 0.0, 1.0 )));
+
+        indices: array[0..35] of DWORD = (// front face
+		0, 1, 2,
+		0, 2, 3,
+
+		// back face
+		4, 6, 5,
+		4, 7, 6,
+
+		// left face
+		4, 5, 1,
+		4, 1, 0,
+
+		// right face
+		3, 2, 6,
+		3, 6, 7,
+
+		// top face
+		1, 5, 6,
+		1, 6, 2,
+
+		// bottom face
+		4, 0, 3,
+		4, 3, 7);
+    begin
+        //Compile Shaders from shader file
+        hr := D3DCompileFromFile('Effects.fx', nil, nil, 'VS', 'vs_4_0', 0, 0, VS_Buffer, pError);
+        hr := D3DCompileFromFile('Effects.fx', nil, nil, 'PS', 'ps_4_0', 0, 0, PS_Buffer, pError);
+        //Create the Shader Objects
+        hr := d3d11Device.CreateVertexShader(VS_Buffer.GetBufferPointer(), VS_Buffer.GetBufferSize(), nil, VS);
+        hr := d3d11Device.CreatePixelShader(PS_Buffer.GetBufferPointer(), PS_Buffer.GetBufferSize(), nil, PS);
+
+        //Set Vertex and Pixel Shaders
+        d3d11DevCon.VSSetShader(VS, nil, 0);
+        d3d11DevCon.PSSetShader(PS, nil, 0);
+
+
+
+        ZeroMemory(@indexBufferDesc, sizeof(indexBufferDesc));
+
+        indexBufferDesc.Usage := D3D11_USAGE_DEFAULT;
+        indexBufferDesc.ByteWidth := sizeof(DWORD) * 12 * 3;
+        indexBufferDesc.BindFlags := Ord(D3D11_BIND_INDEX_BUFFER);
+        indexBufferDesc.CPUAccessFlags := 0;
+        indexBufferDesc.MiscFlags := 0;
+
+
+
+        iinitData.pSysMem := @indices[0];
+        d3d11Device.CreateBuffer(indexBufferDesc, @iinitData, squareIndexBuffer);
+
+        d3d11DevCon.IASetIndexBuffer(squareIndexBuffer, DXGI_FORMAT_R32_UINT, 0);
+
+
+        ZeroMemory(@vertexBufferDesc, sizeof(vertexBufferDesc));
+
+        vertexBufferDesc.Usage := D3D11_USAGE_DEFAULT;
+        vertexBufferDesc.ByteWidth := sizeof(TVertex) * 8;
+        vertexBufferDesc.BindFlags := Ord(D3D11_BIND_VERTEX_BUFFER);
+        vertexBufferDesc.CPUAccessFlags := 0;
+        vertexBufferDesc.MiscFlags := 0;
+
+
+
+        ZeroMemory(@vertexBufferData, sizeof(vertexBufferData));
+        vertexBufferData.pSysMem := @v[0];
+        hr := d3d11Device.CreateBuffer(vertexBufferDesc, @vertexBufferData, squareVertBuffer);
+
+        //Set the vertex buffer
+        stride := sizeof(TVertex);
+        offset := 0;
+        d3d11DevCon.IASetVertexBuffers(0, 1, @squareVertBuffer, @stride, @offset);
+
+        //Create the Input Layout
+        d3d11Device.CreateInputLayout(layout, numElements, VS_Buffer.GetBufferPointer(),
+            VS_Buffer.GetBufferSize(), vertLayout);
+
+        //Set the Input Layout
+        d3d11DevCon.IASetInputLayout(vertLayout);
+
+        //Set Primitive Topology
+        d3d11DevCon.IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+        //Create the Viewport
+
+        ZeroMemory(@viewport, sizeof(TD3D11_VIEWPORT));
+
+        viewport.TopLeftX := 0;
+        viewport.TopLeftY := 0;
+        viewport.Width := Width;
+        viewport.Height := Height;
+        ///////////////**************new**************////////////////////
+        viewport.MinDepth := 0.0;
+        viewport.MaxDepth := 1.0;
+        ///////////////**************new**************////////////////////
+
+
+        //Set the Viewport
+        d3d11DevCon.RSSetViewports(1, @viewport);
+
+
+        ///////////////**************new**************////////////////////
+        //Create the buffer to send to the cbuffer in effect file
+
+        ZeroMemory(@cbbd, sizeof(TD3D11_BUFFER_DESC));
+
+        cbbd.Usage := D3D11_USAGE_DEFAULT;
+        cbbd.ByteWidth := sizeof(TcbPerObject);
+        cbbd.BindFlags := Ord(D3D11_BIND_CONSTANT_BUFFER);
+        cbbd.CPUAccessFlags := 0;
+        cbbd.MiscFlags := 0;
+
+        hr := d3d11Device.CreateBuffer(cbbd, nil, cbPerObjectBuffer);
+
+        //Camera information
+        camPosition := XMVectorSet(0.0, 3.0, -8.0, 0.0);
+        camTarget := XMVectorSet(0.0, 0.0, 0.0, 0.0);
+        camUp := XMVectorSet(0.0, 1.0, 0.0, 0.0);
+
+        //Set the View matrix
+        camView := XMMatrixLookAtLH(camPosition, camTarget, camUp);
+
+        //Set the Projection matrix
+        camProjection := XMMatrixPerspectiveFovLH(0.4 * 3.14, Width / Height, 1.0, 1000.0);
+        ///////////////**************new**************////////////////////
+
+
+        Result := True;
+    end;
+
+
+
+    procedure UpdateScene();
+    var
+        rotaxis: TXMVECTOR;
+    begin
+        //Keep the cubes rotating
+	rot :=rot + 0.0005;
+	if(rot > 6.26) then
+		rot := rot-6.26;
+
+	//Reset cube1World
+	cube1World := XMMatrixIdentity();
+
+	//Define cube1's world space matrix
+	 rotaxis := XMVectorSet(0.0, 1.0, 0.0, 0.0);
+	Rotation := XMMatrixRotationAxis( rotaxis, rot);
+	Translation := XMMatrixTranslation( 0.0, 0.0, 4.0 );
+
+	//Set cube1's world space using the transformations
+	cube1World := Translation * Rotation;
+
+	//Reset cube2World
+	cube2World := XMMatrixIdentity();
+
+	//Define cube2's world space matrix
+	Rotation := XMMatrixRotationAxis( rotaxis, -rot);
+	Scale := XMMatrixScaling( 1.3, 1.3, 1.3 );
+
+	//Set cube2's world space matrix
+	cube2World := Rotation * Scale;
+    end;
+
+
+
+    procedure DrawScene();
+    var
+        bgColor: TFloatArray4 = (0.0, 0.0, 0.0, 1.0);
+    begin
+
+        //Clear our backbuffer
+        d3d11DevCon.ClearRenderTargetView(renderTargetView, bgColor);
+        //Refresh the Depth/Stencil view
+        d3d11DevCon.ClearDepthStencilView(depthStencilView, Ord(D3D11_CLEAR_DEPTH) or Ord(D3D11_CLEAR_STENCIL), 1.0, 0);
+
+        //Set the WVP matrix and send it to the constant buffer in effect file
+	WVP := cube1World * camView * camProjection;
+	cbPerObj.WVP := XMMatrixTranspose(WVP);
+	d3d11DevCon.UpdateSubresource( cbPerObjectBuffer, 0, nil, @cbPerObj, 0, 0 );
+	d3d11DevCon.VSSetConstantBuffers( 0, 1, @cbPerObjectBuffer );
+
+	//Draw the first cube
+	d3d11DevCon.DrawIndexed( 36, 0, 0 );
+
+	WVP := cube2World * camView * camProjection;
+
+
+        cbPerObj.WVP := XMMatrixTranspose(WVP);
+
+        d3d11DevCon.UpdateSubresource(cbPerObjectBuffer, 0, nil, @cbPerObj, 0, 0);
+
+        d3d11DevCon.VSSetConstantBuffers(0, 1, @cbPerObjectBuffer);
+        ///////////////**************new**************////////////////////
+
+
+        	//Draw the second cube
+	d3d11DevCon.DrawIndexed( 36, 0, 0 );
+	///////////////**************new**************////////////////////
+
+
+        //Present the backbuffer to the screen
+        SwapChain.Present(0, 0);
+    end;
+
+
+
+    function InitializeWindow(ShowWnd: integer; Width, Height: integer; windowed: boolean): boolean;
+    var
+        wc: TWNDCLASSEXW;
+    begin
+
+        wc.style := CS_HREDRAW or CS_VREDRAW;
+        wc.lpfnWndProc := @WndProc;
+        wc.cbClsExtra := 0;
+        wc.cbWndExtra := 0;
+        wc.hInstance := minstance;
+        wc.hIcon := LoadIcon(0, IDI_WINLOGO);
+        wc.hIconSm := wc.hIcon;
+        wc.hCursor := LoadCursor(0, IDC_ARROW);
+        wc.hbrBackground := HBRUSH(GetStockObject(BLACK_BRUSH));
+        wc.lpszMenuName := nil;
+        wc.lpszClassName := 'firstwindow';
+        wc.cbSize := sizeof(TWNDCLASSEXW);
+
+        if (RegisterClassExW(wc) = 0) then
+        begin
+            MessageBoxW(0, 'Error registering class',
+                'Error', MB_OK or MB_ICONERROR);
+            Result := False;
+            Exit;
+        end;
+
+        mhwnd := CreateWindowExW(WS_EX_APPWINDOW, 'firstwindow', 'Lesson 4 - Begin Drawing', WS_CLIPSIBLINGS or
+            WS_CLIPCHILDREN or WS_POPUP or WS_CAPTION, 0, 0, Width, Height, 0, 0, mInstance, nil);
+
+        if (mhwnd = 0) then
+        begin
+            MessageBoxW(0, 'Error creating window',
+                'Error', MB_OK or MB_ICONERROR);
+            Result := False;
+            Exit;
+        end;
+
+        ShowWindow(mhwnd, SW_SHOW);
+        SetForegroundWindow(mhwnd);
+        SetFocus(mhwnd);
+        UpdateWindow(mhwnd);
+
+        Result := True;
+    end;
+
+
+
+    function messageloop(): integer;
+    var
+        msg: TMSG;
+    begin
+        ZeroMemory(@msg, sizeof(TMSG));
+        while (True) do
+        begin
+
+            if (PeekMessage(msg, 0, 0, 0, PM_REMOVE)) then
+            begin
+                if (msg.message = WM_QUIT) then
+                    break;
+                TranslateMessage(msg);
+                DispatchMessage(msg);
+            end
+            else
+            begin
+                // run game code
+                UpdateScene();
+                DrawScene();
+            end;
+        end;
+        Result := msg.wParam;
+    end;
+
+
+
+
+begin
+    // Get the instance of this application.
+    mInstance := GetModuleHandle(nil);
+
+    if (not InitializeWindow(nShowCmd, Width, Height, True)) then
+    begin
+        MessageBoxW(0, 'Window Initialization - Failed',
+            'Error', MB_OK);
+        Exit;
+    end;
+
+    if (not InitializeDirect3d11App()) then    //Initialize Direct3D
+    begin
+        MessageBoxW(0, 'Direct3D Initialization - Failed',
+            'Error', MB_OK);
+        Exit;
+    end;
+
+    if (not InitScene()) then    //Initialize our scene
+    begin
+        MessageBox(0, 'Scene Initialization - Failed',
+            'Error', MB_OK);
+        Exit;
+    end;
+
+    messageloop();
+
+    CleanUp();
+end.

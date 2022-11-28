@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <PathDelim Value="\"/>
+    <Version Value="12"/>
+    <BuildModes Active="Default"/>
+    <Units>
+      <Unit>
+        <Filename Value="Lesson15.ppr"/>
+        <FRMtype Value="0"/>
+        <IsPartOfProject Value="True"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="663"/>
+        <CursorPos X="35" Y="677"/>
+        <FoldState Value=" T3na4Q;"/>
+        <UsageCount Value="21"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\..\Units\DirectX12\DX12.D3D11.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\..\Units\DirectXMath\DirectX.Math.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\..\Units\DX12.D3D11.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="771"/>
+        <CursorPos X="45" Y="790"/>
+        <UsageCount Value="21"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\..\..\DirectXMathPAS_20211102\DirectXMathPAS_20211028\DirectXMath_unit\DirectX.Math.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="9400"/>
+        <CursorPos X="10" Y="9408"/>
+        <UsageCount Value="21"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\Lesson04\UnitLesson04.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <UsageCount Value="20"/>
+      </Unit>
+    </Units>
+    <JumpHistory HistoryIndex="29">
+      <Position>
+        <Filename Value="Lesson15.ppr"/>
+        <Caret Line="640" TopLine="626"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson15.ppr"/>
+        <Caret Line="643" Column="22" TopLine="626"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson15.ppr"/>
+        <Caret Line="898" TopLine="883"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson15.ppr"/>
+        <Caret Line="897" TopLine="883"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson15.ppr"/>
+        <Caret Line="898" TopLine="883"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson15.ppr"/>
+        <Caret Line="639" TopLine="626"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson15.ppr"/>
+        <Caret Line="640" TopLine="626"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson15.ppr"/>
+        <Caret Line="641" TopLine="626"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson15.ppr"/>
+        <Caret Line="644" TopLine="626"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson15.ppr"/>
+        <Caret Line="900" TopLine="889"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson15.ppr"/>
+        <Caret Line="901" TopLine="889"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson15.ppr"/>
+        <Caret Line="897" TopLine="889"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson15.ppr"/>
+        <Caret Line="898" TopLine="889"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson15.ppr"/>
+        <Caret Line="897" Column="26" TopLine="889"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson15.ppr"/>
+        <Caret Line="902" TopLine="889"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson15.ppr"/>
+        <Caret Line="624" TopLine="611"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson15.ppr"/>
+        <Caret Line="626" TopLine="611"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson15.ppr"/>
+        <Caret Line="628" TopLine="611"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson15.ppr"/>
+        <Caret Line="629" TopLine="611"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson15.ppr"/>
+        <Caret Line="630" TopLine="611"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson15.ppr"/>
+        <Caret Line="905" TopLine="894"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson15.ppr"/>
+        <Caret Line="653" TopLine="640"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson15.ppr"/>
+        <Caret Line="655" TopLine="640"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson15.ppr"/>
+        <Caret Line="656" TopLine="640"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson15.ppr"/>
+        <Caret Line="658" TopLine="640"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson15.ppr"/>
+        <Caret Line="643" TopLine="626"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson15.ppr"/>
+        <Caret Line="639" TopLine="626"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson15.ppr"/>
+        <Caret Line="641" TopLine="626"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson15.ppr"/>
+        <Caret Line="900" TopLine="889"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson15.ppr"/>
+        <Caret Line="643" TopLine="626"/>
+      </Position>
+    </JumpHistory>
+    <RunParams>
+      <FormatVersion Value="2"/>
+      <Modes ActiveMode=""/>
+    </RunParams>
+  </ProjectSession>
+</CONFIG>

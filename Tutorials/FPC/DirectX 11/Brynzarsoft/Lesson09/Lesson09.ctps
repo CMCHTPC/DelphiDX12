@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <PathDelim Value="\"/>
+    <Version Value="12"/>
+    <BuildModes Active="Default"/>
+    <Units>
+      <Unit>
+        <Filename Value="Lesson09.ppr"/>
+        <FRMtype Value="0"/>
+        <IsPartOfProject Value="True"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="275"/>
+        <CursorPos Y="280"/>
+        <UsageCount Value="21"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\..\Units\DX12.D3D11.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="771"/>
+        <CursorPos X="45" Y="790"/>
+        <UsageCount Value="21"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\..\..\DirectXMathPAS_20211102\DirectXMathPAS_20211028\DirectXMath_unit\DirectX.Math.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="9400"/>
+        <CursorPos X="10" Y="9408"/>
+        <UsageCount Value="21"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\Lesson04\UnitLesson04.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <UsageCount Value="20"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\..\Units\DirectX12\DX12.D3D11.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\..\Units\DirectXMath\DirectX.Math.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit>
+    </Units>
+    <JumpHistory HistoryIndex="11">
+      <Position>
+        <Filename Value="Lesson09.ppr"/>
+        <Caret Line="111" Column="7" TopLine="103"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson09.ppr"/>
+        <Caret Line="252" Column="48" TopLine="238"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson09.ppr"/>
+        <Caret Line="245" Column="84" TopLine="238"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson09.ppr"/>
+        <Caret Line="251" Column="48" TopLine="239"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson09.ppr"/>
+        <Caret Line="245" Column="23" TopLine="241"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson09.ppr"/>
+        <Caret Line="252" Column="48" TopLine="245"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson09.ppr"/>
+        <Caret Line="293" Column="27" TopLine="289"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson09.ppr"/>
+        <Caret Line="276" Column="10" TopLine="262"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson09.ppr"/>
+        <Caret Line="254" Column="28" TopLine="247"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson09.ppr"/>
+        <Caret Line="410" Column="41" TopLine="403"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson09.ppr"/>
+        <Caret Line="390" Column="15" TopLine="383"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson09.ppr"/>
+        <Caret Line="449" Column="14" TopLine="438"/>
+      </Position>
+    </JumpHistory>
+    <RunParams>
+      <FormatVersion Value="2"/>
+      <Modes ActiveMode=""/>
+    </RunParams>
+  </ProjectSession>
+  <Debugging>
+    <BreakPoints>
+      <Item>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="Lesson09.ppr"/>
+        <Line Value="282"/>
+      </Item>
+      <Item>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="Lesson09.ppr"/>
+        <Line Value="283"/>
+      </Item>
+      <Item>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="Lesson09.ppr"/>
+        <Line Value="279"/>
+      </Item>
+      <Item>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="Lesson09.ppr"/>
+        <Line Value="280"/>
+      </Item>
+    </BreakPoints>
+  </Debugging>
+</CONFIG>

@@ -103,7 +103,7 @@ begin
     up.z := 0.0;
 
     // Load it into a XMVECTOR structure.
-    upVector := XMLoadFloat3(up);
+    upVector := XMLoadFloat3(@up);
 
     // Setup the position of the camera in the world.
     position.x := m_positionX;
@@ -111,7 +111,7 @@ begin
     position.z := m_positionZ;
 
     // Load it into a XMVECTOR structure.
-    positionVector := XMLoadFloat3(position);
+    positionVector := XMLoadFloat3(@position);
 
     // Calculate the rotation in radians.
     radians := m_rotationY * 0.0174532925;
@@ -121,7 +121,7 @@ begin
     lookAt.y := m_positionY;
     lookAt.z := cos(radians) + m_positionZ;
     // Load it into a XMVECTOR structure.
-    lookAtVector := XMLoadFloat3(lookAt);
+    lookAtVector := XMLoadFloat3(@lookAt);
 
     // Create the view matrix from the three vectors.
     m_viewMatrix := XMMatrixLookAtLH(positionVector, lookAtVector, upVector);

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <PathDelim Value="\"/>
+    <Version Value="12"/>
+    <BuildModes Active="Default"/>
+    <Units>
+      <Unit>
+        <Filename Value="Lesson06.ppr"/>
+        <FRMtype Value="0"/>
+        <IsPartOfProject Value="True"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="277"/>
+        <CursorPos X="39" Y="283"/>
+        <FoldState Value=" T3jB4mp"/>
+        <UsageCount Value="21"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\..\Units\DX12.D3D11.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="2"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="771"/>
+        <CursorPos X="45" Y="790"/>
+        <UsageCount Value="21"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\..\..\DirectXMathPAS_20211102\DirectXMathPAS_20211028\DirectXMath_unit\DirectX.Math.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="9400"/>
+        <CursorPos X="10" Y="9408"/>
+        <UsageCount Value="21"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\Lesson04\UnitLesson04.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <UsageCount Value="20"/>
+      </Unit>
+    </Units>
+    <JumpHistory HistoryIndex="6">
+      <Position>
+        <Filename Value="..\..\..\..\..\..\DirectXMathPAS_20211102\DirectXMathPAS_20211028\DirectXMath_unit\DirectX.Math.pas"/>
+        <Caret Line="9408" Column="10" TopLine="9400"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson06.ppr"/>
+        <Caret Line="188" Column="10" TopLine="179"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson06.ppr"/>
+        <Caret Line="184" Column="3" TopLine="177"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson06.ppr"/>
+        <Caret Line="278" Column="60" TopLine="272"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson06.ppr"/>
+        <Caret Line="209" Column="28" TopLine="202"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson06.ppr"/>
+        <Caret Line="210" Column="59" TopLine="203"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson06.ppr"/>
+        <Caret Line="217" Column="27" TopLine="209"/>
+      </Position>
+    </JumpHistory>
+    <RunParams>
+      <FormatVersion Value="2"/>
+      <Modes ActiveMode=""/>
+    </RunParams>
+  </ProjectSession>
+</CONFIG>

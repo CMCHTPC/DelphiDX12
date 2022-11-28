@@ -1,0 +1,42 @@
+////////////////////////////////////////////////////////////////////////////////
+// Filename: skybox.vs
+////////////////////////////////////////////////////////////////////////////////
+
+/////////////
+// GLOBALS //
+/////////////
+cbuffer MatrixBuffer
+{
+	float4x4 WVP;
+};
+
+
+//////////////
+// TYPEDEFS //
+//////////////
+struct VertexInputType
+{
+    float3 position : POSITION;
+};
+
+struct PixelInputType
+{
+    float4 Pos : SV_POSITION;
+	float3 texCoord : TEXCOORD0;
+};
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Vertex Shader
+////////////////////////////////////////////////////////////////////////////////
+PixelInputType SkyBoxVertexShader(float3 inPos : POSITION)
+{
+	PixelInputType output = (PixelInputType)0;
+
+	//Set Pos to xyww instead of xyzw, so that z will always be 1 (furthest from camera)
+	output.Pos = mul(float4(inPos, 1.0f), WVP).xyww;
+
+	output.texCoord = inPos;
+
+	return output;
+}

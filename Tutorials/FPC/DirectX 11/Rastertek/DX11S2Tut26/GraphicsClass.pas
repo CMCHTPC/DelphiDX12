@@ -1,0 +1,242 @@
+unit GraphicsClass;
+
+{$IFDEF FPC}
+{$mode delphiunicode}{$H+}
+{$ENDIF}
+
+interface
+
+uses
+    Classes, SysUtils, Windows,
+    DirectX.Math,
+    D3DClass, CameraClass,
+    ModelClass,
+    TextureShaderClass,
+    TransparentShaderClass;
+
+const
+    FULL_SCREEN: boolean = False;
+    VSYNC_ENABLED: boolean = True;
+    SCREEN_DEPTH: single = 1000.0;
+    SCREEN_NEAR: single = 0.1;
+
+
+
+type
+
+    { TGraphicsClass }
+
+    TGraphicsClass = class(TObject)
+    private
+        m_Direct3D: TD3DClass;
+        m_Camera: TCameraClass;
+        m_Model1: TModelClass;
+        m_Model2: TModelClass;
+        m_TextureShader: TTextureShaderClass;
+        m_TransparentShader: TTransparentShaderClass;
+    private
+        FPlanePosZ: single;
+        FTextureTranslation: single;
+    public
+        constructor Create;
+        destructor Destroy; override;
+
+        function Initialize(screenWidth, screenHeight: integer; hwnd: HWND): HResult;
+        procedure Shutdown();
+        function Frame(): HResult;
+        function Render(): HResult;
+    end;
+
+implementation
+
+{ TGraphicsClass }
+
+function TGraphicsClass.Render(): HResult;
+var
+    worldMatrix, viewMatrix, projectionMatrix: TXMMATRIX;
+    clipPlane: TXMFLOAT4;
+    blendAmount: single;
+begin
+    // Set the blending amount to 50%.
+    blendAmount := 0.5;
+
+    // Increment the texture translation position.
+    FTextureTranslation := FTextureTranslation + 0.01;
+    if (FTextureTranslation > 1.0) then
+        FTextureTranslation := FTextureTranslation - 1.0;
+
+
+    // Clear the buffers to begin the scene.
+    m_Direct3D.BeginScene(0.1, 0.2, 0.4, 1.0);
+
+    // Generate the view matrix based on the camera's position.
+    m_Camera.Render();
+
+    // Get the world, view, and projection matrices from the camera and d3d objects.
+    worldMatrix := m_Direct3D.GetWorldMatrix;
+    viewMatrix := m_Camera.GetViewMatrix;
+    projectionMatrix := m_Direct3D.GetProjectionMatrix;
+
+    // Put the model vertex and index buffers on the graphics pipeline to prepare them for drawing.
+    m_Model1.Render(m_Direct3D.GetDeviceContext());
+
+    // Render the model using the color shader.
+    Result := m_TextureShader.Render(m_Direct3D.GetDeviceContext(), m_Model1.GetIndexCount(), worldMatrix,
+        viewMatrix, projectionMatrix, m_Model1.GetTexture());
+    if (Result <> S_OK) then
+        Exit;
+
+    // Translate to the right by one unit and towards the camera by one unit.
+    worldMatrix := XMMatrixTranslation(1.0, 0.0, -1.0);
+
+    // Turn on alpha blending for the transparency to work.
+    m_Direct3D.TurnOnAlphaBlending();
+
+    m_Model2.Render(m_Direct3D.GetDeviceContext());
+
+    // Render the model using the color shader.
+    Result := m_TransparentShader.Render(m_Direct3D.GetDeviceContext(), m_Model2.GetIndexCount(), worldMatrix,
+        viewMatrix, projectionMatrix, m_Model2.GetTexture(), blendAmount);
+    if (Result <> S_OK) then
+        Exit;
+
+    // Turn off alpha blending.
+    m_Direct3D.TurnOffAlphaBlending();
+
+    // Present the rendered scene to the screen.
+    m_Direct3D.EndScene();
+end;
+
+
+
+constructor TGraphicsClass.Create;
+begin
+    FPlanePosZ := -1.0;
+end;
+
+
+
+destructor TGraphicsClass.Destroy;
+begin
+    inherited Destroy;
+end;
+
+
+
+function TGraphicsClass.Initialize(screenWidth, screenHeight: integer; hwnd: HWND): HResult;
+begin
+    // Create the Direct3D object.
+    m_Direct3D := TD3DClass.Create;
+
+    // Initialize the Direct3D object.
+    Result := m_Direct3D.Initialize(screenWidth, screenHeight, VSYNC_ENABLED, hwnd, FULL_SCREEN, SCREEN_DEPTH, SCREEN_NEAR);
+    if (Result <> S_OK) then
+    begin
+        MessageBoxW(hwnd, 'Could not initialize Direct3D.', 'Error', MB_OK);
+        Exit;
+    end;
+
+    // Create the camera object.
+    m_Camera := TCameraClass.Create;
+
+
+    // Create the model object.
+    m_Model1 := TModelClass.Create;
+
+    // Initialize the model object.
+    Result := m_Model1.Initialize(m_Direct3D.GetDevice(), m_Direct3D.GetDeviceContext(), 'square.txt', 'dirt01.dds');
+    if (Result <> S_OK) then
+    begin
+        MessageBoxW(hwnd, 'Could not initialize the model object.', 'Error', MB_OK);
+        Exit;
+    end;
+
+    m_Model2 := TModelClass.Create;
+    Result := m_Model2.Initialize(m_Direct3D.GetDevice(), m_Direct3D.GetDeviceContext(), 'square.txt', 'stone01.dds');
+    if (Result <> S_OK) then
+    begin
+        MessageBoxW(hwnd, 'Could not initialize the model object.', 'Error', MB_OK);
+        Exit;
+    end;
+
+    // Create the texture translation shader object.
+    m_TextureShader := TTextureShaderClass.Create;
+    Result := m_TextureShader.Initialize(m_Direct3D.GetDevice(), hwnd);
+    if (Result <> S_OK) then
+    begin
+        MessageBoxW(hwnd, 'Could not initialize the texture translation shader object.', 'Error', MB_OK);
+        Exit;
+    end;
+
+    // Create the transparent translation shader object.
+    m_TransparentShader := TTransparentShaderClass.Create;
+    Result := m_TransparentShader.Initialize(m_Direct3D.GetDevice(), hwnd);
+    if (Result <> S_OK) then
+    begin
+        MessageBoxW(hwnd, 'Could not initialize the transparent translation shader object.', 'Error', MB_OK);
+        Exit;
+    end;
+end;
+
+
+
+procedure TGraphicsClass.Shutdown();
+begin
+    // Release the color shader object.
+    if (m_TransparentShader <> nil) then
+    begin
+        m_TransparentShader.Shutdown();
+        m_TransparentShader.Free;
+        m_TransparentShader := nil;
+    end;
+
+
+    // Release the color shader object.
+    if (m_TextureShader <> nil) then
+    begin
+        m_TextureShader.Shutdown();
+        m_TextureShader.Free;
+        m_TextureShader := nil;
+    end;
+
+    // Release the model object.
+    if (m_Model1 <> nil) then
+    begin
+        m_Model1.Shutdown();
+        m_Model1.Free;
+        m_Model1 := nil;
+    end;
+
+    // Release the model object.
+    if (m_Model2 <> nil) then
+    begin
+        m_Model2.Shutdown();
+        m_Model2.Free;
+        m_Model2 := nil;
+    end;
+
+    // Release the camera object.
+    if (m_Camera <> nil) then
+    begin
+        m_Camera.Free;
+        m_Camera := nil;
+    end;
+
+    // Release the D3D object.
+    if (m_Direct3D <> nil) then
+    begin
+        m_Direct3D.Shutdown();
+        m_Direct3D.Free;
+        m_Direct3D := nil;
+    end;
+end;
+
+
+
+function TGraphicsClass.Frame(): HResult;
+begin
+    // Set the initial position of the camera.
+    m_Camera.SetPosition(0.0, 0.0, -5.0);
+end;
+
+end.

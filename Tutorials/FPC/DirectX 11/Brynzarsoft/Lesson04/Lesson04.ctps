@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <PathDelim Value="\"/>
+    <Version Value="12"/>
+    <BuildModes Active="Default"/>
+    <Units>
+      <Unit>
+        <Filename Value="Lesson04.ppr"/>
+        <FRMtype Value="0"/>
+        <IsPartOfProject Value="True"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="333"/>
+        <CursorPos X="37" Y="341"/>
+        <UsageCount Value="21"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\..\Units\DX12.D3D11.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="2"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="771"/>
+        <CursorPos X="45" Y="790"/>
+        <UsageCount Value="21"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\..\..\DirectXMathPAS_20211102\DirectXMathPAS_20211028\DirectXMath_unit\DirectX.Math.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="9400"/>
+        <CursorPos X="10" Y="9408"/>
+        <UsageCount Value="21"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="UnitLesson04.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <UsageCount Value="20"/>
+      </Unit>
+    </Units>
+    <JumpHistory HistoryIndex="29">
+      <Position>
+        <Filename Value="Lesson04.ppr"/>
+        <Caret Line="182" TopLine="172"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson04.ppr"/>
+        <Caret Line="321" TopLine="310"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson04.ppr"/>
+        <Caret Line="296" Column="9" TopLine="278"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson04.ppr"/>
+        <Caret Line="354" Column="6" TopLine="335"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson04.ppr"/>
+        <Caret Line="311" TopLine="302"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson04.ppr"/>
+        <Caret Line="282" Column="48" TopLine="268"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson04.ppr"/>
+        <Caret Line="272" Column="46" TopLine="256"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson04.ppr"/>
+        <Caret Line="282" TopLine="271"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson04.ppr"/>
+        <Caret Line="284" Column="44" TopLine="280"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson04.ppr"/>
+        <Caret Line="90" Column="39" TopLine="86"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson04.ppr"/>
+        <Caret Line="259" Column="9" TopLine="248"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson04.ppr"/>
+        <Caret Line="336" Column="28" TopLine="326"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson04.ppr"/>
+        <Caret Line="266" Column="26" TopLine="253"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson04.ppr"/>
+        <Caret Line="284" Column="41" TopLine="266"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson04.ppr"/>
+        <Caret Line="266" Column="21" TopLine="254"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson04.ppr"/>
+        <Caret Line="323" Column="17" TopLine="315"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson04.ppr"/>
+        <Caret Line="42" Column="35" TopLine="31"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson04.ppr"/>
+        <Caret Line="44" Column="14" TopLine="31"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson04.ppr"/>
+        <Caret Line="255" Column="31" TopLine="246"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson04.ppr"/>
+        <Caret Line="337" Column="103" TopLine="250"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\..\DirectXMathPAS_20211102\DirectXMathPAS_20211028\DirectXMath_unit\DirectX.Math.pas"/>
+        <Caret Line="9408" Column="10" TopLine="9400"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson04.ppr"/>
+        <Caret Line="336" Column="39" TopLine="328"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson04.ppr"/>
+        <Caret Line="265" Column="22" TopLine="258"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson04.ppr"/>
+        <Caret Line="40" Column="17" TopLine="31"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson04.ppr"/>
+        <Caret Line="271" Column="37" TopLine="263"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson04.ppr"/>
+        <Caret Line="292" Column="22" TopLine="284"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson04.ppr"/>
+        <Caret Line="41" Column="10" TopLine="33"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson04.ppr"/>
+        <Caret Line="118" Column="40" TopLine="110"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson04.ppr"/>
+        <Caret Line="284" Column="14" TopLine="274"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson04.ppr"/>
+        <Caret Line="353" Column="14" TopLine="343"/>
+      </Position>
+    </JumpHistory>
+    <RunParams>
+      <FormatVersion Value="2"/>
+      <Modes ActiveMode=""/>
+    </RunParams>
+  </ProjectSession>
+</CONFIG>

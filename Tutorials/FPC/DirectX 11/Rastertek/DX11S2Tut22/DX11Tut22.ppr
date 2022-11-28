@@ -7,7 +7,6 @@ uses
     cthreads,              {$ENDIF}              {$ENDIF}
     Interfaces,
     SystemClass,
-    DirectX.Math,
     DX12.D3D11,
     Win32.Pdh, RenderTextureClass, DebugWindowClass;
 

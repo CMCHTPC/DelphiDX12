@@ -5,10 +5,7 @@ program DX11Tut05;
 uses
  {$IFDEF UNIX} {$IFDEF UseCThreads}
     cthreads,      {$ENDIF}      {$ENDIF}
-    Interfaces, SystemClass, DirectX.Math, DX12.D3D11, DirectXTK.Targa,
-    TextureClass, TextureShaderClass, CameraClass,
-    D3DClass, GraphicsClass, InputClass, ModelClass // this includes the adLCL widgetset
-    ;
+    Interfaces;
 
 {$R *.res}
 

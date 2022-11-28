@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <PathDelim Value="\"/>
+    <Version Value="12"/>
+    <BuildModes Active="Default"/>
+    <Units>
+      <Unit>
+        <Filename Value="Lesson16.ppr"/>
+        <FRMtype Value="0"/>
+        <IsPartOfProject Value="True"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="736"/>
+        <CursorPos X="34" Y="749"/>
+        <FoldState Value=" T3oN4Qd"/>
+        <UsageCount Value="21"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\..\Units\DirectX12\DX12.D3D11.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\..\Units\DirectXMath\DirectX.Math.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\..\Units\DX12.D3D11.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="771"/>
+        <CursorPos X="45" Y="790"/>
+        <UsageCount Value="21"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\..\..\DirectXMathPAS_20211102\DirectXMathPAS_20211028\DirectXMath_unit\DirectX.Math.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="9400"/>
+        <CursorPos X="10" Y="9408"/>
+        <UsageCount Value="21"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\Lesson04\UnitLesson04.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <UsageCount Value="20"/>
+      </Unit>
+    </Units>
+    <JumpHistory HistoryIndex="8">
+      <Position>
+        <Filename Value="Lesson16.ppr"/>
+        <Caret Line="149" TopLine="131"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson16.ppr"/>
+        <Caret Line="466" TopLine="443"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson16.ppr"/>
+        <Caret Line="163" Column="101" TopLine="149"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson16.ppr"/>
+        <Caret Line="364" Column="60" TopLine="325"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson16.ppr"/>
+        <Caret Line="133" Column="14" TopLine="121"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson16.ppr"/>
+        <Caret Line="900" TopLine="882"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson16.ppr"/>
+        <Caret Line="464" Column="53" TopLine="453"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson16.ppr"/>
+        <Caret Line="507" Column="54" TopLine="493"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson16.ppr"/>
+        <Caret Line="587" Column="51" TopLine="574"/>
+      </Position>
+    </JumpHistory>
+    <RunParams>
+      <FormatVersion Value="2"/>
+      <Modes ActiveMode=""/>
+    </RunParams>
+  </ProjectSession>
+</CONFIG>
