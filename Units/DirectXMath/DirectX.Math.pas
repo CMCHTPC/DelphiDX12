@@ -27,7 +27,7 @@ uses
 // {$DEFINE _XM_AVX2_INTRINSICS_}
 
 const
-    DIRECTX_MATH_VERSION = 316;
+    DIRECTX_MATH_VERSION = 318;
 
     (* ***************************************************************************
       *
@@ -59,10 +59,10 @@ const
     XM_SWIZZLE_Z: uint32 = 2;
     XM_SWIZZLE_W: uint32 = 3;
 
-    XM_CRMASK_CR6: uint32 = $000000F0;
-    XM_CRMASK_CR6TRUE: uint32 = $00000080;
-    XM_CRMASK_CR6FALSE: uint32 = $00000020;
-    XM_CRMASK_CR6BOUNDS: uint32 = $00000020; // XM_CRMASK_CR6FALSE;
+    XM_CRMASK_CR6 = $000000F0;
+    XM_CRMASK_CR6TRUE = $00000080;
+    XM_CRMASK_CR6FALSE = $00000020;
+    XM_CRMASK_CR6BOUNDS = XM_CRMASK_CR6FALSE;
 
     XM_CACHE_LINE_SIZE = 64;
 
@@ -103,9 +103,14 @@ type
             5: (u: array [0 .. 3] of uint32);
             6: (i: array [0 .. 3] of int32);
             7: (b: array [0 .. 15] of byte);
+            8: (x, y, z, w: single);
     end;
 
     PXMVECTOR = ^TXMVECTOR;
+
+    TXMVECTORF32 = TXMVECTOR;
+    TXMVECTORI32 = TXMVECTOR;
+    TXMVECTORU8 = TXMVECTOR;
 
     // Fix-up for (1st-3rd) XMVECTOR parameters that are pass-in-register for x86, ARM, ARM64, and vector call; by reference otherwise
     TFXMVECTOR = TXMVECTOR;
@@ -162,6 +167,8 @@ type
     TXMFLOAT2 = record
         constructor Create(x, y: single); overload;
         constructor Create(pArray: PSingle); overload;
+        class operator Equal(a: TXMFLOAT2; b: TXMFLOAT2): boolean;
+        function ThreeWayComparison(const a, b: TXMFLOAT2): integer;
         case byte of
             0: (x: single;
                 y: single);
@@ -547,10 +554,8 @@ const
     g_XMXorByte4: TXMVECTOR = (vector4_i32: ($80, $8000, $800000, $00000000));
     g_XMAddByte4: TXMVECTOR = (vector4_f32: (-128.0, -128.0 * 256.0, -128.0 * 65536.0, 0));
     g_XMFixUnsigned: TXMVECTOR = (vector4_f32: (32768.0 * 65536.0, 32768.0 * 65536.0, 32768.0 * 65536.0, 32768.0 * 65536.0));
-    g_XMMaxInt: TXMVECTOR = (vector4_f32: (65536.0 * 32768.0 - 128.0, 65536.0 * 32768.0 - 128.0, 65536.0 * 32768.0 -
-        128.0, 65536.0 * 32768.0 - 128.0));
-    g_XMMaxUInt: TXMVECTOR = (vector4_f32: (65536.0 * 65536.0 - 256.0, 65536.0 * 65536.0 - 256.0, 65536.0 * 65536.0 -
-        256.0, 65536.0 * 65536.0 - 256.0));
+    g_XMMaxInt: TXMVECTOR = (vector4_f32: (65536.0 * 32768.0 - 128.0, 65536.0 * 32768.0 - 128.0, 65536.0 * 32768.0 - 128.0, 65536.0 * 32768.0 - 128.0));
+    g_XMMaxUInt: TXMVECTOR = (vector4_f32: (65536.0 * 65536.0 - 256.0, 65536.0 * 65536.0 - 256.0, 65536.0 * 65536.0 - 256.0, 65536.0 * 65536.0 - 256.0));
     g_XMUnsignedFix: TXMVECTOR = (vector4_f32: (32768.0 * 65536.0, 32768.0 * 65536.0, 32768.0 * 65536.0, 32768.0 * 65536.0));
     g_XMsrgbScale: TXMVECTOR = (vector4_f32: (12.92, 12.92, 12.92, 1.0));
     g_XMsrgbA: TXMVECTOR = (vector4_f32: (0.055, 0.055, 0.055, 0.0));
@@ -903,14 +908,11 @@ function XMVector2AngleBetweenVectors(V1: TFXMVECTOR; V2: TFXMVECTOR): TXMVECTOR
 function XMVector2LinePointDistance(LinePoint1: TFXMVECTOR; LinePoint2: TFXMVECTOR; Point: TFXMVECTOR): TXMVECTOR;
 function XMVector2IntersectLine(Line1Point1: TFXMVECTOR; Line1Point2: TFXMVECTOR; Line2Point1: TFXMVECTOR; Line2Point2: TGXMVECTOR): TXMVECTOR;
 function XMVector2Transform(v: TFXMVECTOR; m: TFXMMATRIX): TXMVECTOR;
-function XMVector2TransformStream(var pOutputStream: PXMFLOAT4; OutputStride: size_t; const pInputStream: PXMFLOAT2;
-    InputStride: size_t; VectorCount: size_t; m: TFXMMATRIX): PXMFLOAT4;
+function XMVector2TransformStream(var pOutputStream: PXMFLOAT4; OutputStride: size_t; const pInputStream: PXMFLOAT2; InputStride: size_t; VectorCount: size_t; m: TFXMMATRIX): PXMFLOAT4;
 function XMVector2TransformCoord(v: TFXMVECTOR; m: TFXMMATRIX): TXMVECTOR;
-function XMVector2TransformCoordStream(var pOutputStream: PXMFLOAT2; OutputStride: size_t; const pInputStream: PXMFLOAT2;
-    InputStride: size_t; VectorCount: size_t; m: TFXMMATRIX): PXMFLOAT2;
+function XMVector2TransformCoordStream(var pOutputStream: PXMFLOAT2; OutputStride: size_t; const pInputStream: PXMFLOAT2; InputStride: size_t; VectorCount: size_t; m: TFXMMATRIX): PXMFLOAT2;
 function XMVector2TransformNormal(v: TFXMVECTOR; m: TFXMMATRIX): TXMVECTOR;
-function XMVector2TransformNormalStream(var pOutputStream: PXMFLOAT2; OutputStride: size_t; const pInputStream: PXMFLOAT2;
-    InputStride: size_t; VectorCount: size_t; m: TFXMMATRIX): PXMFLOAT2;
+function XMVector2TransformNormalStream(var pOutputStream: PXMFLOAT2; OutputStride: size_t; const pInputStream: PXMFLOAT2; InputStride: size_t; VectorCount: size_t; m: TFXMMATRIX): PXMFLOAT2;
 
 (* ***************************************************************************
   *
@@ -959,24 +961,17 @@ procedure XMVector3ComponentsFromNormal(var Parallel: TXMVECTOR; var Perpendicul
 function XMVector3Rotate(v: TFXMVECTOR; RotationQuaternion: TFXMVECTOR): TXMVECTOR;
 function XMVector3InverseRotate(v: TFXMVECTOR; RotationQuaternion: TFXMVECTOR): TXMVECTOR;
 function XMVector3Transform(v: TFXMVECTOR; m: TFXMMATRIX): TXMVECTOR;
-function XMVector3TransformStream(var pOutputStream: PXMFLOAT4; OutputStride: size_t; const pInputStream: PXMFLOAT3;
-    InputStride: size_t; VectorCount: size_t; m: TFXMMATRIX): PXMFLOAT4;
+function XMVector3TransformStream(var pOutputStream: PXMFLOAT4; OutputStride: size_t; const pInputStream: PXMFLOAT3; InputStride: size_t; VectorCount: size_t; m: TFXMMATRIX): PXMFLOAT4;
 function XMVector3TransformCoord(v: TFXMVECTOR; m: TFXMMATRIX): TXMVECTOR;
-function XMVector3TransformCoordStream(var pOutputStream: PXMFLOAT3; OutputStride: size_t; const pInputStream: PXMFLOAT3;
-    InputStride: size_t; VectorCount: size_t; m: TFXMMATRIX): PXMFLOAT3;
+function XMVector3TransformCoordStream(var pOutputStream: PXMFLOAT3; OutputStride: size_t; const pInputStream: PXMFLOAT3; InputStride: size_t; VectorCount: size_t; m: TFXMMATRIX): PXMFLOAT3;
 function XMVector3TransformNormal(v: TFXMVECTOR; m: TFXMMATRIX): TXMVECTOR;
-function XMVector3TransformNormalStream(var pOutputStream: PXMFLOAT3; OutputStride: size_t; const pInputStream: PXMFLOAT3;
-    InputStride: size_t; VectorCount: size_t; m: TFXMMATRIX): PXMFLOAT3;
-function XMVector3Project(v: TFXMVECTOR; ViewportX, ViewportY, ViewportWidth, ViewportHeight, ViewportMinZ, ViewportMaxZ: single;
-    Projection: TFXMMATRIX; View: TCXMMATRIX; World: TCXMMATRIX): TXMVECTOR;
-function XMVector3ProjectStream(var pOutputStream: PXMFLOAT3; OutputStride: size_t; const pInputStream: PXMFLOAT3;
-    InputStride: size_t; VectorCount: size_t; ViewportX, ViewportY, ViewportWidth, ViewportHeight, ViewportMinZ, ViewportMaxZ: single;
-    Projection: TFXMMATRIX; View: TCXMMATRIX; World: TCXMMATRIX): PXMFLOAT3;
-function XMVector3Unproject(v: TFXMVECTOR; ViewportX, ViewportY, ViewportWidth, ViewportHeight, ViewportMinZ, ViewportMaxZ: single;
-    Projection: TFXMMATRIX; View: TCXMMATRIX; World: TCXMMATRIX): TXMVECTOR;
-function XMVector3UnprojectStream(var pOutputStream: PXMFLOAT3; OutputStride: size_t; const pInputStream: PXMFLOAT3;
-    InputStride: size_t; VectorCount: size_t; ViewportX, ViewportY, ViewportWidth, ViewportHeight, ViewportMinZ, ViewportMaxZ: single;
-    Projection: TFXMMATRIX; View: TCXMMATRIX; World: TCXMMATRIX): PXMFLOAT3;
+function XMVector3TransformNormalStream(var pOutputStream: PXMFLOAT3; OutputStride: size_t; const pInputStream: PXMFLOAT3; InputStride: size_t; VectorCount: size_t; m: TFXMMATRIX): PXMFLOAT3;
+function XMVector3Project(v: TFXMVECTOR; ViewportX, ViewportY, ViewportWidth, ViewportHeight, ViewportMinZ, ViewportMaxZ: single; Projection: TFXMMATRIX; View: TCXMMATRIX; World: TCXMMATRIX): TXMVECTOR;
+function XMVector3ProjectStream(var pOutputStream: PXMFLOAT3; OutputStride: size_t; const pInputStream: PXMFLOAT3; InputStride: size_t; VectorCount: size_t;
+    ViewportX, ViewportY, ViewportWidth, ViewportHeight, ViewportMinZ, ViewportMaxZ: single; Projection: TFXMMATRIX; View: TCXMMATRIX; World: TCXMMATRIX): PXMFLOAT3;
+function XMVector3Unproject(v: TFXMVECTOR; ViewportX, ViewportY, ViewportWidth, ViewportHeight, ViewportMinZ, ViewportMaxZ: single; Projection: TFXMMATRIX; View: TCXMMATRIX; World: TCXMMATRIX): TXMVECTOR;
+function XMVector3UnprojectStream(var pOutputStream: PXMFLOAT3; OutputStride: size_t; const pInputStream: PXMFLOAT3; InputStride: size_t; VectorCount: size_t;
+    ViewportX, ViewportY, ViewportWidth, ViewportHeight, ViewportMinZ, ViewportMaxZ: single; Projection: TFXMMATRIX; View: TCXMMATRIX; World: TCXMMATRIX): PXMFLOAT3;
 
 (* ***************************************************************************
   *
@@ -1021,8 +1016,7 @@ function XMVector4AngleBetweenNormalsEst(N1: TFXMVECTOR; N2: TFXMVECTOR): TXMVEC
 function XMVector4AngleBetweenNormals(N1: TFXMVECTOR; N2: TFXMVECTOR): TXMVECTOR;
 function XMVector4AngleBetweenVectors(V1: TFXMVECTOR; V2: TFXMVECTOR): TXMVECTOR;
 function XMVector4Transform(v: TFXMVECTOR; m: TFXMMATRIX): TXMVECTOR;
-function XMVector4TransformStream(var pOutputStream: PXMFLOAT4; OutputStride: size_t; const pInputStream: PXMFLOAT4;
-    InputStride: size_t; VectorCount: size_t; m: TFXMMATRIX): PXMFLOAT4;
+function XMVector4TransformStream(var pOutputStream: PXMFLOAT4; OutputStride: size_t; const pInputStream: PXMFLOAT4; InputStride: size_t; VectorCount: size_t; m: TFXMMATRIX): PXMFLOAT4;
 
 (* ***************************************************************************
   *
@@ -1052,19 +1046,21 @@ function XMMatrixScalingFromVector(Scale: TFXMVECTOR): TXMMATRIX;
 function XMMatrixRotationX(Angle: single): TXMMATRIX;
 function XMMatrixRotationY(Angle: single): TXMMATRIX;
 function XMMatrixRotationZ(Angle: single): TXMMATRIX;
+
+// Rotates about y-axis (Yaw), then x-axis (Pitch), then z-axis (Roll)
 function XMMatrixRotationRollPitchYaw(Pitch, Yaw, Roll: single): TXMMATRIX;
+
+// Rotates about y-axis (Angles.y), then x-axis (Angles.x), then z-axis (Angles.z)
 function XMMatrixRotationRollPitchYawFromVector(Angles: TFXMVECTOR): TXMMATRIX;
+
 function XMMatrixRotationNormal(NormalAxis: TFXMVECTOR; Angle: single): TXMMATRIX;
 function XMMatrixRotationAxis(Axis: TFXMVECTOR; Angle: single): TXMMATRIX;
 function XMMatrixRotationQuaternion(Quaternion: TFXMVECTOR): TXMMATRIX;
-function XMMatrixTransformation2D(ScalingOrigin: TFXMVECTOR; ScalingOrientation: single; Scaling: TFXMVECTOR;
-    RotationOrigin: TFXMVECTOR; Rotation: single; Translation: TGXMVECTOR): TXMMATRIX;
-function XMMatrixTransformation(ScalingOrigin: TFXMVECTOR; ScalingOrientationQuaternion: TFXMVECTOR; Scaling: TFXMVECTOR;
-    RotationOrigin: TGXMVECTOR; RotationQuaternion: THXMVECTOR; Translation: THXMVECTOR): TXMMATRIX;
+function XMMatrixTransformation2D(ScalingOrigin: TFXMVECTOR; ScalingOrientation: single; Scaling: TFXMVECTOR; RotationOrigin: TFXMVECTOR; Rotation: single; Translation: TGXMVECTOR): TXMMATRIX;
+function XMMatrixTransformation(ScalingOrigin: TFXMVECTOR; ScalingOrientationQuaternion: TFXMVECTOR; Scaling: TFXMVECTOR; RotationOrigin: TGXMVECTOR; RotationQuaternion: THXMVECTOR; Translation: THXMVECTOR): TXMMATRIX;
 function XMMatrixAffineTransformation2D(Scaling: TFXMVECTOR; RotationOrigin: TFXMVECTOR; Rotation: single; Translation: TFXMVECTOR): TXMMATRIX;
 
-function XMMatrixAffineTransformation(Scaling: TFXMVECTOR; RotationOrigin: TFXMVECTOR; RotationQuaternion: TFXMVECTOR;
-    Translation: TGXMVECTOR): TXMMATRIX;
+function XMMatrixAffineTransformation(Scaling: TFXMVECTOR; RotationOrigin: TFXMVECTOR; RotationQuaternion: TFXMVECTOR; Translation: TGXMVECTOR): TXMMATRIX;
 function XMMatrixReflect(ReflectionPlane: TFXMVECTOR): TXMMATRIX;
 function XMMatrixShadow(ShadowPlane: TFXMVECTOR; LightPosition: TFXMVECTOR): TXMMATRIX;
 
@@ -1111,14 +1107,18 @@ function XMQuaternionSlerp(Q0: TFXMVECTOR; Q1: TFXMVECTOR; t: single): TXMVECTOR
 function XMQuaternionSlerpV(Q0: TFXMVECTOR; Q1: TFXMVECTOR; t: TFXMVECTOR): TXMVECTOR;
 function XMQuaternionSquad(Q0: TFXMVECTOR; Q1: TFXMVECTOR; Q2: TFXMVECTOR; Q3: TGXMVECTOR; t: single): TXMVECTOR;
 function XMQuaternionSquadV(Q0: TFXMVECTOR; Q1: TFXMVECTOR; Q2: TFXMVECTOR; Q3: TGXMVECTOR; t: THXMVECTOR): TXMVECTOR;
-procedure XMQuaternionSquadSetup(out pA: TXMVECTOR; out pB: TXMVECTOR; out pC: TXMVECTOR; Q0: TFXMVECTOR; Q1: TFXMVECTOR;
-    Q2: TFXMVECTOR; Q3: TGXMVECTOR);
+procedure XMQuaternionSquadSetup(out pA: TXMVECTOR; out pB: TXMVECTOR; out pC: TXMVECTOR; Q0: TFXMVECTOR; Q1: TFXMVECTOR; Q2: TFXMVECTOR; Q3: TGXMVECTOR);
 function XMQuaternionBaryCentric(Q0: TFXMVECTOR; Q1: TFXMVECTOR; Q2: TFXMVECTOR; f, g: single): TXMVECTOR;
 function XMQuaternionBaryCentricV(Q0: TFXMVECTOR; Q1: TFXMVECTOR; Q2: TFXMVECTOR; f: TGXMVECTOR; g: THXMVECTOR): TXMVECTOR;
 
 function XMQuaternionIdentity(): TXMVECTOR;
+
+// Rotates about y-axis (Yaw), then x-axis (Pitch), then z-axis (Roll)
 function XMQuaternionRotationRollPitchYaw(Pitch, Yaw, Roll: single): TXMVECTOR;
+
+// Rotates about y-axis (Angles.y), then x-axis (Angles.x), then z-axis (Angles.z)
 function XMQuaternionRotationRollPitchYawFromVector(Angles: TFXMVECTOR): TXMVECTOR;
+
 function XMQuaternionRotationNormal(NormalAxis: TFXMVECTOR; Angle: single): TXMVECTOR;
 function XMQuaternionRotationAxis(Axis: TFXMVECTOR; Angle: single): TXMVECTOR;
 function XMQuaternionRotationMatrix(m: TFXMMATRIX): TXMVECTOR;
@@ -1145,9 +1145,14 @@ function XMPlaneNormalizeEst(P: TFXMVECTOR): TXMVECTOR;
 function XMPlaneNormalize(P: TFXMVECTOR): TXMVECTOR;
 function XMPlaneIntersectLine(P: TFXMVECTOR; LinePoint1: TFXMVECTOR; LinePoint2: TFXMVECTOR): TXMVECTOR;
 procedure XMPlaneIntersectPlane(out pLinePoint1: TXMVECTOR; out pLinePoint2: TXMVECTOR; P1: TFXMVECTOR; P2: TFXMVECTOR);
+
+// Transforms a plane given an inverse transpose matrix
 function XMPlaneTransform(P: TFXMVECTOR; m: TFXMMATRIX): TXMVECTOR;
-function XMPlaneTransformStream(var pOutputStream: PXMFLOAT4; OutputStride: size_t; const pInputStream: PXMFLOAT4;
-    InputStride: size_t; PlaneCount: size_t; m: TFXMMATRIX): PXMFLOAT4;
+
+// Transforms an array of planes given an inverse transpose matrix
+function XMPlaneTransformStream(var pOutputStream: PXMFLOAT4; OutputStride: size_t; const pInputStream: PXMFLOAT4; InputStride: size_t; PlaneCount: size_t; m: TFXMMATRIX): PXMFLOAT4;
+
+
 function XMPlaneFromPointNormal(Point: TFXMVECTOR; Normal: TFXMVECTOR): TXMVECTOR;
 function XMPlaneFromPoints(Point1: TFXMVECTOR; Point2: TFXMVECTOR; Point3: TFXMVECTOR): TXMVECTOR;
 
@@ -1470,6 +1475,9 @@ end;
 
 function XMVectorSplatConstantInt(IntConstant: int32): TXMVECTOR;
 begin
+{$IFDEF WithAssert}
+    assert((IntConstant >= -16) AND (IntConstant <= 15));
+{$ENDIF}
     Result.vector4_i32[0] := IntConstant;
     Result.vector4_i32[1] := IntConstant;
     Result.vector4_i32[2] := IntConstant;
@@ -4287,20 +4295,16 @@ begin
     fy := t.vector4_f32[1];
     fz := t.vector4_f32[2];
     fw := t.vector4_f32[3];
-    Result.vector4_f32[0] := 0.5 * ((-fx * fx * fx + 2 * fx * fx - fx) * Position0.vector4_f32[0] +
-        (3 * fx * fx * fx - 5 * fx * fx + 2) * Position1.vector4_f32[0] + (-3 * fx * fx * fx + 4 * fx * fx + fx) *
+    Result.vector4_f32[0] := 0.5 * ((-fx * fx * fx + 2 * fx * fx - fx) * Position0.vector4_f32[0] + (3 * fx * fx * fx - 5 * fx * fx + 2) * Position1.vector4_f32[0] + (-3 * fx * fx * fx + 4 * fx * fx + fx) *
         Position2.vector4_f32[0] + (fx * fx * fx - fx * fx) * Position3.vector4_f32[0]);
 
-    Result.vector4_f32[1] := 0.5 * ((-fy * fy * fy + 2 * fy * fy - fy) * Position0.vector4_f32[1] +
-        (3 * fy * fy * fy - 5 * fy * fy + 2) * Position1.vector4_f32[1] + (-3 * fy * fy * fy + 4 * fy * fy + fy) *
+    Result.vector4_f32[1] := 0.5 * ((-fy * fy * fy + 2 * fy * fy - fy) * Position0.vector4_f32[1] + (3 * fy * fy * fy - 5 * fy * fy + 2) * Position1.vector4_f32[1] + (-3 * fy * fy * fy + 4 * fy * fy + fy) *
         Position2.vector4_f32[1] + (fy * fy * fy - fy * fy) * Position3.vector4_f32[1]);
 
-    Result.vector4_f32[2] := 0.5 * ((-fz * fz * fz + 2 * fz * fz - fz) * Position0.vector4_f32[2] +
-        (3 * fz * fz * fz - 5 * fz * fz + 2) * Position1.vector4_f32[2] + (-3 * fz * fz * fz + 4 * fz * fz + fz) *
+    Result.vector4_f32[2] := 0.5 * ((-fz * fz * fz + 2 * fz * fz - fz) * Position0.vector4_f32[2] + (3 * fz * fz * fz - 5 * fz * fz + 2) * Position1.vector4_f32[2] + (-3 * fz * fz * fz + 4 * fz * fz + fz) *
         Position2.vector4_f32[2] + (fz * fz * fz - fz * fz) * Position3.vector4_f32[2]);
 
-    Result.vector4_f32[3] := 0.5 * ((-fw * fw * fw + 2 * fw * fw - fw) * Position0.vector4_f32[3] +
-        (3 * fw * fw * fw - 5 * fw * fw + 2) * Position1.vector4_f32[3] + (-3 * fw * fw * fw + 4 * fw * fw + fw) *
+    Result.vector4_f32[3] := 0.5 * ((-fw * fw * fw + 2 * fw * fw - fw) * Position0.vector4_f32[3] + (3 * fw * fw * fw - 5 * fw * fw + 2) * Position1.vector4_f32[3] + (-3 * fw * fw * fw + 4 * fw * fw + fw) *
         Position2.vector4_f32[3] + (fw * fw * fw - fw * fw) * Position3.vector4_f32[3]);
 end;
 
@@ -4460,8 +4464,7 @@ end;
 
 function XMVector2InBounds(v: TFXMVECTOR; Bounds: TFXMVECTOR): boolean;
 begin
-    Result := ((v.vector4_f32[0] <= Bounds.vector4_f32[0]) and (v.vector4_f32[0] >= -Bounds.vector4_f32[0]) and
-        (v.vector4_f32[1] <= Bounds.vector4_f32[1]) and (v.vector4_f32[1] >= -Bounds.vector4_f32[1]));
+    Result := ((v.vector4_f32[0] <= Bounds.vector4_f32[0]) and (v.vector4_f32[0] >= -Bounds.vector4_f32[0]) and (v.vector4_f32[1] <= Bounds.vector4_f32[1]) and (v.vector4_f32[1] >= -Bounds.vector4_f32[1]));
 end;
 
 
@@ -4657,14 +4660,12 @@ begin
     RX := 1.0 - (RY * RefractionIndex.vector4_f32[0] * RefractionIndex.vector4_f32[0]);
     RY := 1.0 - (RY * RefractionIndex.vector4_f32[1] * RefractionIndex.vector4_f32[1]);
     if (RX >= 0.0) then
-        RX := (RefractionIndex.vector4_f32[0] * Incident.vector4_f32[0]) - (Normal.vector4_f32[0] *
-            ((RefractionIndex.vector4_f32[0] * IDotN) + sqrt(RX)))
+        RX := (RefractionIndex.vector4_f32[0] * Incident.vector4_f32[0]) - (Normal.vector4_f32[0] * ((RefractionIndex.vector4_f32[0] * IDotN) + sqrt(RX)))
     else
         RX := 0.0;
 
     if (RY >= 0.0) then
-        RY := (RefractionIndex.vector4_f32[1] * Incident.vector4_f32[1]) - (Normal.vector4_f32[1] *
-            ((RefractionIndex.vector4_f32[1] * IDotN) + sqrt(RY)))
+        RY := (RefractionIndex.vector4_f32[1] * Incident.vector4_f32[1]) - (Normal.vector4_f32[1] * ((RefractionIndex.vector4_f32[1] * IDotN) + sqrt(RY)))
     else
         RY := 0.0;
 
@@ -4806,8 +4807,7 @@ end;
 
 
 
-function XMVector2TransformStream(var pOutputStream: PXMFLOAT4; OutputStride: size_t; const pInputStream: PXMFLOAT2;
-    InputStride: size_t; VectorCount: size_t; m: TFXMMATRIX): PXMFLOAT4;
+function XMVector2TransformStream(var pOutputStream: PXMFLOAT4; OutputStride: size_t; const pInputStream: PXMFLOAT2; InputStride: size_t; VectorCount: size_t; m: TFXMMATRIX): PXMFLOAT4;
 var
     row0, row1, row3: TXMVECTOR;
     i: integer;
@@ -4861,8 +4861,7 @@ end;
 
 
 
-function XMVector2TransformCoordStream(var pOutputStream: PXMFLOAT2; OutputStride: size_t; const pInputStream: PXMFLOAT2;
-    InputStride: size_t; VectorCount: size_t; m: TFXMMATRIX): PXMFLOAT2;
+function XMVector2TransformCoordStream(var pOutputStream: PXMFLOAT2; OutputStride: size_t; const pInputStream: PXMFLOAT2; InputStride: size_t; VectorCount: size_t; m: TFXMMATRIX): PXMFLOAT2;
 var
     pInputVector: pbyte;
     pOutputVector: pbyte;
@@ -4909,8 +4908,7 @@ end;
 
 
 
-function XMVector2TransformNormalStream(var pOutputStream: PXMFLOAT2; OutputStride: size_t; const pInputStream: PXMFLOAT2;
-    InputStride: size_t; VectorCount: size_t; m: TFXMMATRIX): PXMFLOAT2;
+function XMVector2TransformNormalStream(var pOutputStream: PXMFLOAT2; OutputStride: size_t; const pInputStream: PXMFLOAT2; InputStride: size_t; VectorCount: size_t; m: TFXMMATRIX): PXMFLOAT2;
 var
     pInputVector: pbyte;
     pOutputVector: pbyte;
@@ -5064,8 +5062,7 @@ end;
 
 function XMVector3InBounds(v: TFXMVECTOR; Bounds: TFXMVECTOR): boolean;
 begin
-    Result := ((v.vector4_f32[0] <= Bounds.vector4_f32[0]) and (v.vector4_f32[0] >= -Bounds.vector4_f32[0]) and
-        (v.vector4_f32[1] <= Bounds.vector4_f32[1]) and (v.vector4_f32[1] >= -Bounds.vector4_f32[1]) and
+    Result := ((v.vector4_f32[0] <= Bounds.vector4_f32[0]) and (v.vector4_f32[0] >= -Bounds.vector4_f32[0]) and (v.vector4_f32[1] <= Bounds.vector4_f32[1]) and (v.vector4_f32[1] >= -Bounds.vector4_f32[1]) and
         (v.vector4_f32[2] <= Bounds.vector4_f32[2]) and (v.vector4_f32[2] >= -Bounds.vector4_f32[2]));
 
 end;
@@ -5418,8 +5415,7 @@ end;
 
 
 
-function XMVector3TransformStream(var pOutputStream: PXMFLOAT4; OutputStride: size_t; const pInputStream: PXMFLOAT3;
-    InputStride: size_t; VectorCount: size_t; m: TFXMMATRIX): PXMFLOAT4;
+function XMVector3TransformStream(var pOutputStream: PXMFLOAT4; OutputStride: size_t; const pInputStream: PXMFLOAT3; InputStride: size_t; VectorCount: size_t; m: TFXMMATRIX): PXMFLOAT4;
 var
     pInputVector: pbyte;
     pOutputVector: pbyte;
@@ -5476,8 +5472,7 @@ end;
 
 
 
-function XMVector3TransformCoordStream(var pOutputStream: PXMFLOAT3; OutputStride: size_t; const pInputStream: PXMFLOAT3;
-    InputStride: size_t; VectorCount: size_t; m: TFXMMATRIX): PXMFLOAT3;
+function XMVector3TransformCoordStream(var pOutputStream: PXMFLOAT3; OutputStride: size_t; const pInputStream: PXMFLOAT3; InputStride: size_t; VectorCount: size_t; m: TFXMMATRIX): PXMFLOAT3;
 var
     pInputVector: pbyte;
     pOutputVector: pbyte;
@@ -5535,8 +5530,7 @@ end;
 
 
 
-function XMVector3TransformNormalStream(var pOutputStream: PXMFLOAT3; OutputStride: size_t; const pInputStream: PXMFLOAT3;
-    InputStride: size_t; VectorCount: size_t; m: TFXMMATRIX): PXMFLOAT3;
+function XMVector3TransformNormalStream(var pOutputStream: PXMFLOAT3; OutputStride: size_t; const pInputStream: PXMFLOAT3; InputStride: size_t; VectorCount: size_t; m: TFXMMATRIX): PXMFLOAT3;
 var
     pInputVector: pbyte;
     pOutputVector: pbyte;
@@ -5573,8 +5567,7 @@ end;
 
 
 
-function XMVector3Project(v: TFXMVECTOR; ViewportX, ViewportY, ViewportWidth, ViewportHeight, ViewportMinZ, ViewportMaxZ: single;
-    Projection: TFXMMATRIX; View: TCXMMATRIX; World: TCXMMATRIX): TXMVECTOR;
+function XMVector3Project(v: TFXMVECTOR; ViewportX, ViewportY, ViewportWidth, ViewportHeight, ViewportMinZ, ViewportMaxZ: single; Projection: TFXMMATRIX; View: TCXMMATRIX; World: TCXMMATRIX): TXMVECTOR;
 var
     HalfViewportWidth, HalfViewportHeight: single;
     Scale, Offset: TXMVECTOR;
@@ -5595,9 +5588,8 @@ end;
 
 
 
-function XMVector3ProjectStream(var pOutputStream: PXMFLOAT3; OutputStride: size_t; const pInputStream: PXMFLOAT3;
-    InputStride: size_t; VectorCount: size_t; ViewportX, ViewportY, ViewportWidth, ViewportHeight, ViewportMinZ, ViewportMaxZ: single;
-    Projection: TFXMMATRIX; View: TCXMMATRIX; World: TCXMMATRIX): PXMFLOAT3;
+function XMVector3ProjectStream(var pOutputStream: PXMFLOAT3; OutputStride: size_t; const pInputStream: PXMFLOAT3; InputStride: size_t; VectorCount: size_t;
+    ViewportX, ViewportY, ViewportWidth, ViewportHeight, ViewportMinZ, ViewportMaxZ: single; Projection: TFXMMATRIX; View: TCXMMATRIX; World: TCXMMATRIX): PXMFLOAT3;
 var
     pInputVector: pbyte;
     pOutputVector: pbyte;
@@ -5638,8 +5630,7 @@ end;
 
 
 
-function XMVector3Unproject(v: TFXMVECTOR; ViewportX, ViewportY, ViewportWidth, ViewportHeight, ViewportMinZ, ViewportMaxZ: single;
-    Projection: TFXMMATRIX; View: TCXMMATRIX; World: TCXMMATRIX): TXMVECTOR;
+function XMVector3Unproject(v: TFXMVECTOR; ViewportX, ViewportY, ViewportWidth, ViewportHeight, ViewportMinZ, ViewportMaxZ: single; Projection: TFXMMATRIX; View: TCXMMATRIX; World: TCXMMATRIX): TXMVECTOR;
 const
     D: TXMVECTOR = (vector4_f32: (-1.0, 1.0, 0.0, 0.0));
 var
@@ -5664,9 +5655,8 @@ end;
 
 
 
-function XMVector3UnprojectStream(var pOutputStream: PXMFLOAT3; OutputStride: size_t; const pInputStream: PXMFLOAT3;
-    InputStride: size_t; VectorCount: size_t; ViewportX, ViewportY, ViewportWidth, ViewportHeight, ViewportMinZ, ViewportMaxZ: single;
-    Projection: TFXMMATRIX; View: TCXMMATRIX; World: TCXMMATRIX): PXMFLOAT3;
+function XMVector3UnprojectStream(var pOutputStream: PXMFLOAT3; OutputStride: size_t; const pInputStream: PXMFLOAT3; InputStride: size_t; VectorCount: size_t;
+    ViewportX, ViewportY, ViewportWidth, ViewportHeight, ViewportMinZ, ViewportMaxZ: single; Projection: TFXMMATRIX; View: TCXMMATRIX; World: TCXMMATRIX): PXMFLOAT3;
 const
     D: TXMVECTOR = (vector4_f32: (-1.0, 1.0, 0.0, 0.0));
 var
@@ -5717,8 +5707,7 @@ end;
 
 function XMVector4Equal(V1: TFXMVECTOR; V2: TFXMVECTOR): boolean;
 begin
-    Result := ((V1.vector4_f32[0] = V2.vector4_f32[0]) and (V1.vector4_f32[1] = V2.vector4_f32[1]) and
-        (V1.vector4_f32[2] = V2.vector4_f32[2]) and (V1.vector4_f32[3] = V2.vector4_f32[3]));
+    Result := ((V1.vector4_f32[0] = V2.vector4_f32[0]) and (V1.vector4_f32[1] = V2.vector4_f32[1]) and (V1.vector4_f32[2] = V2.vector4_f32[2]) and (V1.vector4_f32[3] = V2.vector4_f32[3]));
 end;
 
 
@@ -5727,11 +5716,9 @@ function XMVector4EqualR(V1: TFXMVECTOR; V2: TFXMVECTOR): uint32;
 begin
     Result := 0;
 
-    if ((V1.vector4_f32[0] = V2.vector4_f32[0]) and (V1.vector4_f32[1] = V2.vector4_f32[1]) and
-        (V1.vector4_f32[2] = V2.vector4_f32[2]) and (V1.vector4_f32[3] = V2.vector4_f32[3])) then
+    if ((V1.vector4_f32[0] = V2.vector4_f32[0]) and (V1.vector4_f32[1] = V2.vector4_f32[1]) and (V1.vector4_f32[2] = V2.vector4_f32[2]) and (V1.vector4_f32[3] = V2.vector4_f32[3])) then
         Result := XM_CRMASK_CR6TRUE
-    else if ((V1.vector4_f32[0] <> V2.vector4_f32[0]) and (V1.vector4_f32[1] <> V2.vector4_f32[1]) and
-        (V1.vector4_f32[2] <> V2.vector4_f32[2]) and (V1.vector4_f32[3] <> V2.vector4_f32[3])) then
+    else if ((V1.vector4_f32[0] <> V2.vector4_f32[0]) and (V1.vector4_f32[1] <> V2.vector4_f32[1]) and (V1.vector4_f32[2] <> V2.vector4_f32[2]) and (V1.vector4_f32[3] <> V2.vector4_f32[3])) then
         Result := XM_CRMASK_CR6FALSE;
 end;
 
@@ -5739,8 +5726,7 @@ end;
 
 function XMVector4EqualInt(V1: TFXMVECTOR; V2: TFXMVECTOR): boolean;
 begin
-    Result := ((V1.vector4_u32[0] = V2.vector4_u32[0]) and (V1.vector4_u32[1] = V2.vector4_u32[1]) and
-        (V1.vector4_u32[2] = V2.vector4_u32[2]) and (V1.vector4_u32[3] = V2.vector4_u32[3]));
+    Result := ((V1.vector4_u32[0] = V2.vector4_u32[0]) and (V1.vector4_u32[1] = V2.vector4_u32[1]) and (V1.vector4_u32[2] = V2.vector4_u32[2]) and (V1.vector4_u32[3] = V2.vector4_u32[3]));
 end;
 
 
@@ -5748,11 +5734,9 @@ end;
 function XMVector4EqualIntR(V1: TFXMVECTOR; V2: TFXMVECTOR): uint32;
 begin
     Result := 0;
-    if (V1.vector4_u32[0] = V2.vector4_u32[0]) and (V1.vector4_u32[1] = V2.vector4_u32[1]) and (V1.vector4_u32[2] = V2.vector4_u32[2]) and
-        (V1.vector4_u32[3] = V2.vector4_u32[3]) then
+    if (V1.vector4_u32[0] = V2.vector4_u32[0]) and (V1.vector4_u32[1] = V2.vector4_u32[1]) and (V1.vector4_u32[2] = V2.vector4_u32[2]) and (V1.vector4_u32[3] = V2.vector4_u32[3]) then
         Result := XM_CRMASK_CR6TRUE
-    else if (V1.vector4_u32[0] <> V2.vector4_u32[0]) and (V1.vector4_u32[1] <> V2.vector4_u32[1]) and
-        (V1.vector4_u32[2] <> V2.vector4_u32[2]) and (V1.vector4_u32[3] <> V2.vector4_u32[3]) then
+    else if (V1.vector4_u32[0] <> V2.vector4_u32[0]) and (V1.vector4_u32[1] <> V2.vector4_u32[1]) and (V1.vector4_u32[2] <> V2.vector4_u32[2]) and (V1.vector4_u32[3] <> V2.vector4_u32[3]) then
         Result := XM_CRMASK_CR6FALSE;
 end;
 
@@ -5766,32 +5750,28 @@ begin
     dy := abs(V1.vector4_f32[1] - V2.vector4_f32[1]);
     dz := abs(V1.vector4_f32[2] - V2.vector4_f32[2]);
     dw := abs(V1.vector4_f32[3] - V2.vector4_f32[3]);
-    Result := ((dx <= Epsilon.vector4_f32[0]) and (dy <= Epsilon.vector4_f32[1]) and (dz <= Epsilon.vector4_f32[2]) and
-        (dw <= Epsilon.vector4_f32[3]));
+    Result := ((dx <= Epsilon.vector4_f32[0]) and (dy <= Epsilon.vector4_f32[1]) and (dz <= Epsilon.vector4_f32[2]) and (dw <= Epsilon.vector4_f32[3]));
 end;
 
 
 
 function XMVector4NotEqual(V1: TFXMVECTOR; V2: TFXMVECTOR): boolean;
 begin
-    Result := ((V1.vector4_f32[0] <> V2.vector4_f32[0]) or (V1.vector4_f32[1] <> V2.vector4_f32[1]) or
-        (V1.vector4_f32[2] <> V2.vector4_f32[2]) or (V1.vector4_f32[3] <> V2.vector4_f32[3]));
+    Result := ((V1.vector4_f32[0] <> V2.vector4_f32[0]) or (V1.vector4_f32[1] <> V2.vector4_f32[1]) or (V1.vector4_f32[2] <> V2.vector4_f32[2]) or (V1.vector4_f32[3] <> V2.vector4_f32[3]));
 end;
 
 
 
 function XMVector4NotEqualInt(V1: TFXMVECTOR; V2: TFXMVECTOR): boolean;
 begin
-    Result := ((V1.vector4_u32[0] <> V2.vector4_u32[0]) or (V1.vector4_u32[1] <> V2.vector4_u32[1]) or
-        (V1.vector4_u32[2] <> V2.vector4_u32[2]) or (V1.vector4_u32[3] <> V2.vector4_u32[3]));
+    Result := ((V1.vector4_u32[0] <> V2.vector4_u32[0]) or (V1.vector4_u32[1] <> V2.vector4_u32[1]) or (V1.vector4_u32[2] <> V2.vector4_u32[2]) or (V1.vector4_u32[3] <> V2.vector4_u32[3]));
 end;
 
 
 
 function XMVector4Greater(V1: TFXMVECTOR; V2: TFXMVECTOR): boolean;
 begin
-    Result := ((V1.vector4_f32[0] > V2.vector4_f32[0]) and (V1.vector4_f32[1] > V2.vector4_f32[1]) and
-        (V1.vector4_f32[2] > V2.vector4_f32[2]) and (V1.vector4_f32[3] > V2.vector4_f32[3]));
+    Result := ((V1.vector4_f32[0] > V2.vector4_f32[0]) and (V1.vector4_f32[1] > V2.vector4_f32[1]) and (V1.vector4_f32[2] > V2.vector4_f32[2]) and (V1.vector4_f32[3] > V2.vector4_f32[3]));
 end;
 
 
@@ -5799,11 +5779,9 @@ end;
 function XMVector4GreaterR(V1: TFXMVECTOR; V2: TFXMVECTOR): uint32;
 begin
     Result := 0;
-    if (V1.vector4_f32[0] > V2.vector4_f32[0]) and (V1.vector4_f32[1] > V2.vector4_f32[1]) and (V1.vector4_f32[2] > V2.vector4_f32[2]) and
-        (V1.vector4_f32[3] > V2.vector4_f32[3]) then
+    if (V1.vector4_f32[0] > V2.vector4_f32[0]) and (V1.vector4_f32[1] > V2.vector4_f32[1]) and (V1.vector4_f32[2] > V2.vector4_f32[2]) and (V1.vector4_f32[3] > V2.vector4_f32[3]) then
         Result := XM_CRMASK_CR6TRUE
-    else if (V1.vector4_f32[0] <= V2.vector4_f32[0]) and (V1.vector4_f32[1] <= V2.vector4_f32[1]) and
-        (V1.vector4_f32[2] <= V2.vector4_f32[2]) and (V1.vector4_f32[3] <= V2.vector4_f32[3]) then
+    else if (V1.vector4_f32[0] <= V2.vector4_f32[0]) and (V1.vector4_f32[1] <= V2.vector4_f32[1]) and (V1.vector4_f32[2] <= V2.vector4_f32[2]) and (V1.vector4_f32[3] <= V2.vector4_f32[3]) then
         Result := XM_CRMASK_CR6FALSE;
 end;
 
@@ -5811,8 +5789,7 @@ end;
 
 function XMVector4GreaterOrEqual(V1: TFXMVECTOR; V2: TFXMVECTOR): boolean;
 begin
-    Result := ((V1.vector4_f32[0] >= V2.vector4_f32[0]) and (V1.vector4_f32[1] >= V2.vector4_f32[1]) and
-        (V1.vector4_f32[2] >= V2.vector4_f32[2]) and (V1.vector4_f32[3] >= V2.vector4_f32[3]));
+    Result := ((V1.vector4_f32[0] >= V2.vector4_f32[0]) and (V1.vector4_f32[1] >= V2.vector4_f32[1]) and (V1.vector4_f32[2] >= V2.vector4_f32[2]) and (V1.vector4_f32[3] >= V2.vector4_f32[3]));
 end;
 
 
@@ -5820,11 +5797,9 @@ end;
 function XMVector4GreaterOrEqualR(V1: TFXMVECTOR; V2: TFXMVECTOR): uint32;
 begin
     Result := 0;
-    if ((V1.vector4_f32[0] >= V2.vector4_f32[0]) and (V1.vector4_f32[1] >= V2.vector4_f32[1]) and
-        (V1.vector4_f32[2] >= V2.vector4_f32[2]) and (V1.vector4_f32[3] >= V2.vector4_f32[3])) then
+    if ((V1.vector4_f32[0] >= V2.vector4_f32[0]) and (V1.vector4_f32[1] >= V2.vector4_f32[1]) and (V1.vector4_f32[2] >= V2.vector4_f32[2]) and (V1.vector4_f32[3] >= V2.vector4_f32[3])) then
         Result := XM_CRMASK_CR6TRUE
-    else if ((V1.vector4_f32[0] < V2.vector4_f32[0]) and (V1.vector4_f32[1] < V2.vector4_f32[1]) and
-        (V1.vector4_f32[2] < V2.vector4_f32[2]) and (V1.vector4_f32[3] < V2.vector4_f32[3])) then
+    else if ((V1.vector4_f32[0] < V2.vector4_f32[0]) and (V1.vector4_f32[1] < V2.vector4_f32[1]) and (V1.vector4_f32[2] < V2.vector4_f32[2]) and (V1.vector4_f32[3] < V2.vector4_f32[3])) then
         Result := XM_CRMASK_CR6FALSE;
 end;
 
@@ -5832,26 +5807,22 @@ end;
 
 function XMVector4Less(V1: TFXMVECTOR; V2: TFXMVECTOR): boolean;
 begin
-    Result := ((V1.vector4_f32[0] < V2.vector4_f32[0]) and (V1.vector4_f32[1] < V2.vector4_f32[1]) and
-        (V1.vector4_f32[2] < V2.vector4_f32[2]) and (V1.vector4_f32[3] < V2.vector4_f32[3]));
+    Result := ((V1.vector4_f32[0] < V2.vector4_f32[0]) and (V1.vector4_f32[1] < V2.vector4_f32[1]) and (V1.vector4_f32[2] < V2.vector4_f32[2]) and (V1.vector4_f32[3] < V2.vector4_f32[3]));
 end;
 
 
 
 function XMVector4LessOrEqual(V1: TFXMVECTOR; V2: TFXMVECTOR): boolean;
 begin
-    Result := ((V1.vector4_f32[0] <= V2.vector4_f32[0]) and (V1.vector4_f32[1] <= V2.vector4_f32[1]) and
-        (V1.vector4_f32[2] <= V2.vector4_f32[2]) and (V1.vector4_f32[3] <= V2.vector4_f32[3]));
+    Result := ((V1.vector4_f32[0] <= V2.vector4_f32[0]) and (V1.vector4_f32[1] <= V2.vector4_f32[1]) and (V1.vector4_f32[2] <= V2.vector4_f32[2]) and (V1.vector4_f32[3] <= V2.vector4_f32[3]));
 end;
 
 
 
 function XMVector4InBounds(v: TFXMVECTOR; Bounds: TFXMVECTOR): boolean;
 begin
-    Result := ((v.vector4_f32[0] <= Bounds.vector4_f32[0]) and (v.vector4_f32[0] >= -Bounds.vector4_f32[0]) and
-        (v.vector4_f32[1] <= Bounds.vector4_f32[1]) and (v.vector4_f32[1] >= -Bounds.vector4_f32[1]) and
-        (v.vector4_f32[2] <= Bounds.vector4_f32[2]) and (v.vector4_f32[2] >= -Bounds.vector4_f32[2]) and
-        (v.vector4_f32[3] <= Bounds.vector4_f32[3]) and (v.vector4_f32[3] >= -Bounds.vector4_f32[3]));
+    Result := ((v.vector4_f32[0] <= Bounds.vector4_f32[0]) and (v.vector4_f32[0] >= -Bounds.vector4_f32[0]) and (v.vector4_f32[1] <= Bounds.vector4_f32[1]) and (v.vector4_f32[1] >= -Bounds.vector4_f32[1]) and
+        (v.vector4_f32[2] <= Bounds.vector4_f32[2]) and (v.vector4_f32[2] >= -Bounds.vector4_f32[2]) and (v.vector4_f32[3] <= Bounds.vector4_f32[3]) and (v.vector4_f32[3] >= -Bounds.vector4_f32[3]));
 
 end;
 
@@ -5876,8 +5847,7 @@ end;
 
 function XMVector4Dot(V1: TFXMVECTOR; V2: TFXMVECTOR): TXMVECTOR;
 begin
-    Result.f[0] := V1.vector4_f32[0] * V2.vector4_f32[0] + V1.vector4_f32[1] * V2.vector4_f32[1] + V1.vector4_f32[2] *
-        V2.vector4_f32[2] + V1.vector4_f32[3] * V2.vector4_f32[3];
+    Result.f[0] := V1.vector4_f32[0] * V2.vector4_f32[0] + V1.vector4_f32[1] * V2.vector4_f32[1] + V1.vector4_f32[2] * V2.vector4_f32[2] + V1.vector4_f32[3] * V2.vector4_f32[3];
     Result.f[1] := Result.f[0];
     Result.f[2] := Result.f[0];
     Result.f[3] := Result.f[0];
@@ -5892,18 +5862,14 @@ begin
     // ((v2.y*v3.w-v2.w*v3.y)*v1.x)-((v2.x*v3.w-v2.w*v3.x)*v1.y)+((v2.x*v3.y-v2.y*v3.x)*v1.w),
     // ((v2.z*v3.y-v2.y*v3.z)*v1.x)-((v2.z*v3.x-v2.x*v3.z)*v1.y)+((v2.y*v3.x-v2.x*v3.y)*v1.z) ]
 
-    Result.vector4_f32[0] := (((V2.vector4_f32[2] * V3.vector4_f32[3]) - (V2.vector4_f32[3] * V3.vector4_f32[2])) * V1.vector4_f32[1]) -
-        (((V2.vector4_f32[1] * V3.vector4_f32[3]) - (V2.vector4_f32[3] * V3.vector4_f32[1])) * V1.vector4_f32[2]) +
-        (((V2.vector4_f32[1] * V3.vector4_f32[2]) - (V2.vector4_f32[2] * V3.vector4_f32[1])) * V1.vector4_f32[3]);
-    Result.vector4_f32[1] := (((V2.vector4_f32[3] * V3.vector4_f32[2]) - (V2.vector4_f32[2] * V3.vector4_f32[3])) * V1.vector4_f32[0]) -
-        (((V2.vector4_f32[3] * V3.vector4_f32[0]) - (V2.vector4_f32[0] * V3.vector4_f32[3])) * V1.vector4_f32[2]) +
-        (((V2.vector4_f32[2] * V3.vector4_f32[0]) - (V2.vector4_f32[0] * V3.vector4_f32[2])) * V1.vector4_f32[3]);
-    Result.vector4_f32[2] := (((V2.vector4_f32[1] * V3.vector4_f32[3]) - (V2.vector4_f32[3] * V3.vector4_f32[1])) * V1.vector4_f32[0]) -
-        (((V2.vector4_f32[0] * V3.vector4_f32[3]) - (V2.vector4_f32[3] * V3.vector4_f32[0])) * V1.vector4_f32[1]) +
-        (((V2.vector4_f32[0] * V3.vector4_f32[1]) - (V2.vector4_f32[1] * V3.vector4_f32[0])) * V1.vector4_f32[3]);
-    Result.vector4_f32[3] := (((V2.vector4_f32[2] * V3.vector4_f32[1]) - (V2.vector4_f32[1] * V3.vector4_f32[2])) * V1.vector4_f32[0]) -
-        (((V2.vector4_f32[2] * V3.vector4_f32[0]) - (V2.vector4_f32[0] * V3.vector4_f32[2])) * V1.vector4_f32[1]) +
-        (((V2.vector4_f32[1] * V3.vector4_f32[0]) - (V2.vector4_f32[0] * V3.vector4_f32[1])) * V1.vector4_f32[2]);
+    Result.vector4_f32[0] := (((V2.vector4_f32[2] * V3.vector4_f32[3]) - (V2.vector4_f32[3] * V3.vector4_f32[2])) * V1.vector4_f32[1]) - (((V2.vector4_f32[1] * V3.vector4_f32[3]) -
+        (V2.vector4_f32[3] * V3.vector4_f32[1])) * V1.vector4_f32[2]) + (((V2.vector4_f32[1] * V3.vector4_f32[2]) - (V2.vector4_f32[2] * V3.vector4_f32[1])) * V1.vector4_f32[3]);
+    Result.vector4_f32[1] := (((V2.vector4_f32[3] * V3.vector4_f32[2]) - (V2.vector4_f32[2] * V3.vector4_f32[3])) * V1.vector4_f32[0]) - (((V2.vector4_f32[3] * V3.vector4_f32[0]) -
+        (V2.vector4_f32[0] * V3.vector4_f32[3])) * V1.vector4_f32[2]) + (((V2.vector4_f32[2] * V3.vector4_f32[0]) - (V2.vector4_f32[0] * V3.vector4_f32[2])) * V1.vector4_f32[3]);
+    Result.vector4_f32[2] := (((V2.vector4_f32[1] * V3.vector4_f32[3]) - (V2.vector4_f32[3] * V3.vector4_f32[1])) * V1.vector4_f32[0]) - (((V2.vector4_f32[0] * V3.vector4_f32[3]) -
+        (V2.vector4_f32[3] * V3.vector4_f32[0])) * V1.vector4_f32[1]) + (((V2.vector4_f32[0] * V3.vector4_f32[1]) - (V2.vector4_f32[1] * V3.vector4_f32[0])) * V1.vector4_f32[3]);
+    Result.vector4_f32[3] := (((V2.vector4_f32[2] * V3.vector4_f32[1]) - (V2.vector4_f32[1] * V3.vector4_f32[2])) * V1.vector4_f32[0]) - (((V2.vector4_f32[2] * V3.vector4_f32[0]) -
+        (V2.vector4_f32[0] * V3.vector4_f32[2])) * V1.vector4_f32[1]) + (((V2.vector4_f32[1] * V3.vector4_f32[0]) - (V2.vector4_f32[0] * V3.vector4_f32[1])) * V1.vector4_f32[2]);
 end;
 
 
@@ -6122,20 +6088,15 @@ end;
 
 function XMVector4Transform(v: TFXMVECTOR; m: TFXMMATRIX): TXMVECTOR;
 begin
-    Result.vector4_f32[0] := (m.m[0][0] * v.vector4_f32[0]) + (m.m[1][0] * v.vector4_f32[1]) + (m.m[2][0] * v.vector4_f32[2]) +
-        (m.m[3][0] * v.vector4_f32[3]);
-    Result.vector4_f32[1] := (m.m[0][1] * v.vector4_f32[0]) + (m.m[1][1] * v.vector4_f32[1]) + (m.m[2][1] * v.vector4_f32[2]) +
-        (m.m[3][1] * v.vector4_f32[3]);
-    Result.vector4_f32[2] := (m.m[0][2] * v.vector4_f32[0]) + (m.m[1][2] * v.vector4_f32[1]) + (m.m[2][2] * v.vector4_f32[2]) +
-        (m.m[3][2] * v.vector4_f32[3]);
-    Result.vector4_f32[3] := (m.m[0][3] * v.vector4_f32[0]) + (m.m[1][3] * v.vector4_f32[1]) + (m.m[2][3] * v.vector4_f32[2]) +
-        (m.m[3][3] * v.vector4_f32[3]);
+    Result.vector4_f32[0] := (m.m[0][0] * v.vector4_f32[0]) + (m.m[1][0] * v.vector4_f32[1]) + (m.m[2][0] * v.vector4_f32[2]) + (m.m[3][0] * v.vector4_f32[3]);
+    Result.vector4_f32[1] := (m.m[0][1] * v.vector4_f32[0]) + (m.m[1][1] * v.vector4_f32[1]) + (m.m[2][1] * v.vector4_f32[2]) + (m.m[3][1] * v.vector4_f32[3]);
+    Result.vector4_f32[2] := (m.m[0][2] * v.vector4_f32[0]) + (m.m[1][2] * v.vector4_f32[1]) + (m.m[2][2] * v.vector4_f32[2]) + (m.m[3][2] * v.vector4_f32[3]);
+    Result.vector4_f32[3] := (m.m[0][3] * v.vector4_f32[0]) + (m.m[1][3] * v.vector4_f32[1]) + (m.m[2][3] * v.vector4_f32[2]) + (m.m[3][3] * v.vector4_f32[3]);
 end;
 
 
 
-function XMVector4TransformStream(var pOutputStream: PXMFLOAT4; OutputStride: size_t; const pInputStream: PXMFLOAT4;
-    InputStride: size_t; VectorCount: size_t; m: TFXMMATRIX): PXMFLOAT4;
+function XMVector4TransformStream(var pOutputStream: PXMFLOAT4; OutputStride: size_t; const pInputStream: PXMFLOAT4; InputStride: size_t; VectorCount: size_t; m: TFXMMATRIX): PXMFLOAT4;
 var
     i: integer;
     pInputVector: pbyte;
@@ -6287,6 +6248,20 @@ end;
 constructor TXMFLOAT2.Create(pArray: PSingle);
 begin
     Move(pArray^, self.f[0], 8);
+end;
+
+
+
+class operator TXMFLOAT2.Equal(a: TXMFLOAT2; b: TXMFLOAT2): boolean;
+begin
+    Result := (a.x = b.x) and (a.y = b.y);
+end;
+
+
+
+function TXMFLOAT2.ThreeWayComparison(const a, b: TXMFLOAT2): integer;
+begin
+    // ??? if a<b then result :=-1 else if a>b result:=+1 else result:=0;
 end;
 
 { TXMFLOAT2A }
@@ -7054,9 +7029,42 @@ end;
 function XMMatrixRotationRollPitchYaw(Pitch, Yaw, Roll: single): TXMMATRIX;
 var
     Angles: TXMVECTOR;
+    cp, sp, cy, sy, cr, sr: single;
 begin
+{$if defined(_XM_NO_INTRINSICS_)}
+    cp := cos(Pitch);
+    sp := sin(Pitch);
+
+    cy := cos(Yaw);
+    sy := sin(Yaw);
+
+    cr := cos(Roll);
+    sr := sin(Roll);
+
+
+    Result.m[0][0] := cr * cy + sr * sp * sy;
+    Result.m[0][1] := sr * cp;
+    Result.m[0][2] := sr * sp * cy - cr * sy;
+    Result.m[0][3] := 0.0;
+
+    Result.m[1][0] := cr * sp * sy - sr * cy;
+    Result.m[1][1] := cr * cp;
+    Result.m[1][2] := sr * sy + cr * sp * cy;
+    Result.m[1][3] := 0.0;
+
+    Result.m[2][0] := cp * sy;
+    Result.m[2][1] := -sp;
+    Result.m[2][2] := cp * cy;
+    Result.m[2][3] := 0.0;
+
+    Result.m[3][0] := 0.0;
+    Result.m[3][1] := 0.0;
+    Result.m[3][2] := 0.0;
+    Result.m[3][3] := 1.0;
+{$else}
     Angles := XMVectorSet(Pitch, Yaw, Roll, 0.0);
     Result := XMMatrixRotationRollPitchYawFromVector(Angles);
+{$ENDIF}
 end;
 
 // <Pitch, Yaw, Roll, undefined>
@@ -7064,9 +7072,44 @@ end;
 function XMMatrixRotationRollPitchYawFromVector(Angles: TFXMVECTOR): TXMMATRIX;
 var
     Q: TXMVECTOR;
+    cp, sp, cy, sy, cr, sr: single;
+
 begin
+{$if defined(_XM_NO_INTRINSICS_)}
+    cp := cos(Angles.f[0]);
+    sp := sin(Angles.f[0]);
+
+    cy := cos(Angles.f[1]);
+    sy := sin(Angles.f[1]);
+
+    cr := cos(Angles.f[2]);
+    sr := sin(Angles.f[2]);
+
+
+    Result.m[0][0] := cr * cy + sr * sp * sy;
+    Result.m[0][1] := sr * cp;
+    Result.m[0][2] := sr * sp * cy - cr * sy;
+    Result.m[0][3] := 0.0;
+
+    Result.m[1][0] := cr * sp * sy - sr * cy;
+    Result.m[1][1] := cr * cp;
+    Result.m[1][2] := sr * sy + cr * sp * cy;
+    Result.m[1][3] := 0.0;
+
+    Result.m[2][0] := cp * sy;
+    Result.m[2][1] := -sp;
+    Result.m[2][2] := cp * cy;
+    Result.m[2][3] := 0.0;
+
+    Result.m[3][0] := 0.0;
+    Result.m[3][1] := 0.0;
+    Result.m[3][2] := 0.0;
+    Result.m[3][3] := 1.0;
+
+{$else}
     Q := XMQuaternionRotationRollPitchYawFromVector(Angles);
     Result := XMMatrixRotationQuaternion(Q);
+{$ENDIF}
 end;
 
 
@@ -7131,7 +7174,44 @@ var
     Q0, Q1: TXMVECTOR;
     V0, V1, V2: TXMVECTOR;
     r0, r1, r2: TXMVECTOR;
+    qx, qxx, qy, qyy, qz, qzz, qw: single;
 begin
+    {$if defined(_XM_NO_INTRINSICS_)}
+
+    qx := Quaternion.f[0];
+    qxx := qx * qx;
+
+    qy := Quaternion.f[1];
+    qyy := qy * qy;
+
+    qz := Quaternion.f[2];
+    qzz := qz * qz;
+
+    qw := Quaternion.f[3];
+
+    ;
+    Result.m[0][0] := 1.0 - 2.0 * qyy - 2.0 * qzz;
+    Result.m[0][1] := 2.0 * qx * qy + 2.0 * qz * qw;
+    Result.m[0][2] := 2.0 * qx * qz - 2.0 * qy * qw;
+    Result.m[0][3] := 0.0;
+
+    Result.m[1][0] := 2.0 * qx * qy - 2.0 * qz * qw;
+    Result.m[1][1] := 1.0 - 2.0 * qxx - 2.0 * qzz;
+    Result.m[1][2] := 2.0 * qy * qz + 2.0 * qx * qw;
+    Result.m[1][3] := 0.0;
+
+    Result.m[2][0] := 2.0 * qx * qz + 2.0 * qy * qw;
+    Result.m[2][1] := 2.0 * qy * qz - 2.0 * qx * qw;
+    Result.m[2][2] := 1.0 - 2.0 * qxx - 2.0 * qyy;
+    Result.m[2][3] := 0.0;
+
+    Result.m[3][0] := 0.0;
+    Result.m[3][1] := 0.0;
+    Result.m[3][2] := 0.0;
+    Result.m[3][3] := 1.0;
+
+
+{$elseif defined(_XM_ARM_NEON_INTRINSICS_)}
     Q0 := XMVectorAdd(Quaternion, Quaternion);
     Q1 := XMVectorMultiply(Quaternion, Q0);
 
@@ -7158,12 +7238,12 @@ begin
     Result.r[1] := XMVectorPermute(XM_PERMUTE_1Z, XM_PERMUTE_0Y, XM_PERMUTE_1W, XM_PERMUTE_0W, r0, V0);
     Result.r[2] := XMVectorPermute(XM_PERMUTE_1X, XM_PERMUTE_1Y, XM_PERMUTE_0Z, XM_PERMUTE_0W, r0, V1);
     Result.r[3] := g_XMIdentityR3;
+{$ENDIF}
 end;
 
 
 
-function XMMatrixTransformation2D(ScalingOrigin: TFXMVECTOR; ScalingOrientation: single; Scaling: TFXMVECTOR;
-    RotationOrigin: TFXMVECTOR; Rotation: single; Translation: TGXMVECTOR): TXMMATRIX;
+function XMMatrixTransformation2D(ScalingOrigin: TFXMVECTOR; ScalingOrientation: single; Scaling: TFXMVECTOR; RotationOrigin: TFXMVECTOR; Rotation: single; Translation: TGXMVECTOR): TXMMATRIX;
 var
     VScalingOrigin, NegScalingOrigin: TXMVECTOR;
     MScalingOriginI, MScalingOrientation, MScalingOrientationT: TXMMATRIX;
@@ -7197,8 +7277,7 @@ end;
 
 
 
-function XMMatrixTransformation(ScalingOrigin: TFXMVECTOR; ScalingOrientationQuaternion: TFXMVECTOR; Scaling: TFXMVECTOR;
-    RotationOrigin: TGXMVECTOR; RotationQuaternion: THXMVECTOR; Translation: THXMVECTOR): TXMMATRIX;
+function XMMatrixTransformation(ScalingOrigin: TFXMVECTOR; ScalingOrientationQuaternion: TFXMVECTOR; Scaling: TFXMVECTOR; RotationOrigin: TGXMVECTOR; RotationQuaternion: THXMVECTOR; Translation: THXMVECTOR): TXMMATRIX;
 var
     VScalingOrigin, NegScalingOrigin: TXMVECTOR;
     MScalingOriginI, MScalingOrientation, MScalingOrientationT, MScaling: TXMMATRIX;
@@ -7252,8 +7331,7 @@ end;
 
 
 
-function XMMatrixAffineTransformation(Scaling: TFXMVECTOR; RotationOrigin: TFXMVECTOR; RotationQuaternion: TFXMVECTOR;
-    Translation: TGXMVECTOR): TXMMATRIX;
+function XMMatrixAffineTransformation(Scaling: TFXMVECTOR; RotationOrigin: TFXMVECTOR; RotationQuaternion: TFXMVECTOR; Translation: TGXMVECTOR): TXMMATRIX;
 var
     MScaling, MRotation: TXMMATRIX;
     VRotationOrigin, VTranslation: TXMVECTOR;
@@ -8078,14 +8156,10 @@ begin
     // (Q2.w * Q1.z) + (Q2.x * Q1.y) - (Q2.y * Q1.x) + (Q2.z * Q1.w),
     // (Q2.w * Q1.w) - (Q2.x * Q1.x) - (Q2.y * Q1.y) - (Q2.z * Q1.z) ]
 
-    Result.vector4_f32[0] := (Q2.vector4_f32[3] * Q1.vector4_f32[0]) + (Q2.vector4_f32[0] * Q1.vector4_f32[3]) +
-        (Q2.vector4_f32[1] * Q1.vector4_f32[2]) - (Q2.vector4_f32[2] * Q1.vector4_f32[1]);
-    Result.vector4_f32[1] := (Q2.vector4_f32[3] * Q1.vector4_f32[1]) - (Q2.vector4_f32[0] * Q1.vector4_f32[2]) +
-        (Q2.vector4_f32[1] * Q1.vector4_f32[3]) + (Q2.vector4_f32[2] * Q1.vector4_f32[0]);
-    Result.vector4_f32[2] := (Q2.vector4_f32[3] * Q1.vector4_f32[2]) + (Q2.vector4_f32[0] * Q1.vector4_f32[1]) -
-        (Q2.vector4_f32[1] * Q1.vector4_f32[0]) + (Q2.vector4_f32[2] * Q1.vector4_f32[3]);
-    Result.vector4_f32[3] := (Q2.vector4_f32[3] * Q1.vector4_f32[3]) - (Q2.vector4_f32[0] * Q1.vector4_f32[0]) -
-        (Q2.vector4_f32[1] * Q1.vector4_f32[1]) - (Q2.vector4_f32[2] * Q1.vector4_f32[2]);
+    Result.vector4_f32[0] := (Q2.vector4_f32[3] * Q1.vector4_f32[0]) + (Q2.vector4_f32[0] * Q1.vector4_f32[3]) + (Q2.vector4_f32[1] * Q1.vector4_f32[2]) - (Q2.vector4_f32[2] * Q1.vector4_f32[1]);
+    Result.vector4_f32[1] := (Q2.vector4_f32[3] * Q1.vector4_f32[1]) - (Q2.vector4_f32[0] * Q1.vector4_f32[2]) + (Q2.vector4_f32[1] * Q1.vector4_f32[3]) + (Q2.vector4_f32[2] * Q1.vector4_f32[0]);
+    Result.vector4_f32[2] := (Q2.vector4_f32[3] * Q1.vector4_f32[2]) + (Q2.vector4_f32[0] * Q1.vector4_f32[1]) - (Q2.vector4_f32[1] * Q1.vector4_f32[0]) + (Q2.vector4_f32[2] * Q1.vector4_f32[3]);
+    Result.vector4_f32[3] := (Q2.vector4_f32[3] * Q1.vector4_f32[3]) - (Q2.vector4_f32[0] * Q1.vector4_f32[0]) - (Q2.vector4_f32[1] * Q1.vector4_f32[1]) - (Q2.vector4_f32[2] * Q1.vector4_f32[2]);
 
 end;
 
@@ -8277,8 +8351,7 @@ end;
 
 
 
-procedure XMQuaternionSquadSetup(out pA: TXMVECTOR; out pB: TXMVECTOR; out pC: TXMVECTOR; Q0: TFXMVECTOR; Q1: TFXMVECTOR;
-    Q2: TFXMVECTOR; Q3: TGXMVECTOR);
+procedure XMQuaternionSquadSetup(out pA: TXMVECTOR; out pB: TXMVECTOR; out pC: TXMVECTOR; Q0: TFXMVECTOR; Q1: TFXMVECTOR; Q2: TFXMVECTOR; Q3: TGXMVECTOR);
 var
     LS12, LD12, SQ2, Control1: TXMVECTOR;
     LS01, LD01, SQ0: TXMVECTOR;
@@ -8389,9 +8462,32 @@ end;
 function XMQuaternionRotationRollPitchYaw(Pitch, Yaw, Roll: single): TXMVECTOR;
 var
     Angles: TXMVECTOR;
+    halfpitch, halfyaw, halfroll: single;
+    cp, sp, cy, sy, cr, sr: single;
 begin
+
+    //if defined(_XM_NO_INTRINSICS_)
+    halfpitch := Pitch * 0.5;
+    cp := cos(halfpitch);
+    sp := sin(halfpitch);
+
+    halfyaw := Yaw * 0.5;
+    cy := cos(halfyaw);
+    sy := sin(halfyaw);
+
+    halfroll := Roll * 0.5;
+    cr := cos(halfroll);
+    sr := sin(halfroll);
+
+    Result.f[0] := cr * sp * cy + sr * cp * sy;
+    Result.f[1] := cr * cp * sy - sr * sp * cy;
+    Result.f[2] := sr * cp * cy - cr * sp * sy;
+    Result.f[3] := cr * cp * cy + sr * sp * sy;
+
+    {
     Angles := XMVectorSet(Pitch, Yaw, Roll, 0.0);
     Result := XMQuaternionRotationRollPitchYawFromVector(Angles);
+    }
 end;
 
 // <Pitch, Yaw, Roll, 0>
@@ -8404,8 +8500,30 @@ var
     SinAngles, CosAngles: TXMVECTOR;
     P0, Y0, r0: TXMVECTOR;
     P1, Y1, r1, Q1, Q0: TXMVECTOR;
-begin
 
+    halfpitch, halfyaw, halfroll: single;
+    cp, sp, cy, sy, cr, sr: single;
+begin
+    //if defined(_XM_NO_INTRINSICS_)
+    halfpitch := Angles.f[0] * 0.5;
+    cp := cos(halfpitch);
+    sp := sin(halfpitch);
+
+    halfyaw := Angles.f[1] * 0.5;
+    cy := cos(halfyaw);
+    sy := sin(halfyaw);
+
+    halfroll := Angles.f[2] * 0.5;
+    cr := cos(halfroll);
+    sr := sin(halfroll);
+
+    Result.f[0] := cr * sp * cy + sr * cp * sy;
+    Result.f[1] := cr * cp * sy - sr * sp * cy;
+    Result.f[2] := sr * cp * cy - cr * sp * sy;
+    Result.f[3] := cr * cp * cy + sr * sp * sy;
+
+
+{else
     HalfAngles := XMVectorMultiply(Angles, g_XMOneHalf);
 
     XMVectorSinCos(SinAngles, CosAngles, HalfAngles);
@@ -8421,7 +8539,7 @@ begin
     Q0 := XMVectorMultiply(P0, Y0);
     Q1 := XMVectorMultiply(Q1, Y1);
     Q0 := XMVectorMultiply(Q0, r0);
-    Result := XMVectorMultiplyAdd(Q1, r1, Q0);
+    Result := XMVectorMultiplyAdd(Q1, r1, Q0); }
 end;
 
 
@@ -8692,8 +8810,7 @@ end;
 
 
 
-function XMPlaneTransformStream(var pOutputStream: PXMFLOAT4; OutputStride: size_t; const pInputStream: PXMFLOAT4;
-    InputStride: size_t; PlaneCount: size_t; m: TFXMMATRIX): PXMFLOAT4;
+function XMPlaneTransformStream(var pOutputStream: PXMFLOAT4; OutputStride: size_t; const pInputStream: PXMFLOAT4; InputStride: size_t; PlaneCount: size_t; m: TFXMMATRIX): PXMFLOAT4;
 begin
     Result := XMVector4TransformStream(pOutputStream, OutputStride, pInputStream, InputStride, PlaneCount, m);
 end;
@@ -9656,8 +9773,7 @@ begin
     root := sqrt(omx);
 
     // 7-degree minimax approximation
-    Result := ((((((-0.0012624911 * x + 0.0066700901) * x - 0.0170881256) * x + 0.0308918810) * x - 0.0501743046) * x + 0.0889789874) *
-        x - 0.2145988016) * x + 1.5707963050;
+    Result := ((((((-0.0012624911 * x + 0.0066700901) * x - 0.0170881256) * x + 0.0308918810) * x - 0.0501743046) * x + 0.0889789874) * x - 0.2145988016) * x + 1.5707963050;
     Result := Result * root; // acos(|x|)
 
     // acos(x) = pi - acos(-x) when x < 0, asin(x) = pi/2 - acos(x)
@@ -9710,8 +9826,7 @@ begin
     root := sqrt(omx);
 
     // 7-degree minimax approximation
-    Result := ((((((-0.0012624911 * x + 0.0066700901) * x - 0.0170881256) * x + 0.0308918810) * x - 0.0501743046) * x + 0.0889789874) *
-        x - 0.2145988016) * x + 1.5707963050;
+    Result := ((((((-0.0012624911 * x + 0.0066700901) * x - 0.0170881256) * x + 0.0308918810) * x - 0.0501743046) * x + 0.0889789874) * x - 0.2145988016) * x + 1.5707963050;
     Result := Result * root;
 
     // acos(x) = pi - acos(-x) when x < 0

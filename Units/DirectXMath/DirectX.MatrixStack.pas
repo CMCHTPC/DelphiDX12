@@ -138,7 +138,6 @@ begin
 end;
 
 // Loads identity into the top of the matrix stack.
-
 procedure TMatrixStack.LoadIdentity();
 begin
     m_stack[m_current] := XMMatrixIdentity();
@@ -147,7 +146,6 @@ end;
 
 
 // Load a matrix into the top of the matrix stack.
-
 procedure TMatrixStack.LoadMatrix(matrix: TXMMATRIX);
 begin
     m_stack[m_current] := matrix;

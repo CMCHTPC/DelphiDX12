@@ -33,14 +33,15 @@ type
         );
 
     TPlaneIntersectionType = (
-        FRONT = 0,
-        INTERSECTING = 1,
-        BACK = 2
+        piFRONT = 0,
+        piINTERSECTING = 1,
+        piBACK = 2
         );
 
     PBoundingSphere = ^TBoundingSphere;
     PBoundingBox = ^TBoundingBox;
     PBoundingOrientedBox = ^TBoundingOrientedBox;
+    PBoundingFrustum = ^TBoundingFrustum;
 
 
     //-------------------------------------------------------------------------------------
@@ -54,6 +55,37 @@ type
         // Creators
         class operator Initialize(var t: TBoundingSphere);
         constructor Create(ACenter: TXMFLOAT3; ARadius: single);
+
+        // Methods
+        procedure Transform( _out: PBoundingSphere; M: TFXMMATRIX); overload;
+        procedure Transform(_Out: PBoundingSphere; Scale: single; Rotation: TFXMVECTOR; Translation: TFXMVECTOR); overload;
+        // Transform the sphere
+        function Contains(Point: TFXMVECTOR): TContainmentType; overload;
+        function Contains(V0: TFXMVECTOR; V1: TFXMVECTOR; V2: TFXMVECTOR): TContainmentType; overload;
+        function Contains(sh: PBoundingSphere): TContainmentType; overload;
+        function Contains(box: PBoundingBox): TContainmentType; overload;
+        function Contains(box: PBoundingOrientedBox): TContainmentType; overload;
+        function Contains(fr: PBoundingFrustum): TContainmentType; overload;
+        function Intersects(sh: PBoundingSphere): boolean; overload;
+        function Intersects(box: PBoundingBox): boolean; overload;
+        function Intersects(box: PBoundingOrientedBox): boolean; overload;
+        function Intersects(fr: PBoundingFrustum): boolean; overload;
+        // Triangle-sphere test
+        function Intersects(V0, V1, V2: TFXMVECTOR): boolean; overload;
+        // Plane-sphere test
+        function Intersects(Plane: TFXMVECTOR): TPlaneIntersectionType; overload;
+        // Ray-sphere test
+        function Intersects(Origin, Direction: TFXMVECTOR; var Dist: single): boolean; overload;
+
+        // Test sphere against six planes (see TBoundingFrustum.GetPlanes)
+        function ContainedBy(Plane0, Plane1, Plane2: TFXMVECTOR; Plane3: TGXMVECTOR; Plane4: THXMVECTOR; Plane5: THXMVECTOR): TContainmentType;
+        // Static methods
+        procedure CreateMerged(_Out: PBoundingSphere; S1, S2: PBoundingSphere);
+        procedure CreateFromBoundingBox(_Out: PBoundingSphere; box: PBoundingBox); overload;
+        procedure CreateFromBoundingBox(_Out: PBoundingSphere; box: PBoundingOrientedBox); overload;
+        procedure CreateFromPoints(_Out: PBoundingSphere; Count: size_t;
+        {sizeof(TXMFLOAT3) + Stride * (Count - 1))}const pPoints: PXMFLOAT3; Stride: size_t);
+        procedure CreateFromFrustum(_Out: PBoundingSphere; fr: PBoundingFrustum);
     end;
 
     //-------------------------------------------------------------------------------------
@@ -68,6 +100,42 @@ type
         // Creators
         class operator Initialize(var t: TBoundingBox);
         constructor Create(const ACenter: TXMFLOAT3; const AExtents: TXMFLOAT3);
+
+        // Methods
+        procedure Transform(_Out: PBoundingBox; M: TFXMMATRIX); overload;
+        procedure Transform(_Out: PBoundingBox; Scale: single; Rotation, Translation: TFXMVECTOR); overload;
+        // Gets the 8 corners of the box
+        procedure GetCorners(var Corners: array of TXMFLOAT3);
+
+        function Contains(Point: TFXMVECTOR): TContainmentType; overload;
+        function Contains(V0, V1, V2: TFXMVECTOR): TContainmentType; overload;
+        function Contains(sh: PBoundingSphere): TContainmentType; overload;
+        function Contains(box: PBoundingBox): TContainmentType; overload;
+        function Contains(box: PBoundingOrientedBox): TContainmentType; overload;
+        function Contains(fr: PBoundingFrustum): TContainmentType; overload;
+
+        function Intersects(sh: PBoundingSphere): boolean; overload;
+        function Intersects(box: PBoundingBox): boolean; overload;
+        function Intersects(box: PBoundingOrientedBox): boolean; overload;
+        function Intersects(fr: PBoundingFrustum): boolean; overload;
+
+        // Triangle-Box test
+        function Intersects(V0, V1, V2: TFXMVECTOR): boolean; overload;
+
+        // Plane-box test
+        function Intersects(Plane: TFXMVECTOR): TPlaneIntersectionType; overload;
+
+        // Ray-Box test
+        function Intersects(Origin, Direction: TFXMVECTOR; var Dist: single): boolean; overload;
+
+        // Test box against six planes (see TBoundingFrustum.GetPlanes)
+        function ContainedBy(Plane0, Plane1, Plane2: TFXMVECTOR; Plane3: TGXMVECTOR; Plane4, Plane5: THXMVECTOR): TContainmentType;
+
+        // Static methods
+        procedure CreateMerged(_Out: PBoundingBox; b1, b2: PBoundingBox);
+        procedure CreateFromSphere(_Out: PBoundingBox; sh: PBoundingSphere);
+        procedure CreateFromPoints(_Out: PBoundingBox; pt1, pt2: TFXMVECTOR); overload;
+        procedure CreateFromPoints(_Out: PBoundingBox; Count: size_t; constref pPoints: PXMFLOAT3; Stride: size_t); overload;
     end;
 
     //-------------------------------------------------------------------------------------
@@ -83,6 +151,35 @@ type
         // Creators
         class operator Initialize(var t: TBoundingOrientedBox);
         constructor Create(constref ACenter: TXMFLOAT3; constref AExtents: TXMFLOAT3; constref AOrientation: TXMFLOAT4);
+
+        // Methods
+        procedure Transform(var _Out: TBoundingOrientedBox; M: TFXMMATRIX); overload;
+        procedure Transform(var _Out: TBoundingOrientedBox; Scale: single; Rotation, Translation: TFXMVECTOR); overload;
+        // Gets the 8 corners of the box
+        procedure GetCorners(var Corners: array of TXMFLOAT3);
+
+        function Contains(Point: TFXMVECTOR): TContainmentType; overload;
+        function Contains(V0, V1, V2: TFXMVECTOR): TContainmentType; overload;
+        function Contains(sh: PBoundingSphere): TContainmentType; overload;
+        function Contains(box: PBoundingBox): TContainmentType; overload;
+        function Contains(box: PBoundingOrientedBox): TContainmentType; overload;
+        function Contains(fr: PBoundingFrustum): TContainmentType; overload;
+
+        function Intersects(sh: PBoundingSphere): boolean; overload;
+        function Intersects(box: PBoundingBox): boolean; overload;
+        function Intersects(box: PBoundingOrientedBox): boolean; overload;
+        function Intersects(fr: PBoundingFrustum): boolean; overload;
+        // Triangle-OrientedBox test
+        function Intersects(V0, V1, V2: TFXMVECTOR): boolean; overload;
+        // Plane-OrientedBox test
+        function Intersects(Plane: TFXMVECTOR): TPlaneIntersectionType; overload;
+        // Ray-OrientedBox test
+        function Intersects(Origin, Direction: TFXMVECTOR; var Dist: single): boolean; overload;
+        // Test OrientedBox against six planes (see TBoundingFrustum.GetPlanes)
+        function ContainedBy(Plane0, Plane1, Plane2: TFXMVECTOR; Plane3: TGXMVECTOR; Plane4, Plane5: THXMVECTOR): TContainmentType;
+        // Static methods
+        procedure CreateFromBoundingBox(_Out: PBoundingOrientedBox; box: PBoundingBox);
+        procedure CreateFromPoints(_Out: PBoundingOrientedBox; Count: size_t; constref pPoints: PXMFLOAT3; Stride: size_t);
     end;
 
     //-------------------------------------------------------------------------------------
@@ -102,156 +199,29 @@ type
         _Near, _Far: single;            // Z of the near plane and far plane.
         // Creators
         class operator Initialize(var t: TBoundingFrustum);
-        constructor Create(constref _Origin: TXMFLOAT3; constref _Orientation: TXMFLOAT4;
-            _RightSlope, _LeftSlope, _TopSlope, _BottomSlope, ANear, AFar: single); overload;
+        constructor Create(constref _Origin: TXMFLOAT3; constref _Orientation: TXMFLOAT4; _RightSlope, _LeftSlope, _TopSlope, _BottomSlope, NearPlane, FarPlane: single); overload;
         constructor Create(Projection: TCXMMATRIX; rhcoords: boolean = False); overload;
         // Static methods
-        procedure CreateFromMatrix(var _Out: TBoundingFrustum; Projection: TFXMMATRIX; rhcoords: boolean = False);
-    end;
+        procedure CreateFromMatrix(_Out: PBoundingFrustum; Projection: TFXMMATRIX; rhcoords: boolean = False);
 
-    //-------------------------------------------------------------------------------------
-    // Bounding sphere
-    //-------------------------------------------------------------------------------------
-
-    { TBoundingSphereHelper }
-
-    TBoundingSphereHelper = record helper for TBoundingSphere
         // Methods
-        procedure Transform(var _out: TBoundingSphere; M: TFXMMATRIX); overload;
-        procedure Transform(var _Out: TBoundingSphere; Scale: single; Rotation: TFXMVECTOR; Translation: TFXMVECTOR); overload;
-        // Transform the sphere
-        function Contains(Point: TFXMVECTOR): TContainmentType; overload;
-        function Contains(V0: TFXMVECTOR; V1: TFXMVECTOR; V2: TFXMVECTOR): TContainmentType; overload;
-        function Contains(constref sh: TBoundingSphere): TContainmentType; overload;
-        function Contains(constref box: TBoundingBox): TContainmentType; overload;
-        function Contains(constref box: TBoundingOrientedBox): TContainmentType; overload;
-        function Contains(constref fr: TBoundingFrustum): TContainmentType; overload;
-        function Intersects(constref sh: TBoundingSphere): boolean; overload;
-        function Intersects(constref box: TBoundingBox): boolean; overload;
-        function Intersects(constref box: TBoundingOrientedBox): boolean; overload;
-        function Intersects(constref fr: TBoundingFrustum): boolean; overload;
-        // Triangle-sphere test
-        function Intersects(V0, V1, V2: TFXMVECTOR): boolean; overload;
-        // Plane-sphere test
-        function Intersects(Plane: TFXMVECTOR): TPlaneIntersectionType; overload;
-        // Ray-sphere test
-        function Intersects(Origin, Direction: TFXMVECTOR; var Dist: single): boolean; overload;
-
-        // Test sphere against six planes (see TBoundingFrustum.GetPlanes)
-        function ContainedBy(Plane0, Plane1, Plane2: TFXMVECTOR; Plane3: TGXMVECTOR; Plane4: THXMVECTOR;
-            Plane5: THXMVECTOR): TContainmentType;
-        // Static methods
-        procedure CreateMerged(var _Out: TBoundingSphere; constref S1, S2: TBoundingSphere);
-        procedure CreateFromBoundingBox(var _Out: TBoundingSphere; constref box: TBoundingBox); overload;
-        procedure CreateFromBoundingBox(var _Out: TBoundingSphere; constref box: TBoundingOrientedBox); overload;
-        procedure CreateFromPoints(var _Out: TBoundingSphere; Count: size_t;
-        {sizeof(TXMFLOAT3) + Stride * (Count - 1))}const pPoints: PXMFLOAT3; Stride: size_t);
-        procedure CreateFromFrustum(var _Out: TBoundingSphere; constref fr: TBoundingFrustum);
-    end;
-
-    { TBoundingBoxHelper }
-
-    TBoundingBoxHelper = record helper for TBoundingBox
-        // Methods
-        procedure Transform(var _Out: TBoundingBox; M: TFXMMATRIX); overload;
-        procedure Transform(var _Out: TBoundingBox; Scale: single; Rotation, Translation: TFXMVECTOR); overload;
-        // Gets the 8 corners of the box
-        procedure GetCorners(var Corners: array of TXMFLOAT3);
-
-        function Contains(Point: TFXMVECTOR): TContainmentType; overload;
-        function Contains(V0, V1, V2: TFXMVECTOR): TContainmentType; overload;
-        function Contains(constref sh: TBoundingSphere): TContainmentType; overload;
-        function Contains(constref box: TBoundingBox): TContainmentType; overload;
-        function Contains(constref box: TBoundingOrientedBox): TContainmentType; overload;
-        function Contains(constref fr: TBoundingFrustum): TContainmentType; overload;
-
-        function Intersects(constref sh: TBoundingSphere): boolean; overload;
-        function Intersects(constref box: TBoundingBox): boolean; overload;
-        function Intersects(constref box: TBoundingOrientedBox): boolean; overload;
-        function Intersects(constref fr: TBoundingFrustum): boolean; overload;
-
-        // Triangle-Box test
-        function Intersects(V0, V1, V2: TFXMVECTOR): boolean; overload;
-
-        // Plane-box test
-        function Intersects(Plane: TFXMVECTOR): TPlaneIntersectionType; overload;
-
-        // Ray-Box test
-        function Intersects(Origin, Direction: TFXMVECTOR; var Dist: single): boolean; overload;
-
-        // Test box against six planes (see TBoundingFrustum.GetPlanes)
-        function ContainedBy(Plane0, Plane1, Plane2: TFXMVECTOR; Plane3: TGXMVECTOR; Plane4, Plane5: THXMVECTOR): TContainmentType;
-
-        // Static methods
-        procedure CreateMerged(var _Out: TBoundingBox; constref b1, b2: TBoundingBox);
-        procedure CreateFromSphere(var _Out: TBoundingBox; constref sh: TBoundingSphere);
-        procedure CreateFromPoints(var _Out: TBoundingBox; pt1, pt2: TFXMVECTOR); overload;
-        procedure CreateFromPoints(var _Out: TBoundingBox; Count: size_t; constref pPoints: PXMFLOAT3; Stride: size_t); overload;
-    end;
-
-    //-------------------------------------------------------------------------------------
-    // Oriented bounding box
-    //-------------------------------------------------------------------------------------
-
-    { TBoundingOrientedBoxHelper }
-
-    TBoundingOrientedBoxHelper = record helper for TBoundingOrientedBox
-        // Methods
-        procedure Transform(var _Out: TBoundingOrientedBox; M: TFXMMATRIX); overload;
-        procedure Transform(var _Out: TBoundingOrientedBox; Scale: single; Rotation, Translation: TFXMVECTOR); overload;
-        // Gets the 8 corners of the box
-        procedure GetCorners(var Corners: array of TXMFLOAT3);
-
-        function Contains(Point: TFXMVECTOR): TContainmentType; overload;
-        function Contains(V0, V1, V2: TFXMVECTOR): TContainmentType; overload;
-        function Contains(constref sh: TBoundingSphere): TContainmentType; overload;
-        function Contains(constref box: TBoundingBox): TContainmentType; overload;
-        function Contains(constref box: TBoundingOrientedBox): TContainmentType; overload;
-        function Contains(constref fr: TBoundingFrustum): TContainmentType; overload;
-
-        function Intersects(constref sh: TBoundingSphere): boolean; overload;
-        function Intersects(constref box: TBoundingBox): boolean; overload;
-        function Intersects(constref box: TBoundingOrientedBox): boolean; overload;
-        function Intersects(constref fr: TBoundingFrustum): boolean; overload;
-        // Triangle-OrientedBox test
-        function Intersects(V0, V1, V2: TFXMVECTOR): boolean; overload;
-        // Plane-OrientedBox test
-        function Intersects(Plane: TFXMVECTOR): TPlaneIntersectionType; overload;
-        // Ray-OrientedBox test
-        function Intersects(Origin, Direction: TFXMVECTOR; var Dist: single): boolean; overload;
-        // Test OrientedBox against six planes (see TBoundingFrustum.GetPlanes)
-        function ContainedBy(Plane0, Plane1, Plane2: TFXMVECTOR; Plane3: TGXMVECTOR; Plane4, Plane5: THXMVECTOR): TContainmentType;
-        // Static methods
-        procedure CreateFromBoundingBox(var _Out: TBoundingOrientedBox; constref box: TBoundingBox);
-        procedure CreateFromPoints(var _Out: TBoundingOrientedBox; Count: size_t; constref pPoints: PXMFLOAT3; Stride: size_t);
-    end;
-
-
-    //-------------------------------------------------------------------------------------
-    // Bounding frustum
-    //-------------------------------------------------------------------------------------
-
-    { TBoundingFrustumHelper }
-
-    TBoundingFrustumHelper = record helper for TBoundingFrustum
-        // Methods
-        procedure Transform(var _Out: TBoundingFrustum; M: TFXMMATRIX); overload;
-        procedure Transform(var _Out: TBoundingFrustum; Scale: single; Rotation, Translation: TFXMVECTOR); overload;
+        procedure Transform(_Out: PBoundingFrustum; M: TFXMMATRIX); overload;
+        procedure Transform(_Out: PBoundingFrustum; Scale: single; Rotation, Translation: TFXMVECTOR); overload;
         // Gets the 8 corners of the frustum
         procedure GetCorners(var Corners: array of TXMFLOAT3);
 
         function Contains(Point: TFXMVECTOR): TContainmentType; overload;
         function Contains(V0, V1, V2: TFXMVECTOR): TContainmentType; overload;
-        function Contains(constref sh: TBoundingSphere): TContainmentType; overload;
-        function Contains(constref box: TBoundingBox): TContainmentType; overload;
-        function Contains(constref box: TBoundingOrientedBox): TContainmentType; overload;
+        function Contains(sh: PBoundingSphere): TContainmentType; overload;
+        function Contains(box: PBoundingBox): TContainmentType; overload;
+        function Contains(box: PBoundingOrientedBox): TContainmentType; overload;
         // Frustum-Frustum test
-        function Contains(constref fr: TBoundingFrustum): TContainmentType; overload;
+        function Contains(fr: PBoundingFrustum): TContainmentType; overload;
 
-        function Intersects(constref sh: TBoundingSphere): boolean; overload;
-        function Intersects(constref box: TBoundingBox): boolean; overload;
-        function Intersects(constref box: TBoundingOrientedBox): boolean; overload;
-        function Intersects(constref fr: TBoundingFrustum): boolean; overload;
+        function Intersects(sh: PBoundingSphere): boolean; overload;
+        function Intersects(box: PBoundingBox): boolean; overload;
+        function Intersects(box: PBoundingOrientedBox): boolean; overload;
+        function Intersects(fr: PBoundingFrustum): boolean; overload;
         // Triangle-Frustum test
         function Intersects(V0, V1, V2: TFXMVECTOR): boolean; overload;
         // Plane-Frustum test
@@ -264,6 +234,7 @@ type
         procedure GetPlanes(var NearPlane, FarPlane, RightPlane, LeftPlane, TopPlane, BottomPlane: TXMVECTOR);
     end;
 
+
 //-----------------------------------------------------------------------------
 // Triangle intersection testing routines.
 //-----------------------------------------------------------------------------
@@ -275,8 +246,7 @@ function TriangleTests_Intersects(A0, A1, A2: TFXMVECTOR; B0: TGXMVECTOR; B1, B2
 // Plane-Triangle
 function TriangleTests_Intersects(V0, V1, V2: TFXMVECTOR; Plane: TGXMVECTOR): TPlaneIntersectionType; overload;
 // Test a triangle against six planes at once (see TBoundingFrustum.GetPlanes)
-function TriangleTests_ContainedBy(V0, V1, V2: TFXMVECTOR; Plane0: TGXMVECTOR; Plane1, Plane2: THXMVECTOR;
-    Plane3, Plane4, Plane5: TCXMVECTOR): TContainmentType;
+function TriangleTests_ContainedBy(V0, V1, V2: TFXMVECTOR; Plane0: TGXMVECTOR; Plane1, Plane2: THXMVECTOR; Plane3, Plane4, Plane5: TCXMVECTOR): TContainmentType;
 
 implementation
 
@@ -765,8 +735,7 @@ end;
 
 //-----------------------------------------------------------------------------
 
-procedure FastIntersectOrientedBoxPlane(Center, Extents, Axis0: TFXMVECTOR; Axis1: TGXMVECTOR; Axis2, Plane: THXMVECTOR;
-    var Outside, Inside: TXMVECTOR);
+procedure FastIntersectOrientedBoxPlane(Center, Extents, Axis0: TFXMVECTOR; Axis1: TGXMVECTOR; Axis2, Plane: THXMVECTOR; var Outside, Inside: TXMVECTOR);
 var
     Dist: TXMVECTOR;
     Radius: TXMVECTOR;
@@ -793,8 +762,7 @@ end;
 
 //-----------------------------------------------------------------------------
 
-procedure FastIntersectFrustumPlane(Point0, Point1, Point2: TFXMVECTOR; Point3: TGXMVECTOR; Point4, Point5: THXMVECTOR;
-    Point6, Point7, Plane: TCXMVECTOR; var Outside, Inside: TXMVECTOR);
+procedure FastIntersectFrustumPlane(Point0, Point1, Point2: TFXMVECTOR; Point3: TGXMVECTOR; Point4, Point5: THXMVECTOR; Point6, Point7, Plane: TCXMVECTOR; var Outside, Inside: TXMVECTOR);
 var
     Min, Max, Dist: TXMVECTOR;
     PlaneDist: TXMVECTOR;
@@ -1018,14 +986,14 @@ begin
 
     // Ensure robustness with co-planar triangles by zeroing small distances.
 
-    BDistIsZero := XMVectorGreaterR(&BDistIsZeroCR, g_RayEpsilon, XMVectorAbs(BDist));
+    BDistIsZero := XMVectorGreaterR(BDistIsZeroCR, g_RayEpsilon, XMVectorAbs(BDist));
     BDist := XMVectorSelect(BDist, Zero, BDistIsZero);
 
 
-    BDistIsLess := XMVectorGreaterR(&BDistIsLessCR, Zero, BDist);
+    BDistIsLess := XMVectorGreaterR(BDistIsLessCR, Zero, BDist);
 
 
-    BDistIsGreater := XMVectorGreaterR(&BDistIsGreaterCR, BDist, Zero);
+    BDistIsGreater := XMVectorGreaterR(BDistIsGreaterCR, BDist, Zero);
 
     // If all the points are on the same side we don't intersect.
     if (XMComparisonAllTrue(BDistIsLessCR) or XMComparisonAllTrue(BDistIsGreaterCR)) then
@@ -1167,8 +1135,7 @@ begin
 
 
 
-    if (XMVector3AllTrue(XMVectorSelect(ADistIsGreaterEqual, ADistIsLess, Select0111)) or XMVector3AllTrue(
-        XMVectorSelect(ADistIsGreater, ADistIsLessEqual, Select0111))) then
+    if (XMVector3AllTrue(XMVectorSelect(ADistIsGreaterEqual, ADistIsLess, Select0111)) or XMVector3AllTrue(XMVectorSelect(ADistIsGreater, ADistIsLessEqual, Select0111))) then
     begin
         // A0 is singular, crossing from positive to negative.
         AA0 := A0;
@@ -1176,8 +1143,7 @@ begin
         AA2 := A2;
         bPositiveA := True;
     end
-    else if (XMVector3AllTrue(XMVectorSelect(ADistIsLessEqual, ADistIsGreater, Select0111)) or
-        XMVector3AllTrue(XMVectorSelect(ADistIsLess, ADistIsGreaterEqual, Select0111))) then
+    else if (XMVector3AllTrue(XMVectorSelect(ADistIsLessEqual, ADistIsGreater, Select0111)) or XMVector3AllTrue(XMVectorSelect(ADistIsLess, ADistIsGreaterEqual, Select0111))) then
     begin
         // A0 is singular, crossing from negative to positive.
         AA0 := A0;
@@ -1185,8 +1151,7 @@ begin
         AA2 := A1;
         bPositiveA := False;
     end
-    else if (XMVector3AllTrue(XMVectorSelect(ADistIsGreaterEqual, ADistIsLess, Select1011)) or
-        XMVector3AllTrue(XMVectorSelect(ADistIsGreater, ADistIsLessEqual, Select1011))) then
+    else if (XMVector3AllTrue(XMVectorSelect(ADistIsGreaterEqual, ADistIsLess, Select1011)) or XMVector3AllTrue(XMVectorSelect(ADistIsGreater, ADistIsLessEqual, Select1011))) then
     begin
         // A1 is singular, crossing from positive to negative.
         AA0 := A1;
@@ -1194,8 +1159,7 @@ begin
         AA2 := A0;
         bPositiveA := True;
     end
-    else if (XMVector3AllTrue(XMVectorSelect(ADistIsLessEqual, ADistIsGreater, Select1011)) or
-        XMVector3AllTrue(XMVectorSelect(ADistIsLess, ADistIsGreaterEqual, Select1011))) then
+    else if (XMVector3AllTrue(XMVectorSelect(ADistIsLessEqual, ADistIsGreater, Select1011)) or XMVector3AllTrue(XMVectorSelect(ADistIsLess, ADistIsGreaterEqual, Select1011))) then
     begin
         // A1 is singular, crossing from negative to positive.
         AA0 := A1;
@@ -1203,8 +1167,7 @@ begin
         AA2 := A2;
         bPositiveA := False;
     end
-    else if (XMVector3AllTrue(XMVectorSelect(ADistIsGreaterEqual, ADistIsLess, Select1101)) or
-        XMVector3AllTrue(XMVectorSelect(ADistIsGreater, ADistIsLessEqual, Select1101))) then
+    else if (XMVector3AllTrue(XMVectorSelect(ADistIsGreaterEqual, ADistIsLess, Select1101)) or XMVector3AllTrue(XMVectorSelect(ADistIsGreater, ADistIsLessEqual, Select1101))) then
     begin
         // A2 is singular, crossing from positive to negative.
         AA0 := A2;
@@ -1212,8 +1175,7 @@ begin
         AA2 := A1;
         bPositiveA := True;
     end
-    else if (XMVector3AllTrue(XMVectorSelect(ADistIsLessEqual, ADistIsGreater, Select1101)) or
-        XMVector3AllTrue(XMVectorSelect(ADistIsLess, ADistIsGreaterEqual, Select1101))) then
+    else if (XMVector3AllTrue(XMVectorSelect(ADistIsLessEqual, ADistIsGreater, Select1101)) or XMVector3AllTrue(XMVectorSelect(ADistIsLess, ADistIsGreaterEqual, Select1101))) then
     begin
         // A2 is singular, crossing from negative to positive.
         AA0 := A2;
@@ -1236,8 +1198,7 @@ begin
 
 
 
-    if (XMVector3AllTrue(XMVectorSelect(BDistIsGreaterEqual, BDistIsLess, Select0111)) or XMVector3AllTrue(
-        XMVectorSelect(BDistIsGreater, BDistIsLessEqual, Select0111))) then
+    if (XMVector3AllTrue(XMVectorSelect(BDistIsGreaterEqual, BDistIsLess, Select0111)) or XMVector3AllTrue(XMVectorSelect(BDistIsGreater, BDistIsLessEqual, Select0111))) then
     begin
         // B0 is singular, crossing from positive to negative.
         BB0 := B0;
@@ -1245,8 +1206,7 @@ begin
         BB2 := B2;
         bPositiveB := True;
     end
-    else if (XMVector3AllTrue(XMVectorSelect(BDistIsLessEqual, BDistIsGreater, Select0111)) or
-        XMVector3AllTrue(XMVectorSelect(BDistIsLess, BDistIsGreaterEqual, Select0111))) then
+    else if (XMVector3AllTrue(XMVectorSelect(BDistIsLessEqual, BDistIsGreater, Select0111)) or XMVector3AllTrue(XMVectorSelect(BDistIsLess, BDistIsGreaterEqual, Select0111))) then
     begin
         // B0 is singular, crossing from negative to positive.
         BB0 := B0;
@@ -1254,8 +1214,7 @@ begin
         BB2 := B1;
         bPositiveB := False;
     end
-    else if (XMVector3AllTrue(XMVectorSelect(BDistIsGreaterEqual, BDistIsLess, Select1011)) or
-        XMVector3AllTrue(XMVectorSelect(BDistIsGreater, BDistIsLessEqual, Select1011))) then
+    else if (XMVector3AllTrue(XMVectorSelect(BDistIsGreaterEqual, BDistIsLess, Select1011)) or XMVector3AllTrue(XMVectorSelect(BDistIsGreater, BDistIsLessEqual, Select1011))) then
     begin
         // B1 is singular, crossing from positive to negative.
         BB0 := B1;
@@ -1263,8 +1222,7 @@ begin
         BB2 := B0;
         bPositiveB := True;
     end
-    else if (XMVector3AllTrue(XMVectorSelect(BDistIsLessEqual, BDistIsGreater, Select1011)) or
-        XMVector3AllTrue(XMVectorSelect(BDistIsLess, BDistIsGreaterEqual, Select1011))) then
+    else if (XMVector3AllTrue(XMVectorSelect(BDistIsLessEqual, BDistIsGreater, Select1011)) or XMVector3AllTrue(XMVectorSelect(BDistIsLess, BDistIsGreaterEqual, Select1011))) then
     begin
         // B1 is singular, crossing from negative to positive.
         BB0 := B1;
@@ -1272,8 +1230,7 @@ begin
         BB2 := B2;
         bPositiveB := False;
     end
-    else if (XMVector3AllTrue(XMVectorSelect(BDistIsGreaterEqual, BDistIsLess, Select1101)) or
-        XMVector3AllTrue(XMVectorSelect(BDistIsGreater, BDistIsLessEqual, Select1101))) then
+    else if (XMVector3AllTrue(XMVectorSelect(BDistIsGreaterEqual, BDistIsLess, Select1101)) or XMVector3AllTrue(XMVectorSelect(BDistIsGreater, BDistIsLessEqual, Select1101))) then
     begin
         // B2 is singular, crossing from positive to negative.
         BB0 := B2;
@@ -1281,8 +1238,7 @@ begin
         BB2 := B1;
         bPositiveB := True;
     end
-    else if (XMVector3AllTrue(XMVectorSelect(BDistIsLessEqual, BDistIsGreater, Select1101)) or
-        XMVector3AllTrue(XMVectorSelect(BDistIsLess, BDistIsGreaterEqual, Select1101))) then
+    else if (XMVector3AllTrue(XMVectorSelect(BDistIsLessEqual, BDistIsGreater, Select1101)) or XMVector3AllTrue(XMVectorSelect(BDistIsLess, BDistIsGreaterEqual, Select1101))) then
     begin
         // B2 is singular, crossing from negative to positive.
         BB0 := B2;
@@ -1354,21 +1310,20 @@ begin
 
     // If the triangle is outside any plane it is outside.
     if (XMVector4EqualInt(Outside, XMVectorTrueInt())) then
-        Result := FRONT
+        Result := piFRONT
     // If the triangle is inside all planes it is inside.
     else if (XMVector4EqualInt(Inside, XMVectorTrueInt())) then
-        Result := BACK
+        Result := piBACK
     // The triangle is not inside all planes or outside a plane it intersects.
     else
-        Result := INTERSECTING;
+        Result := piINTERSECTING;
 end;
 
 
 //-----------------------------------------------------------------------------
 // Test a triangle vs 6 planes (typically forming a frustum).
 //-----------------------------------------------------------------------------
-function TriangleTests_ContainedBy(V0, V1, V2: TFXMVECTOR; Plane0: TGXMVECTOR; Plane1, Plane2: THXMVECTOR;
-    Plane3, Plane4, Plane5: TCXMVECTOR): TContainmentType;
+function TriangleTests_ContainedBy(V0, V1, V2: TFXMVECTOR; Plane0: TGXMVECTOR; Plane1, Plane2: THXMVECTOR; Plane3, Plane4, Plane5: TCXMVECTOR): TContainmentType;
 var
     One: TXMVECTOR;
     TV0, TV1, TV2: TXMVECTOR;
@@ -1454,7 +1409,7 @@ end;
 // Transform a sphere by an angle preserving transform.
 //-----------------------------------------------------------------------------
 
-procedure TBoundingSphereHelper.Transform(var _out: TBoundingSphere; M: TFXMMATRIX);
+procedure TBoundingSphere.Transform( _out: PBoundingSphere; M: TFXMMATRIX);
 var
     vCenter: TXMVECTOR;
     C, dX, dY, dZ, d: TXMVECTOR;
@@ -1482,7 +1437,7 @@ end;
 
 
 
-procedure TBoundingSphereHelper.Transform(var _Out: TBoundingSphere; Scale: single; Rotation: TFXMVECTOR; Translation: TFXMVECTOR);
+procedure TBoundingSphere.Transform( _Out: PBoundingSphere; Scale: single; Rotation: TFXMVECTOR; Translation: TFXMVECTOR);
 var
     vCenter: TXMVECTOR;
 begin
@@ -1506,7 +1461,7 @@ end;
 //-----------------------------------------------------------------------------
 
 
-function TBoundingSphereHelper.Contains(Point: TFXMVECTOR): TContainmentType;
+function TBoundingSphere.Contains(Point: TFXMVECTOR): TContainmentType;
 var
     vCenter: TXMVECTOR;
     vRadius: TXMVECTOR;
@@ -1530,7 +1485,7 @@ end;
 // Triangle in sphere test
 //-----------------------------------------------------------------------------
 
-function TBoundingSphereHelper.Contains(V0: TFXMVECTOR; V1: TFXMVECTOR; V2: TFXMVECTOR): TContainmentType;
+function TBoundingSphere.Contains(V0: TFXMVECTOR; V1: TFXMVECTOR; V2: TFXMVECTOR): TContainmentType;
 var
     vCenter, vRadius, RadiusSquared: TXMVECTOR;
     DistanceSquared, Inside: TXMVECTOR;
@@ -1564,7 +1519,7 @@ end;
 //-----------------------------------------------------------------------------
 // Sphere in sphere test.
 //-----------------------------------------------------------------------------
-function TBoundingSphereHelper.Contains(constref sh: TBoundingSphere): TContainmentType;
+function TBoundingSphere.Contains(sh: PBoundingSphere): TContainmentType;
 var
     Center1, Center2, V, Dist: TXMVECTOR;
     r1, r2, d: single;
@@ -1595,25 +1550,25 @@ end;
 //-----------------------------------------------------------------------------
 // Axis-aligned box in sphere test
 //-----------------------------------------------------------------------------
-function TBoundingSphereHelper.Contains(constref box: TBoundingBox): TContainmentType;
+function TBoundingSphere.Contains(box: PBoundingBox): TContainmentType;
 var
     vCenter, vRadius, RadiusSq: TXMVECTOR;
     boxCenter, boxExtents, InsideAll, offset: TXMVECTOR;
     i: integer;
     c, d: TXMVECTOR;
 begin
-    if (not box.Intersects(self)) then
+    if (not box.Intersects(PBoundingSphere(@self))) then
     begin
         Result := ctDISJOINT;
         Exit;
     end;
 
-    vCenter := XMLoadFloat3(&Center);
+    vCenter := XMLoadFloat3(Center);
     vRadius := XMVectorReplicatePtr(@Radius);
     RadiusSq := XMVectorMultiply(vRadius, vRadius);
 
-    boxCenter := XMLoadFloat3(&box.Center);
-    boxExtents := XMLoadFloat3(&box.Extents);
+    boxCenter := XMLoadFloat3(box.Center);
+    boxExtents := XMLoadFloat3(box.Extents);
 
     InsideAll := XMVectorTrueInt();
 
@@ -1636,7 +1591,7 @@ end;
 //-----------------------------------------------------------------------------
 // Oriented box in sphere test
 //-----------------------------------------------------------------------------
-function TBoundingSphereHelper.Contains(constref box: TBoundingOrientedBox): TContainmentType;
+function TBoundingSphere.Contains(box: PBoundingOrientedBox): TContainmentType;
 var
     vCenter, vRadius, RadiusSq: TXMVECTOR;
     boxCenter, boxExtents, boxOrientation: TXMVECTOR;
@@ -1644,13 +1599,13 @@ var
     i: integer;
     C, d: TXMVECTOR;
 begin
-    if (not box.Intersects(self)) then
+    if (not box.Intersects(PBoundingSphere(@self))) then
     begin
         Result := ctDISJOINT;
         exit;
     end;
 
-    vCenter := XMLoadFloat3(&Center);
+    vCenter := XMLoadFloat3(Center);
     vRadius := XMVectorReplicatePtr(@Radius);
     RadiusSq := XMVectorMultiply(vRadius, vRadius);
 
@@ -1679,7 +1634,7 @@ end;
 //-----------------------------------------------------------------------------
 // Frustum in sphere test
 //-----------------------------------------------------------------------------
-function TBoundingSphereHelper.Contains(constref fr: TBoundingFrustum): TContainmentType;
+function TBoundingSphere.Contains(fr: PBoundingFrustum): TContainmentType;
 var
     vCenter, vRadius, RadiusSq: TXMVECTOR;
     vOrigin, vOrientation: TXMVECTOR;
@@ -1688,13 +1643,13 @@ var
     InsideAll, C, d: TXMVECTOR;
     i: integer;
 begin
-    if (not fr.Intersects(self)) then
+    if (not fr.Intersects(PBoundingSphere(@self))) then
     begin
         Result := ctDISJOINT;
         exit;
     end;
 
-    vCenter := XMLoadFloat3(&Center);
+    vCenter := XMLoadFloat3(Center);
     vRadius := XMVectorReplicatePtr(@Radius);
     RadiusSq := XMVectorMultiply(vRadius, vRadius);
 
@@ -1741,15 +1696,14 @@ end;
 //-----------------------------------------------------------------------------
 // Test a sphere vs 6 planes (typically forming a frustum).
 //-----------------------------------------------------------------------------
-function TBoundingSphereHelper.ContainedBy(Plane0, Plane1, Plane2: TFXMVECTOR; Plane3: TGXMVECTOR; Plane4: THXMVECTOR;
-    Plane5: THXMVECTOR): TContainmentType;
+function TBoundingSphere.ContainedBy(Plane0, Plane1, Plane2: TFXMVECTOR; Plane3: TGXMVECTOR; Plane4: THXMVECTOR; Plane5: THXMVECTOR): TContainmentType;
 var
     vCenter, vRadius: TXMVECTOR;
     Outside, Inside: TXMVECTOR;
     AnyOutside, AllInside: TXMVECTOR;
 begin
     // Load the sphere.
-    vCenter := XMLoadFloat3(&Center);
+    vCenter := XMLoadFloat3(Center);
     vRadius := XMVectorReplicatePtr(@Radius);
 
     // Set w of the center to one so we can dot4 with a plane.
@@ -1799,7 +1753,7 @@ end;
 //-----------------------------------------------------------------------------
 // Triangle vs sphere test
 //-----------------------------------------------------------------------------
-function TBoundingSphereHelper.Intersects(V0, V1, V2: TFXMVECTOR): boolean;
+function TBoundingSphere.Intersects(V0, V1, V2: TFXMVECTOR): boolean;
 var
     vCenter, vRadius: TXMVECTOR;
     N: TXMVECTOR;
@@ -1865,18 +1819,18 @@ end;
 //-----------------------------------------------------------------------------
 // Sphere vs. sphere test.
 //-----------------------------------------------------------------------------
-function TBoundingSphereHelper.Intersects(constref sh: TBoundingSphere): boolean;
+function TBoundingSphere.Intersects(sh: PBoundingSphere): boolean;
 var
     vCenterA, vRadiusA: TXMVECTOR;
     vCenterB, vRadiusB: TXMVECTOR;
     Delta, DistanceSquared, RadiusSquared: TXMVECTOR;
 begin
     // Load A.
-    vCenterA := XMLoadFloat3(&Center);
+    vCenterA := XMLoadFloat3(Center);
     vRadiusA := XMVectorReplicatePtr(@Radius);
 
     // Load B.
-    vCenterB := XMLoadFloat3(&sh.Center);
+    vCenterB := XMLoadFloat3(sh.Center);
     vRadiusB := XMVectorReplicatePtr(@sh.Radius);
 
     // Distance squared between centers.
@@ -1894,32 +1848,32 @@ end;
 //-----------------------------------------------------------------------------
 // Box vs. sphere test.
 //-----------------------------------------------------------------------------
-function TBoundingSphereHelper.Intersects(constref box: TBoundingBox): boolean;
+function TBoundingSphere.Intersects(box: PBoundingBox): boolean;
 begin
-    Result := box.Intersects(self);
+    Result := box.Intersects(PBoundingSphere(@self));
 end;
 
 
 
-function TBoundingSphereHelper.Intersects(constref box: TBoundingOrientedBox): boolean;
+function TBoundingSphere.Intersects(box: PBoundingOrientedBox): boolean;
 begin
-    Result := box.Intersects(self);
+    Result := box.Intersects(PBoundingSphere(@self));
 end;
 
 
 //-----------------------------------------------------------------------------
 // Frustum vs. sphere test.
 //-----------------------------------------------------------------------------
-function TBoundingSphereHelper.Intersects(constref fr: TBoundingFrustum): boolean;
+function TBoundingSphere.Intersects(fr: PBoundingFrustum): boolean;
 begin
-    Result := fr.Intersects(self);
+    Result := fr.Intersects(PBoundingSphere(@self));
 end;
 
 
 //-----------------------------------------------------------------------------
 // Sphere-plane intersection
 //-----------------------------------------------------------------------------
-function TBoundingSphereHelper.Intersects(Plane: TFXMVECTOR): TPlaneIntersectionType;
+function TBoundingSphere.Intersects(Plane: TFXMVECTOR): TPlaneIntersectionType;
 var
     vCenter, vRadius: TXMVECTOR;
     Outside, Inside: TXMVECTOR;
@@ -1927,7 +1881,7 @@ begin
     assert(XMPlaneIsUnit(Plane));
 
     // Load the sphere.
-    vCenter := XMLoadFloat3(&Center);
+    vCenter := XMLoadFloat3(Center);
     vRadius := XMVectorReplicatePtr(@Radius);
 
     // Set w of the center to one so we can dot4 with a plane.
@@ -1938,21 +1892,21 @@ begin
 
     // If the sphere is outside any plane it is outside.
     if (XMVector4EqualInt(Outside, XMVectorTrueInt())) then
-        Result := TPlaneIntersectionType.FRONT
+        Result := TPlaneIntersectionType.piFRONT
 
     // If the sphere is inside all planes it is inside.
     else if (XMVector4EqualInt(Inside, XMVectorTrueInt())) then
-        Result := TPlaneIntersectionType.BACK
+        Result := TPlaneIntersectionType.piBACK
     else
         // The sphere is not inside all planes or outside a plane it intersects.
-        Result := INTERSECTING;
+        Result := piINTERSECTING;
 end;
 
 
 //-----------------------------------------------------------------------------
 // Compute the intersection of a ray (Origin, Direction) with a sphere.
 //-----------------------------------------------------------------------------
-function TBoundingSphereHelper.Intersects(Origin, Direction: TFXMVECTOR; var Dist: single): boolean;
+function TBoundingSphere.Intersects(Origin, Direction: TFXMVECTOR; var Dist: single): boolean;
 var
     vCenter, vRadius, l, s, l2, r2, m2: TXMVECTOR;
     NoIntersection: TXMVECTOR;
@@ -2010,17 +1964,17 @@ end;
 //-----------------------------------------------------------------------------
 // Creates a bounding sphere that contains two other bounding spheres
 //-----------------------------------------------------------------------------
-procedure TBoundingSphereHelper.CreateMerged(var _Out: TBoundingSphere; constref S1, S2: TBoundingSphere);
+procedure TBoundingSphere.CreateMerged(_Out: PBoundingSphere; S1, S2: PBoundingSphere);
 var
     Center1, Center2, V, Dist: TXMVECTOR;
     r1, r2, d: single;
     N, NCenter: TXMVECTOR;
     t1, t2, t_5: single;
 begin
-    Center1 := XMLoadFloat3(&S1.Center);
+    Center1 := XMLoadFloat3(S1.Center);
     r1 := S1.Radius;
 
-    Center2 := XMLoadFloat3(&S2.Center);
+    Center2 := XMLoadFloat3(S2.Center);
     r2 := S2.Radius;
 
     V := XMVectorSubtract(Center2, Center1);
@@ -2059,7 +2013,7 @@ end;
 //-----------------------------------------------------------------------------
 // Create sphere enscribing bounding box
 //-----------------------------------------------------------------------------
-procedure TBoundingSphereHelper.CreateFromBoundingBox(var _Out: TBoundingSphere; constref box: TBoundingBox);
+procedure TBoundingSphere.CreateFromBoundingBox(_Out: PBoundingSphere; box: PBoundingBox);
 var
     vExtents: TXMVECTOR;
 begin
@@ -2070,7 +2024,7 @@ end;
 
 
 
-procedure TBoundingSphereHelper.CreateFromBoundingBox(var _Out: TBoundingSphere; constref box: TBoundingOrientedBox);
+procedure TBoundingSphere.CreateFromBoundingBox(_Out: PBoundingSphere; box: PBoundingOrientedBox);
 var
     vExtents: TXMVECTOR;
 begin
@@ -2088,7 +2042,7 @@ end;
 // The algorithm is based on  Jack Ritter, "An Efficient Bounding Sphere",
 // Graphics Gems.
 //-----------------------------------------------------------------------------
-procedure TBoundingSphereHelper.CreateFromPoints(var _Out: TBoundingSphere; Count: size_t; const pPoints: PXMFLOAT3; Stride: size_t);
+procedure TBoundingSphere.CreateFromPoints(_Out: PBoundingSphere; Count: size_t; const pPoints: PXMFLOAT3; Stride: size_t);
 var
     MinX, MaxX, MinY, MaxY, MinZ, MaxZ: TXMVECTOR;
     i: integer;
@@ -2205,7 +2159,7 @@ end;
 //-----------------------------------------------------------------------------
 // Create sphere containing frustum
 //-----------------------------------------------------------------------------
-procedure TBoundingSphereHelper.CreateFromFrustum(var _Out: TBoundingSphere; constref fr: TBoundingFrustum);
+procedure TBoundingSphere.CreateFromFrustum(_Out: PBoundingSphere; fr: PBoundingFrustum);
 var
     Corners: array[0..BoundingFrustum_CORNER_COUNT - 1] of TXMFLOAT3;
 begin
@@ -2244,15 +2198,15 @@ end;
 //-----------------------------------------------------------------------------
 // Transform an axis aligned box by an angle preserving transform.
 //-----------------------------------------------------------------------------
-procedure TBoundingBoxHelper.Transform(var _Out: TBoundingBox; M: TFXMMATRIX);
+procedure TBoundingBox.Transform(_Out: PBoundingBox; M: TFXMMATRIX);
 var
     vCenter, vExtents, Corner: TXMVECTOR;
     Min, Max: TXMVECTOR;
     i: integer;
 begin
     // Load center and extents.
-    vCenter := XMLoadFloat3(&Center);
-    vExtents := XMLoadFloat3(&Extents);
+    vCenter := XMLoadFloat3(Center);
+    vExtents := XMLoadFloat3(Extents);
 
     // Compute and transform the corners and find new min/max bounds.
     Corner := XMVectorMultiplyAdd(vExtents, g_BoxOffset[0], vCenter);
@@ -2278,7 +2232,7 @@ end;
 
 
 
-procedure TBoundingBoxHelper.Transform(var _Out: TBoundingBox; Scale: single; Rotation, Translation: TFXMVECTOR);
+procedure TBoundingBox.Transform(_Out: PBoundingBox; Scale: single; Rotation, Translation: TFXMVECTOR);
 var
     vCenter, vExtents, VectorScale, Corner: TXMVECTOR;
     Min, Max: TXMVECTOR;
@@ -2318,7 +2272,7 @@ end;
 //-----------------------------------------------------------------------------
 // Get the corner points of the box
 //-----------------------------------------------------------------------------
-procedure TBoundingBoxHelper.GetCorners(var Corners: array of TXMFLOAT3);
+procedure TBoundingBox.GetCorners(var Corners: array of TXMFLOAT3);
 var
     vCenter, vExtents, C: TXMVECTOR;
     i: integer;
@@ -2340,12 +2294,12 @@ end;
 //-----------------------------------------------------------------------------
 // Point in axis-aligned box test
 //-----------------------------------------------------------------------------
-function TBoundingBoxHelper.Contains(Point: TFXMVECTOR): TContainmentType;
+function TBoundingBox.Contains(Point: TFXMVECTOR): TContainmentType;
 var
     vCenter, vExtents: TXMVECTOR;
 begin
-    vCenter := XMLoadFloat3(&Center);
-    vExtents := XMLoadFloat3(&Extents);
+    vCenter := XMLoadFloat3(Center);
+    vExtents := XMLoadFloat3(Extents);
 
     if XMVector3InBounds(XMVectorSubtract(Point, vCenter), vExtents) then Result := ctCONTAINS
     else
@@ -2356,7 +2310,7 @@ end;
 //-----------------------------------------------------------------------------
 // Triangle in axis-aligned box test
 //-----------------------------------------------------------------------------
-function TBoundingBoxHelper.Contains(V0, V1, V2: TFXMVECTOR): TContainmentType;
+function TBoundingBox.Contains(V0, V1, V2: TFXMVECTOR): TContainmentType;
 var
     vCenter, vExtents: TXMVECTOR;
     d, Inside: TXMVECTOR;
@@ -2367,8 +2321,8 @@ begin
         Exit;
     end;
 
-    vCenter := XMLoadFloat3(&Center);
-    vExtents := XMLoadFloat3(&Extents);
+    vCenter := XMLoadFloat3(Center);
+    vExtents := XMLoadFloat3(Extents);
 
     d := XMVectorAbs(XMVectorSubtract(V0, vCenter));
     Inside := XMVectorLessOrEqual(d, vExtents);
@@ -2389,17 +2343,17 @@ end;
 //-----------------------------------------------------------------------------
 // Sphere in axis-aligned box test
 //-----------------------------------------------------------------------------
-function TBoundingBoxHelper.Contains(constref sh: TBoundingSphere): TContainmentType;
+function TBoundingBox.Contains(sh: PBoundingSphere): TContainmentType;
 var
     SphereCenter, SphereRadius, BoxCenter, BoxExtents, BoxMin, BoxMax, d, d2: TXMVECTOR;
     LessThanMin, GreaterThanMax, MinDelta, MaxDelta: TXMVECTOR;
     InsideAll: TXMVECTOR;
 begin
-    SphereCenter := XMLoadFloat3(&sh.Center);
+    SphereCenter := XMLoadFloat3(sh.Center);
     SphereRadius := XMVectorReplicatePtr(@sh.Radius);
 
-    BoxCenter := XMLoadFloat3(&Center);
-    BoxExtents := XMLoadFloat3(&Extents);
+    BoxCenter := XMLoadFloat3(Center);
+    BoxExtents := XMLoadFloat3(Extents);
 
     BoxMin := XMVectorSubtract(BoxCenter, BoxExtents);
     BoxMax := XMVectorAdd(BoxCenter, BoxExtents);
@@ -2444,17 +2398,17 @@ end;
 //-----------------------------------------------------------------------------
 // Axis-aligned box in axis-aligned box test
 //-----------------------------------------------------------------------------
-function TBoundingBoxHelper.Contains(constref box: TBoundingBox): TContainmentType;
+function TBoundingBox.Contains(box: PBoundingBox): TContainmentType;
 var
     CenterA, ExtentsA, CenterB, ExtentsB: TXMVECTOR;
     MinA, MaxA, MinB, MaxB: TXMVECTOR;
     Disjoint, Inside: TXMVECTOR;
 begin
-    CenterA := XMLoadFloat3(&Center);
-    ExtentsA := XMLoadFloat3(&Extents);
+    CenterA := XMLoadFloat3(Center);
+    ExtentsA := XMLoadFloat3(Extents);
 
-    CenterB := XMLoadFloat3(&box.Center);
-    ExtentsB := XMLoadFloat3(&box.Extents);
+    CenterB := XMLoadFloat3(box.Center);
+    ExtentsB := XMLoadFloat3(box.Extents);
 
     MinA := XMVectorSubtract(CenterA, ExtentsA);
     MaxA := XMVectorAdd(CenterA, ExtentsA);
@@ -2483,7 +2437,7 @@ end;
 //-----------------------------------------------------------------------------
 // Oriented box in axis-aligned box test
 //-----------------------------------------------------------------------------
-function TBoundingBoxHelper.Contains(constref box: TBoundingOrientedBox): TContainmentType;
+function TBoundingBox.Contains(box: PBoundingOrientedBox): TContainmentType;
 var
     vCenter, vExtents: TXMVECTOR;
     oCenter, oExtents, oOrientation: TXMVECTOR;
@@ -2491,20 +2445,20 @@ var
     i: integer;
     C, d: TXMVECTOR;
 begin
-    if (not box.Intersects(self)) then
+    if (not box.Intersects(PBoundingBox(@self))) then
     begin
         Result := ctDISJOINT;
         Exit;
     end;
 
-    vCenter := XMLoadFloat3(&Center);
-    vExtents := XMLoadFloat3(&Extents);
+    vCenter := XMLoadFloat3(Center);
+    vExtents := XMLoadFloat3(Extents);
 
     // Subtract off the AABB center to remove a subtract below
-    oCenter := XMVectorSubtract(XMLoadFloat3(&box.Center), vCenter);
+    oCenter := XMVectorSubtract(XMLoadFloat3(box.Center), vCenter);
 
-    oExtents := XMLoadFloat3(&box.Extents);
-    oOrientation := XMLoadFloat4(&box.Orientation);
+    oExtents := XMLoadFloat3(box.Extents);
+    oOrientation := XMLoadFloat4(box.Orientation);
 
     assert(XMQuaternionIsUnit(oOrientation));
 
@@ -2527,14 +2481,14 @@ end;
 //-----------------------------------------------------------------------------
 // Frustum in axis-aligned box test
 //-----------------------------------------------------------------------------
-function TBoundingBoxHelper.Contains(constref fr: TBoundingFrustum): TContainmentType;
+function TBoundingBox.Contains(fr: PBoundingFrustum): TContainmentType;
 var
     Corners: array [0..BoundingFrustum_CORNER_COUNT - 1] of TXMFLOAT3;
     vCenter, vExtents, Inside: TXMVECTOR;
     i: integer;
     Point, d: TXMVECTOR;
 begin
-    if (not fr.Intersects(self)) then
+    if (not fr.Intersects(PBoundingBox(@self))) then
     begin
         Result := ctDISJOINT;
         Exit;
@@ -2543,8 +2497,8 @@ begin
 
     fr.GetCorners(Corners);
 
-    vCenter := XMLoadFloat3(&Center);
-    vExtents := XMLoadFloat3(&Extents);
+    vCenter := XMLoadFloat3(Center);
+    vExtents := XMLoadFloat3(Extents);
 
     Inside := XMVectorTrueInt();
 
@@ -2565,7 +2519,7 @@ end;
 //-----------------------------------------------------------------------------
 // Sphere vs axis-aligned box test
 //-----------------------------------------------------------------------------
-function TBoundingBoxHelper.Intersects(constref sh: TBoundingSphere): boolean;
+function TBoundingBox.Intersects(sh: PBoundingSphere): boolean;
 var
     SphereCenter, SphereRadius: TXMVECTOR;
     BoxCenter, BoxExtents: TXMVECTOR;
@@ -2574,11 +2528,11 @@ var
     LessThanMin, GreaterThanMax: TXMVECTOR;
     MinDelta, MaxDelta: TXMVECTOR;
 begin
-    SphereCenter := XMLoadFloat3(&sh.Center);
+    SphereCenter := XMLoadFloat3(sh.Center);
     SphereRadius := XMVectorReplicatePtr(@sh.Radius);
 
-    BoxCenter := XMLoadFloat3(&Center);
-    BoxExtents := XMLoadFloat3(&Extents);
+    BoxCenter := XMLoadFloat3(Center);
+    BoxExtents := XMLoadFloat3(Extents);
 
     BoxMin := XMVectorSubtract(BoxCenter, BoxExtents);
     BoxMax := XMVectorAdd(BoxCenter, BoxExtents);
@@ -2611,17 +2565,17 @@ end;
 //-----------------------------------------------------------------------------
 // Axis-aligned box vs. axis-aligned box test
 //-----------------------------------------------------------------------------
-function TBoundingBoxHelper.Intersects(constref box: TBoundingBox): boolean;
+function TBoundingBox.Intersects(box: PBoundingBox): boolean;
 var
     CenterA, ExtentsA, CenterB, ExtentsB: TXMVECTOR;
     MinA, MinB, MaxA, MaxB: TXMVECTOR;
     Disjoint: TXMVECTOR;
 begin
-    CenterA := XMLoadFloat3(&Center);
-    ExtentsA := XMLoadFloat3(&Extents);
+    CenterA := XMLoadFloat3(Center);
+    ExtentsA := XMLoadFloat3(Extents);
 
-    CenterB := XMLoadFloat3(&box.Center);
-    ExtentsB := XMLoadFloat3(&box.Extents);
+    CenterB := XMLoadFloat3(box.Center);
+    ExtentsB := XMLoadFloat3(box.Extents);
 
     MinA := XMVectorSubtract(CenterA, ExtentsA);
     MaxA := XMVectorAdd(CenterA, ExtentsA);
@@ -2639,25 +2593,25 @@ end;
 //-----------------------------------------------------------------------------
 // Oriented box vs. axis-aligned box test
 //-----------------------------------------------------------------------------
-function TBoundingBoxHelper.Intersects(constref box: TBoundingOrientedBox): boolean;
+function TBoundingBox.Intersects(box: PBoundingOrientedBox): boolean;
 begin
-    Result := box.Intersects(self);
+    Result := box.Intersects(PBoundingBox(@self));
 end;
 
 
 //-----------------------------------------------------------------------------
 // Frustum vs. axis-aligned box test
 //-----------------------------------------------------------------------------
-function TBoundingBoxHelper.Intersects(constref fr: TBoundingFrustum): boolean;
+function TBoundingBox.Intersects(fr: PBoundingFrustum): boolean;
 begin
-    Result := fr.Intersects(self);
+    Result := fr.Intersects(PBoundingBox(@self));
 end;
 
 
 //-----------------------------------------------------------------------------
 // Triangle vs. axis aligned box test
 //-----------------------------------------------------------------------------
-function TBoundingBoxHelper.Intersects(V0, V1, V2: TFXMVECTOR): boolean;
+function TBoundingBox.Intersects(V0, V1, V2: TFXMVECTOR): boolean;
 var
     Zero: TXMVECTOR;
     vCenter, vExtents, BoxMin, BoxMax: TXMVECTOR;
@@ -2677,8 +2631,8 @@ begin
     Zero := XMVectorZero();
 
     // Load the box.
-    vCenter := XMLoadFloat3(&Center);
-    vExtents := XMLoadFloat3(&Extents);
+    vCenter := XMLoadFloat3(Center);
+    vExtents := XMLoadFloat3(Extents);
 
     BoxMin := XMVectorSubtract(vCenter, vExtents);
     BoxMax := XMVectorAdd(vCenter, vExtents);
@@ -2838,7 +2792,7 @@ end;
 
 
 
-function TBoundingBoxHelper.Intersects(Plane: TFXMVECTOR): TPlaneIntersectionType;
+function TBoundingBox.Intersects(Plane: TFXMVECTOR): TPlaneIntersectionType;
 var
     vCenter, vExtents: TXMVECTOR;
     Outside, Inside: TXMVECTOR;
@@ -2846,8 +2800,8 @@ begin
     assert(XMPlaneIsUnit(Plane));
 
     // Load the box.
-    vCenter := XMLoadFloat3(&Center);
-    vExtents := XMLoadFloat3(&Extents);
+    vCenter := XMLoadFloat3(Center);
+    vExtents := XMLoadFloat3(Extents);
 
     // Set w of the center to one so we can dot4 with a plane.
     vCenter := XMVectorInsert(0, 0, 0, 0, 1, vCenter, XMVectorSplatOne());
@@ -2857,15 +2811,15 @@ begin
 
     // If the box is outside any plane it is outside.
     if (XMVector4EqualInt(Outside, XMVectorTrueInt())) then
-        Result := FRONT
+        Result := piFRONT
 
     // If the box is inside all planes it is inside.
     else if (XMVector4EqualInt(Inside, XMVectorTrueInt())) then
-        Result := BACK
+        Result := piBACK
 
     else
         // The box is not inside all planes or outside a plane it intersects.
-        Result := INTERSECTING;
+        Result := piINTERSECTING;
 end;
 
 
@@ -2873,7 +2827,7 @@ end;
 // Compute the intersection of a ray (Origin, Direction) with an axis aligned
 // box using the slabs method.
 //-----------------------------------------------------------------------------
-function TBoundingBoxHelper.Intersects(Origin, Direction: TFXMVECTOR; var Dist: single): boolean;
+function TBoundingBox.Intersects(Origin, Direction: TFXMVECTOR; var Dist: single): boolean;
 var
     vCenter, vExtents, TOrigin: TXMVECTOR;
     AxisDotOrigin, AxisDotDirection, IsParallel: TXMVECTOR;
@@ -2884,8 +2838,8 @@ begin
     assert(XMVector3IsUnit(Direction));
 
     // Load the box.
-    vCenter := XMLoadFloat3(&Center);
-    vExtents := XMLoadFloat3(&Extents);
+    vCenter := XMLoadFloat3(Center);
+    vExtents := XMLoadFloat3(Extents);
 
     // Adjust ray origin to be relative to center of the box.
     TOrigin := XMVectorSubtract(vCenter, Origin);
@@ -2943,15 +2897,15 @@ end;
 //-----------------------------------------------------------------------------
 // Test an axis alinged box vs 6 planes (typically forming a frustum).
 //-----------------------------------------------------------------------------
-function TBoundingBoxHelper.ContainedBy(Plane0, Plane1, Plane2: TFXMVECTOR; Plane3: TGXMVECTOR; Plane4, Plane5: THXMVECTOR): TContainmentType;
+function TBoundingBox.ContainedBy(Plane0, Plane1, Plane2: TFXMVECTOR; Plane3: TGXMVECTOR; Plane4, Plane5: THXMVECTOR): TContainmentType;
 var
     vCenter, vExtents: TXMVECTOR;
     Outside, Inside: TXMVECTOR;
     AnyOutside, AllInside: TXMVECTOR;
 begin
     // Load the box.
-    vCenter := XMLoadFloat3(&Center);
-    vExtents := XMLoadFloat3(&Extents);
+    vCenter := XMLoadFloat3(Center);
+    vExtents := XMLoadFloat3(Extents);
 
     // Set w of the center to one so we can dot4 with a plane.
     vCenter := XMVectorInsert(0, 0, 0, 0, 1, vCenter, XMVectorSplatOne());
@@ -3000,16 +2954,16 @@ end;
 //-----------------------------------------------------------------------------
 // Create axis-aligned box that contains two other bounding boxes
 //-----------------------------------------------------------------------------
-procedure TBoundingBoxHelper.CreateMerged(var _Out: TBoundingBox; constref b1, b2: TBoundingBox);
+procedure TBoundingBox.CreateMerged(_Out: PBoundingBox; b1, b2: PBoundingBox);
 var
     b1Center, b1Extents, b2Center, b2Extents, Min, Max: TXMVECTOR;
 
 begin
-    b1Center := XMLoadFloat3(&b1.Center);
-    b1Extents := XMLoadFloat3(&b1.Extents);
+    b1Center := XMLoadFloat3(b1.Center);
+    b1Extents := XMLoadFloat3(b1.Extents);
 
-    b2Center := XMLoadFloat3(&b2.Center);
-    b2Extents := XMLoadFloat3(&b2.Extents);
+    b2Center := XMLoadFloat3(b2.Center);
+    b2Extents := XMLoadFloat3(b2.Extents);
 
     Min := XMVectorSubtract(b1Center, b1Extents);
     Min := XMVectorMin(Min, XMVectorSubtract(b2Center, b2Extents));
@@ -3027,11 +2981,11 @@ end;
 //-----------------------------------------------------------------------------
 // Create axis-aligned box that contains a bounding sphere
 //-----------------------------------------------------------------------------
-procedure TBoundingBoxHelper.CreateFromSphere(var _Out: TBoundingBox; constref sh: TBoundingSphere);
+procedure TBoundingBox.CreateFromSphere(_Out: PBoundingBox; sh: PBoundingSphere);
 var
     spCenter, shRadius, Min, Max: TXMVECTOR;
 begin
-    spCenter := XMLoadFloat3(&sh.Center);
+    spCenter := XMLoadFloat3(sh.Center);
     shRadius := XMVectorReplicatePtr(@sh.Radius);
 
     Min := XMVectorSubtract(spCenter, shRadius);
@@ -3047,7 +3001,7 @@ end;
 //-----------------------------------------------------------------------------
 // Create axis-aligned box from min/max points
 //-----------------------------------------------------------------------------
-procedure TBoundingBoxHelper.CreateFromPoints(var _Out: TBoundingBox; pt1, pt2: TFXMVECTOR);
+procedure TBoundingBox.CreateFromPoints(_Out: PBoundingBox; pt1, pt2: TFXMVECTOR);
 var
     Min, Max: TXMVECTOR;
 begin
@@ -3055,15 +3009,15 @@ begin
     Max := XMVectorMax(pt1, pt2);
 
     // Store center and extents.
-    XMStoreFloat3(&_Out.Center, XMVectorScale(XMVectorAdd(Min, Max), 0.5));
-    XMStoreFloat3(&_Out.Extents, XMVectorScale(XMVectorSubtract(Max, Min), 0.5));
+    XMStoreFloat3(_Out.Center, XMVectorScale(XMVectorAdd(Min, Max), 0.5));
+    XMStoreFloat3(_Out.Extents, XMVectorScale(XMVectorSubtract(Max, Min), 0.5));
 end;
 
 
 //-----------------------------------------------------------------------------
 // Find the minimum axis aligned bounding box containing a set of points.
 //-----------------------------------------------------------------------------
-procedure TBoundingBoxHelper.CreateFromPoints(var _Out: TBoundingBox; Count: size_t; constref pPoints: PXMFLOAT3; Stride: size_t);
+procedure TBoundingBox.CreateFromPoints(_Out: PBoundingBox; Count: size_t; constref pPoints: PXMFLOAT3; Stride: size_t);
 var
     vMin, vMax, Point: TXMVECTOR;
     i: integer;
@@ -3127,7 +3081,7 @@ end;
 //-----------------------------------------------------------------------------
 // Transform an oriented box by an angle preserving transform.
 //-----------------------------------------------------------------------------
-procedure TBoundingOrientedBoxHelper.Transform(var _Out: TBoundingOrientedBox; M: TFXMMATRIX);
+procedure TBoundingOrientedBox.Transform(var _Out: TBoundingOrientedBox; M: TFXMMATRIX);
 var
     vCenter, vExtents, vOrientation: TXMVECTOR;
     nM: TXMMATRIX;
@@ -3171,7 +3125,7 @@ end;
 
 
 
-procedure TBoundingOrientedBoxHelper.Transform(var _Out: TBoundingOrientedBox; Scale: single; Rotation, Translation: TFXMVECTOR);
+procedure TBoundingOrientedBox.Transform(var _Out: TBoundingOrientedBox; Scale: single; Rotation, Translation: TFXMVECTOR);
 var
     vCenter, vExtents, vOrientation: TXMVECTOR;
     VectorScale: TXMVECTOR;
@@ -3179,9 +3133,9 @@ begin
     assert(XMQuaternionIsUnit(Rotation));
 
     // Load the box.
-    vCenter := XMLoadFloat3(&Center);
-    vExtents := XMLoadFloat3(&Extents);
-    vOrientation := XMLoadFloat4(&Orientation);
+    vCenter := XMLoadFloat3(Center);
+    vExtents := XMLoadFloat3(Extents);
+    vOrientation := XMLoadFloat4(Orientation);
 
     assert(XMQuaternionIsUnit(vOrientation));
 
@@ -3205,7 +3159,7 @@ end;
 //-----------------------------------------------------------------------------
 // Get the corner points of the box
 //-----------------------------------------------------------------------------
-procedure TBoundingOrientedBoxHelper.GetCorners(var Corners: array of TXMFLOAT3);
+procedure TBoundingOrientedBox.GetCorners(var Corners: array of TXMFLOAT3);
 var
     vCenter, vExtents, vOrientation: TXMVECTOR;
     C: TXMVECTOR;
@@ -3214,9 +3168,9 @@ begin
     assert(@Corners[0] <> nil);
 
     // Load the box
-    vCenter := XMLoadFloat3(&Center);
-    vExtents := XMLoadFloat3(&Extents);
-    vOrientation := XMLoadFloat4(&Orientation);
+    vCenter := XMLoadFloat3(Center);
+    vExtents := XMLoadFloat3(Extents);
+    vOrientation := XMLoadFloat4(Orientation);
 
     assert(XMQuaternionIsUnit(vOrientation));
 
@@ -3231,14 +3185,14 @@ end;
 //-----------------------------------------------------------------------------
 // Point in oriented box test.
 //-----------------------------------------------------------------------------
-function TBoundingOrientedBoxHelper.Contains(Point: TFXMVECTOR): TContainmentType;
+function TBoundingOrientedBox.Contains(Point: TFXMVECTOR): TContainmentType;
 var
     vCenter, vExtents, vOrientation: TXMVECTOR;
     TPoint: TXMVECTOR;
 begin
-    vCenter := XMLoadFloat3(&Center);
-    vExtents := XMLoadFloat3(&Extents);
-    vOrientation := XMLoadFloat4(&Orientation);
+    vCenter := XMLoadFloat3(Center);
+    vExtents := XMLoadFloat3(Extents);
+    vOrientation := XMLoadFloat4(Orientation);
 
     // Transform the point to be local to the box.
     TPoint := XMVector3InverseRotate(XMVectorSubtract(Point, vCenter), vOrientation);
@@ -3252,15 +3206,15 @@ end;
 //-----------------------------------------------------------------------------
 // Triangle in oriented bounding box
 //-----------------------------------------------------------------------------
-function TBoundingOrientedBoxHelper.Contains(V0, V1, V2: TFXMVECTOR): TContainmentType;
+function TBoundingOrientedBox.Contains(V0, V1, V2: TFXMVECTOR): TContainmentType;
 var
     vCenter, vOrientation: TXMVECTOR;
     TV0, TV1, TV2: TXMVECTOR;
     box: TBoundingBox;
 begin
     // Load the box center & orientation.
-    vCenter := XMLoadFloat3(&Center);
-    vOrientation := XMLoadFloat4(&Orientation);
+    vCenter := XMLoadFloat3(Center);
+    vOrientation := XMLoadFloat4(Orientation);
 
     // Transform the triangle vertices into the space of the box.
     TV0 := XMVector3InverseRotate(XMVectorSubtract(V0, vCenter), vOrientation);
@@ -3279,7 +3233,7 @@ end;
 //-----------------------------------------------------------------------------
 // Sphere in oriented bounding box
 //-----------------------------------------------------------------------------
-function TBoundingOrientedBoxHelper.Contains(constref sh: TBoundingSphere): TContainmentType;
+function TBoundingOrientedBox.Contains(sh: PBoundingSphere): TContainmentType;
 var
     SphereCenter, SphereRadius: TXMVECTOR;
     BoxCenter, BoxExtents, BoxOrientation: TXMVECTOR;
@@ -3288,7 +3242,7 @@ var
     SphereRadiusSq: TXMVECTOR;
     SMin, SMax: TXMVECTOR;
 begin
-    SphereCenter := XMLoadFloat3(&sh.Center);
+    SphereCenter := XMLoadFloat3(sh.Center);
     SphereRadius := XMVectorReplicatePtr(@sh.Radius);
 
     BoxCenter := XMLoadFloat3(Center);
@@ -3345,20 +3299,20 @@ end;
 // Axis aligned box vs. oriented box. Constructs an oriented box and uses
 // the oriented box vs. oriented box test.
 //-----------------------------------------------------------------------------
-function TBoundingOrientedBoxHelper.Contains(constref box: TBoundingBox): TContainmentType;
+function TBoundingOrientedBox.Contains(box: PBoundingBox): TContainmentType;
 var
     obox: TBoundingOrientedBox;
 begin
     // Make the axis aligned box oriented and do an OBB vs OBB test.
     obox := TBoundingOrientedBox.Create(box.Center, box.Extents, TXMFLOAT4.Create(0.0, 0.0, 0.0, 1.0));
-    Result := Contains(obox);
+    Result := Contains(PBoundingOrientedBox(@obox));
 end;
 
 
 //-----------------------------------------------------------------------------
 // Oriented bounding box in oriented bounding box
 //-----------------------------------------------------------------------------
-function TBoundingOrientedBoxHelper.Contains(constref box: TBoundingOrientedBox): TContainmentType;
+function TBoundingOrientedBox.Contains(box: PBoundingOrientedBox): TContainmentType;
 var
     aCenter, aExtents, aOrientation: TXMVECTOR;
     bCenter, bExtents, bOrientation: TXMVECTOR;
@@ -3372,9 +3326,9 @@ begin
     end;
 
     // Load the boxes
-    aCenter := XMLoadFloat3(&Center);
-    aExtents := XMLoadFloat3(&Extents);
-    aOrientation := XMLoadFloat4(&Orientation);
+    aCenter := XMLoadFloat3(Center);
+    aExtents := XMLoadFloat3(Extents);
+    aOrientation := XMLoadFloat4(Orientation);
 
     assert(XMQuaternionIsUnit(aOrientation));
 
@@ -3408,13 +3362,13 @@ end;
 //-----------------------------------------------------------------------------
 // Frustum in oriented bounding box
 //-----------------------------------------------------------------------------
-function TBoundingOrientedBoxHelper.Contains(constref fr: TBoundingFrustum): TContainmentType;
+function TBoundingOrientedBox.Contains(fr: PBoundingFrustum): TContainmentType;
 var
     Corners: array [0..BoundingFrustum_CORNER_COUNT - 1] of TXMFLOAT3;
     vCenter, vExtents, vOrientation, C: TXMVECTOR;
     i: integer;
 begin
-    if (not fr.Intersects(self)) then
+    if (not fr.Intersects(PBoundingOrientedBox(@self))) then
     begin
         Result := ctDISJOINT;
         Exit;
@@ -3432,7 +3386,7 @@ begin
 
     for  i := 0 to BoundingFrustum_CORNER_COUNT - 1 do
     begin
-        C := XMVector3InverseRotate(XMVectorSubtract(XMLoadFloat3(&Corners[i]), vCenter), vOrientation);
+        C := XMVector3InverseRotate(XMVectorSubtract(XMLoadFloat3(Corners[i]), vCenter), vOrientation);
 
         if (not XMVector3InBounds(C, vExtents)) then
         begin
@@ -3449,7 +3403,7 @@ end;
 //-----------------------------------------------------------------------------
 // Sphere vs. oriented box test
 //-----------------------------------------------------------------------------
-function TBoundingOrientedBoxHelper.Intersects(constref sh: TBoundingSphere): boolean;
+function TBoundingOrientedBox.Intersects(sh: PBoundingSphere): boolean;
 var
     SphereCenter, SphereRadius, BoxCenter, BoxExtents, BoxOrientation: TXMVECTOR;
     d, LessThanMin, GreaterThanMax, MinDelta, MaxDelta, d2: TXMVECTOR;
@@ -3499,13 +3453,13 @@ end;
 // Axis aligned box vs. oriented box. Constructs an oriented box and uses
 // the oriented box vs. oriented box test.
 //-----------------------------------------------------------------------------
-function TBoundingOrientedBoxHelper.Intersects(constref box: TBoundingBox): boolean;
+function TBoundingOrientedBox.Intersects(box: PBoundingBox): boolean;
 var
     obox: TBoundingOrientedBox;
 begin
     // Make the axis aligned box oriented and do an OBB vs OBB test.
     obox := TBoundingOrientedBox.Create(box.Center, box.Extents, TXMFLOAT4.Create(0.0, 0.0, 0.0, 1.0));
-    Result := Intersects(obox);
+    Result := Intersects(PBoundingOrientedBox(@obox));
 end;
 
 
@@ -3513,7 +3467,7 @@ end;
 // Fast oriented box / oriented box intersection test using the separating axis
 // theorem.
 //-----------------------------------------------------------------------------
-function TBoundingOrientedBoxHelper.Intersects(constref box: TBoundingOrientedBox): boolean;
+function TBoundingOrientedBox.Intersects(box: PBoundingOrientedBox): boolean;
 var
     A_quat, B_quat, Q, A_cent, B_cent, t: TXMVECTOR;
     R: TXMMATRIX;
@@ -3524,8 +3478,8 @@ var
     NoIntersection: TXMVECTOR;
 begin
     // Build the 3x3 rotation matrix that defines the orientation of B relative to A.
-    A_quat := XMLoadFloat4(&Orientation);
-    B_quat := XMLoadFloat4(&box.Orientation);
+    A_quat := XMLoadFloat4(Orientation);
+    B_quat := XMLoadFloat4(box.Orientation);
 
 {$IFDEF UseAssert}
     assert(XMQuaternionIsUnit(A_quat));
@@ -3536,8 +3490,8 @@ begin
     R := XMMatrixRotationQuaternion(Q);
 
     // Compute the translation of B relative to A.
-    A_cent := XMLoadFloat3(&Center);
-    B_cent := XMLoadFloat3(&box.Center);
+    A_cent := XMLoadFloat3(Center);
+    B_cent := XMLoadFloat3(box.Center);
     t := XMVector3InverseRotate(XMVectorSubtract(B_cent, A_cent), A_quat);
 
 
@@ -3555,8 +3509,8 @@ begin
 
 
     // Load extents of A and B.
-    h_A := XMLoadFloat3(&Extents);
-    h_B := XMLoadFloat3(&box.Extents);
+    h_A := XMLoadFloat3(Extents);
+    h_B := XMLoadFloat3(box.Extents);
 
     // Rows. Note R[0,1,2]X.w := 0.
     R0X := R.r[0];
@@ -3715,23 +3669,23 @@ end;
 //-----------------------------------------------------------------------------
 // Frustum vs. oriented box test
 //-----------------------------------------------------------------------------
-function TBoundingOrientedBoxHelper.Intersects(constref fr: TBoundingFrustum): boolean;
+function TBoundingOrientedBox.Intersects(fr: PBoundingFrustum): boolean;
 begin
-    Result := fr.Intersects(self);
+    Result := fr.Intersects(PBoundingOrientedBox(@self));
 end;
 
 
 //-----------------------------------------------------------------------------
 // Triangle vs. oriented box test.
 //-----------------------------------------------------------------------------
-function TBoundingOrientedBoxHelper.Intersects(V0, V1, V2: TFXMVECTOR): boolean;
+function TBoundingOrientedBox.Intersects(V0, V1, V2: TFXMVECTOR): boolean;
 var
     vCenter, vOrientation, TV0, TV1, TV2: TXMVECTOR;
     box: TBoundingBox;
 begin
     // Load the box center & orientation.
-    vCenter := XMLoadFloat3(&Center);
-    vOrientation := XMLoadFloat4(&Orientation);
+    vCenter := XMLoadFloat3(Center);
+    vOrientation := XMLoadFloat4(Orientation);
 
     // Transform the triangle vertices into the space of the box.
     TV0 := XMVector3InverseRotate(XMVectorSubtract(V0, vCenter), vOrientation);
@@ -3748,7 +3702,7 @@ end;
 
 
 
-function TBoundingOrientedBoxHelper.Intersects(Plane: TFXMVECTOR): TPlaneIntersectionType;
+function TBoundingOrientedBox.Intersects(Plane: TFXMVECTOR): TPlaneIntersectionType;
 var
     vCenter, vExtents, BoxOrientation: TXMVECTOR;
     R: TXMMATRIX;
@@ -3759,9 +3713,9 @@ begin
     {$ENDIF}
 
     // Load the box.
-    vCenter := XMLoadFloat3(&Center);
-    vExtents := XMLoadFloat3(&Extents);
-    BoxOrientation := XMLoadFloat4(&Orientation);
+    vCenter := XMLoadFloat3(Center);
+    vExtents := XMLoadFloat3(Extents);
+    BoxOrientation := XMLoadFloat4(Orientation);
 
     {$IFDEF UseAssert}
     assert(XMQuaternionIsUnit(BoxOrientation));
@@ -3777,13 +3731,13 @@ begin
 
     // If the box is outside any plane it is outside.
     if (XMVector4EqualInt(Outside, XMVectorTrueInt())) then
-        Result := FRONT
+        Result := piFRONT
     // If the box is inside all planes it is inside.
     else if (XMVector4EqualInt(Inside, XMVectorTrueInt())) then
-        Result := BACK
+        Result := piBACK
     // The box is not inside all planes or outside a plane it intersects.
     else
-        Result := INTERSECTING;
+        Result := piINTERSECTING;
 end;
 
 
@@ -3791,7 +3745,7 @@ end;
 // Compute the intersection of a ray (Origin, Direction) with an oriented box
 // using the slabs method.
 //-----------------------------------------------------------------------------
-function TBoundingOrientedBoxHelper.Intersects(Origin, Direction: TFXMVECTOR; var Dist: single): boolean;
+function TBoundingOrientedBox.Intersects(Origin, Direction: TFXMVECTOR; var Dist: single): boolean;
 const
     SelectY: TXMVECTOR = (U: (XM_SELECT_0, XM_SELECT_1, XM_SELECT_0, XM_SELECT_0));
     SelectZ: TXMVECTOR = (U: (XM_SELECT_0, XM_SELECT_0, XM_SELECT_1, XM_SELECT_0));
@@ -3877,8 +3831,7 @@ end;
 //-----------------------------------------------------------------------------
 // Test an oriented box vs 6 planes (typically forming a frustum).
 //-----------------------------------------------------------------------------
-function TBoundingOrientedBoxHelper.ContainedBy(Plane0, Plane1, Plane2: TFXMVECTOR; Plane3: TGXMVECTOR;
-    Plane4, Plane5: THXMVECTOR): TContainmentType;
+function TBoundingOrientedBox.ContainedBy(Plane0, Plane1, Plane2: TFXMVECTOR; Plane3: TGXMVECTOR; Plane4, Plane5: THXMVECTOR): TContainmentType;
 var
     vCenter, vExtents, BoxOrientation: TXMVECTOR;
     R: TXMMATRIX;
@@ -3943,7 +3896,7 @@ end;
 //-----------------------------------------------------------------------------
 // Create oriented bounding box from axis-aligned bounding box
 //-----------------------------------------------------------------------------
-procedure TBoundingOrientedBoxHelper.CreateFromBoundingBox(var _Out: TBoundingOrientedBox; constref box: TBoundingBox);
+procedure TBoundingOrientedBox.CreateFromBoundingBox(_Out: PBoundingOrientedBox; box: PBoundingBox);
 begin
     _Out.Center := box.Center;
     _Out.Extents := box.Extents;
@@ -3962,7 +3915,7 @@ end;
 // Exact computation of the minimum oriented bounding box is possible but the
 // best know algorithm is O(N^3) and is significanly more complex to implement.
 //-----------------------------------------------------------------------------
-procedure TBoundingOrientedBoxHelper.CreateFromPoints(var _Out: TBoundingOrientedBox; Count: size_t; constref pPoints: PXMFLOAT3; Stride: size_t);
+procedure TBoundingOrientedBox.CreateFromPoints(_Out: PBoundingOrientedBox; Count: size_t; constref pPoints: PXMFLOAT3; Stride: size_t);
 var
     CenterOfMass: TXMVECTOR;
     i: integer;
@@ -4101,8 +4054,7 @@ end;
 
 
 
-constructor TBoundingFrustum.Create(constref _Origin: TXMFLOAT3; constref _Orientation: TXMFLOAT4;
-    _RightSlope, _LeftSlope, _TopSlope, _BottomSlope, ANear, AFar: single);
+constructor TBoundingFrustum.Create(constref _Origin: TXMFLOAT3; constref _Orientation: TXMFLOAT4; _RightSlope, _LeftSlope, _TopSlope, _BottomSlope, NearPlane, FarPlane: single);
 begin
     Origin := _Origin;
     Orientation := _Orientation;
@@ -4110,15 +4062,15 @@ begin
     LeftSlope := _LeftSlope;
     TopSlope := _TopSlope;
     BottomSlope := _BottomSlope;
-    _Near := ANear;
-    _Far := AFar;
+    _Near := NearPlane;
+    _Far := FarPlane;
 end;
 
 
 
 constructor TBoundingFrustum.Create(Projection: TCXMMATRIX; rhcoords: boolean);
 begin
-    CreateFromMatrix(self, Projection, rhcoords);
+    CreateFromMatrix(@self, Projection, rhcoords);
 end;
 
 
@@ -4128,7 +4080,7 @@ end;
 //-----------------------------------------------------------------------------
 // Transform a frustum by an angle preserving transform.
 //-----------------------------------------------------------------------------
-procedure TBoundingFrustumHelper.Transform(var _Out: TBoundingFrustum; M: TFXMMATRIX);
+procedure TBoundingFrustum.Transform(_Out: PBoundingFrustum; M: TFXMMATRIX);
 var
     vOrigin, vOrientation, Rotation: TXMVECTOR;
     nM: TXMMATRIX;
@@ -4136,8 +4088,8 @@ var
     Scale: single;
 begin
     // Load the frustum.
-    vOrigin := XMLoadFloat3(&Origin);
-    vOrientation := XMLoadFloat4(&Orientation);
+    vOrigin := XMLoadFloat3(Origin);
+    vOrientation := XMLoadFloat4(Orientation);
 
     {$IFDEF UseAssert}
     assert(XMQuaternionIsUnit(vOrientation));
@@ -4178,7 +4130,7 @@ end;
 
 
 
-procedure TBoundingFrustumHelper.Transform(var _Out: TBoundingFrustum; Scale: single; Rotation, Translation: TFXMVECTOR);
+procedure TBoundingFrustum.Transform(_Out: PBoundingFrustum; Scale: single; Rotation, Translation: TFXMVECTOR);
 var
     vOrigin, vOrientation: TXMVECTOR;
 begin
@@ -4187,8 +4139,8 @@ begin
     {$ENDIF}
 
     // Load the frustum.
-    vOrigin := XMLoadFloat3(&Origin);
-    vOrientation := XMLoadFloat4(&Orientation);
+    vOrigin := XMLoadFloat3(Origin);
+    vOrientation := XMLoadFloat4(Orientation);
 
     {$IFDEF UseAssert}
     assert(XMQuaternionIsUnit(vOrientation));
@@ -4219,7 +4171,7 @@ end;
 //-----------------------------------------------------------------------------
 // Get the corner points of the frustum
 //-----------------------------------------------------------------------------
-procedure TBoundingFrustumHelper.GetCorners(var Corners: array of TXMFLOAT3);
+procedure TBoundingFrustum.GetCorners(var Corners: array of TXMFLOAT3);
 var
     vOrigin, vOrientation: TXMVECTOR;
     vRightTop, vRightBottom, vLeftTop, vLeftBottom, vNear, vFar: TXMVECTOR;
@@ -4275,7 +4227,7 @@ end;
 //-----------------------------------------------------------------------------
 // Point in frustum test.
 //-----------------------------------------------------------------------------
-function TBoundingFrustumHelper.Contains(Point: TFXMVECTOR): TContainmentType;
+function TBoundingFrustum.Contains(Point: TFXMVECTOR): TContainmentType;
 var
     Planes: array [0..5] of TXMVECTOR;
     vOrigin, vOrientation, TPoint, Zero, Outside: TXMVECTOR;
@@ -4291,8 +4243,8 @@ begin
     Planes[5] := XMVectorSet(0.0, -1.0, BottomSlope, 0.0);
 
     // Load origin and orientation.
-    vOrigin := XMLoadFloat3(&Origin);
-    vOrientation := XMLoadFloat4(&Orientation);
+    vOrigin := XMLoadFloat3(Origin);
+    vOrientation := XMLoadFloat4(Orientation);
 
     {$IFDEF UseAssert}
     assert(XMQuaternionIsUnit(vOrientation));
@@ -4324,7 +4276,7 @@ end;
 //-----------------------------------------------------------------------------
 // Triangle vs frustum test.
 //-----------------------------------------------------------------------------
-function TBoundingFrustumHelper.Contains(V0, V1, V2: TFXMVECTOR): TContainmentType;
+function TBoundingFrustum.Contains(V0, V1, V2: TFXMVECTOR): TContainmentType;
 var
     vOrigin, vOrientation, NearPlane, FarPlane: TXMVECTOR;
     RightPlane, LeftPlane, TopPlane, BottomPlane: TXMVECTOR;
@@ -4363,7 +4315,7 @@ end;
 
 
 
-function TBoundingFrustumHelper.Contains(constref sh: TBoundingSphere): TContainmentType;
+function TBoundingFrustum.Contains(sh: PBoundingSphere): TContainmentType;
 var
     vOrigin, vOrientation, NearPlane, FarPlane, RightPlane, LeftPlane: TXMVECTOR;
     TopPlane, BottomPlane: TXMVECTOR;
@@ -4402,7 +4354,7 @@ end;
 
 
 
-function TBoundingFrustumHelper.Contains(constref box: TBoundingBox): TContainmentType;
+function TBoundingFrustum.Contains(box: PBoundingBox): TContainmentType;
 var
     vOrigin, vOrientation, NearPlane, FarPlane, RightPlane, LeftPlane: TXMVECTOR;
     TopPlane, BottomPlane: TXMVECTOR;
@@ -4441,14 +4393,14 @@ end;
 
 
 
-function TBoundingFrustumHelper.Contains(constref box: TBoundingOrientedBox): TContainmentType;
+function TBoundingFrustum.Contains(box: PBoundingOrientedBox): TContainmentType;
 var
     vOrigin, vOrientation, NearPlane, FarPlane, RightPlane, LeftPlane: TXMVECTOR;
     TopPlane, BottomPlane: TXMVECTOR;
 begin
     // Load origin and orientation of the frustum.
-    vOrigin := XMLoadFloat3(&Origin);
-    vOrientation := XMLoadFloat4(&Orientation);
+    vOrigin := XMLoadFloat3(Origin);
+    vOrientation := XMLoadFloat4(Orientation);
 
     // Create 6 planes (do it inline to encourage use of registers)
     NearPlane := XMVectorSet(0.0, 0.0, -1.0, _Near);
@@ -4480,7 +4432,7 @@ end;
 
 
 
-function TBoundingFrustumHelper.Contains(constref fr: TBoundingFrustum): TContainmentType;
+function TBoundingFrustum.Contains(fr: PBoundingFrustum): TContainmentType;
 var
     vOrigin, vOrientation, NearPlane, FarPlane, RightPlane, LeftPlane: TXMVECTOR;
     TopPlane, BottomPlane: TXMVECTOR;
@@ -4525,7 +4477,7 @@ end;
 // sphere and compares the distance to the nearest feature to the radius of the
 // sphere
 //-----------------------------------------------------------------------------
-function TBoundingFrustumHelper.Intersects(constref sh: TBoundingSphere): boolean;
+function TBoundingFrustum.Intersects(sh: PBoundingSphere): boolean;
     // The faces adjacent to each face are:
 const
     adjacent_faces: array [0..5, 0..3] of integer =
@@ -4579,8 +4531,8 @@ begin
     Planes[5] := XMVector3Normalize(Planes[5]);
 
     // Load origin and orientation of the frustum.
-    vOrigin := XMLoadFloat3(&Origin);
-    vOrientation := XMLoadFloat4(&Orientation);
+    vOrigin := XMLoadFloat3(Origin);
+    vOrientation := XMLoadFloat4(Orientation);
 
     {$IFDEF UseAssert}
     assert(XMQuaternionIsUnit(vOrientation));
@@ -4730,20 +4682,20 @@ end;
 // Exact axis aligned box vs frustum test.  Constructs an oriented box and uses
 // the oriented box vs frustum test.
 //-----------------------------------------------------------------------------
-function TBoundingFrustumHelper.Intersects(constref box: TBoundingBox): boolean;
+function TBoundingFrustum.Intersects(box: PBoundingBox): boolean;
 var
     obox: TBoundingOrientedBox;
 begin
     // Make the axis aligned box oriented and do an OBB vs frustum test.
     obox := TBoundingOrientedBox.Create(box.Center, box.Extents, TXMFLOAT4.Create(0.0, 0.0, 0.0, 1.0));
-    Result := Intersects(obox);
+    Result := Intersects(PBoundingOrientedBox(@obox));
 end;
 
 
 //-----------------------------------------------------------------------------
 // Exact oriented box vs frustum test.
 //-----------------------------------------------------------------------------
-function TBoundingFrustumHelper.Intersects(constref box: TBoundingOrientedBox): boolean;
+function TBoundingFrustum.Intersects(box: PBoundingOrientedBox): boolean;
 const
     SelectY: TXMVECTOR = (u: (XM_SELECT_0, XM_SELECT_1, XM_SELECT_0, XM_SELECT_0));
     SelectZ: TXMVECTOR = (u: (XM_SELECT_0, XM_SELECT_0, XM_SELECT_1, XM_SELECT_0));
@@ -4894,8 +4846,7 @@ begin
 
         // The projection of the box onto the axis is just its Center and Extents.
         // if (min > box_max OR max < box_min) reject;
-        vecResult := XMVectorOrInt(XMVectorGreater(FrustumMin, XMVectorAdd(BoxDist, Extents)),
-            XMVectorLess(FrustumMax, XMVectorSubtract(BoxDist, Extents)));
+        vecResult := XMVectorOrInt(XMVectorGreater(FrustumMin, XMVectorAdd(BoxDist, Extents)), XMVectorLess(FrustumMax, XMVectorSubtract(BoxDist, Extents)));
 
         if (XMVector3AnyTrue(vecResult)) then
         begin
@@ -4956,7 +4907,7 @@ end;
 //-----------------------------------------------------------------------------
 // Exact frustum vs frustum test.
 //-----------------------------------------------------------------------------
-function TBoundingFrustumHelper.Intersects(constref fr: TBoundingFrustum): boolean;
+function TBoundingFrustum.Intersects(fr: PBoundingFrustum): boolean;
 var
     AxisB: array [0..5] of TXMVECTOR;
     OriginB, OrientationB: TXMVECTOR;
@@ -5005,8 +4956,8 @@ begin
     PlaneDistB[5] := XMVectorZero();
 
     // Load origin and orientation of frustum A.
-    OriginA := XMLoadFloat3(&fr.Origin);
-    OrientationA := XMLoadFloat4(&fr.Orientation);
+    OriginA := XMLoadFloat3(fr.Origin);
+    OrientationA := XMLoadFloat4(fr.Orientation);
 
     {$IFDEF UseAssert}
     assert(XMQuaternionIsUnit(OrientationA));
@@ -5208,7 +5159,7 @@ end;
 //-----------------------------------------------------------------------------
 // Triangle vs frustum test.
 //-----------------------------------------------------------------------------
-function TBoundingFrustumHelper.Intersects(V0, V1, V2: TFXMVECTOR): boolean;
+function TBoundingFrustum.Intersects(V0, V1, V2: TFXMVECTOR): boolean;
 var
     Planes: array [0..5] of TXMVECTOR;
     vOrigin, vOrientation: TXMVECTOR;
@@ -5235,8 +5186,8 @@ begin
     Planes[5] := XMVectorSet(0.0, -1.0, BottomSlope, 0.0);
 
     // Load origin and orientation of the frustum.
-    vOrigin := XMLoadFloat3(&Origin);
-    vOrientation := XMLoadFloat4(&Orientation);
+    vOrigin := XMLoadFloat3(Origin);
+    vOrientation := XMLoadFloat4(Orientation);
 
     {$IFDEF UseAssert}
     assert(XMQuaternionIsUnit(vOrientation));
@@ -5384,7 +5335,7 @@ end;
 
 
 
-function TBoundingFrustumHelper.Intersects(Plane: TFXMVECTOR): TPlaneIntersectionType;
+function TBoundingFrustum.Intersects(Plane: TFXMVECTOR): TPlaneIntersectionType;
 var
     vOrigin, vOrientation: TXMVECTOR;
     RightTop, RightBottom, LeftTop, LeftBottom, vNear, vFar: TXMVECTOR;
@@ -5393,7 +5344,7 @@ var
 begin
     {$IFDEF UseAssert}
     assert(XMPlaneIsUnit(Plane));
-	{$ENDIF}
+   {$ENDIF}
 
     // Load origin and orientation of the frustum.
     vOrigin := XMLoadFloat3(Origin);
@@ -5401,7 +5352,7 @@ begin
 
     {$IFDEF UseAssert}
     assert(XMQuaternionIsUnit(vOrientation));
-	{$ENDIF}
+    {$ENDIF}
 
     // Set w of the origin to one so we can dot4 with a plane.
     vOrigin := XMVectorInsert(0, 0, 0, 0, 1, vOrigin, XMVectorSplatOne());
@@ -5435,20 +5386,20 @@ begin
 
     // If the frustum is outside any plane it is outside.
     if (XMVector4EqualInt(Outside, XMVectorTrueInt())) then
-        Result := FRONT
+        Result := piFRONT
     // If the frustum is inside all planes it is inside.
     else if (XMVector4EqualInt(Inside, XMVectorTrueInt())) then
-        Result := BACK
+        Result := piBACK
     else
         // The frustum is not inside all planes or outside a plane it intersects.
-        Result := INTERSECTING;
+        Result := piINTERSECTING;
 end;
 
 
 //-----------------------------------------------------------------------------
 // Ray vs. frustum test
 //-----------------------------------------------------------------------------
-function TBoundingFrustumHelper.Intersects(rayOrigin, Direction: TFXMVECTOR; var Dist: single): boolean;
+function TBoundingFrustum.Intersects(rayOrigin, Direction: TFXMVECTOR; var Dist: single): boolean;
 var
     Planes: array[0..5] of TXMVECTOR;
     frOrigin, frOrientation: TXMVECTOR;
@@ -5562,7 +5513,7 @@ end;
 //-----------------------------------------------------------------------------
 // Test a frustum vs 6 planes (typically forming another frustum).
 //-----------------------------------------------------------------------------
-function TBoundingFrustumHelper.ContainedBy(Plane0, Plane1, Plane2: TFXMVECTOR; Plane3: TGXMVECTOR; Plane4, Plane5: THXMVECTOR): TContainmentType;
+function TBoundingFrustum.ContainedBy(Plane0, Plane1, Plane2: TFXMVECTOR; Plane3: TGXMVECTOR; Plane4, Plane5: THXMVECTOR): TContainmentType;
 var
     vOrigin, vOrientation: TXMVECTOR;
     RightTop, RightBottom, LeftTop, LeftBottom, vNear, vFar: TXMVECTOR;
@@ -5571,8 +5522,8 @@ var
     AnyOutside, AllInside: TXMVECTOR;
 begin
     // Load origin and orientation of the frustum.
-    vOrigin := XMLoadFloat3(&Origin);
-    vOrientation := XMLoadFloat4(&Orientation);
+    vOrigin := XMLoadFloat3(Origin);
+    vOrientation := XMLoadFloat4(Orientation);
 
     {$IFDEF UseAssert}
     assert(XMQuaternionIsUnit(vOrientation));
@@ -5671,7 +5622,7 @@ end;
 // of these cases is true then it may or may not be intersecting the frustum
 // (INTERSECTS)
 //-----------------------------------------------------------------------------
-procedure TBoundingFrustumHelper.GetPlanes(var NearPlane, FarPlane, RightPlane, LeftPlane, TopPlane, BottomPlane: TXMVECTOR);
+procedure TBoundingFrustum.GetPlanes(var NearPlane, FarPlane, RightPlane, LeftPlane, TopPlane, BottomPlane: TXMVECTOR);
 var
     vOrigin, vOrientation: TXMVECTOR;
     vNearPlane, vFarPlane, vRightPlane, vLeftPlane, vTopPlane, vBottomPlane: TXMVECTOR;
@@ -5729,7 +5680,7 @@ end;
 // contain a projection; any rotation, translation or scale will cause the
 // constructed frustum to be incorrect.
 //-----------------------------------------------------------------------------
-procedure TBoundingFrustum.CreateFromMatrix(var _Out: TBoundingFrustum; Projection: TFXMMATRIX; rhcoords: boolean);
+procedure TBoundingFrustum.CreateFromMatrix(_Out: PBoundingFrustum; Projection: TFXMMATRIX; rhcoords: boolean);
 // Corners of the projection frustum in homogenous space.
 const
     HomogenousPoints: array [0..5] of TXMVECTOR =

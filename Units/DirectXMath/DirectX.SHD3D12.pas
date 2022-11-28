@@ -33,10 +33,6 @@ uses
     DX12.DXGI;
 
 
-// , XMLoadFloat3, g_XMIdentityR3);
-
-
-
 function _LoadScanline(
     {var} pDestination: PXMVECTOR; Count: size_t; pSource: pbyte; size: size_t; format: TDXGI_FORMAT): boolean;
 var
@@ -198,7 +194,6 @@ begin
         Exit;
 
     case (desc.Format) of
-
         DXGI_FORMAT_R32G32B32A32_FLOAT,
         DXGI_FORMAT_R32G32B32_FLOAT,
         DXGI_FORMAT_R16G16B16A16_FLOAT,
@@ -207,15 +202,12 @@ begin
         DXGI_FORMAT_R16G16_FLOAT,
         DXGI_FORMAT_R32_FLOAT,
         DXGI_FORMAT_R16_FLOAT:
-            // See _LoadScanline to support more pixel formats
         begin
+            // See _LoadScanline to support more pixel formats
         end;
-
         else
             Exit;
     end;
-
-
 
     //--- Setup for SH projection
     SetLength(scanline, desc.Width);

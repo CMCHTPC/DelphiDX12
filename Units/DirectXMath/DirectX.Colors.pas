@@ -20,6 +20,7 @@ uses
 const
 
     // Standard colors (Red/Green/Blue/Alpha)
+
     AliceBlue: TXMVECTOR = (f: (0.941176534, 0.972549081, 1.000000000, 1.000000000));
     AntiqueWhite: TXMVECTOR = (f: (0.980392218, 0.921568692, 0.843137324, 1.000000000));
     Aqua: TXMVECTOR = (f: (0.000000000, 1.000000000, 1.000000000, 1.000000000));
@@ -161,6 +162,9 @@ const
     WhiteSmoke: TXMVECTOR = (f: (0.960784376, 0.960784376, 0.960784376, 1.000000000));
     Yellow: TXMVECTOR = (f: (1.000000000, 1.000000000, 0.000000000, 1.000000000));
     YellowGreen: TXMVECTOR = (f: (0.603921592, 0.803921640, 0.196078449, 1.000000000));
+
+
+
 
 
 implementation

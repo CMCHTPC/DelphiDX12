@@ -27,18 +27,35 @@ type
     TXMVECTOR_ARRAY = array of TXMVECTOR;
     PXMVECTOR_ARRAY = ^TXMVECTOR_ARRAY;
 
+function ISPOWEROF2(n: integer): boolean;
+procedure vmulComplex(var rResult, iResult: TXMVECTOR; r1, i1, r2: TFXMVECTOR; i2: TGXMVECTOR); overload;
+procedure vmulComplex(var r1, i1: TXMVECTOR; r2, i2: TFXMVECTOR); overload;
+procedure ButterflyDIT4_1(var r1, i1: TXMVECTOR);
+procedure ButterflyDIT4_4(var r0, r1, r2, r3, i0, i1, i2, i3: TXMVECTOR; const pUnityTableReal {uStride * 4}: array of TXMVECTOR; const pUnityTableImaginary {uStride * 4}: array of TXMVECTOR; uStride: size_t; fLast: boolean);
+procedure FFT4(var pReal, pImaginary: array of TXMVECTOR; uCount: size_t = 1);
+procedure FFT8(var pReal, pImaginary: array of TXMVECTOR; uCount: size_t = 1);
+procedure FFT16(var pReal, pImaginary: array of TXMVECTOR; uCount: size_t = 1);
+procedure FFT(var pReal, pImaginary: array of TXMVECTOR; const pUnityTable: array of TXMVECTOR; uLength: size_t; uCount: size_t = 1);
+procedure FFTInitializeUnityTable(var pUnityTable: TXMVECTOR_ARRAY; uLength: size_t);
+procedure FFTUnswizzle(var pOutput: PXMVECTOR_ARRAY; pInput: PXMVECTOR_ARRAY; const uLog2Length: size_t);
+procedure FFTPolar(var pOutput: PXMVECTOR_ARRAY; pInputReal: PXMVECTOR_ARRAY; pInputImaginary: PXMVECTOR_ARRAY; uLength: size_t);
+procedure Deinterleave(var pOutput: PXMVECTOR_ARRAY; pInput: PXMVECTOR_ARRAY; uChannelCount, uFrameCount: size_t); inline;
+procedure Interleave(var pOutput: PXMVECTOR_ARRAY; pInput: PXMVECTOR_ARRAY; uChannelCount, uFrameCount: size_t);
+procedure FFTInterleaved(var pReal: PXMVECTOR_ARRAY; var pImaginary: PXMVECTOR_ARRAY; const pUnityTable: PXMVECTOR_ARRAY; uChannelCount, uLog2Length: size_t);
+procedure IFFTDeinterleaved(var pReal: PXMVECTOR_ARRAY; const pImaginary: PXMVECTOR_ARRAY; const pUnityTable: PXMVECTOR_ARRAY; uChannelCount, uLog2Length: size_t);
+
 implementation
 
 
 
-function ISPOWEROF2(n: integer): boolean;
+function ISPOWEROF2(n: integer): boolean; inline;
 begin
     Result := (((n and (n - 1)) = 0) and (n <> 0));
 end;
 
 // Parallel multiplication of four complex numbers, assuming real and imaginary values are stored in separate vectors.
 
-procedure vmulComplex(var rResult, iResult: TXMVECTOR; r1, i1, r2: TFXMVECTOR; i2: TGXMVECTOR); overload;
+procedure vmulComplex(var rResult, iResult: TXMVECTOR; r1, i1, r2: TFXMVECTOR; i2: TGXMVECTOR); overload; inline;
 var
     vr1r2, vr1i2: TXMVECTOR;
 begin
@@ -51,7 +68,7 @@ end;
 
 
 
-procedure vmulComplex(var r1, i1: TXMVECTOR; r2, i2: TFXMVECTOR); overload;
+procedure vmulComplex(var r1, i1: TXMVECTOR; r2, i2: TFXMVECTOR); overload; inline;
 var
     vr1r2, vr1i2: TXMVECTOR;
 begin
@@ -93,7 +110,7 @@ end;
 //          | 1  0 -1  0 |   | (rTempZ,iTempZ) |   | (rTempX - rTempZ, iTempX - iTempZ) |
 //          | 0  1  0  j |   | (rTempW,iTempW) |   | (rTempY - iTempW, iTempY + rTempW) |
 //----------------------------------------------------------------------------------
-procedure ButterflyDIT4_1(var r1, i1: TXMVECTOR);
+procedure ButterflyDIT4_1(var r1, i1: TXMVECTOR); inline;
 // sign constants for radix-4 butterflies
 const
     vDFT4SignBits1: TXMVECTOR = (f: (1.0, -1.0, 1.0, -1.0));
@@ -152,8 +169,7 @@ end;
 //          | 1  0 -1  0 |   | (rTemp2,iTemp2) |   | (rTemp0 - rTemp2, iTemp0 - iTemp2) |
 //          | 0  1  0  j |   | (rTemp3,iTemp3) |   | (rTemp1 - iTemp3, iTemp1 + rTemp3) |
 //----------------------------------------------------------------------------------
-procedure ButterflyDIT4_4(var r0, r1, r2, r3, i0, i1, i2, i3: TXMVECTOR; const pUnityTableReal {uStride * 4}: array of TXMVECTOR;
-    const pUnityTableImaginary {uStride * 4}: array of TXMVECTOR; uStride: size_t; fLast: boolean);
+procedure ButterflyDIT4_4(var r0, r1, r2, r3, i0, i1, i2, i3: TXMVECTOR; const pUnityTableReal {uStride * 4}: array of TXMVECTOR; const pUnityTableImaginary {uStride * 4}: array of TXMVECTOR; uStride: size_t; fLast: boolean); inline;
 var
     rTemp0, rTemp2, rTemp1, rTemp3: TXMVECTOR;
     iTemp0, iTemp2, iTemp1, iTemp3: TXMVECTOR;
@@ -231,7 +247,7 @@ end;
 //  uCount     - [in]    number of FFT iterations
 //----------------------------------------------------------------------------------
 
-procedure FFT4(var pReal, pImaginary: array of TXMVECTOR; uCount: size_t = 1);
+procedure FFT4(var pReal, pImaginary: array of TXMVECTOR; uCount: size_t = 1); inline;
 var
     uIndex: size_t;
 begin
@@ -257,7 +273,7 @@ end;
 //  pImaginary - [inout] imaginary components, must have at least uCount*2 elements
 //  uCount     - [in]    number of FFT iterations
 //----------------------------------------------------------------------------------
-procedure FFT8(var pReal, pImaginary: array of TXMVECTOR; uCount: size_t = 1);
+procedure FFT8(var pReal, pImaginary: array of TXMVECTOR; uCount: size_t = 1); inline;
 const
     wr1: TXMVECTOR = (f: (1.0, 0.70710677, 0.0, -0.70710677));
     wi1: TXMVECTOR = (f: (0.0, -0.70710677, -1.0, -0.70710677));
@@ -309,7 +325,7 @@ end;
 //  uCount     - [in]    number of FFT iterations
 //----------------------------------------------------------------------------------
 
-procedure FFT16(var pReal, pImaginary: array of TXMVECTOR; uCount: size_t = 1);
+procedure FFT16(var pReal, pImaginary: array of TXMVECTOR; uCount: size_t = 1); inline;
 const
     aUnityTableReal: array [0..3] of TXMVECTOR = (
         (f: (1.0, 1.0, 1.0, 1.0)),
@@ -366,7 +382,7 @@ end;
 //  uCount      - [in]    number of FFT iterations
 //----------------------------------------------------------------------------------
 
-procedure FFT(var pReal, pImaginary: array of TXMVECTOR; const pUnityTable: array of TXMVECTOR; uLength: size_t; uCount: size_t = 1);
+procedure FFT(var pReal, pImaginary: array of TXMVECTOR; const pUnityTable: array of TXMVECTOR; uLength: size_t; uCount: size_t = 1); inline;
 var
     pUnityTableReal: PXMVECTOR_ARRAY;
     pUnityTableImaginary: PXMVECTOR_ARRAY;
@@ -447,7 +463,7 @@ end;
 //  uLength     - [in]  FFT length in frames, must be a power of 2 > 16
 //----------------------------------------------------------------------------------
 
-procedure FFTInitializeUnityTable(var pUnityTable: TXMVECTOR_ARRAY; uLength: size_t);
+procedure FFTInitializeUnityTable(var pUnityTable: TXMVECTOR_ARRAY; uLength: size_t); inline;
 const
     vXM0123: TXMVECTOR = (f: (0.0, 1.0, 2.0, 3.0));
 var
@@ -500,6 +516,8 @@ begin
 end;
 
 
+
+
 //----------------------------------------------------------------------------------
 // DESCRIPTION:
 //  The FFT functions generate output in bit reversed order.
@@ -514,7 +532,7 @@ end;
 //  uLog2Length - [in]  LOG (base 2) of FFT length in samples, must be >= 2
 //----------------------------------------------------------------------------------
 
-procedure FFTUnswizzle(var pOutput: PXMVECTOR_ARRAY; pInput: PXMVECTOR_ARRAY; const uLog2Length: size_t);
+procedure FFTUnswizzle(var pOutput: PXMVECTOR_ARRAY; pInput: PXMVECTOR_ARRAY; const uLog2Length: size_t); inline;
 const
     cSwizzleTable: array [0..255] of byte = (
         $00, $40, $80, $C0, $10, $50, $90, $D0, $20, $60, $A0, $E0, $30, $70, $B0, $F0,
@@ -557,8 +575,7 @@ begin
 
             XMStoreFloat4A(f4a, pInput[uIndex]);
             n := uIndex * 4;
-            uAddr := ((cSwizzleTable[n and $ff]) shl 24) or ((cSwizzleTable[(n shr 8) and $ff]) shl 16) or
-                ((cSwizzleTable[(n shr 16) and $ff]) shl 8) or ((cSwizzleTable[(n shr 24)]));
+            uAddr := ((cSwizzleTable[n and $ff]) shl 24) or ((cSwizzleTable[(n shr 8) and $ff]) shl 16) or ((cSwizzleTable[(n shr 16) and $ff]) shl 8) or ((cSwizzleTable[(n shr 24)]));
             pfOutput[uAddr shr uRev32] := f4a.x;
             pfOutput[($40000000 or uAddr) shr uRev32] := f4a.y;
             pfOutput[($80000000 or uAddr) shr uRev32] := f4a.z;
@@ -575,9 +592,7 @@ begin
 
             XMStoreFloat4A(f4a, pInput[uIndex]);
             n := (uIndex shr 1);
-            uAddr := ((((cSwizzleTable[n and $ff]) shl 24) or ((cSwizzleTable[(n shr 8) and $ff]) shl 16) or
-                ((cSwizzleTable[(n shr 16) and $ff]) shl 8) or ((cSwizzleTable[(n shr 24)]))) shr uRev32) or
-                ((uIndex and 1) * uRev7 * 4);
+            uAddr := ((((cSwizzleTable[n and $ff]) shl 24) or ((cSwizzleTable[(n shr 8) and $ff]) shl 16) or ((cSwizzleTable[(n shr 16) and $ff]) shl 8) or ((cSwizzleTable[(n shr 24)]))) shr uRev32) or ((uIndex and 1) * uRev7 * 4);
             pfOutput[uAddr] := f4a.x;
             uAddr := uAddr + uRev7;
             pfOutput[uAddr] := f4a.y;
@@ -600,7 +615,7 @@ end;
 //  pInputImaginary - [in]  input buffer (imaginary components), must have at least uLength/4 elements
 //  uLength         - [in]  FFT length in samples, must be a power of 2 >= 4
 //----------------------------------------------------------------------------------
-procedure FFTPolar(var pOutput: PXMVECTOR_ARRAY; pInputReal: PXMVECTOR_ARRAY; pInputImaginary: PXMVECTOR_ARRAY; uLength: size_t);
+procedure FFTPolar(var pOutput: PXMVECTOR_ARRAY; pInputReal: PXMVECTOR_ARRAY; pInputImaginary: PXMVECTOR_ARRAY; uLength: size_t); inline;
 var
     flOneOverLength: single;
     vOneOverLength, vReal, vImaginary, vRR, vII, vRRplusII, vTotal: TXMVECTOR;
@@ -645,7 +660,7 @@ end;
 //  uChannelCount - [in]  number of channels, must be > 1
 //  uFrameCount   - [in]  number of frames of valid data, must be > 0
 //----------------------------------------------------------------------------------
-procedure Deinterleave(var pOutput: PXMVECTOR_ARRAY; pInput: PXMVECTOR_ARRAY; uChannelCount, uFrameCount: size_t);
+procedure Deinterleave(var pOutput: PXMVECTOR_ARRAY; pInput: PXMVECTOR_ARRAY; uChannelCount, uFrameCount: size_t); inline;
 var
     pfOutput: array of single absolute pOutput;
     pfInput: array of single absolute pInput;
@@ -682,7 +697,7 @@ end;
 //  uChannelCount - [in]  number of channels, must be > 1
 //  uFrameCount   - [in]  number of frames of valid data, must be > 0
 //----------------------------------------------------------------------------------
-procedure Interleave(var pOutput: PXMVECTOR_ARRAY; pInput: PXMVECTOR_ARRAY; uChannelCount, uFrameCount: size_t);
+procedure Interleave(var pOutput: PXMVECTOR_ARRAY; pInput: PXMVECTOR_ARRAY; uChannelCount, uFrameCount: size_t); inline;
 var
     pfOutput: array of single absolute pOutput;
     pfInput: array of single absolute pInput;
@@ -717,8 +732,7 @@ end;
 //  uChannelCount - [in]    number of channels, must be within [1, 6]
 //  uLog2Length   - [in]    LOG (base 2) of FFT length in frames, must within [2, 9]
 //----------------------------------------------------------------------------------
-procedure FFTInterleaved(var pReal: PXMVECTOR_ARRAY; var pImaginary: PXMVECTOR_ARRAY; const pUnityTable: PXMVECTOR_ARRAY;
-    uChannelCount, uLog2Length: size_t);
+procedure FFTInterleaved(var pReal: PXMVECTOR_ARRAY; var pImaginary: PXMVECTOR_ARRAY; const pUnityTable: PXMVECTOR_ARRAY; uChannelCount, uLog2Length: size_t); inline;
 var
     vRealTemp: TXMVECTOR_ARRAY; // array [0..768 - 1] of TXMVECTOR;
     vImaginaryTemp: TXMVECTOR_ARRAY; // array [0..768 - 1] of TXMVECTOR;
@@ -803,8 +817,7 @@ end;
 //  uChannelCount - [in]    number of channels, must be > 0
 //  uLog2Length   - [in]    LOG (base 2) of FFT length in frames, must within [2, 9]
 //----------------------------------------------------------------------------------
-procedure IFFTDeinterleaved(var pReal: PXMVECTOR_ARRAY; const pImaginary: PXMVECTOR_ARRAY; const pUnityTable: PXMVECTOR_ARRAY;
-    uChannelCount, uLog2Length: size_t);
+procedure IFFTDeinterleaved(var pReal: PXMVECTOR_ARRAY; const pImaginary: PXMVECTOR_ARRAY; const pUnityTable: PXMVECTOR_ARRAY; uChannelCount, uLog2Length: size_t); inline;
 var
     vRealTemp: array of TXMVECTOR; // 768
     vImaginaryTemp: array of TXMVECTOR; // 768
