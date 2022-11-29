@@ -80,6 +80,22 @@ const
     D3D_SHADER_REQUIRES_TYPED_UAV_LOAD_ADDITIONAL_FORMATS = $00000800;
     D3D_SHADER_REQUIRES_ROVS = $00001000;
     D3D_SHADER_REQUIRES_VIEWPORT_AND_RT_ARRAY_INDEX_FROM_ANY_SHADER_FEEDING_RASTERIZER = $00002000;
+    D3D_SHADER_REQUIRES_WAVE_OPS = $00004000;
+    D3D_SHADER_REQUIRES_INT64_OPS = $00008000;
+    D3D_SHADER_REQUIRES_VIEW_ID = $00010000;
+    D3D_SHADER_REQUIRES_BARYCENTRICS = $00020000;
+    D3D_SHADER_REQUIRES_NATIVE_16BIT_OPS = $00040000;
+    D3D_SHADER_REQUIRES_SHADING_RATE = $00080000;
+    D3D_SHADER_REQUIRES_RAYTRACING_TIER_1_1 = $00100000;
+    D3D_SHADER_REQUIRES_SAMPLER_FEEDBACK = $00200000;
+    D3D_SHADER_REQUIRES_ATOMIC_INT64_ON_TYPED_RESOURCE = $00400000;
+    D3D_SHADER_REQUIRES_ATOMIC_INT64_ON_GROUP_SHARED = $00800000;
+    D3D_SHADER_REQUIRES_DERIVATIVES_IN_MESH_AND_AMPLIFICATION_SHADERS = $01000000;
+    D3D_SHADER_REQUIRES_RESOURCE_DESCRIPTOR_HEAP_INDEXING = $02000000;
+    D3D_SHADER_REQUIRES_SAMPLER_DESCRIPTOR_HEAP_INDEXING = $04000000;
+    D3D_SHADER_REQUIRES_WAVE_MMA = $08000000;
+    D3D_SHADER_REQUIRES_ATOMIC_INT64_ON_DESCRIPTOR_HEAP_RESOURCE = $10000000;
+
 
 
 type
@@ -92,6 +108,18 @@ type
         D3D12_SHVER_HULL_SHADER = 3,
         D3D12_SHVER_DOMAIN_SHADER = 4,
         D3D12_SHVER_COMPUTE_SHADER = 5,
+        // D3D12 Shaders
+        D3D12_SHVER_LIBRARY = 6,
+
+        D3D12_SHVER_RAY_GENERATION_SHADER = 7,
+        D3D12_SHVER_INTERSECTION_SHADER = 8,
+        D3D12_SHVER_ANY_HIT_SHADER = 9,
+        D3D12_SHVER_CLOSEST_HIT_SHADER = 10,
+        D3D12_SHVER_MISS_SHADER = 11,
+        D3D12_SHVER_CALLABLE_SHADER = 12,
+
+        D3D12_SHVER_MESH_SHADER = 13,
+        D3D12_SHVER_AMPLIFICATION_SHADER = 14,
         D3D12_SHVER_RESERVED0 = $FFF0);
 
 
@@ -100,7 +128,7 @@ type
 
 
     TD3D12_SIGNATURE_PARAMETER_DESC = record
-        SemanticName: PAnsiChar;   // Name of the semantic
+        SemanticName: pansichar;   // Name of the semantic
         SemanticIndex: UINT;  // Index of the semantic
         _Register: UINT;       // Number of member variables
         SystemValueType: TD3D_NAME;// A predefined system value, or D3D_NAME_UNDEFINED if not applicable
@@ -117,7 +145,7 @@ type
 
 
     TD3D12_SHADER_BUFFER_DESC = record
-        Name: PAnsiChar;           // Name of the constant buffer
+        Name: pansichar;           // Name of the constant buffer
         _Type: TD3D_CBUFFER_TYPE;           // Indicates type of buffer content
         Variables: UINT;      // Number of member variables
         Size: UINT;           // Size of CB (in bytes)
@@ -125,7 +153,7 @@ type
     end;
 
     TD3D12_SHADER_VARIABLE_DESC = record
-        Name: PAnsiChar;           // Name of the variable
+        Name: pansichar;           // Name of the variable
         StartOffset: UINT;    // Offset in constant buffer's backing store
         Size: UINT;           // Size of variable (in bytes)
         uFlags: UINT;         // Variable flags
@@ -144,7 +172,7 @@ type
         Elements: UINT;       // Number of elements (0 if not an array)
         Members: UINT;        // Number of members (0 if not a structure)
         Offset: UINT;         // Offset from the start of structure (0 if not a structure member)
-        Name: PAnsiChar;           // Name of type, can be NULL
+        Name: pansichar;           // Name of type, can be NULL
     end;
 
 
@@ -157,7 +185,7 @@ type
 
     TD3D12_SHADER_DESC = record
         Version: UINT;                     // Shader version
-        Creator: PAnsiChar;                     // Creator string
+        Creator: pansichar;                     // Creator string
         Flags: UINT;                       // Shader compilation/parse flags
 
         ConstantBuffers: UINT;             // Number of constant buffers
@@ -200,7 +228,7 @@ type
     end;
 
     TD3D12_SHADER_INPUT_BIND_DESC = record
-        Name: PAnsiChar;           // Name of the resource
+        Name: pansichar;           // Name of the resource
         _Type: TD3D_SHADER_INPUT_TYPE;           // Type of resource (e.g. texture, cbuffer, etc.)
         BindPoint: UINT;      // Starting bind point
         BindCount: UINT;      // Number of contiguous bind points (for arrays)
@@ -215,14 +243,14 @@ type
 
 
     TD3D12_LIBRARY_DESC = record
-        Creator: PAnsiChar;           // The name of the originator of the library.
+        Creator: pansichar;           // The name of the originator of the library.
         Flags: UINT;             // Compilation flags.
         FunctionCount: UINT;     // Number of functions exported from the library.
     end;
 
     TD3D12_FUNCTION_DESC = record
         Version: UINT;                     // Shader version
-        Creator: PAnsiChar;                     // Creator string
+        Creator: pansichar;                     // Creator string
         Flags: UINT;                       // Shader compilation/parse flags
 
         ConstantBuffers: UINT;             // Number of constant buffers
@@ -250,18 +278,18 @@ type
         ConversionInstructionCount: UINT;  // Number of type conversion instructions used
         BitwiseInstructionCount: UINT;     // Number of bitwise arithmetic instructions used
         MinFeatureLevel: TD3D_FEATURE_LEVEL;             // Min target of the function byte code
-        RequiredFeatureFlags: UINT64;        // Required feature flags
+        RequiredFeatureFlags: uint64;        // Required feature flags
 
-        Name: PAnsiChar;                        // Function name
-        FunctionParameterCount: INT32;      // Number of logical parameters in the function signature (not including return)
+        Name: pansichar;                        // Function name
+        FunctionParameterCount: int32;      // Number of logical parameters in the function signature (not including return)
         HasReturn: boolean;                   // TRUE, if function returns a value, false - it is a subroutine
         Has10Level9VertexShader: boolean;     // TRUE, if there is a 10L9 VS blob
         Has10Level9PixelShader: boolean;      // TRUE, if there is a 10L9 PS blob
     end;
 
     TD3D12_PARAMETER_DESC = record
-        Name: PAnsiChar;               // Parameter name.
-        SemanticName: PAnsiChar;       // Parameter semantic name (+index).
+        Name: pansichar;               // Parameter name.
+        SemanticName: pansichar;       // Parameter semantic name (+index).
         _Type: TD3D_SHADER_VARIABLE_TYPE;               // Element type.
         _Class: TD3D_SHADER_VARIABLE_CLASS;              // Scalar/Vector/Matrix.
         Rows: UINT;               // Rows are for matrix parameters.
@@ -347,8 +375,8 @@ type
     ID3D12ShaderReflectionType = class // Cannot use 'interface' as the QueryInterface, AddRef and Release methods are missing.
         function GetDesc(out pDesc: TD3D12_SHADER_TYPE_DESC): HResult; virtual; stdcall; abstract;
         function GetMemberTypeByIndex(Index: UINT): ID3D12ShaderReflectionType; virtual; stdcall; abstract;
-        function GetMemberTypeByName(Name: PAnsiChar): ID3D12ShaderReflectionType; virtual; stdcall; abstract;
-        function GetMemberTypeName(Index: UINT): PAnsiChar; virtual; stdcall; abstract;
+        function GetMemberTypeByName(Name: pansichar): ID3D12ShaderReflectionType; virtual; stdcall; abstract;
+        function GetMemberTypeName(Index: UINT): pansichar; virtual; stdcall; abstract;
         function IsEqual(pType: ID3D12ShaderReflectionType): HResult; virtual; stdcall; abstract;
         function GetSubType(): ID3D12ShaderReflectionType; virtual; stdcall; abstract;
         function GetBaseClass(): ID3D12ShaderReflectionType; virtual; stdcall; abstract;
@@ -370,20 +398,20 @@ type
     ID3D12ShaderReflectionConstantBuffer = class // Cannot use 'interface' as the QueryInterface, AddRef and Release methods are missing.
         function GetDesc(out pDesc: TD3D12_SHADER_BUFFER_DESC): HResult; virtual; stdcall; abstract;
         function GetVariableByIndex(Index: UINT): ID3D12ShaderReflectionVariable; virtual; stdcall; abstract;
-        function GetVariableByName(Name: PAnsiChar): ID3D12ShaderReflectionVariable; virtual; stdcall; abstract;
+        function GetVariableByName(Name: pansichar): ID3D12ShaderReflectionVariable; virtual; stdcall; abstract;
     end;
 
 
     ID3D12FunctionReflection = class // Cannot use 'interface' as the QueryInterface, AddRef and Release methods are missing.
         function GetDesc(out pDesc: TD3D12_FUNCTION_DESC): HResult; virtual; stdcall; abstract;
         function GetConstantBufferByIndex(BufferIndex: UINT): ID3D12ShaderReflectionConstantBuffer; virtual; stdcall; abstract;
-        function GetConstantBufferByName(Name: PAnsiChar): ID3D12ShaderReflectionConstantBuffer; virtual; stdcall; abstract;
+        function GetConstantBufferByName(Name: pansichar): ID3D12ShaderReflectionConstantBuffer; virtual; stdcall; abstract;
         function GetResourceBindingDesc(ResourceIndex: UINT; out pDesc: TD3D12_SHADER_INPUT_BIND_DESC): HResult;
             virtual; stdcall; abstract;
-        function GetVariableByName(Name: PAnsiChar): ID3D12ShaderReflectionVariable; virtual; stdcall; abstract;
-        function GetResourceBindingDescByName(Name: PAnsiChar; out pDesc: TD3D12_SHADER_INPUT_BIND_DESC): HResult; virtual; stdcall; abstract;
+        function GetVariableByName(Name: pansichar): ID3D12ShaderReflectionVariable; virtual; stdcall; abstract;
+        function GetResourceBindingDescByName(Name: pansichar; out pDesc: TD3D12_SHADER_INPUT_BIND_DESC): HResult; virtual; stdcall; abstract;
         // Use D3D_RETURN_PARAMETER_INDEX to get description of the return value.
-        function GetFunctionParameter(ParameterIndex: INT32): ID3D12FunctionParameterReflection; virtual; stdcall; abstract;
+        function GetFunctionParameter(ParameterIndex: int32): ID3D12FunctionParameterReflection; virtual; stdcall; abstract;
     end;
 
 
@@ -405,15 +433,15 @@ type
         ['{5A58797D-A72C-478D-8BA2-EFC6B0EFE88E}']
         function GetDesc(out pDesc: TD3D12_SHADER_DESC): HResult; stdcall;
         function GetConstantBufferByIndex(Index: UINT): ID3D12ShaderReflectionConstantBuffer; stdcall;
-        function GetConstantBufferByName(Name: PAnsiChar): ID3D12ShaderReflectionConstantBuffer; stdcall;
+        function GetConstantBufferByName(Name: pansichar): ID3D12ShaderReflectionConstantBuffer; stdcall;
         function GetResourceBindingDesc(ResourceIndex: UINT; out pDesc: TD3D12_SHADER_INPUT_BIND_DESC): HResult;
             stdcall;
         function GetInputParameterDesc(ParameterIndex: UINT; out pDesc: TD3D12_SIGNATURE_PARAMETER_DESC): HResult;
             stdcall;
         function GetOutputParameterDesc(ParameterIndex: UINT; out pDesc: TD3D12_SIGNATURE_PARAMETER_DESC): HResult; stdcall;
         function GetPatchConstantParameterDesc(ParameterIndex: UINT; out pDesc: TD3D12_SIGNATURE_PARAMETER_DESC): HResult; stdcall;
-        function GetVariableByName(Name: PAnsiChar): ID3D12ShaderReflectionVariable; stdcall;
-        function GetResourceBindingDescByName(Name: PAnsiChar; out pDesc: TD3D12_SHADER_INPUT_BIND_DESC): HResult; stdcall;
+        function GetVariableByName(Name: pansichar): ID3D12ShaderReflectionVariable; stdcall;
+        function GetResourceBindingDescByName(Name: pansichar; out pDesc: TD3D12_SHADER_INPUT_BIND_DESC): HResult; stdcall;
         function GetMovInstructionCount(): UINT; stdcall;
         function GetMovcInstructionCount(): UINT; stdcall;
         function GetConversionInstructionCount(): UINT; stdcall;
@@ -423,14 +451,14 @@ type
         function GetNumInterfaceSlots(): UINT; stdcall;
         function GetMinFeatureLevel(out pLevel: TD3D_FEATURE_LEVEL): HResult; stdcall;
         function GetThreadGroupSize(out pSizeX: UINT; out pSizeY: UINT; out pSizeZ: UINT): UINT; stdcall;
-        function GetRequiresFlags(): UINT64; stdcall;
+        function GetRequiresFlags(): uint64; stdcall;
     end;
 
 
     ID3D12LibraryReflection = interface(IUnknown)
         ['{8E349D19-54DB-4A56-9DC9-119D87BDB804}']
         function GetDesc(out pDesc: TD3D12_LIBRARY_DESC): HResult; stdcall;
-        function GetFunctionByIndex(FunctionIndex: INT32): ID3D12FunctionReflection; stdcall;
+        function GetFunctionByIndex(FunctionIndex: int32): ID3D12FunctionReflection; stdcall;
     end;
 
 
@@ -463,27 +491,3 @@ begin
 end;
 
 end.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

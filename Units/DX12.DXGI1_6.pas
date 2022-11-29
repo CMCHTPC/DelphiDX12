@@ -1,7 +1,7 @@
 { **************************************************************************
   FreePascal/Delphi DirectX 12 Header Files
   
-  Copyright 2013-2021 Norbert Sonnleitner
+  Copyright 2013-2022 Norbert Sonnleitner
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@
 
   This unit consists of the following header files
   File name: DXGI1_6.h
-  Header version: 10.0.19041.0
+  Header version: 10.0.22621.0
 
   ************************************************************************** }
 unit DX12.DXGI1_6;
@@ -151,6 +151,8 @@ type
 
 
 function DXGIDeclareAdapterRemovalSupport(): HRESULT; stdcall; external DXGI1_6_DLL;
+function DXGIDisableVBlankVirtualization(): HRESULT; stdcall; external DXGI1_6_DLL;
+
 
 implementation
 

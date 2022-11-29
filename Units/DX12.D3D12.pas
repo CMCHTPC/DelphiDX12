@@ -32,7 +32,7 @@
   This unit consists of the following header files
   File name: D3D12.h
 
-  Header version: 10.0.19041.0
+  Header version: 10.0.22621.0
 
   ************************************************************************** }
 (*-------------------------------------------------------------------------------------
@@ -112,11 +112,14 @@ const
     IID_ID3D12ProtectedResourceSession1: TGUID = '{D6F12DD6-76FB-406E-8961-4296EEFC0409}';
     IID_ID3D12Device7: TGUID = '{5c014b53-68a1-4b9b-8bd1-dd6046b9358b}';
     IID_ID3D12Device8: TGUID = '{9218E6BB-F944-4F7E-A75C-B1B2C7B701F3}';
+    IID_ID3D12Device9: TGUID = '{4c80e962-f032-4f60-bc9e-ebc2cfa1d83c}';
+    IID_ID3D12Device10 : TGUID = '{517f8718-aa66-49f9-b02b-a7ab89c06031}';
+
 
     IID_ID3D12Resource2: TGUID = '{BE36EC3B-EA85-4AEB-A45A-E9D76404A495}';
     IID_ID3D12GraphicsCommandList5: TGUID = '{55050859-4024-474c-87f5-6472eaee44ea}';
     IID_ID3D12GraphicsCommandList6: TGUID = '{c3827890-e548-4cfa-96cf-5689a9370f80}';
-
+    IID_ID3D12GraphicsCommandList7 : TGUID = '{dd171223-8b61-4769-90e3-160ccde4e2c1}';
 
     // --------------------------------------------------------------------------------------------------------------------------------
     // Experimental Feature: D3D12ExperimentalShaderModels
@@ -146,8 +149,8 @@ const
 
     IID_ID3D12DeviceRemovedExtendedData2: TGUID = '{67FC5816-E4CA-4915-BF18-42541272DA54}';
     IID_ID3D12ShaderCacheSession: TGUID = '{28e2495d-0f64-4ae4-a6ec-129255dc49a8}';
-    IID_ID3D12Device9: TGUID = '{4c80e962-f032-4f60-bc9e-ebc2cfa1d83c}';
     IID_ID3D12SDKConfiguration: TGUID = '{e9eb5314-33aa-42b2-a718-d77f58b1f1c7}';
+    IID_ID3D12VirtualizationGuestDevice : TGUID = '{bc66d368-7373-4943-8757-fc87dc79e476}';
 
     // D3D12GetInterface
 
@@ -434,6 +437,9 @@ const
     D3D12_OS_RESERVED_REGISTER_SPACE_VALUES_START = $fffffff8;
     D3D12_PACKED_TILE = $ffffffff;
     D3D12_PIXEL_ADDRESS_RANGE_BIT_COUNT = 15;
+    D3D12_PREVIEW_SDK_VERSION = 702;
+
+
     D3D12_PRE_SCISSOR_PIXEL_ADDRESS_RANGE_BIT_COUNT = 16;
     D3D12_PS_CS_UAV_REGISTER_COMPONENTS = 1;
     D3D12_PS_CS_UAV_REGISTER_COUNT = 8;
@@ -510,7 +516,7 @@ const
     D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES = $ffffffff;
 
     D3D12_RS_SET_SHADING_RATE_COMBINER_COUNT = 2;
-    D3D12_SDK_VERSION = 4;
+    D3D12_SDK_VERSION = 602;
 
     D3D12_SHADER_IDENTIFIER_SIZE_IN_BYTES = 32;
     D3D12_SHADER_MAJOR_VERSION = 5;
@@ -759,10 +765,8 @@ type
         class operator Equal(l: TD3D12_VIEWPORT; r: TD3D12_VIEWPORT): boolean;
         class operator NotEqual(l: TD3D12_VIEWPORT; r: TD3D12_VIEWPORT): boolean;
 
-        constructor Create(topLeftX: single; topLeftY: single; Width: single; Height: single; minDepth: single = D3D12_MIN_DEPTH;
-            maxDepth: single = D3D12_MAX_DEPTH); overload;
-        constructor Create(pResource: ID3D12Resource; mipSlice: UINT = 0; topLeftX: single = 0.0; topLeftY: single = 0.0;
-            minDepth: single = D3D12_MIN_DEPTH; maxDepth: single = D3D12_MAX_DEPTH); overload;
+        constructor Create(topLeftX: single; topLeftY: single; Width: single; Height: single; minDepth: single = D3D12_MIN_DEPTH; maxDepth: single = D3D12_MAX_DEPTH); overload;
+        constructor Create(pResource: ID3D12Resource; mipSlice: UINT = 0; topLeftX: single = 0.0; topLeftY: single = 0.0; minDepth: single = D3D12_MIN_DEPTH; maxDepth: single = D3D12_MAX_DEPTH); overload;
     end;
     PD3D12_VIEWPORT = ^TD3D12_VIEWPORT;
 
@@ -847,11 +851,9 @@ type
         {$ENDIF}
         procedure Init; inline;
         constructor Create(c: TD3D12_DEFAULT); overload;
-        constructor Create(depthEnable: boolean; depthWriteMask: TD3D12_DEPTH_WRITE_MASK; depthFunc: TD3D12_COMPARISON_FUNC;
-            stencilEnable: boolean; stencilReadMask: uint8; stencilWriteMask: uint8; frontStencilFailOp: TD3D12_STENCIL_OP;
-            frontStencilDepthFailOp: TD3D12_STENCIL_OP; frontStencilPassOp: TD3D12_STENCIL_OP; frontStencilFunc: TD3D12_COMPARISON_FUNC;
-            backStencilFailOp: TD3D12_STENCIL_OP; backStencilDepthFailOp: TD3D12_STENCIL_OP; backStencilPassOp: TD3D12_STENCIL_OP;
-            backStencilFunc: TD3D12_COMPARISON_FUNC); overload;
+        constructor Create(depthEnable: boolean; depthWriteMask: TD3D12_DEPTH_WRITE_MASK; depthFunc: TD3D12_COMPARISON_FUNC; stencilEnable: boolean; stencilReadMask: uint8; stencilWriteMask: uint8;
+            frontStencilFailOp: TD3D12_STENCIL_OP; frontStencilDepthFailOp: TD3D12_STENCIL_OP; frontStencilPassOp: TD3D12_STENCIL_OP; frontStencilFunc: TD3D12_COMPARISON_FUNC; backStencilFailOp: TD3D12_STENCIL_OP;
+            backStencilDepthFailOp: TD3D12_STENCIL_OP; backStencilPassOp: TD3D12_STENCIL_OP; backStencilFunc: TD3D12_COMPARISON_FUNC); overload;
     end;
 
     CD3DX12_DEPTH_STENCIL_DESC = TD3D12_DEPTH_STENCIL_DESC;
@@ -875,11 +877,9 @@ type
         {$ENDIF}
         procedure Init;
         class operator Explicit(o: TD3D12_DEPTH_STENCIL_DESC): TD3D12_DEPTH_STENCIL_DESC1;
-        constructor Create(depthEnable: boolean; depthWriteMask: TD3D12_DEPTH_WRITE_MASK; depthFunc: TD3D12_COMPARISON_FUNC;
-            stencilEnable: boolean; stencilReadMask: uint8; stencilWriteMask: uint8; frontStencilFailOp: TD3D12_STENCIL_OP;
-            frontStencilDepthFailOp: TD3D12_STENCIL_OP; frontStencilPassOp: TD3D12_STENCIL_OP; frontStencilFunc: TD3D12_COMPARISON_FUNC;
-            backStencilFailOp: TD3D12_STENCIL_OP; backStencilDepthFailOp: TD3D12_STENCIL_OP; backStencilPassOp: TD3D12_STENCIL_OP;
-            backStencilFunc: TD3D12_COMPARISON_FUNC; depthBoundsTestEnable: boolean);
+        constructor Create(depthEnable: boolean; depthWriteMask: TD3D12_DEPTH_WRITE_MASK; depthFunc: TD3D12_COMPARISON_FUNC; stencilEnable: boolean; stencilReadMask: uint8; stencilWriteMask: uint8;
+            frontStencilFailOp: TD3D12_STENCIL_OP; frontStencilDepthFailOp: TD3D12_STENCIL_OP; frontStencilPassOp: TD3D12_STENCIL_OP; frontStencilFunc: TD3D12_COMPARISON_FUNC; backStencilFailOp: TD3D12_STENCIL_OP;
+            backStencilDepthFailOp: TD3D12_STENCIL_OP; backStencilPassOp: TD3D12_STENCIL_OP; backStencilFunc: TD3D12_COMPARISON_FUNC; depthBoundsTestEnable: boolean);
         class operator Explicit(a: TD3D12_DEPTH_STENCIL_DESC1): TD3D12_DEPTH_STENCIL_DESC;
     end;
 
@@ -901,7 +901,9 @@ type
         D3D12_BLEND_SRC1_COLOR = 16,
         D3D12_BLEND_INV_SRC1_COLOR = 17,
         D3D12_BLEND_SRC1_ALPHA = 18,
-        D3D12_BLEND_INV_SRC1_ALPHA = 19
+        D3D12_BLEND_INV_SRC1_ALPHA = 19,
+        D3D12_BLEND_ALPHA_FACTOR = 20,
+        D3D12_BLEND_INV_ALPHA_FACTOR = 21
         );
 
     TD3D12_BLEND_OP = (
@@ -917,8 +919,7 @@ type
         D3D12_COLOR_WRITE_ENABLE_GREEN = 2,
         D3D12_COLOR_WRITE_ENABLE_BLUE = 4,
         D3D12_COLOR_WRITE_ENABLE_ALPHA = 8,
-        D3D12_COLOR_WRITE_ENABLE_ALL = (Ord(D3D12_COLOR_WRITE_ENABLE_RED) or Ord(D3D12_COLOR_WRITE_ENABLE_GREEN) or
-        Ord(D3D12_COLOR_WRITE_ENABLE_BLUE) or Ord(D3D12_COLOR_WRITE_ENABLE_ALPHA))
+        D3D12_COLOR_WRITE_ENABLE_ALL = (Ord(D3D12_COLOR_WRITE_ENABLE_RED) or Ord(D3D12_COLOR_WRITE_ENABLE_GREEN) or Ord(D3D12_COLOR_WRITE_ENABLE_BLUE) or Ord(D3D12_COLOR_WRITE_ENABLE_ALPHA))
         );
 
     TD3D12_LOGIC_OP = (
@@ -1009,10 +1010,8 @@ type
         procedure Init; inline;
         class operator Implicit(a: TD3D12_RASTERIZER_DESC): PD3D12_RASTERIZER_DESC;
         constructor Create(C: TD3D12_DEFAULT); overload;
-        constructor Create(fillMode: TD3D12_FILL_MODE; cullMode: TD3D12_CULL_MODE; frontCounterClockwise: boolean;
-            depthBias: integer; depthBiasClamp: single; slopeScaledDepthBias: single; depthClipEnable: boolean;
-            multisampleEnable: boolean; antialiasedLineEnable: boolean; forcedSampleCount: UINT;
-            conservativeRaster: TD3D12_CONSERVATIVE_RASTERIZATION_MODE); overload;
+        constructor Create(fillMode: TD3D12_FILL_MODE; cullMode: TD3D12_CULL_MODE; frontCounterClockwise: boolean; depthBias: integer; depthBiasClamp: single; slopeScaledDepthBias: single;
+            depthClipEnable: boolean; multisampleEnable: boolean; antialiasedLineEnable: boolean; forcedSampleCount: UINT; conservativeRaster: TD3D12_CONSERVATIVE_RASTERIZATION_MODE); overload;
     end;
 
     CD3DX12_RASTERIZER_DESC = TD3D12_RASTERIZER_DESC;
@@ -1231,6 +1230,7 @@ type
         D3D12_FEATURE_SERIALIZATION = 24,
         D3D12_FEATURE_CROSS_NODE = 25,
         D3D12_FEATURE_D3D12_OPTIONS5 = 27,
+        D3D12_FEATURE_DISPLAYABLE = 28,
         D3D12_FEATURE_D3D12_OPTIONS6 = 30,
         D3D12_FEATURE_QUERY_META_COMMAND = 31,
         D3D12_FEATURE_D3D12_OPTIONS7 = 32,
@@ -1239,7 +1239,9 @@ type
         D3D12_FEATURE_D3D12_OPTIONS8 = 36,
         D3D12_FEATURE_D3D12_OPTIONS9 = 37,
         D3D12_FEATURE_D3D12_OPTIONS10 = 39,
-        D3D12_FEATURE_D3D12_OPTIONS11 = 40
+        D3D12_FEATURE_D3D12_OPTIONS11 = 40,
+        D3D12_FEATURE_D3D12_OPTIONS12 = 41,
+        D3D12_FEATURE_D3D12_OPTIONS13 = 42
         );
 
     TD3D12_SHADER_MIN_PRECISION_SUPPORT = (
@@ -1479,7 +1481,8 @@ type
         D3D_SHADER_MODEL_6_4 = $64,
         D3D_SHADER_MODEL_6_5 = $65,
         D3D_SHADER_MODEL_6_6 = $66,
-        D3D_SHADER_MODEL_6_7 = $67
+        D3D_SHADER_MODEL_6_7 = $67,
+        D3D_HIGHEST_SHADER_MODEL = D3D_SHADER_MODEL_6_7
         );
 
     { TD3D12_FEATURE_DATA_SHADER_MODEL }
@@ -1769,6 +1772,31 @@ type
     PD3D12_FEATURE_DATA_D3D12_OPTIONS11 = ^TD3D12_FEATURE_DATA_D3D12_OPTIONS11;
 
 
+    TD3D12_TRI_STATE = (
+        D3D12_TRI_STATE_UNKNOWN = -1,
+        D3D12_TRI_STATE_FALSE = 0,
+        D3D12_TRI_STATE_TRUE = 1
+        );
+    PD3D12_TRI_STATE = ^TD3D12_TRI_STATE;
+
+    TD3D12_FEATURE_DATA_D3D12_OPTIONS12 = record
+        MSPrimitivesPipelineStatisticIncludesCulledPrimitives: TD3D12_TRI_STATE;
+        EnhancedBarriersSupported: boolean;
+        RelaxedFormatCastingSupported: boolean;
+    end;
+    PD3D12_FEATURE_DATA_D3D12_OPTIONS12 = ^TD3D12_FEATURE_DATA_D3D12_OPTIONS12;
+
+    TD3D12_FEATURE_DATA_D3D12_OPTIONS13 = record
+        UnrestrictedBufferTextureCopyPitchSupported: boolean;
+        UnrestrictedVertexElementAlignmentSupported: boolean;
+        InvertedViewportHeightFlipsYSupported: boolean;
+        InvertedViewportDepthFlipsZSupported: boolean;
+        TextureCopyBetweenDimensionsSupported: boolean;
+        AlphaBlendFactorSupported: boolean;
+    end;
+    PD3D12_FEATURE_DATA_D3D12_OPTIONS13 = ^TD3D12_FEATURE_DATA_D3D12_OPTIONS13;
+
+
     { TD3D12_RESOURCE_ALLOCATION_INFO }
 
     TD3D12_RESOURCE_ALLOCATION_INFO = record
@@ -1830,8 +1858,7 @@ type
         {$ENDIF}
         procedure Init; inline;
         constructor Create(AType: TD3D12_HEAP_TYPE; CreationNodeMask: UINT = 1; NodeMask: UINT = 1); overload;
-        constructor Create(cpuPageProperty: TD3D12_CPU_PAGE_PROPERTY; memoryPoolPreference: TD3D12_MEMORY_POOL;
-            creationNodeMask: UINT = 1; nodeMask: UINT = 1); overload;
+        constructor Create(cpuPageProperty: TD3D12_CPU_PAGE_PROPERTY; memoryPoolPreference: TD3D12_MEMORY_POOL; creationNodeMask: UINT = 1; nodeMask: UINT = 1); overload;
         function IsCPUAccessible(): boolean;
         class operator Equal(l: TD3D12_HEAP_PROPERTIES; r: TD3D12_HEAP_PROPERTIES): boolean;
         class operator NotEqual(l: TD3D12_HEAP_PROPERTIES; r: TD3D12_HEAP_PROPERTIES): boolean;
@@ -1872,17 +1899,12 @@ type
         class operator Initialize(var A: TD3D12_HEAP_DESC);
         {$ENDIF}
         procedure Init; inline;
-        constructor Create(size: uint64; properties: TD3D12_HEAP_PROPERTIES; alignment: uint64 = 0;
-            flags: TD3D12_HEAP_FLAGS = D3D12_HEAP_FLAG_NONE); overload;
+        constructor Create(size: uint64; properties: TD3D12_HEAP_PROPERTIES; alignment: uint64 = 0; flags: TD3D12_HEAP_FLAGS = D3D12_HEAP_FLAG_NONE); overload;
         constructor Create(size: uint64; _type: TD3D12_HEAP_TYPE; alignment: uint64 = 0; flags: TD3D12_HEAP_FLAGS = D3D12_HEAP_FLAG_NONE); overload;
-        constructor Create(size: uint64; cpuPageProperty: TD3D12_CPU_PAGE_PROPERTY; memoryPoolPreference: TD3D12_MEMORY_POOL;
-            alignment: uint64 = 0; flags: TD3D12_HEAP_FLAGS = D3D12_HEAP_FLAG_NONE); overload;
-        constructor Create(const resAllocInfo: TD3D12_RESOURCE_ALLOCATION_INFO; properties: TD3D12_HEAP_PROPERTIES;
-            flags: TD3D12_HEAP_FLAGS = D3D12_HEAP_FLAG_NONE); overload;
-        constructor Create(const resAllocInfo: TD3D12_RESOURCE_ALLOCATION_INFO; Atype: TD3D12_HEAP_TYPE;
-            flags: TD3D12_HEAP_FLAGS = D3D12_HEAP_FLAG_NONE); overload;
-        constructor Create(const resAllocInfo: TD3D12_RESOURCE_ALLOCATION_INFO; cpuPageProperty: TD3D12_CPU_PAGE_PROPERTY;
-            memoryPoolPreference: TD3D12_MEMORY_POOL; flags: TD3D12_HEAP_FLAGS = D3D12_HEAP_FLAG_NONE); overload;
+        constructor Create(size: uint64; cpuPageProperty: TD3D12_CPU_PAGE_PROPERTY; memoryPoolPreference: TD3D12_MEMORY_POOL; alignment: uint64 = 0; flags: TD3D12_HEAP_FLAGS = D3D12_HEAP_FLAG_NONE); overload;
+        constructor Create(const resAllocInfo: TD3D12_RESOURCE_ALLOCATION_INFO; properties: TD3D12_HEAP_PROPERTIES; flags: TD3D12_HEAP_FLAGS = D3D12_HEAP_FLAG_NONE); overload;
+        constructor Create(const resAllocInfo: TD3D12_RESOURCE_ALLOCATION_INFO; Atype: TD3D12_HEAP_TYPE; flags: TD3D12_HEAP_FLAGS = D3D12_HEAP_FLAG_NONE); overload;
+        constructor Create(const resAllocInfo: TD3D12_RESOURCE_ALLOCATION_INFO; cpuPageProperty: TD3D12_CPU_PAGE_PROPERTY; memoryPoolPreference: TD3D12_MEMORY_POOL; flags: TD3D12_HEAP_FLAGS = D3D12_HEAP_FLAG_NONE); overload;
         function IsCPUAccessible(): boolean;
         class operator Equal(l: TD3D12_HEAP_DESC; r: TD3D12_HEAP_DESC): boolean;
         class operator NotEqual(l: TD3D12_HEAP_DESC; r: TD3D12_HEAP_DESC): boolean;
@@ -1912,7 +1934,8 @@ type
         D3D12_RESOURCE_FLAG_ALLOW_CROSS_ADAPTER = $10,
         D3D12_RESOURCE_FLAG_ALLOW_SIMULTANEOUS_ACCESS = $20,
         D3D12_RESOURCE_FLAG_VIDEO_DECODE_REFERENCE_ONLY = $40,
-        D3D12_RESOURCE_FLAG_VIDEO_ENCODE_REFERENCE_ONLY = $80
+        D3D12_RESOURCE_FLAG_VIDEO_ENCODE_REFERENCE_ONLY = $80,
+        D3D12_RESOURCE_FLAG_RAYTRACING_ACCELERATION_STRUCTURE = $100
         );
 
     PID3D12Device = ^ID3D12Device;
@@ -1944,21 +1967,17 @@ type
         class operator Initialize(var A: TD3D12_RESOURCE_DESC);
         {$ENDIF}
         procedure Init; inline;
-        constructor Create(dimension: TD3D12_RESOURCE_DIMENSION; alignment: uint64; Width: uint64; Height: UINT;
-            depthOrArraySize: uint16; mipLevels: uint16; format: TDXGI_FORMAT; sampleCount: UINT; sampleQuality: UINT;
-            layout: TD3D12_TEXTURE_LAYOUT; flags: TD3D12_RESOURCE_FLAGS);
+        constructor Create(dimension: TD3D12_RESOURCE_DIMENSION; alignment: uint64; Width: uint64; Height: UINT; depthOrArraySize: uint16; mipLevels: uint16; format: TDXGI_FORMAT;
+            sampleCount: UINT; sampleQuality: UINT; layout: TD3D12_TEXTURE_LAYOUT; flags: TD3D12_RESOURCE_FLAGS);
         constructor CreateBuffer(resAllocInfo: TD3D12_RESOURCE_ALLOCATION_INFO; flags: TD3D12_RESOURCE_FLAGS = D3D12_RESOURCE_FLAG_NONE); overload;
         constructor CreateBuffer(Width: uint64; flags: TD3D12_RESOURCE_FLAGS = D3D12_RESOURCE_FLAG_NONE; alignment: uint64 = 0); overload;
-        constructor CreateTex1D(format: TDXGI_FORMAT; Width: uint64; arraySize: uint16 = 1; mipLevels: uint16 = 0;
-            flags: TD3D12_RESOURCE_FLAGS = D3D12_RESOURCE_FLAG_NONE; layout: TD3D12_TEXTURE_LAYOUT = D3D12_TEXTURE_LAYOUT_UNKNOWN;
-            alignment: uint64 = 0);
-        constructor CreateTex2D(format: TDXGI_FORMAT; Width: uint64; Height: UINT; arraySize: uint16 = 1;
-            mipLevels: uint16 = 0; sampleCount: UINT = 1; sampleQuality: UINT = 0; flags: TD3D12_RESOURCE_FLAGS = D3D12_RESOURCE_FLAG_NONE;
+        constructor CreateTex1D(format: TDXGI_FORMAT; Width: uint64; arraySize: uint16 = 1; mipLevels: uint16 = 0; flags: TD3D12_RESOURCE_FLAGS = D3D12_RESOURCE_FLAG_NONE;
             layout: TD3D12_TEXTURE_LAYOUT = D3D12_TEXTURE_LAYOUT_UNKNOWN; alignment: uint64 = 0);
+        constructor CreateTex2D(format: TDXGI_FORMAT; Width: uint64; Height: UINT; arraySize: uint16 = 1; mipLevels: uint16 = 0; sampleCount: UINT = 1; sampleQuality: UINT = 0;
+            flags: TD3D12_RESOURCE_FLAGS = D3D12_RESOURCE_FLAG_NONE; layout: TD3D12_TEXTURE_LAYOUT = D3D12_TEXTURE_LAYOUT_UNKNOWN; alignment: uint64 = 0);
 
-        constructor CreateTex3D(format: TDXGI_FORMAT; Width: uint64; Height: UINT; depth: uint16; mipLevels: uint16 = 0;
-            flags: TD3D12_RESOURCE_FLAGS = D3D12_RESOURCE_FLAG_NONE; layout: TD3D12_TEXTURE_LAYOUT = D3D12_TEXTURE_LAYOUT_UNKNOWN;
-            alignment: uint64 = 0);
+        constructor CreateTex3D(format: TDXGI_FORMAT; Width: uint64; Height: UINT; depth: uint16; mipLevels: uint16 = 0; flags: TD3D12_RESOURCE_FLAGS = D3D12_RESOURCE_FLAG_NONE;
+            layout: TD3D12_TEXTURE_LAYOUT = D3D12_TEXTURE_LAYOUT_UNKNOWN; alignment: uint64 = 0);
 
         function Depth(): uint16;
         function ArraySize(): uint16;
@@ -2190,9 +2209,8 @@ type
         D3D12_RESOURCE_STATE_RESOLVE_SOURCE = $2000,
         D3D12_RESOURCE_STATE_RAYTRACING_ACCELERATION_STRUCTURE = $400000,
         D3D12_RESOURCE_STATE_SHADING_RATE_SOURCE = $1000000,
-        D3D12_RESOURCE_STATE_GENERIC_READ = Ord(D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER) or Ord(
-        D3D12_RESOURCE_STATE_INDEX_BUFFER) or Ord(D3D12_RESOURCE_STATE_COPY_SOURCE) or Ord(D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE) or
-        Ord(D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE) or Ord(D3D12_RESOURCE_STATE_INDIRECT_ARGUMENT),
+        D3D12_RESOURCE_STATE_GENERIC_READ = $1 or $2 or $40 or $80 or $200 or $800,
+        D3D12_RESOURCE_STATE_ALL_SHADER_RESOURCE = $40 or $80,
         D3D12_RESOURCE_STATE_PRESENT = 0,
         D3D12_RESOURCE_STATE_PREDICATION = $200,
         D3D12_RESOURCE_STATE_VIDEO_DECODE_READ = $10000,
@@ -2246,8 +2264,8 @@ type
         class operator Initialize(var A: TD3D12_RESOURCE_BARRIER);
         {$ENDIF}
         procedure Init; inline;
-        constructor CreateTransition(pResource: pointer; stateBefore: TD3D12_RESOURCE_STATES; stateAfter: TD3D12_RESOURCE_STATES;
-            subresource: UINT = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES; flags: TD3D12_RESOURCE_BARRIER_FLAGS = D3D12_RESOURCE_BARRIER_FLAG_NONE);
+        constructor CreateTransition(pResource: pointer; stateBefore: TD3D12_RESOURCE_STATES; stateAfter: TD3D12_RESOURCE_STATES; subresource: UINT = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
+            flags: TD3D12_RESOURCE_BARRIER_FLAGS = D3D12_RESOURCE_BARRIER_FLAG_NONE);
 
         constructor CreateAliasing(pResourceBefore: ID3D12Resource; pResourceAfter: ID3D12Resource);
         constructor CreateUAV(pResource: ID3D12Resource);
@@ -2849,11 +2867,9 @@ type
         class operator Initialize(var A: TD3D12_DESCRIPTOR_RANGE);
         {$ENDIF}
         procedure Init; overload; inline;
-        procedure Init(rangeType: TD3D12_DESCRIPTOR_RANGE_TYPE; numDescriptors: UINT; baseShaderRegister: UINT;
-            registerSpace: UINT = 0; offsetInDescriptorsFromTableStart: UINT = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND); overload;
+        procedure Init(rangeType: TD3D12_DESCRIPTOR_RANGE_TYPE; numDescriptors: UINT; baseShaderRegister: UINT; registerSpace: UINT = 0; offsetInDescriptorsFromTableStart: UINT = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND); overload;
 
-        constructor Create(rangeType: TD3D12_DESCRIPTOR_RANGE_TYPE; numDescriptors: UINT; baseShaderRegister: UINT;
-            registerSpace: UINT = 0; offsetInDescriptorsFromTableStart: UINT = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND);
+        constructor Create(rangeType: TD3D12_DESCRIPTOR_RANGE_TYPE; numDescriptors: UINT; baseShaderRegister: UINT; registerSpace: UINT = 0; offsetInDescriptorsFromTableStart: UINT = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND);
     end;
 
     PD3D12_DESCRIPTOR_RANGE = ^TD3D12_DESCRIPTOR_RANGE;
@@ -2914,16 +2930,11 @@ type
         class operator Initialize(var A: TD3D12_ROOT_PARAMETER);
         {$ENDIF}
         procedure Init; inline;
-        procedure InitAsDescriptorTable(numDescriptorRanges: UINT; const pDescriptorRanges: PD3D12_DESCRIPTOR_RANGE{numDescriptorRanges};
-            visibility: TD3D12_SHADER_VISIBILITY = D3D12_SHADER_VISIBILITY_ALL);
-        procedure InitAsConstants(num32BitValues: UINT; shaderRegister: UINT; registerSpace: UINT = 0;
-            visibility: TD3D12_SHADER_VISIBILITY = D3D12_SHADER_VISIBILITY_ALL);
-        procedure InitAsConstantBufferView(shaderRegister: UINT; registerSpace: UINT = 0;
-            visibility: TD3D12_SHADER_VISIBILITY = D3D12_SHADER_VISIBILITY_ALL);
-        procedure InitAsShaderResourceView(shaderRegister: UINT; registerSpace: UINT = 0;
-            visibility: TD3D12_SHADER_VISIBILITY = D3D12_SHADER_VISIBILITY_ALL);
-        procedure InitAsUnorderedAccessView(shaderRegister: UINT; registerSpace: UINT = 0;
-            visibility: TD3D12_SHADER_VISIBILITY = D3D12_SHADER_VISIBILITY_ALL);
+        procedure InitAsDescriptorTable(numDescriptorRanges: UINT; const pDescriptorRanges: PD3D12_DESCRIPTOR_RANGE{numDescriptorRanges}; visibility: TD3D12_SHADER_VISIBILITY = D3D12_SHADER_VISIBILITY_ALL);
+        procedure InitAsConstants(num32BitValues: UINT; shaderRegister: UINT; registerSpace: UINT = 0; visibility: TD3D12_SHADER_VISIBILITY = D3D12_SHADER_VISIBILITY_ALL);
+        procedure InitAsConstantBufferView(shaderRegister: UINT; registerSpace: UINT = 0; visibility: TD3D12_SHADER_VISIBILITY = D3D12_SHADER_VISIBILITY_ALL);
+        procedure InitAsShaderResourceView(shaderRegister: UINT; registerSpace: UINT = 0; visibility: TD3D12_SHADER_VISIBILITY = D3D12_SHADER_VISIBILITY_ALL);
+        procedure InitAsUnorderedAccessView(shaderRegister: UINT; registerSpace: UINT = 0; visibility: TD3D12_SHADER_VISIBILITY = D3D12_SHADER_VISIBILITY_ALL);
 
         case integer of
             0: (Constants: TD3D12_ROOT_CONSTANTS; // 12 byte
@@ -2978,13 +2989,10 @@ type
         class operator Initialize(var A: TD3D12_STATIC_SAMPLER_DESC);
         {$ENDIF}
         procedure Init; inline;
-        constructor Create(shaderRegister: UINT; filter: TD3D12_FILTER = D3D12_FILTER_ANISOTROPIC;
-            addressU: TD3D12_TEXTURE_ADDRESS_MODE = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
-            addressV: TD3D12_TEXTURE_ADDRESS_MODE = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
-            addressW: TD3D12_TEXTURE_ADDRESS_MODE = D3D12_TEXTURE_ADDRESS_MODE_WRAP; mipLODBias: single = 0;
-            maxAnisotropy: UINT = 16; comparisonFunc: TD3D12_COMPARISON_FUNC = D3D12_COMPARISON_FUNC_LESS_EQUAL;
-            borderColor: TD3D12_STATIC_BORDER_COLOR = D3D12_STATIC_BORDER_COLOR_OPAQUE_WHITE; minLOD: single = 0.0;
-            maxLOD: single = D3D12_FLOAT32_MAX; shaderVisibility: TD3D12_SHADER_VISIBILITY = D3D12_SHADER_VISIBILITY_ALL; registerSpace: UINT = 0);
+        constructor Create(shaderRegister: UINT; filter: TD3D12_FILTER = D3D12_FILTER_ANISOTROPIC; addressU: TD3D12_TEXTURE_ADDRESS_MODE = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
+            addressV: TD3D12_TEXTURE_ADDRESS_MODE = D3D12_TEXTURE_ADDRESS_MODE_WRAP; addressW: TD3D12_TEXTURE_ADDRESS_MODE = D3D12_TEXTURE_ADDRESS_MODE_WRAP; mipLODBias: single = 0;
+            maxAnisotropy: UINT = 16; comparisonFunc: TD3D12_COMPARISON_FUNC = D3D12_COMPARISON_FUNC_LESS_EQUAL; borderColor: TD3D12_STATIC_BORDER_COLOR = D3D12_STATIC_BORDER_COLOR_OPAQUE_WHITE;
+            minLOD: single = 0.0; maxLOD: single = D3D12_FLOAT32_MAX; shaderVisibility: TD3D12_SHADER_VISIBILITY = D3D12_SHADER_VISIBILITY_ALL; registerSpace: UINT = 0);
     end;
 
     PD3D12_STATIC_SAMPLER_DESC = ^TD3D12_STATIC_SAMPLER_DESC;
@@ -2997,11 +3005,9 @@ type
         NumStaticSamplers: UINT;
         pStaticSamplers: PD3D12_STATIC_SAMPLER_DESC;
         Flags: TD3D12_ROOT_SIGNATURE_FLAGS;
-        constructor Create(numParameters: UINT; const pParameters: PD3D12_ROOT_PARAMETER{numParameters};
-            numStaticSamplers: UINT = 0; const pStaticSamplers: PD3D12_STATIC_SAMPLER_DESC = nil{numStaticSamplers};
+        constructor Create(numParameters: UINT; const pParameters: PD3D12_ROOT_PARAMETER{numParameters}; numStaticSamplers: UINT = 0; const pStaticSamplers: PD3D12_STATIC_SAMPLER_DESC = nil{numStaticSamplers};
             flags: TD3D12_ROOT_SIGNATURE_FLAGS = D3D12_ROOT_SIGNATURE_FLAG_NONE);
-        procedure Init(numParameters: UINT; const pParameters: PD3D12_ROOT_PARAMETER{numParameters}; numStaticSamplers: UINT = 0;
-            const pStaticSamplers: PD3D12_STATIC_SAMPLER_DESC = nil{numStaticSamplers};
+        procedure Init(numParameters: UINT; const pParameters: PD3D12_ROOT_PARAMETER{numParameters}; numStaticSamplers: UINT = 0; const pStaticSamplers: PD3D12_STATIC_SAMPLER_DESC = nil{numStaticSamplers};
             flags: TD3D12_ROOT_SIGNATURE_FLAGS = D3D12_ROOT_SIGNATURE_FLAG_NONE);
     end;
 
@@ -3027,17 +3033,13 @@ type
         RegisterSpace: UINT;
         Flags: TD3D12_DESCRIPTOR_RANGE_FLAGS;
         OffsetInDescriptorsFromTableStart: UINT;
-        constructor Create(rangeType: TD3D12_DESCRIPTOR_RANGE_TYPE; numDescriptors: UINT; baseShaderRegister: UINT;
-            registerSpace: UINT = 0; flags: TD3D12_DESCRIPTOR_RANGE_FLAGS = D3D12_DESCRIPTOR_RANGE_FLAG_NONE;
+        constructor Create(rangeType: TD3D12_DESCRIPTOR_RANGE_TYPE; numDescriptors: UINT; baseShaderRegister: UINT; registerSpace: UINT = 0; flags: TD3D12_DESCRIPTOR_RANGE_FLAGS = D3D12_DESCRIPTOR_RANGE_FLAG_NONE;
             offsetInDescriptorsFromTableStart: UINT = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND);
 
-        procedure Init(var range: TD3D12_DESCRIPTOR_RANGE1; rangeType: TD3D12_DESCRIPTOR_RANGE_TYPE;
-            numDescriptors: UINT; baseShaderRegister: UINT; registerSpace: UINT = 0;
-            flags: TD3D12_DESCRIPTOR_RANGE_FLAGS = D3D12_DESCRIPTOR_RANGE_FLAG_NONE;
-            offsetInDescriptorsFromTableStart: UINT = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND); overload;
+        procedure Init(var range: TD3D12_DESCRIPTOR_RANGE1; rangeType: TD3D12_DESCRIPTOR_RANGE_TYPE; numDescriptors: UINT; baseShaderRegister: UINT; registerSpace: UINT = 0;
+            flags: TD3D12_DESCRIPTOR_RANGE_FLAGS = D3D12_DESCRIPTOR_RANGE_FLAG_NONE; offsetInDescriptorsFromTableStart: UINT = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND); overload;
 
-        procedure Init(rangeType: TD3D12_DESCRIPTOR_RANGE_TYPE; numDescriptors: UINT; baseShaderRegister: UINT;
-            registerSpace: UINT = 0; flags: TD3D12_DESCRIPTOR_RANGE_FLAGS = D3D12_DESCRIPTOR_RANGE_FLAG_NONE;
+        procedure Init(rangeType: TD3D12_DESCRIPTOR_RANGE_TYPE; numDescriptors: UINT; baseShaderRegister: UINT; registerSpace: UINT = 0; flags: TD3D12_DESCRIPTOR_RANGE_FLAGS = D3D12_DESCRIPTOR_RANGE_FLAG_NONE;
             offsetInDescriptorsFromTableStart: UINT = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND); overload;
     end;
 
@@ -3057,8 +3059,7 @@ type
         constructor Create(numDescriptorRanges: UINT; const pDescriptorRanges: PD3D12_DESCRIPTOR_RANGE1);
         function GetDescriptorRange(index: integer): TD3D12_DESCRIPTOR_RANGE1;
 
-        procedure Init(var rootDescriptorTable: TD3D12_ROOT_DESCRIPTOR_TABLE1; numDescriptorRanges: UINT;
-            const _pDescriptorRanges{numDescriptorRanges}: PD3D12_DESCRIPTOR_RANGE1); overload;
+        procedure Init(var rootDescriptorTable: TD3D12_ROOT_DESCRIPTOR_TABLE1; numDescriptorRanges: UINT; const _pDescriptorRanges{numDescriptorRanges}: PD3D12_DESCRIPTOR_RANGE1); overload;
 
         procedure Init(numDescriptorRanges: UINT; const _pDescriptorRanges{numDescriptorRanges}: PD3D12_DESCRIPTOR_RANGE1);
             overload;
@@ -3094,23 +3095,14 @@ type
         {$ENDIF}
         procedure Init; inline;
 
-        constructor InitAsDescriptorTable(numDescriptorRanges: UINT; const pDescriptorRanges: PD3D12_DESCRIPTOR_RANGE1;
-            visibility: TD3D12_SHADER_VISIBILITY = D3D12_SHADER_VISIBILITY_ALL); overload;
-        constructor InitAsDescriptorTable(var rootParam: TD3D12_ROOT_PARAMETER1; numDescriptorRanges: UINT;
-            const pDescriptorRanges{numDescriptorRanges}: PD3D12_DESCRIPTOR_RANGE1;
+        constructor InitAsDescriptorTable(numDescriptorRanges: UINT; const pDescriptorRanges: PD3D12_DESCRIPTOR_RANGE1; visibility: TD3D12_SHADER_VISIBILITY = D3D12_SHADER_VISIBILITY_ALL); overload;
+        constructor InitAsDescriptorTable(var rootParam: TD3D12_ROOT_PARAMETER1; numDescriptorRanges: UINT; const pDescriptorRanges{numDescriptorRanges}: PD3D12_DESCRIPTOR_RANGE1;
             visibility: TD3D12_SHADER_VISIBILITY = D3D12_SHADER_VISIBILITY_ALL); overload;
 
-        constructor InitAsConstants(num32BitValues: UINT; shaderRegister: UINT; registerSpace: UINT = 0;
-            visibility: TD3D12_SHADER_VISIBILITY = D3D12_SHADER_VISIBILITY_ALL);
-        constructor InitAsConstantBufferView(shaderRegister: UINT; registerSpace: UINT = 0;
-            flags: TD3D12_ROOT_DESCRIPTOR_FLAGS = D3D12_ROOT_DESCRIPTOR_FLAG_NONE;
-            visibility: TD3D12_SHADER_VISIBILITY = D3D12_SHADER_VISIBILITY_ALL);
-        constructor InitAsShaderResourceView(shaderRegister: UINT; registerSpace: UINT = 0;
-            flags: TD3D12_ROOT_DESCRIPTOR_FLAGS = D3D12_ROOT_DESCRIPTOR_FLAG_NONE;
-            visibility: TD3D12_SHADER_VISIBILITY = D3D12_SHADER_VISIBILITY_ALL);
-        constructor InitAsUnorderedAccessView(shaderRegister: UINT; registerSpace: UINT = 0;
-            flags: TD3D12_ROOT_DESCRIPTOR_FLAGS = D3D12_ROOT_DESCRIPTOR_FLAG_NONE;
-            visibility: TD3D12_SHADER_VISIBILITY = D3D12_SHADER_VISIBILITY_ALL);
+        constructor InitAsConstants(num32BitValues: UINT; shaderRegister: UINT; registerSpace: UINT = 0; visibility: TD3D12_SHADER_VISIBILITY = D3D12_SHADER_VISIBILITY_ALL);
+        constructor InitAsConstantBufferView(shaderRegister: UINT; registerSpace: UINT = 0; flags: TD3D12_ROOT_DESCRIPTOR_FLAGS = D3D12_ROOT_DESCRIPTOR_FLAG_NONE; visibility: TD3D12_SHADER_VISIBILITY = D3D12_SHADER_VISIBILITY_ALL);
+        constructor InitAsShaderResourceView(shaderRegister: UINT; registerSpace: UINT = 0; flags: TD3D12_ROOT_DESCRIPTOR_FLAGS = D3D12_ROOT_DESCRIPTOR_FLAG_NONE; visibility: TD3D12_SHADER_VISIBILITY = D3D12_SHADER_VISIBILITY_ALL);
+        constructor InitAsUnorderedAccessView(shaderRegister: UINT; registerSpace: UINT = 0; flags: TD3D12_ROOT_DESCRIPTOR_FLAGS = D3D12_ROOT_DESCRIPTOR_FLAG_NONE; visibility: TD3D12_SHADER_VISIBILITY = D3D12_SHADER_VISIBILITY_ALL);
         case byte of
             0: (Constants: TD3D12_ROOT_CONSTANTS;   // 12 byte
                 ShaderVisibility: TD3D12_SHADER_VISIBILITY);    // 4 byte
@@ -3141,17 +3133,13 @@ type
         class operator Initialize(var A: TD3D12_VERSIONED_ROOT_SIGNATURE_DESC);
         {$ENDIF}
         procedure Init; inline;
-        procedure Init_1_0(numParameters: UINT; const _pParameters {numParameters}: PD3D12_ROOT_PARAMETER;
-            numStaticSamplers: UINT = 0; const _pStaticSamplers {numStaticSamplers}: PD3D12_STATIC_SAMPLER_DESC = nil;
+        procedure Init_1_0(numParameters: UINT; const _pParameters {numParameters}: PD3D12_ROOT_PARAMETER; numStaticSamplers: UINT = 0; const _pStaticSamplers {numStaticSamplers}: PD3D12_STATIC_SAMPLER_DESC = nil;
             flags: TD3D12_ROOT_SIGNATURE_FLAGS = D3D12_ROOT_SIGNATURE_FLAG_NONE);
 
-        procedure Init_1_1(numParameters: UINT; const _pParameters{numParameters}: PD3D12_ROOT_PARAMETER1;
-            numStaticSamplers: UINT = 0; const _pStaticSamplers{numStaticSamplers}: PD3D12_STATIC_SAMPLER_DESC = nil;
+        procedure Init_1_1(numParameters: UINT; const _pParameters{numParameters}: PD3D12_ROOT_PARAMETER1; numStaticSamplers: UINT = 0; const _pStaticSamplers{numStaticSamplers}: PD3D12_STATIC_SAMPLER_DESC = nil;
             flags: TD3D12_ROOT_SIGNATURE_FLAGS = D3D12_ROOT_SIGNATURE_FLAG_NONE); overload;
-        procedure Init_1_1(var desc: TD3D12_VERSIONED_ROOT_SIGNATURE_DESC; numParameters: UINT;
-            const _pParameters{numParameters}: PD3D12_ROOT_PARAMETER1; numStaticSamplers: UINT = 0;
-            const _pStaticSamplers{numStaticSamplers}: PD3D12_STATIC_SAMPLER_DESC = nil;
-            flags: TD3D12_ROOT_SIGNATURE_FLAGS = D3D12_ROOT_SIGNATURE_FLAG_NONE); overload;
+        procedure Init_1_1(var desc: TD3D12_VERSIONED_ROOT_SIGNATURE_DESC; numParameters: UINT; const _pParameters{numParameters}: PD3D12_ROOT_PARAMETER1; numStaticSamplers: UINT = 0;
+            const _pStaticSamplers{numStaticSamplers}: PD3D12_STATIC_SAMPLER_DESC = nil; flags: TD3D12_ROOT_SIGNATURE_FLAGS = D3D12_ROOT_SIGNATURE_FLAG_NONE); overload;
         case integer of
             0: (Desc_1_0: TD3D12_ROOT_SIGNATURE_DESC);
             1: (Desc_1_1: TD3D12_ROOT_SIGNATURE_DESC1);
@@ -3168,8 +3156,7 @@ type
 
     ID3D12VersionedRootSignatureDeserializer = interface(IUnknown)
         ['{7F91CE67-090C-4BB7-B78E-ED8FF2E31DA0}']
-        function GetRootSignatureDescAtVersion(convertToVersion: TD3D_ROOT_SIGNATURE_VERSION;
-            out ppDesc: TD3D12_VERSIONED_ROOT_SIGNATURE_DESC): HResult; stdcall;
+        function GetRootSignatureDescAtVersion(convertToVersion: TD3D_ROOT_SIGNATURE_VERSION; out ppDesc: TD3D12_VERSIONED_ROOT_SIGNATURE_DESC): HResult; stdcall;
         function GetUnconvertedRootSignatureDesc(): TD3D12_VERSIONED_ROOT_SIGNATURE_DESC; stdcall;
     end;
 
@@ -3184,10 +3171,8 @@ type
     private
         procedure InitOffsetted(const base: TD3D12_CPU_DESCRIPTOR_HANDLE; offsetScaledByIncrementSize: integer); overload;
         procedure InitOffsetted(const base: TD3D12_CPU_DESCRIPTOR_HANDLE; offsetInDescriptors: integer; descriptorIncrementSize: UINT); overload;
-        procedure InitOffsetted(var handle: TD3D12_CPU_DESCRIPTOR_HANDLE; const base: TD3D12_CPU_DESCRIPTOR_HANDLE;
-            offsetScaledByIncrementSize: integer); overload;
-        procedure InitOffsetted(var handle: TD3D12_CPU_DESCRIPTOR_HANDLE; const base: TD3D12_CPU_DESCRIPTOR_HANDLE;
-            offsetInDescriptors: integer; descriptorIncrementSize: UINT); overload;
+        procedure InitOffsetted(var handle: TD3D12_CPU_DESCRIPTOR_HANDLE; const base: TD3D12_CPU_DESCRIPTOR_HANDLE; offsetScaledByIncrementSize: integer); overload;
+        procedure InitOffsetted(var handle: TD3D12_CPU_DESCRIPTOR_HANDLE; const base: TD3D12_CPU_DESCRIPTOR_HANDLE; offsetInDescriptors: integer; descriptorIncrementSize: UINT); overload;
     public
         constructor Create(const other: TD3D12_CPU_DESCRIPTOR_HANDLE; offsetScaledByIncrementSize: integer); overload;
         constructor Create(const other: TD3D12_CPU_DESCRIPTOR_HANDLE; offsetInDescriptors: integer; descriptorIncrementSize: UINT); overload;
@@ -3500,10 +3485,8 @@ type
         function GetDesc(): TD3D12_RESOURCE_DESC; stdcall;
         function GetGPUVirtualAddress(): TD3D12_GPU_VIRTUAL_ADDRESS; stdcall;
         //               procedure GetGPUVirtualAddress(var Adress:TD3D12_GPU_VIRTUAL_ADDRESS) ; stdcall;
-        function WriteToSubresource(DstSubresource: UINT; const pDstBox: TD3D12_BOX; pSrcData: pointer; SrcRowPitch: UINT;
-            SrcDepthPitch: UINT): HResult; stdcall;
-        function ReadFromSubresource(out pDstData: pointer; DstRowPitch: UINT; DstDepthPitch: UINT; SrcSubresource: UINT;
-            const pSrcBox: TD3D12_BOX): HResult; stdcall;
+        function WriteToSubresource(DstSubresource: UINT; const pDstBox: TD3D12_BOX; pSrcData: pointer; SrcRowPitch: UINT; SrcDepthPitch: UINT): HResult; stdcall;
+        function ReadFromSubresource(out pDstData: pointer; DstRowPitch: UINT; DstDepthPitch: UINT; SrcSubresource: UINT; const pSrcBox: TD3D12_BOX): HResult; stdcall;
         function GetHeapProperties(out pHeapProperties: TD3D12_HEAP_PROPERTIES; out pHeapFlags: TD3D12_HEAP_FLAGS): HResult; stdcall;
     end;
 
@@ -3582,19 +3565,14 @@ type
         function Reset(pAllocator: ID3D12CommandAllocator; pInitialState: ID3D12PipelineState): HResult; stdcall;
         procedure ClearState(pPipelineState: ID3D12PipelineState); stdcall;
         procedure DrawInstanced(VertexCountPerInstance: UINT; InstanceCount: UINT; StartVertexLocation: UINT; StartInstanceLocation: UINT); stdcall;
-        procedure DrawIndexedInstanced(IndexCountPerInstance: UINT; InstanceCount: UINT; StartIndexLocation: UINT;
-            BaseVertexLocation: int32; StartInstanceLocation: UINT); stdcall;
+        procedure DrawIndexedInstanced(IndexCountPerInstance: UINT; InstanceCount: UINT; StartIndexLocation: UINT; BaseVertexLocation: int32; StartInstanceLocation: UINT); stdcall;
         procedure Dispatch(ThreadGroupCountX: UINT; ThreadGroupCountY: UINT; ThreadGroupCountZ: UINT); stdcall;
-        procedure CopyBufferRegion(pDstBuffer: ID3D12Resource; DstOffset: uint64; pSrcBuffer: ID3D12Resource;
-            SrcOffset: uint64; NumBytes: uint64); stdcall;
-        procedure CopyTextureRegion(pDst: PD3D12_TEXTURE_COPY_LOCATION; DstX: UINT; DstY: UINT; DstZ: UINT;
-            pSrc: PD3D12_TEXTURE_COPY_LOCATION; pSrcBox: PD3D12_BOX); stdcall;
+        procedure CopyBufferRegion(pDstBuffer: ID3D12Resource; DstOffset: uint64; pSrcBuffer: ID3D12Resource; SrcOffset: uint64; NumBytes: uint64); stdcall;
+        procedure CopyTextureRegion(pDst: PD3D12_TEXTURE_COPY_LOCATION; DstX: UINT; DstY: UINT; DstZ: UINT; pSrc: PD3D12_TEXTURE_COPY_LOCATION; pSrcBox: PD3D12_BOX); stdcall;
         procedure CopyResource(pDstResource: ID3D12Resource; pSrcResource: ID3D12Resource); stdcall;
-        procedure CopyTiles(pTiledResource: ID3D12Resource; const pTileRegionStartCoordinate: TD3D12_TILED_RESOURCE_COORDINATE;
-            const pTileRegionSize: TD3D12_TILE_REGION_SIZE; pBuffer: ID3D12Resource; BufferStartOffsetInBytes: uint64;
-            Flags: TD3D12_TILE_COPY_FLAGS); stdcall;
-        procedure ResolveSubresource(pDstResource: ID3D12Resource; DstSubresource: UINT; pSrcResource: ID3D12Resource;
-            SrcSubresource: UINT; Format: TDXGI_FORMAT); stdcall;
+        procedure CopyTiles(pTiledResource: ID3D12Resource; const pTileRegionStartCoordinate: TD3D12_TILED_RESOURCE_COORDINATE; const pTileRegionSize: TD3D12_TILE_REGION_SIZE;
+            pBuffer: ID3D12Resource; BufferStartOffsetInBytes: uint64; Flags: TD3D12_TILE_COPY_FLAGS); stdcall;
+        procedure ResolveSubresource(pDstResource: ID3D12Resource; DstSubresource: UINT; pSrcResource: ID3D12Resource; SrcSubresource: UINT; Format: TDXGI_FORMAT); stdcall;
         procedure IASetPrimitiveTopology(PrimitiveTopology: TD3D12_PRIMITIVE_TOPOLOGY); stdcall;
         procedure RSSetViewports(NumViewports: UINT; pViewports: PD3D12_VIEWPORT); stdcall;
         procedure RSSetScissorRects(NumRects: UINT; pRects: PD3D12_RECT); stdcall;
@@ -3610,10 +3588,8 @@ type
         procedure SetGraphicsRootDescriptorTable(RootParameterIndex: UINT; BaseDescriptor: TD3D12_GPU_DESCRIPTOR_HANDLE); stdcall;
         procedure SetComputeRoot32BitConstant(RootParameterIndex: UINT; SrcData: UINT; DestOffsetIn32BitValues: UINT); stdcall;
         procedure SetGraphicsRoot32BitConstant(RootParameterIndex: UINT; SrcData: UINT; DestOffsetIn32BitValues: UINT); stdcall;
-        procedure SetComputeRoot32BitConstants(RootParameterIndex: UINT; Num32BitValuesToSet: UINT; pSrcData: Pointer;
-            DestOffsetIn32BitValues: UINT); stdcall;
-        procedure SetGraphicsRoot32BitConstants(RootParameterIndex: UINT; Num32BitValuesToSet: UINT; pSrcData: pointer;
-            DestOffsetIn32BitValues: UINT); stdcall;
+        procedure SetComputeRoot32BitConstants(RootParameterIndex: UINT; Num32BitValuesToSet: UINT; pSrcData: Pointer; DestOffsetIn32BitValues: UINT); stdcall;
+        procedure SetGraphicsRoot32BitConstants(RootParameterIndex: UINT; Num32BitValuesToSet: UINT; pSrcData: pointer; DestOffsetIn32BitValues: UINT); stdcall;
         procedure SetComputeRootConstantBufferView(RootParameterIndex: UINT; BufferLocation: TD3D12_GPU_VIRTUAL_ADDRESS); stdcall;
         procedure SetGraphicsRootConstantBufferView(RootParameterIndex: UINT; BufferLocation: TD3D12_GPU_VIRTUAL_ADDRESS); stdcall;
         procedure SetComputeRootShaderResourceView(RootParameterIndex: UINT; BufferLocation: TD3D12_GPU_VIRTUAL_ADDRESS); stdcall;
@@ -3623,29 +3599,23 @@ type
         procedure IASetIndexBuffer(const pView: TD3D12_INDEX_BUFFER_VIEW); stdcall;
         procedure IASetVertexBuffers(StartSlot: UINT; NumViews: UINT; pViews: PD3D12_VERTEX_BUFFER_VIEW); stdcall;
         procedure SOSetTargets(StartSlot: UINT; NumViews: UINT; pViews: PD3D12_STREAM_OUTPUT_BUFFER_VIEW); stdcall;
-        procedure OMSetRenderTargets(NumRenderTargetDescriptors: UINT; const pRenderTargetDescriptors: PD3D12_CPU_DESCRIPTOR_HANDLE;
-            RTsSingleHandleToDescriptorRange: longbool; const pDepthStencilDescriptor: PD3D12_CPU_DESCRIPTOR_HANDLE); stdcall;
-        procedure ClearDepthStencilView(DepthStencilView: TD3D12_CPU_DESCRIPTOR_HANDLE; ClearFlags: TD3D12_CLEAR_FLAGS;
-            Depth: single; Stencil: uint8; NumRects: UINT; pRects: PD3D12_RECT); stdcall;
-        procedure ClearRenderTargetView(RenderTargetView: TD3D12_CPU_DESCRIPTOR_HANDLE; ColorRGBA: TSingleArray4;
-            NumRects: UINT; pRects: PD3D12_RECT); stdcall;
-        procedure ClearUnorderedAccessViewUint(ViewGPUHandleInCurrentHeap: TD3D12_GPU_DESCRIPTOR_HANDLE;
-            const ViewCPUHandle: TD3D12_CPU_DESCRIPTOR_HANDLE; pResource: ID3D12Resource; Values: TUINTArray4;
-            NumRects: UINT; pRects: PD3D12_RECT); stdcall;
-        procedure ClearUnorderedAccessViewFloat(ViewGPUHandleInCurrentHeap: TD3D12_GPU_DESCRIPTOR_HANDLE;
-            const ViewCPUHandle: TD3D12_CPU_DESCRIPTOR_HANDLE; pResource: ID3D12Resource; Values: TSingleArray4;
-            NumRects: UINT; pRects: PD3D12_RECT); stdcall;
+        procedure OMSetRenderTargets(NumRenderTargetDescriptors: UINT; const pRenderTargetDescriptors: PD3D12_CPU_DESCRIPTOR_HANDLE; RTsSingleHandleToDescriptorRange: longbool;
+            const pDepthStencilDescriptor: PD3D12_CPU_DESCRIPTOR_HANDLE); stdcall;
+        procedure ClearDepthStencilView(DepthStencilView: TD3D12_CPU_DESCRIPTOR_HANDLE; ClearFlags: TD3D12_CLEAR_FLAGS; Depth: single; Stencil: uint8; NumRects: UINT; pRects: PD3D12_RECT); stdcall;
+        procedure ClearRenderTargetView(RenderTargetView: TD3D12_CPU_DESCRIPTOR_HANDLE; ColorRGBA: TSingleArray4; NumRects: UINT; pRects: PD3D12_RECT); stdcall;
+        procedure ClearUnorderedAccessViewUint(ViewGPUHandleInCurrentHeap: TD3D12_GPU_DESCRIPTOR_HANDLE; const ViewCPUHandle: TD3D12_CPU_DESCRIPTOR_HANDLE; pResource: ID3D12Resource;
+            Values: TUINTArray4; NumRects: UINT; pRects: PD3D12_RECT); stdcall;
+        procedure ClearUnorderedAccessViewFloat(ViewGPUHandleInCurrentHeap: TD3D12_GPU_DESCRIPTOR_HANDLE; const ViewCPUHandle: TD3D12_CPU_DESCRIPTOR_HANDLE; pResource: ID3D12Resource;
+            Values: TSingleArray4; NumRects: UINT; pRects: PD3D12_RECT); stdcall;
         procedure DiscardResource(pResource: ID3D12Resource; const pRegion: TD3D12_DISCARD_REGION); stdcall;
         procedure BeginQuery(pQueryHeap: ID3D12QueryHeap; _Type: TD3D12_QUERY_TYPE; Index: UINT); stdcall;
         procedure EndQuery(pQueryHeap: ID3D12QueryHeap; _Type: TD3D12_QUERY_TYPE; Index: UINT); stdcall;
-        procedure ResolveQueryData(pQueryHeap: ID3D12QueryHeap; _Type: TD3D12_QUERY_TYPE; StartIndex: UINT;
-            NumQueries: UINT; pDestinationBuffer: ID3D12Resource; AlignedDestinationBufferOffset: uint64); stdcall;
+        procedure ResolveQueryData(pQueryHeap: ID3D12QueryHeap; _Type: TD3D12_QUERY_TYPE; StartIndex: UINT; NumQueries: UINT; pDestinationBuffer: ID3D12Resource; AlignedDestinationBufferOffset: uint64); stdcall;
         procedure SetPredication(pBuffer: ID3D12Resource; AlignedBufferOffset: uint64; Operation: TD3D12_PREDICATION_OP); stdcall;
         procedure SetMarker(Metadata: UINT; pData: pointer; Size: UINT); stdcall;
         procedure BeginEvent(Metadata: UINT; pData: pointer; Size: UINT); stdcall;
         procedure EndEvent(); stdcall;
-        procedure ExecuteIndirect(pCommandSignature: ID3D12CommandSignature; MaxCommandCount: UINT;
-            pArgumentBuffer: ID3D12Resource; ArgumentBufferOffset: uint64; pCountBuffer: ID3D12Resource; CountBufferOffset: uint64); stdcall;
+        procedure ExecuteIndirect(pCommandSignature: ID3D12CommandSignature; MaxCommandCount: UINT; pArgumentBuffer: ID3D12Resource; ArgumentBufferOffset: uint64; pCountBuffer: ID3D12Resource; CountBufferOffset: uint64); stdcall;
     end;
 
 
@@ -3653,17 +3623,14 @@ type
 
     ID3D12GraphicsCommandList1 = interface(ID3D12GraphicsCommandList)
         ['{553103fb-1fe7-4557-bb38-946d7d0e7ca7}']
-        procedure AtomicCopyBufferUINT(pDstBuffer: ID3D12Resource; DstOffset: uint64; pSrcBuffer: ID3D12Resource;
-            SrcOffset: uint64; Dependencies: UINT; ppDependentResources: PID3D12Resource;
+        procedure AtomicCopyBufferUINT(pDstBuffer: ID3D12Resource; DstOffset: uint64; pSrcBuffer: ID3D12Resource; SrcOffset: uint64; Dependencies: UINT; ppDependentResources: PID3D12Resource;
             pDependentSubresourceRanges: PD3D12_SUBRESOURCE_RANGE_UINT64); stdcall;
-        procedure AtomicCopyBufferUINT64(pDstBuffer: ID3D12Resource; DstOffset: uint64; pSrcBuffer: ID3D12Resource;
-            SrcOffset: uint64; Dependencies: UINT; ppDependentResources: PID3D12Resource;
+        procedure AtomicCopyBufferUINT64(pDstBuffer: ID3D12Resource; DstOffset: uint64; pSrcBuffer: ID3D12Resource; SrcOffset: uint64; Dependencies: UINT; ppDependentResources: PID3D12Resource;
             pDependentSubresourceRanges: PD3D12_SUBRESOURCE_RANGE_UINT64); stdcall;
         procedure OMSetDepthBounds(Min: single; Max: single); stdcall;
         procedure SetSamplePositions(NumSamplesPerPixel: UINT; NumPixels: UINT; pSamplePositions: PD3D12_SAMPLE_POSITION); stdcall;
-        procedure ResolveSubresourceRegion(pDstResource: ID3D12Resource; DstSubresource: UINT; DstX: UINT; DstY: UINT;
-            pSrcResource: ID3D12Resource; SrcSubresource: UINT; const pSrcRect: TD3D12_RECT; Format: TDXGI_FORMAT;
-            ResolveMode: TD3D12_RESOLVE_MODE); stdcall;
+        procedure ResolveSubresourceRegion(pDstResource: ID3D12Resource; DstSubresource: UINT; DstX: UINT; DstY: UINT; pSrcResource: ID3D12Resource; SrcSubresource: UINT; const pSrcRect: TD3D12_RECT;
+            Format: TDXGI_FORMAT; ResolveMode: TD3D12_RESOLVE_MODE); stdcall;
         procedure SetViewInstanceMask(Mask: UINT); stdcall;
     end;
 
@@ -3691,20 +3658,16 @@ type
 
     ID3D12GraphicsCommandList2 = interface(ID3D12GraphicsCommandList1)
         ['{38C3E585-FF17-412C-9150-4FC6F9D72A28}']
-        procedure WriteBufferImmediate(Count: UINT; const pParams: PD3D12_WRITEBUFFERIMMEDIATE_PARAMETER;
-            const pModes: PD3D12_WRITEBUFFERIMMEDIATE_MODE); stdcall;
+        procedure WriteBufferImmediate(Count: UINT; const pParams: PD3D12_WRITEBUFFERIMMEDIATE_PARAMETER; const pModes: PD3D12_WRITEBUFFERIMMEDIATE_MODE); stdcall;
     end;
 
 
     ID3D12CommandQueue = interface(ID3D12Pageable)
         ['{0ec870a6-5d7e-4c22-8cfc-5baae07616ed}']
-        procedure UpdateTileMappings(pResource: ID3D12Resource; NumResourceRegions: UINT;
-            pResourceRegionStartCoordinates: PD3D12_TILED_RESOURCE_COORDINATE; pResourceRegionSizes: PD3D12_TILE_REGION_SIZE;
-            pHeap: ID3D12Heap; NumRanges: UINT; pRangeFlags: PD3D12_TILE_RANGE_FLAGS; pHeapRangeStartOffsets: PUINT;
-            pRangeTileCounts: PUINT; Flags: TD3D12_TILE_MAPPING_FLAGS); stdcall;
-        procedure CopyTileMappings(pDstResource: ID3D12Resource; const pDstRegionStartCoordinate: TD3D12_TILED_RESOURCE_COORDINATE;
-            pSrcResource: ID3D12Resource; const pSrcRegionStartCoordinate: TD3D12_TILED_RESOURCE_COORDINATE;
-            const pRegionSize: TD3D12_TILE_REGION_SIZE; Flags: TD3D12_TILE_MAPPING_FLAGS); stdcall;
+        procedure UpdateTileMappings(pResource: ID3D12Resource; NumResourceRegions: UINT; pResourceRegionStartCoordinates: PD3D12_TILED_RESOURCE_COORDINATE; pResourceRegionSizes: PD3D12_TILE_REGION_SIZE;
+            pHeap: ID3D12Heap; NumRanges: UINT; pRangeFlags: PD3D12_TILE_RANGE_FLAGS; pHeapRangeStartOffsets: PUINT; pRangeTileCounts: PUINT; Flags: TD3D12_TILE_MAPPING_FLAGS); stdcall;
+        procedure CopyTileMappings(pDstResource: ID3D12Resource; const pDstRegionStartCoordinate: TD3D12_TILED_RESOURCE_COORDINATE; pSrcResource: ID3D12Resource;
+            const pSrcRegionStartCoordinate: TD3D12_TILED_RESOURCE_COORDINATE; const pRegionSize: TD3D12_TILE_REGION_SIZE; Flags: TD3D12_TILE_MAPPING_FLAGS); stdcall;
         procedure ExecuteCommandLists(NumCommandLists: UINT; ppCommandLists: PID3D12CommandList); stdcall;
         procedure SetMarker(Metadata: UINT; pData: pointer; Size: UINT); stdcall;
         procedure BeginEvent(Metadata: UINT; pData: pointer; Size: UINT); stdcall;
@@ -3722,62 +3685,45 @@ type
         function GetNodeCount(): UINT; stdcall;
         function CreateCommandQueue(const pDesc: TD3D12_COMMAND_QUEUE_DESC; const riid: TGUID; out ppCommandQueue): HResult; stdcall;
         function CreateCommandAllocator(_type: TD3D12_COMMAND_LIST_TYPE; const riid: TGUID; out ppCommandAllocator): HResult; stdcall;
-        function CreateGraphicsPipelineState({const} pDesc: PD3D12_GRAPHICS_PIPELINE_STATE_DESC; const riid: TGUID;
-            out ppPipelineState): HResult; stdcall;
+        function CreateGraphicsPipelineState({const} pDesc: PD3D12_GRAPHICS_PIPELINE_STATE_DESC; const riid: TGUID; out ppPipelineState): HResult; stdcall;
         function CreateComputePipelineState(pDesc: TD3D12_COMPUTE_PIPELINE_STATE_DESC; const riid: TGUID; out ppPipelineState): HResult; stdcall;
-        function CreateCommandList(nodeMask: UINT; _type: TD3D12_COMMAND_LIST_TYPE; pCommandAllocator: ID3D12CommandAllocator;
-            pInitialState: ID3D12PipelineState; const riid: TGUID; out ppCommandList): HResult; stdcall;
+        function CreateCommandList(nodeMask: UINT; _type: TD3D12_COMMAND_LIST_TYPE; pCommandAllocator: ID3D12CommandAllocator; pInitialState: ID3D12PipelineState; const riid: TGUID; out ppCommandList): HResult; stdcall;
         function CheckFeatureSupport(Feature: TD3D12_FEATURE; pFeatureSupportData: pointer; FeatureSupportDataSize: UINT): HResult; stdcall;
         function CreateDescriptorHeap(const pDescriptorHeapDesc: PD3D12_DESCRIPTOR_HEAP_DESC; const riid: TGUID;
         {out} ppvHeap: PID3D12DescriptorHeap): HResult; stdcall;
         function GetDescriptorHandleIncrementSize(DescriptorHeapType: TD3D12_DESCRIPTOR_HEAP_TYPE): UINT; stdcall;
-        function CreateRootSignature(nodeMask: UINT; pBlobWithRootSignature: Pointer; blobLengthInBytes: SIZE_T;
-            const riid: TGUID; out ppvRootSignature): HResult; stdcall;
-        procedure CreateConstantBufferView(const pDesc: PD3D12_CONSTANT_BUFFER_VIEW_DESC;
-            const DestDescriptor: TD3D12_CPU_DESCRIPTOR_HANDLE); stdcall;
-        procedure CreateShaderResourceView(pResource: ID3D12Resource; const pDesc: PD3D12_SHADER_RESOURCE_VIEW_DESC;
-            const DestDescriptor: TD3D12_CPU_DESCRIPTOR_HANDLE); stdcall;
-        procedure CreateUnorderedAccessView(pResource: ID3D12Resource; pCounterResource: ID3D12Resource;
-            const pDesc: TD3D12_UNORDERED_ACCESS_VIEW_DESC; const DestDescriptor: TD3D12_CPU_DESCRIPTOR_HANDLE); stdcall;
-        procedure CreateRenderTargetView(pResource: ID3D12Resource; const pDesc: PD3D12_RENDER_TARGET_VIEW_DESC;
-            DestDescriptor: TD3D12_CPU_DESCRIPTOR_HANDLE); stdcall;
-        procedure CreateDepthStencilView(pResource: ID3D12Resource; const pDesc: TD3D12_DEPTH_STENCIL_VIEW_DESC;
-            const DestDescriptor: TD3D12_CPU_DESCRIPTOR_HANDLE); stdcall;
+        function CreateRootSignature(nodeMask: UINT; pBlobWithRootSignature: Pointer; blobLengthInBytes: SIZE_T; const riid: TGUID; out ppvRootSignature): HResult; stdcall;
+        procedure CreateConstantBufferView(const pDesc: PD3D12_CONSTANT_BUFFER_VIEW_DESC; const DestDescriptor: TD3D12_CPU_DESCRIPTOR_HANDLE); stdcall;
+        procedure CreateShaderResourceView(pResource: ID3D12Resource; const pDesc: PD3D12_SHADER_RESOURCE_VIEW_DESC; const DestDescriptor: TD3D12_CPU_DESCRIPTOR_HANDLE); stdcall;
+        procedure CreateUnorderedAccessView(pResource: ID3D12Resource; pCounterResource: ID3D12Resource; const pDesc: TD3D12_UNORDERED_ACCESS_VIEW_DESC; const DestDescriptor: TD3D12_CPU_DESCRIPTOR_HANDLE); stdcall;
+        procedure CreateRenderTargetView(pResource: ID3D12Resource; const pDesc: PD3D12_RENDER_TARGET_VIEW_DESC; DestDescriptor: TD3D12_CPU_DESCRIPTOR_HANDLE); stdcall;
+        procedure CreateDepthStencilView(pResource: ID3D12Resource; const pDesc: TD3D12_DEPTH_STENCIL_VIEW_DESC; const DestDescriptor: TD3D12_CPU_DESCRIPTOR_HANDLE); stdcall;
         procedure CreateSampler(const pDesc: TD3D12_SAMPLER_DESC; const DestDescriptor: TD3D12_CPU_DESCRIPTOR_HANDLE); stdcall;
-        procedure CopyDescriptors(NumDestDescriptorRanges: UINT; pDestDescriptorRangeStarts: TD3D12_CPU_DESCRIPTOR_HANDLE;
-            pDestDescriptorRangeSizes: PUINT; NumSrcDescriptorRanges: UINT; pSrcDescriptorRangeStarts: TD3D12_CPU_DESCRIPTOR_HANDLE;
-            pSrcDescriptorRangeSizes: PUINT; DescriptorHeapsType: TD3D12_DESCRIPTOR_HEAP_TYPE); stdcall;
-        procedure CopyDescriptorsSimple(NumDescriptors: UINT; const DestDescriptorRangeStart: TD3D12_CPU_DESCRIPTOR_HANDLE;
-            const SrcDescriptorRangeStart: TD3D12_CPU_DESCRIPTOR_HANDLE; DescriptorHeapsType: TD3D12_DESCRIPTOR_HEAP_TYPE); stdcall;
-        function GetResourceAllocationInfo(visibleMask: UINT; numResourceDescs: UINT;
-            pResourceDescs: PD3D12_RESOURCE_DESC): TD3D12_RESOURCE_ALLOCATION_INFO; stdcall;
+        procedure CopyDescriptors(NumDestDescriptorRanges: UINT; pDestDescriptorRangeStarts: TD3D12_CPU_DESCRIPTOR_HANDLE; pDestDescriptorRangeSizes: PUINT; NumSrcDescriptorRanges: UINT;
+            pSrcDescriptorRangeStarts: TD3D12_CPU_DESCRIPTOR_HANDLE; pSrcDescriptorRangeSizes: PUINT; DescriptorHeapsType: TD3D12_DESCRIPTOR_HEAP_TYPE); stdcall;
+        procedure CopyDescriptorsSimple(NumDescriptors: UINT; const DestDescriptorRangeStart: TD3D12_CPU_DESCRIPTOR_HANDLE; const SrcDescriptorRangeStart: TD3D12_CPU_DESCRIPTOR_HANDLE;
+            DescriptorHeapsType: TD3D12_DESCRIPTOR_HEAP_TYPE); stdcall;
+        function GetResourceAllocationInfo(visibleMask: UINT; numResourceDescs: UINT; pResourceDescs: PD3D12_RESOURCE_DESC): TD3D12_RESOURCE_ALLOCATION_INFO; stdcall;
         function GetCustomHeapProperties(nodeMask: UINT; heapType: TD3D12_HEAP_TYPE): TD3D12_HEAP_PROPERTIES; stdcall;
-        function CreateCommittedResource(const pHeapProperties: PD3D12_HEAP_PROPERTIES; HeapFlags: TD3D12_HEAP_FLAGS;
-            const pResourceDesc: PD3D12_RESOURCE_DESC; InitialResourceState: TD3D12_RESOURCE_STATES;
+        function CreateCommittedResource(const pHeapProperties: PD3D12_HEAP_PROPERTIES; HeapFlags: TD3D12_HEAP_FLAGS; const pResourceDesc: PD3D12_RESOURCE_DESC; InitialResourceState: TD3D12_RESOURCE_STATES;
             const pOptimizedClearValue: PD3D12_CLEAR_VALUE; const riidResource: TGUID; out ppvResource): HResult; stdcall;
         function CreateHeap(const pDesc: TD3D12_HEAP_DESC; const riid: TGUID; out ppvHeap): HResult; stdcall;
-        function CreatePlacedResource(pHeap: ID3D12Heap; HeapOffset: uint64; const pDesc: TD3D12_RESOURCE_DESC;
-            InitialState: TD3D12_RESOURCE_STATES; const pOptimizedClearValue: TD3D12_CLEAR_VALUE; const riid: TGUID;
-            out ppvResource): HResult; stdcall;
-        function CreateReservedResource(const pDesc: TD3D12_RESOURCE_DESC; InitialState: TD3D12_RESOURCE_STATES;
-            const pOptimizedClearValue: TD3D12_CLEAR_VALUE; const riid: TGUID; out ppvResource): HResult; stdcall;
-        function CreateSharedHandle(pObject: ID3D12DeviceChild; pAttributes: PSECURITY_ATTRIBUTES; Access: DWORD;
-            Name: pwidechar; out pHandle: THANDLE): HResult; stdcall;
+        function CreatePlacedResource(pHeap: ID3D12Heap; HeapOffset: uint64; const pDesc: TD3D12_RESOURCE_DESC; InitialState: TD3D12_RESOURCE_STATES; const pOptimizedClearValue: TD3D12_CLEAR_VALUE;
+            const riid: TGUID; out ppvResource): HResult; stdcall;
+        function CreateReservedResource(const pDesc: TD3D12_RESOURCE_DESC; InitialState: TD3D12_RESOURCE_STATES; const pOptimizedClearValue: TD3D12_CLEAR_VALUE; const riid: TGUID; out ppvResource): HResult; stdcall;
+        function CreateSharedHandle(pObject: ID3D12DeviceChild; pAttributes: PSECURITY_ATTRIBUTES; Access: DWORD; Name: pwidechar; out pHandle: THANDLE): HResult; stdcall;
         function OpenSharedHandle(NTHandle: THANDLE; const riid: TGUID; out ppvObj): HResult; stdcall;
         function OpenSharedHandleByName(Name: pwidechar; Access: DWORD; out pNTHandle: THANDLE): HResult; stdcall;
         function MakeResident(NumObjects: UINT; ppObjects: PID3D12Pageable): HResult; stdcall;
         function Evict(NumObjects: UINT; ppObjects: PID3D12Pageable): HResult; stdcall;
         function CreateFence(InitialValue: uint64; Flags: TD3D12_FENCE_FLAGS; const riid: TGUID; out ppFence): HResult; stdcall;
         function GetDeviceRemovedReason(): HResult; stdcall;
-        procedure GetCopyableFootprints(const pResourceDesc: PD3D12_RESOURCE_DESC; FirstSubresource: UINT;
-            NumSubresources: UINT; BaseOffset: uint64; {var} pLayouts: PD3D12_PLACED_SUBRESOURCE_FOOTPRINT;
+        procedure GetCopyableFootprints(const pResourceDesc: PD3D12_RESOURCE_DESC; FirstSubresource: UINT; NumSubresources: UINT; BaseOffset: uint64; {var} pLayouts: PD3D12_PLACED_SUBRESOURCE_FOOTPRINT;
         {var} pNumRows: PUINT; {var} pRowSizeInBytes: PUINT64; out pTotalBytes: uint64); stdcall;
         function CreateQueryHeap(const pDesc: TD3D12_QUERY_HEAP_DESC; const riid: TGUID; out ppvHeap): HResult; stdcall;
         function SetStablePowerState(Enable: longbool): HResult; stdcall;
-        function CreateCommandSignature(const pDesc: TD3D12_COMMAND_SIGNATURE_DESC; pRootSignature: ID3D12RootSignature;
-            const riid: TGUID; out ppvCommandSignature): HResult; stdcall;
-        procedure GetResourceTiling(pTiledResource: ID3D12Resource; out pNumTilesForEntireResource: UINT;
-            out pPackedMipDesc: TD3D12_PACKED_MIP_INFO; out pStandardTileShapeForNonPackedMips: TD3D12_TILE_SHAPE;
+        function CreateCommandSignature(const pDesc: TD3D12_COMMAND_SIGNATURE_DESC; pRootSignature: ID3D12RootSignature; const riid: TGUID; out ppvCommandSignature): HResult; stdcall;
+        procedure GetResourceTiling(pTiledResource: ID3D12Resource; out pNumTilesForEntireResource: UINT; out pPackedMipDesc: TD3D12_PACKED_MIP_INFO; out pStandardTileShapeForNonPackedMips: TD3D12_TILE_SHAPE;
             var pNumSubresourceTilings: UINT; FirstSubresourceTilingToGet: UINT; out pSubresourceTilingsForNonPackedMips: PD3D12_SUBRESOURCE_TILING);
             stdcall;
         function GetAdapterLuid(): LUID; stdcall;
@@ -3803,10 +3749,8 @@ type
     ID3D12PipelineLibrary = interface(ID3D12DeviceChild)
         ['{c64226a8-9201-46af-b4cc-53fb9ff7414f}']
         function StorePipeline(pName: LPCWSTR; pPipeline: ID3D12PipelineState): HResult; stdcall;
-        function LoadGraphicsPipeline(pName: LPCWSTR; const pDesc: TD3D12_GRAPHICS_PIPELINE_STATE_DESC; const riid: TGUID;
-            out ppPipelineState): HResult; stdcall;
-        function LoadComputePipeline(pName: LPCWSTR; const pDesc: TD3D12_COMPUTE_PIPELINE_STATE_DESC; const riid: TGUID;
-            out ppPipelineState): HResult; stdcall;
+        function LoadGraphicsPipeline(pName: LPCWSTR; const pDesc: TD3D12_GRAPHICS_PIPELINE_STATE_DESC; const riid: TGUID; out ppPipelineState): HResult; stdcall;
+        function LoadComputePipeline(pName: LPCWSTR; const pDesc: TD3D12_COMPUTE_PIPELINE_STATE_DESC; const riid: TGUID; out ppPipelineState): HResult; stdcall;
         function GetSerializedSize(): SIZE_T; stdcall;
         function Serialize(out pData: pbyte; DataSizeInBytes: SIZE_T): HResult; stdcall;
     end;
@@ -3814,8 +3758,7 @@ type
 
     ID3D12PipelineLibrary1 = interface(ID3D12PipelineLibrary)
         ['{80eabf42-2568-4e5e-bd82-c37f86961dc3}']
-        function LoadPipeline(pName: LPCWSTR; const pDesc: TD3D12_PIPELINE_STATE_STREAM_DESC; const riid: TGUID;
-            out ppPipelineState): HResult; stdcall;
+        function LoadPipeline(pName: LPCWSTR; const pDesc: TD3D12_PIPELINE_STATE_STREAM_DESC; const riid: TGUID; out ppPipelineState): HResult; stdcall;
     end;
 
 
@@ -3841,8 +3784,7 @@ type
     ID3D12Device1 = interface(ID3D12Device)
         ['{77acce80-638e-4e65-8895-c1f23386863e}']
         function CreatePipelineLibrary(pLibraryBlob: Pointer; BlobLength: SIZE_T; const riid: TGUID; out ppPipelineLibrary): HResult; stdcall;
-        function SetEventOnMultipleFenceCompletion(ppFences: PID3D12Fence; pFenceValues: PUINT64; NumFences: UINT;
-            Flags: TD3D12_MULTIPLE_FENCE_WAIT_FLAGS; hEvent: THANDLE): HResult; stdcall;
+        function SetEventOnMultipleFenceCompletion(ppFences: PID3D12Fence; pFenceValues: PUINT64; NumFences: UINT; Flags: TD3D12_MULTIPLE_FENCE_WAIT_FLAGS; hEvent: THANDLE): HResult; stdcall;
         function SetResidencyPriority(NumObjects: UINT; ppObjects: PID3D12Pageable; pPriorities: PD3D12_RESIDENCY_PRIORITY): HResult; stdcall;
     end;
 
@@ -3867,8 +3809,7 @@ type
         ['{81dadc15-2bad-4392-93c5-101345c4aa98}']
         function OpenExistingHeapFromAddress(const pAddress: Pointer; const riid: TGUID; out ppvHeap): HResult; stdcall;
         function OpenExistingHeapFromFileMapping(hFileMapping: THANDLE; const riid: TGUID; out ppvHeap): HResult; stdcall;
-        function EnqueueMakeResident(Flags: TD3D12_RESIDENCY_FLAGS; NumObjects: UINT; const ppObjects: PID3D12Pageable;
-            pFenceToSignal: ID3D12Fence; FenceValueToSignal: uint64): HResult; stdcall;
+        function EnqueueMakeResident(Flags: TD3D12_RESIDENCY_FLAGS; NumObjects: UINT; const ppObjects: PID3D12Pageable; pFenceToSignal: ID3D12Fence; FenceValueToSignal: uint64): HResult; stdcall;
     end;
 
     TD3D12_COMMAND_LIST_FLAGS = (
@@ -3943,20 +3884,14 @@ type
 
     ID3D12Device4 = interface(ID3D12Device3)
         ['{e865df17-a9ee-46f9-a463-3098315aa2e5}']
-        function CreateCommandList1(nodeMask: UINT; _Type: TD3D12_COMMAND_LIST_TYPE; flags: TD3D12_COMMAND_LIST_FLAGS;
-            const riid: TGUID; out ppCommandList): HRESULT; stdcall;
-        function CreateProtectedResourceSession(const pDesc: TD3D12_PROTECTED_RESOURCE_SESSION_DESC; const riid: TGUID;
-            out ppSession): HRESULT; stdcall;
-        function CreateCommittedResource1(const pHeapProperties: TD3D12_HEAP_PROPERTIES; HeapFlags: TD3D12_HEAP_FLAGS;
-            const pDesc: TD3D12_RESOURCE_DESC; InitialResourceState: TD3D12_RESOURCE_STATES; const pOptimizedClearValue: TD3D12_CLEAR_VALUE;
-            pProtectedSession: ID3D12ProtectedResourceSession; const riidResource: TGUID; out ppvResource): HRESULT; stdcall;
-        function CreateHeap1(const pDesc: TD3D12_HEAP_DESC; pProtectedSession: ID3D12ProtectedResourceSession;
-            const riid: TGUID; out vppvHeap): HRESULT; stdcall;
-        function CreateReservedResource1(const pDesc: TD3D12_RESOURCE_DESC; InitialState: TD3D12_RESOURCE_STATES;
-            const pOptimizedClearValue: TD3D12_CLEAR_VALUE; pProtectedSession: ID3D12ProtectedResourceSession;
+        function CreateCommandList1(nodeMask: UINT; _Type: TD3D12_COMMAND_LIST_TYPE; flags: TD3D12_COMMAND_LIST_FLAGS; const riid: TGUID; out ppCommandList): HRESULT; stdcall;
+        function CreateProtectedResourceSession(const pDesc: TD3D12_PROTECTED_RESOURCE_SESSION_DESC; const riid: TGUID; out ppSession): HRESULT; stdcall;
+        function CreateCommittedResource1(const pHeapProperties: TD3D12_HEAP_PROPERTIES; HeapFlags: TD3D12_HEAP_FLAGS; const pDesc: TD3D12_RESOURCE_DESC; InitialResourceState: TD3D12_RESOURCE_STATES;
+            const pOptimizedClearValue: TD3D12_CLEAR_VALUE; pProtectedSession: ID3D12ProtectedResourceSession; const riidResource: TGUID; out ppvResource): HRESULT; stdcall;
+        function CreateHeap1(const pDesc: TD3D12_HEAP_DESC; pProtectedSession: ID3D12ProtectedResourceSession; const riid: TGUID; out vppvHeap): HRESULT; stdcall;
+        function CreateReservedResource1(const pDesc: TD3D12_RESOURCE_DESC; InitialState: TD3D12_RESOURCE_STATES; const pOptimizedClearValue: TD3D12_CLEAR_VALUE; pProtectedSession: ID3D12ProtectedResourceSession;
             const riid: TGUID; out ppvResource): HRESULT; stdcall;
-        function GetResourceAllocationInfo1(visibleMask: UINT; numResourceDescs: UINT; const pResourceDescs: PD3D12_RESOURCE_DESC;
-            out pResourceAllocationInfo1: PD3D12_RESOURCE_ALLOCATION_INFO1): TD3D12_RESOURCE_ALLOCATION_INFO; stdcall;
+        function GetResourceAllocationInfo1(visibleMask: UINT; numResourceDescs: UINT; const pResourceDescs: PD3D12_RESOURCE_DESC; out pResourceAllocationInfo1: PD3D12_RESOURCE_ALLOCATION_INFO1): TD3D12_RESOURCE_ALLOCATION_INFO; stdcall;
     end;
 
 
@@ -3975,8 +3910,7 @@ type
         ['{f1df64b6-57fd-49cd-8807-c0eb88b45c8f}']
         function GetLUID(): LUID; stdcall;
         function GetSwapChainObject(const riid: TGUID; out ppv): HResult; stdcall;
-        function GetCurrentResourceAndCommandQueue(const riidResource: TGUID; out ppvResource; const riidQueue: TGUID;
-            out ppvQueue): HResult; stdcall;
+        function GetCurrentResourceAndCommandQueue(const riidResource: TGUID; out ppvResource; const riidQueue: TGUID; out ppvQueue): HResult; stdcall;
         function InsertImplicitSync(): HResult; stdcall;
     end;
 
@@ -4315,22 +4249,19 @@ type
     TD3D12_RAYTRACING_ACCELERATION_STRUCTURE_POSTBUILD_INFO_COMPACTED_SIZE_DESC = record
         CompactedSizeInBytes: uint64;
     end;
-    PD3D12_RAYTRACING_ACCELERATION_STRUCTURE_POSTBUILD_INFO_COMPACTED_SIZE_DESC =
-        ^TD3D12_RAYTRACING_ACCELERATION_STRUCTURE_POSTBUILD_INFO_COMPACTED_SIZE_DESC;
+    PD3D12_RAYTRACING_ACCELERATION_STRUCTURE_POSTBUILD_INFO_COMPACTED_SIZE_DESC = ^TD3D12_RAYTRACING_ACCELERATION_STRUCTURE_POSTBUILD_INFO_COMPACTED_SIZE_DESC;
 
     TD3D12_RAYTRACING_ACCELERATION_STRUCTURE_POSTBUILD_INFO_TOOLS_VISUALIZATION_DESC = record
         DecodedSizeInBytes: uint64;
     end;
-    PD3D12_RAYTRACING_ACCELERATION_STRUCTURE_POSTBUILD_INFO_TOOLS_VISUALIZATION_DESC =
-        ^TD3D12_RAYTRACING_ACCELERATION_STRUCTURE_POSTBUILD_INFO_TOOLS_VISUALIZATION_DESC;
+    PD3D12_RAYTRACING_ACCELERATION_STRUCTURE_POSTBUILD_INFO_TOOLS_VISUALIZATION_DESC = ^TD3D12_RAYTRACING_ACCELERATION_STRUCTURE_POSTBUILD_INFO_TOOLS_VISUALIZATION_DESC;
 
 
     TD3D12_BUILD_RAYTRACING_ACCELERATION_STRUCTURE_TOOLS_VISUALIZATION_HEADER = record
         _Type: TD3D12_RAYTRACING_ACCELERATION_STRUCTURE_TYPE;
         NumDescs: UINT;
     end;
-    PD3D12_BUILD_RAYTRACING_ACCELERATION_STRUCTURE_TOOLS_VISUALIZATION_HEADER =
-        ^TD3D12_BUILD_RAYTRACING_ACCELERATION_STRUCTURE_TOOLS_VISUALIZATION_HEADER;
+    PD3D12_BUILD_RAYTRACING_ACCELERATION_STRUCTURE_TOOLS_VISUALIZATION_HEADER = ^TD3D12_BUILD_RAYTRACING_ACCELERATION_STRUCTURE_TOOLS_VISUALIZATION_HEADER;
 
     // Regarding D3D12_BUILD_RAY_TRACING_ACCELERATION_STRUCTURE_TOOLS_VISUALIZATION_HEADER above,
     // depending on Type field, NumDescs above is followed by either:
@@ -4342,8 +4273,7 @@ type
         SerializedSizeInBytes: uint64;
         NumBottomLevelAccelerationStructurePointers: uint64;
     end;
-    PD3D12_RAYTRACING_ACCELERATION_STRUCTURE_POSTBUILD_INFO_SERIALIZATION_DESC =
-        ^TD3D12_RAYTRACING_ACCELERATION_STRUCTURE_POSTBUILD_INFO_SERIALIZATION_DESC;
+    PD3D12_RAYTRACING_ACCELERATION_STRUCTURE_POSTBUILD_INFO_SERIALIZATION_DESC = ^TD3D12_RAYTRACING_ACCELERATION_STRUCTURE_POSTBUILD_INFO_SERIALIZATION_DESC;
 
     TD3D12_SERIALIZED_DATA_DRIVER_MATCHING_IDENTIFIER = record
         DriverOpaqueGUID: TGUID;
@@ -4374,8 +4304,7 @@ type
     TD3D12_RAYTRACING_ACCELERATION_STRUCTURE_POSTBUILD_INFO_CURRENT_SIZE_DESC = record
         CurrentSizeInBytes: uint64;
     end;
-    PD3D12_RAYTRACING_ACCELERATION_STRUCTURE_POSTBUILD_INFO_CURRENT_SIZE_DESC =
-        ^TD3D12_RAYTRACING_ACCELERATION_STRUCTURE_POSTBUILD_INFO_CURRENT_SIZE_DESC;
+    PD3D12_RAYTRACING_ACCELERATION_STRUCTURE_POSTBUILD_INFO_CURRENT_SIZE_DESC = ^TD3D12_RAYTRACING_ACCELERATION_STRUCTURE_POSTBUILD_INFO_CURRENT_SIZE_DESC;
 
     TD3D12_RAYTRACING_INSTANCE_DESC = record
         Transform: array [0..2, 0..3] of single;
@@ -4455,16 +4384,12 @@ type
         procedure RemoveDevice(); stdcall;
         function EnumerateMetaCommands(var pNumMetaCommands: UINT; out pDescs {arraysize pNumMetaCommands}: PD3D12_META_COMMAND_DESC): HResult;
             stdcall;
-        function EnumerateMetaCommandParameters(const CommandId: TGUID; Stage: TD3D12_META_COMMAND_PARAMETER_STAGE;
-            out pTotalStructureSizeInBytes: UINT; var pParameterCount: UINT;
+        function EnumerateMetaCommandParameters(const CommandId: TGUID; Stage: TD3D12_META_COMMAND_PARAMETER_STAGE; out pTotalStructureSizeInBytes: UINT; var pParameterCount: UINT;
             out pParameterDescs {arraysize pParameterCount}: PD3D12_META_COMMAND_PARAMETER_DESC): HResult; stdcall;
-        function CreateMetaCommand(const CommandId: TGUID; NodeMask: UINT; const pCreationParametersData: pointer;
-            CreationParametersDataSizeInBytes: SIZE_T; const riid: TGUID; out ppMetaCommand): HResult; stdcall;
+        function CreateMetaCommand(const CommandId: TGUID; NodeMask: UINT; const pCreationParametersData: pointer; CreationParametersDataSizeInBytes: SIZE_T; const riid: TGUID; out ppMetaCommand): HResult; stdcall;
         function CreateStateObject(const pDesc: PD3D12_STATE_OBJECT_DESC; const riid: TGUID; out ppStateObject): HResult; stdcall;
-        procedure GetRaytracingAccelerationStructurePrebuildInfo(const pDesc: PD3D12_BUILD_RAYTRACING_ACCELERATION_STRUCTURE_INPUTS;
-            out pInfo: TD3D12_RAYTRACING_ACCELERATION_STRUCTURE_PREBUILD_INFO); stdcall;
-        function CheckDriverMatchingIdentifier(SerializedDataType: TD3D12_SERIALIZED_DATA_TYPE;
-            const pIdentifierToCheck: PD3D12_SERIALIZED_DATA_DRIVER_MATCHING_IDENTIFIER): TD3D12_DRIVER_MATCHING_IDENTIFIER_STATUS; stdcall;
+        procedure GetRaytracingAccelerationStructurePrebuildInfo(const pDesc: PD3D12_BUILD_RAYTRACING_ACCELERATION_STRUCTURE_INPUTS; out pInfo: TD3D12_RAYTRACING_ACCELERATION_STRUCTURE_PREBUILD_INFO); stdcall;
+        function CheckDriverMatchingIdentifier(SerializedDataType: TD3D12_SERIALIZED_DATA_TYPE; const pIdentifierToCheck: PD3D12_SERIALIZED_DATA_DRIVER_MATCHING_IDENTIFIER): TD3D12_DRIVER_MATCHING_IDENTIFIER_STATUS; stdcall;
     end;
 
 
@@ -4716,6 +4641,7 @@ type
             0: (Dred_1_0: TD3D12_DEVICE_REMOVED_EXTENDED_DATA);
             1: (Dred_1_1: TD3D12_DEVICE_REMOVED_EXTENDED_DATA1);
             2: (Dred_1_2: TD3D12_DEVICE_REMOVED_EXTENDED_DATA2);
+            3 :(Dred_1_3: TD3D12_DEVICE_REMOVED_EXTENDED_DATA3);
     end;
     PD3D12_VERSIONED_DEVICE_REMOVED_EXTENDED_DATA = ^TD3D12_VERSIONED_DEVICE_REMOVED_EXTENDED_DATA;
 
@@ -4774,8 +4700,7 @@ type
 
     ID3D12Device6 = interface(ID3D12Device5)
         ['{c70b221b-40e4-4a17-89af-025a0727a6dc}']
-        function SetBackgroundProcessingMode(Mode: TD3D12_BACKGROUND_PROCESSING_MODE; MeasurementsAction: TD3D12_MEASUREMENTS_ACTION;
-            hEventToSignalUponCompletion: THANDLE; out pbFurtherMeasurementsDesired: boolean): HResult; stdcall;
+        function SetBackgroundProcessingMode(Mode: TD3D12_BACKGROUND_PROCESSING_MODE; MeasurementsAction: TD3D12_MEASUREMENTS_ACTION; hEventToSignalUponCompletion: THANDLE; out pbFurtherMeasurementsDesired: boolean): HResult; stdcall;
     end;
 
 
@@ -4811,29 +4736,21 @@ type
 
     ID3D12Device7 = interface(ID3D12Device6)
         ['{5c014b53-68a1-4b9b-8bd1-dd6046b9358b}']
-        function AddToStateObject(const pAddition: TD3D12_STATE_OBJECT_DESC; pStateObjectToGrowFrom: ID3D12StateObject;
-            const riid: TGUID; out ppNewStateObject): HResult; stdcall;
-        function CreateProtectedResourceSession1(const pDesc: TD3D12_PROTECTED_RESOURCE_SESSION_DESC1; const riid: TGUID;
-            out ppSession): HResult; stdcall;
+        function AddToStateObject(const pAddition: TD3D12_STATE_OBJECT_DESC; pStateObjectToGrowFrom: ID3D12StateObject; const riid: TGUID; out ppNewStateObject): HResult; stdcall;
+        function CreateProtectedResourceSession1(const pDesc: TD3D12_PROTECTED_RESOURCE_SESSION_DESC1; const riid: TGUID; out ppSession): HResult; stdcall;
     end;
 
 
     ID3D12Device8 = interface(ID3D12Device7)
         ['{9218E6BB-F944-4F7E-A75C-B1B2C7B701F3}']
-        function GetResourceAllocationInfo2(visibleMask: UINT; numResourceDescs: UINT;
-            const pResourceDescs {numResourceDescs}: PD3D12_RESOURCE_DESC1;
+        function GetResourceAllocationInfo2(visibleMask: UINT; numResourceDescs: UINT; const pResourceDescs {numResourceDescs}: PD3D12_RESOURCE_DESC1;
             out pResourceAllocationInfo1{numResourceDescs}: PD3D12_RESOURCE_ALLOCATION_INFO1): TD3D12_RESOURCE_ALLOCATION_INFO; stdcall;
-        function CreateCommittedResource2(const pHeapProperties: TD3D12_HEAP_PROPERTIES; HeapFlags: TD3D12_HEAP_FLAGS;
-            const pDesc: TD3D12_RESOURCE_DESC1; InitialResourceState: TD3D12_RESOURCE_STATES;
-            const pOptimizedClearValue: TD3D12_CLEAR_VALUE; pProtectedSession: ID3D12ProtectedResourceSession;
-            const riidResource: TGUID; out ppvResource): HResult; stdcall;
-        function CreatePlacedResource1(pHeap: ID3D12Heap; HeapOffset: uint64; const pDesc: TD3D12_RESOURCE_DESC1;
-            InitialState: TD3D12_RESOURCE_STATES; const pOptimizedClearValue: TD3D12_CLEAR_VALUE; const riid: TGUID;
-            out ppvResource): HResult; stdcall;
-        procedure CreateSamplerFeedbackUnorderedAccessView(pTargetedResource: ID3D12Resource; pFeedbackResource: ID3D12Resource;
-            DestDescriptor: TD3D12_CPU_DESCRIPTOR_HANDLE); stdcall;
-        procedure GetCopyableFootprints1(const pResourceDesc: TD3D12_RESOURCE_DESC1; FirstSubresource: UINT;
-            NumSubresources: UINT; BaseOffset: uint64; out pLayouts {NumSubresources}: PD3D12_PLACED_SUBRESOURCE_FOOTPRINT;
+        function CreateCommittedResource2(const pHeapProperties: TD3D12_HEAP_PROPERTIES; HeapFlags: TD3D12_HEAP_FLAGS; const pDesc: TD3D12_RESOURCE_DESC1; InitialResourceState: TD3D12_RESOURCE_STATES;
+            const pOptimizedClearValue: TD3D12_CLEAR_VALUE; pProtectedSession: ID3D12ProtectedResourceSession; const riidResource: TGUID; out ppvResource): HResult; stdcall;
+        function CreatePlacedResource1(pHeap: ID3D12Heap; HeapOffset: uint64; const pDesc: TD3D12_RESOURCE_DESC1; InitialState: TD3D12_RESOURCE_STATES; const pOptimizedClearValue: TD3D12_CLEAR_VALUE;
+            const riid: TGUID; out ppvResource): HResult; stdcall;
+        procedure CreateSamplerFeedbackUnorderedAccessView(pTargetedResource: ID3D12Resource; pFeedbackResource: ID3D12Resource; DestDescriptor: TD3D12_CPU_DESCRIPTOR_HANDLE); stdcall;
+        procedure GetCopyableFootprints1(const pResourceDesc: TD3D12_RESOURCE_DESC1; FirstSubresource: UINT; NumSubresources: UINT; BaseOffset: uint64; out pLayouts {NumSubresources}: PD3D12_PLACED_SUBRESOURCE_FOOTPRINT;
             out pNumRows {NumSubresources}: PUINT; out pRowSizeInBytes {NumSubresources}: PUINT64; out pTotalBytes: uint64); stdcall;
     end;
 
@@ -4977,21 +4894,16 @@ type
 
     ID3D12GraphicsCommandList4 = interface(ID3D12GraphicsCommandList3)
         ['{8754318e-d3a9-4541-98cf-645b50dc4874}']
-        procedure BeginRenderPass(NumRenderTargets: UINT; const pRenderTargets {arraysize NumRenderTargets}: PD3D12_RENDER_PASS_RENDER_TARGET_DESC;
-            const pDepthStencil: PD3D12_RENDER_PASS_DEPTH_STENCIL_DESC; Flags: TD3D12_RENDER_PASS_FLAGS); stdcall;
+        procedure BeginRenderPass(NumRenderTargets: UINT; const pRenderTargets {arraysize NumRenderTargets}: PD3D12_RENDER_PASS_RENDER_TARGET_DESC; const pDepthStencil: PD3D12_RENDER_PASS_DEPTH_STENCIL_DESC;
+            Flags: TD3D12_RENDER_PASS_FLAGS); stdcall;
         procedure EndRenderPass(); stdcall;
-        procedure InitializeMetaCommand(pMetaCommand: ID3D12MetaCommand; const pInitializationParametersData: pointer;
-            InitializationParametersDataSizeInBytes: SIZE_T); stdcall;
-        procedure ExecuteMetaCommand(pMetaCommand: ID3D12MetaCommand; const pExecutionParametersData: Pointer;
-            ExecutionParametersDataSizeInBytes: SIZE_T); stdcall;
-        procedure BuildRaytracingAccelerationStructure(const pDesc: PD3D12_BUILD_RAYTRACING_ACCELERATION_STRUCTURE_DESC;
-            NumPostbuildInfoDescs: UINT; const pPostbuildInfoDescs {arraysize NumPostbuildInfoDescs}:
-            PD3D12_RAYTRACING_ACCELERATION_STRUCTURE_POSTBUILD_INFO_DESC); stdcall;
-        procedure EmitRaytracingAccelerationStructurePostbuildInfo(const pDesc: PD3D12_RAYTRACING_ACCELERATION_STRUCTURE_POSTBUILD_INFO_DESC;
-            NumSourceAccelerationStructures: UINT;
+        procedure InitializeMetaCommand(pMetaCommand: ID3D12MetaCommand; const pInitializationParametersData: pointer; InitializationParametersDataSizeInBytes: SIZE_T); stdcall;
+        procedure ExecuteMetaCommand(pMetaCommand: ID3D12MetaCommand; const pExecutionParametersData: Pointer; ExecutionParametersDataSizeInBytes: SIZE_T); stdcall;
+        procedure BuildRaytracingAccelerationStructure(const pDesc: PD3D12_BUILD_RAYTRACING_ACCELERATION_STRUCTURE_DESC; NumPostbuildInfoDescs: UINT;
+            const pPostbuildInfoDescs {arraysize NumPostbuildInfoDescs}: PD3D12_RAYTRACING_ACCELERATION_STRUCTURE_POSTBUILD_INFO_DESC); stdcall;
+        procedure EmitRaytracingAccelerationStructurePostbuildInfo(const pDesc: PD3D12_RAYTRACING_ACCELERATION_STRUCTURE_POSTBUILD_INFO_DESC; NumSourceAccelerationStructures: UINT;
             const pSourceAccelerationStructureData {arraysize NumSourceAccelerationStructures}: PD3D12_GPU_VIRTUAL_ADDRESS); stdcall;
-        procedure CopyRaytracingAccelerationStructure(DestAccelerationStructureData: TD3D12_GPU_VIRTUAL_ADDRESS;
-            SourceAccelerationStructureData: TD3D12_GPU_VIRTUAL_ADDRESS; Mode: TD3D12_RAYTRACING_ACCELERATION_STRUCTURE_COPY_MODE);
+        procedure CopyRaytracingAccelerationStructure(DestAccelerationStructureData: TD3D12_GPU_VIRTUAL_ADDRESS; SourceAccelerationStructureData: TD3D12_GPU_VIRTUAL_ADDRESS; Mode: TD3D12_RAYTRACING_ACCELERATION_STRUCTURE_COPY_MODE);
             stdcall;
         procedure SetPipelineState1(pStateObject: ID3D12StateObject); stdcall;
         procedure DispatchRays(const pDesc: PD3D12_DISPATCH_RAYS_DESC); stdcall;
@@ -5024,6 +4936,169 @@ type
     PD3D12_SHADER_CACHE_SESSION_DESC = ^TD3D12_SHADER_CACHE_SESSION_DESC;
 
 
+    TD3D12_BARRIER_LAYOUT=(
+        D3D12_BARRIER_LAYOUT_UNDEFINED	= $ffffffff,
+        D3D12_BARRIER_LAYOUT_COMMON	= 0,
+        D3D12_BARRIER_LAYOUT_PRESENT	= 0,
+        D3D12_BARRIER_LAYOUT_GENERIC_READ	= ( D3D12_BARRIER_LAYOUT_PRESENT + 1 ) ,
+        D3D12_BARRIER_LAYOUT_RENDER_TARGET	= ( D3D12_BARRIER_LAYOUT_GENERIC_READ + 1 ) ,
+        D3D12_BARRIER_LAYOUT_UNORDERED_ACCESS	= ( D3D12_BARRIER_LAYOUT_RENDER_TARGET + 1 ) ,
+        D3D12_BARRIER_LAYOUT_DEPTH_STENCIL_WRITE	= ( D3D12_BARRIER_LAYOUT_UNORDERED_ACCESS + 1 ) ,
+        D3D12_BARRIER_LAYOUT_DEPTH_STENCIL_READ	= ( D3D12_BARRIER_LAYOUT_DEPTH_STENCIL_WRITE + 1 ) ,
+        D3D12_BARRIER_LAYOUT_SHADER_RESOURCE	= ( D3D12_BARRIER_LAYOUT_DEPTH_STENCIL_READ + 1 ) ,
+        D3D12_BARRIER_LAYOUT_COPY_SOURCE	= ( D3D12_BARRIER_LAYOUT_SHADER_RESOURCE + 1 ) ,
+        D3D12_BARRIER_LAYOUT_COPY_DEST	= ( D3D12_BARRIER_LAYOUT_COPY_SOURCE + 1 ) ,
+        D3D12_BARRIER_LAYOUT_RESOLVE_SOURCE	= ( D3D12_BARRIER_LAYOUT_COPY_DEST + 1 ) ,
+        D3D12_BARRIER_LAYOUT_RESOLVE_DEST	= ( D3D12_BARRIER_LAYOUT_RESOLVE_SOURCE + 1 ) ,
+        D3D12_BARRIER_LAYOUT_SHADING_RATE_SOURCE	= ( D3D12_BARRIER_LAYOUT_RESOLVE_DEST + 1 ) ,
+        D3D12_BARRIER_LAYOUT_VIDEO_DECODE_READ	= ( D3D12_BARRIER_LAYOUT_SHADING_RATE_SOURCE + 1 ) ,
+        D3D12_BARRIER_LAYOUT_VIDEO_DECODE_WRITE	= ( D3D12_BARRIER_LAYOUT_VIDEO_DECODE_READ + 1 ) ,
+        D3D12_BARRIER_LAYOUT_VIDEO_PROCESS_READ	= ( D3D12_BARRIER_LAYOUT_VIDEO_DECODE_WRITE + 1 ) ,
+        D3D12_BARRIER_LAYOUT_VIDEO_PROCESS_WRITE	= ( D3D12_BARRIER_LAYOUT_VIDEO_PROCESS_READ + 1 ) ,
+        D3D12_BARRIER_LAYOUT_VIDEO_ENCODE_READ	= ( D3D12_BARRIER_LAYOUT_VIDEO_PROCESS_WRITE + 1 ) ,
+        D3D12_BARRIER_LAYOUT_VIDEO_ENCODE_WRITE	= ( D3D12_BARRIER_LAYOUT_VIDEO_ENCODE_READ + 1 ) ,
+        D3D12_BARRIER_LAYOUT_DIRECT_QUEUE_COMMON	= ( D3D12_BARRIER_LAYOUT_VIDEO_ENCODE_WRITE + 1 ) ,
+        D3D12_BARRIER_LAYOUT_DIRECT_QUEUE_GENERIC_READ	= ( D3D12_BARRIER_LAYOUT_DIRECT_QUEUE_COMMON + 1 ) ,
+        D3D12_BARRIER_LAYOUT_DIRECT_QUEUE_UNORDERED_ACCESS	= ( D3D12_BARRIER_LAYOUT_DIRECT_QUEUE_GENERIC_READ + 1 ) ,
+        D3D12_BARRIER_LAYOUT_DIRECT_QUEUE_SHADER_RESOURCE	= ( D3D12_BARRIER_LAYOUT_DIRECT_QUEUE_UNORDERED_ACCESS + 1 ) ,
+        D3D12_BARRIER_LAYOUT_DIRECT_QUEUE_COPY_SOURCE	= ( D3D12_BARRIER_LAYOUT_DIRECT_QUEUE_SHADER_RESOURCE + 1 ) ,
+        D3D12_BARRIER_LAYOUT_DIRECT_QUEUE_COPY_DEST	= ( D3D12_BARRIER_LAYOUT_DIRECT_QUEUE_COPY_SOURCE + 1 ) ,
+        D3D12_BARRIER_LAYOUT_COMPUTE_QUEUE_COMMON	= ( D3D12_BARRIER_LAYOUT_DIRECT_QUEUE_COPY_DEST + 1 ) ,
+        D3D12_BARRIER_LAYOUT_COMPUTE_QUEUE_GENERIC_READ	= ( D3D12_BARRIER_LAYOUT_COMPUTE_QUEUE_COMMON + 1 ) ,
+        D3D12_BARRIER_LAYOUT_COMPUTE_QUEUE_UNORDERED_ACCESS	= ( D3D12_BARRIER_LAYOUT_COMPUTE_QUEUE_GENERIC_READ + 1 ) ,
+        D3D12_BARRIER_LAYOUT_COMPUTE_QUEUE_SHADER_RESOURCE	= ( D3D12_BARRIER_LAYOUT_COMPUTE_QUEUE_UNORDERED_ACCESS + 1 ) ,
+        D3D12_BARRIER_LAYOUT_COMPUTE_QUEUE_COPY_SOURCE	= ( D3D12_BARRIER_LAYOUT_COMPUTE_QUEUE_SHADER_RESOURCE + 1 ) ,
+        D3D12_BARRIER_LAYOUT_COMPUTE_QUEUE_COPY_DEST	= ( D3D12_BARRIER_LAYOUT_COMPUTE_QUEUE_COPY_SOURCE + 1 ) ,
+        D3D12_BARRIER_LAYOUT_VIDEO_QUEUE_COMMON	= ( D3D12_BARRIER_LAYOUT_COMPUTE_QUEUE_COPY_DEST + 1 )
+    );
+    PD3D12_BARRIER_LAYOUT = ^TD3D12_BARRIER_LAYOUT;
+
+TD3D12_BARRIER_SYNC=(
+        D3D12_BARRIER_SYNC_NONE	= 0,
+        D3D12_BARRIER_SYNC_ALL	= $1,
+        D3D12_BARRIER_SYNC_DRAW	= $2,
+        D3D12_BARRIER_SYNC_INPUT_ASSEMBLER	= $4,
+        D3D12_BARRIER_SYNC_VERTEX_SHADING	= $8,
+        D3D12_BARRIER_SYNC_PIXEL_SHADING	= $10,
+        D3D12_BARRIER_SYNC_DEPTH_STENCIL	= $20,
+        D3D12_BARRIER_SYNC_RENDER_TARGET	= $40,
+        D3D12_BARRIER_SYNC_COMPUTE_SHADING	= $80,
+        D3D12_BARRIER_SYNC_RAYTRACING	= $100,
+        D3D12_BARRIER_SYNC_COPY	= $200,
+        D3D12_BARRIER_SYNC_RESOLVE	= $400,
+        D3D12_BARRIER_SYNC_EXECUTE_INDIRECT	= $800,
+        D3D12_BARRIER_SYNC_PREDICATION	= $800,
+        D3D12_BARRIER_SYNC_ALL_SHADING	= $1000,
+        D3D12_BARRIER_SYNC_NON_PIXEL_SHADING	= $2000,
+        D3D12_BARRIER_SYNC_EMIT_RAYTRACING_ACCELERATION_STRUCTURE_POSTBUILD_INFO	= $4000,
+        D3D12_BARRIER_SYNC_VIDEO_DECODE	= $100000,
+        D3D12_BARRIER_SYNC_VIDEO_PROCESS	= $200000,
+        D3D12_BARRIER_SYNC_VIDEO_ENCODE	= $400000,
+        D3D12_BARRIER_SYNC_BUILD_RAYTRACING_ACCELERATION_STRUCTURE	= $800000,
+        D3D12_BARRIER_SYNC_COPY_RAYTRACING_ACCELERATION_STRUCTURE	= $1000000,
+        D3D12_BARRIER_SYNC_SPLIT	= $80000000
+    );
+PD3D12_BARRIER_SYNC = ^TD3D12_BARRIER_SYNC;
+
+
+TD3D12_BARRIER_ACCESS=(
+        D3D12_BARRIER_ACCESS_COMMON	= 0,
+        D3D12_BARRIER_ACCESS_VERTEX_BUFFER	= $1,
+        D3D12_BARRIER_ACCESS_CONSTANT_BUFFER	= $2,
+        D3D12_BARRIER_ACCESS_INDEX_BUFFER	= $4,
+        D3D12_BARRIER_ACCESS_RENDER_TARGET	= $8,
+        D3D12_BARRIER_ACCESS_UNORDERED_ACCESS	= $10,
+        D3D12_BARRIER_ACCESS_DEPTH_STENCIL_WRITE	= $20,
+        D3D12_BARRIER_ACCESS_DEPTH_STENCIL_READ	= $40,
+        D3D12_BARRIER_ACCESS_SHADER_RESOURCE	= $80,
+        D3D12_BARRIER_ACCESS_STREAM_OUTPUT	= $100,
+        D3D12_BARRIER_ACCESS_INDIRECT_ARGUMENT	= $200,
+        D3D12_BARRIER_ACCESS_PREDICATION	= $200,
+        D3D12_BARRIER_ACCESS_COPY_DEST	= $400,
+        D3D12_BARRIER_ACCESS_COPY_SOURCE	= $800,
+        D3D12_BARRIER_ACCESS_RESOLVE_DEST	= $1000,
+        D3D12_BARRIER_ACCESS_RESOLVE_SOURCE	= $2000,
+        D3D12_BARRIER_ACCESS_RAYTRACING_ACCELERATION_STRUCTURE_READ	= $4000,
+        D3D12_BARRIER_ACCESS_RAYTRACING_ACCELERATION_STRUCTURE_WRITE	= $8000,
+        D3D12_BARRIER_ACCESS_SHADING_RATE_SOURCE	= $10000,
+        D3D12_BARRIER_ACCESS_VIDEO_DECODE_READ	= $20000,
+        D3D12_BARRIER_ACCESS_VIDEO_DECODE_WRITE	= $40000,
+        D3D12_BARRIER_ACCESS_VIDEO_PROCESS_READ	= $80000,
+        D3D12_BARRIER_ACCESS_VIDEO_PROCESS_WRITE	= $100000,
+        D3D12_BARRIER_ACCESS_VIDEO_ENCODE_READ	= $200000,
+        D3D12_BARRIER_ACCESS_VIDEO_ENCODE_WRITE	= $400000,
+        D3D12_BARRIER_ACCESS_NO_ACCESS	= $80000000
+    );
+PD3D12_BARRIER_ACCESS = ^TD3D12_BARRIER_ACCESS;
+
+
+TD3D12_BARRIER_TYPE=(
+        D3D12_BARRIER_TYPE_GLOBAL	= 0,
+        D3D12_BARRIER_TYPE_TEXTURE	= ( D3D12_BARRIER_TYPE_GLOBAL + 1 ) ,
+        D3D12_BARRIER_TYPE_BUFFER	= ( D3D12_BARRIER_TYPE_TEXTURE + 1 )
+    );
+PD3D12_BARRIER_TYPE = ^TD3D12_BARRIER_TYPE;
+
+TD3D12_TEXTURE_BARRIER_FLAGS=(
+        D3D12_TEXTURE_BARRIER_FLAG_NONE	= 0,
+        D3D12_TEXTURE_BARRIER_FLAG_DISCARD	= $1
+    );
+PD3D12_TEXTURE_BARRIER_FLAGS = ^TD3D12_TEXTURE_BARRIER_FLAGS;
+
+
+TD3D12_BARRIER_SUBRESOURCE_RANGE=record
+     IndexOrFirstMipLevel:UINT;
+     NumMipLevels:UINT;
+     FirstArraySlice:UINT;
+     NumArraySlices:UINT;
+     FirstPlane:UINT;
+     NumPlanes:UINT;
+    end;
+PD3D12_BARRIER_SUBRESOURCE_RANGE = ^TD3D12_BARRIER_SUBRESOURCE_RANGE;
+
+TD3D12_GLOBAL_BARRIER=record
+     SyncBefore :TD3D12_BARRIER_SYNC;
+     SyncAfter :TD3D12_BARRIER_SYNC;
+     AccessBefore :TD3D12_BARRIER_ACCESS;
+     AccessAfter :TD3D12_BARRIER_ACCESS;
+    end;
+PD3D12_GLOBAL_BARRIER = ^TD3D12_GLOBAL_BARRIER;
+
+TD3D12_TEXTURE_BARRIER =record
+     SyncBefore :TD3D12_BARRIER_SYNC;
+     SyncAfter : TD3D12_BARRIER_SYNC;
+     AccessBefore :TD3D12_BARRIER_ACCESS;
+     AccessAfter :TD3D12_BARRIER_ACCESS;
+     LayoutBefore :TD3D12_BARRIER_LAYOUT;
+     LayoutAfter :TD3D12_BARRIER_LAYOUT;
+     pResource :PID3D12Resource;
+     Subresources :TD3D12_BARRIER_SUBRESOURCE_RANGE;
+     Flags :TD3D12_TEXTURE_BARRIER_FLAGS;
+    end;
+PD3D12_TEXTURE_BARRIER = ^TD3D12_TEXTURE_BARRIER;
+
+TD3D12_BUFFER_BARRIER=record
+     SyncBefore :TD3D12_BARRIER_SYNC;
+     SyncAfter :TD3D12_BARRIER_SYNC;
+     AccessBefore :TD3D12_BARRIER_ACCESS;
+     AccessAfter :TD3D12_BARRIER_ACCESS;
+    pResource :PID3D12Resource;
+     Offset :UINT64;
+     Size :UINT64;
+    end;
+PD3D12_BUFFER_BARRIER = ^TD3D12_BUFFER_BARRIER;
+
+TD3D12_BARRIER_GROUP=record
+    _Type :TD3D12_BARRIER_TYPE;
+     NumBarriers :UINT32;
+    case Integer of
+        0:(pGlobalBarriers {NumBarriers} :PD3D12_GLOBAL_BARRIER);
+        1:(pTextureBarriers {NumBarriers} :PD3D12_TEXTURE_BARRIER);
+        2:(pBufferBarriers {NumBarriers} :PD3D12_BUFFER_BARRIER);
+    end;
+PD3D12_BARRIER_GROUP = ^TD3D12_BARRIER_GROUP;
+
+
 
     ID3D12ShaderCacheSession = interface(ID3D12DeviceChild)
         ['{28e2495d-0f64-4ae4-a6ec-129255dc49a8}']
@@ -5054,14 +5129,62 @@ type
 
     ID3D12Device9 = interface(ID3D12Device8)
         ['{4c80e962-f032-4f60-bc9e-ebc2cfa1d83c}']
-        function CreateShaderCacheSession(const pDesc: PD3D12_SHADER_CACHE_SESSION_DESC; constref riid: TGUID;
-            out ppvSession): HRESULT; stdcall;
+        function CreateShaderCacheSession(const pDesc: PD3D12_SHADER_CACHE_SESSION_DESC; constref riid: TGUID; out ppvSession): HRESULT; stdcall;
         function ShaderCacheControl(Kinds: TD3D12_SHADER_CACHE_KIND_FLAGS; Control: TD3D12_SHADER_CACHE_CONTROL_FLAGS): HRESULT; stdcall;
-        function CreateCommandQueue1(const pDesc: PD3D12_COMMAND_QUEUE_DESC; const CreatorID: TGUID; const riid: TGUID;
-            out ppCommandQueue): HRESULT; stdcall;
+        function CreateCommandQueue1(const pDesc: PD3D12_COMMAND_QUEUE_DESC; const CreatorID: TGUID; const riid: TGUID; out ppCommandQueue): HRESULT; stdcall;
     end;
 
 
+    ID3D12Device10 = interface(ID3D12Device9)
+         ['{517f8718-aa66-49f9-b02b-a7ab89c06031}']
+       function CreateCommittedResource3(
+              const  pHeapProperties :PD3D12_HEAP_PROPERTIES;
+             HeapFlags:TD3D12_HEAP_FLAGS;
+              const  pDesc :PD3D12_RESOURCE_DESC1;
+             InitialLayout:TD3D12_BARRIER_LAYOUT;
+              const  pOptimizedClearValue:PD3D12_CLEAR_VALUE;
+              pProtectedSession :ID3D12ProtectedResourceSession;
+             NumCastableFormats:UINT32;
+             pCastableFormats {NumCastableFormats}:PDXGI_FORMAT;
+            constref riidResource:TGUID;
+            out ppvResource) :HResult; stdcall;
+
+        function CreatePlacedResource2(
+                 pHeap :ID3D12Heap;
+             HeapOffset:UINT64;
+              const  pDesc:PD3D12_RESOURCE_DESC1;
+             InitialLayout:TD3D12_BARRIER_LAYOUT;
+              const  pOptimizedClearValue:PD3D12_CLEAR_VALUE;
+             NumCastableFormats:UINT32;
+             pCastableFormats {NumCastableFormats}:PDXGI_FORMAT;
+            constref riid :TGUID;
+            out  ppvResource) :HResult; stdcall;
+
+        function CreateReservedResource2(
+              const  pDesc :PD3D12_RESOURCE_DESC;
+             InitialLayout:TD3D12_BARRIER_LAYOUT;
+              const  pOptimizedClearValue:PD3D12_CLEAR_VALUE;
+              pProtectedSession:ID3D12ProtectedResourceSession;
+             NumCastableFormats:UINT32;
+             pCastableFormats {NumCastableFormats}:PDXGI_FORMAT;
+            constref riid:TGUID;
+            out  ppvResource) :HResult; stdcall;
+
+    end;
+
+
+    ID3D12VirtualizationGuestDevice =interface( IUnknown)
+         ['{bc66d368-7373-4943-8757-fc87dc79e476}']
+        function ShareWithHost(
+             pObject:ID3D12DeviceChild;
+             out pHandle : HANDLE)  :HResult; stdcall;
+
+        function CreateFenceFd(
+            pFence:ID3D12Fence;
+             FenceValue:UINT64;
+            out pFenceFd:int32) :HResult; stdcall;
+
+    end;
 
 
     ID3D12Tools = interface(IUnknown)
@@ -5142,8 +5265,7 @@ type
 
     ID3D12GraphicsCommandList5 = interface(ID3D12GraphicsCommandList4)
         ['{55050859-4024-474c-87f5-6472eaee44ea}']
-        procedure RSSetShadingRate(baseShadingRate: TD3D12_SHADING_RATE;
-            const combiners {D3D12_RS_SET_SHADING_RATE_COMBINER_COUNT}: PD3D12_SHADING_RATE_COMBINER); stdcall;
+        procedure RSSetShadingRate(baseShadingRate: TD3D12_SHADING_RATE; const combiners {D3D12_RS_SET_SHADING_RATE_COMBINER_COUNT}: PD3D12_SHADING_RATE_COMBINER); stdcall;
         procedure RSSetShadingRateImage(shadingRateImage: ID3D12Resource); stdcall;
     end;
 
@@ -5166,20 +5288,22 @@ type
 
 
 
+    ID3D12GraphicsCommandList7= interface(ID3D12GraphicsCommandList6)
+        ['{dd171223-8b61-4769-90e3-160ccde4e2c1}']
+        procedure Barrier(
+             NumBarrierGroups:UINT32;
+             const pBarrierGroups {NumBarrierGroups} :PD3D12_BARRIER_GROUP); stdcall;
+    end;
 
-function D3D12SerializeRootSignature(constref pRootSignature: TD3D12_ROOT_SIGNATURE_DESC; Version: TD3D_ROOT_SIGNATURE_VERSION;
-    ppBlob: PID3DBlob; ppErrorBlob: PID3DBlob): HResult; stdcall; external D3D12_DLL;
+function D3D12SerializeRootSignature(constref pRootSignature: TD3D12_ROOT_SIGNATURE_DESC; Version: TD3D_ROOT_SIGNATURE_VERSION; ppBlob: PID3DBlob; ppErrorBlob: PID3DBlob): HResult; stdcall; external D3D12_DLL;
 
 
-function D3D12CreateRootSignatureDeserializer(pSrcData: pointer; SrcDataSizeInBytes: SIZE_T;
-    const pRootSignatureDeserializerInterface: TGUID; out ppRootSignatureDeserializer): HResult; stdcall; external D3D12_DLL;
+function D3D12CreateRootSignatureDeserializer(pSrcData: pointer; SrcDataSizeInBytes: SIZE_T; const pRootSignatureDeserializerInterface: TGUID; out ppRootSignatureDeserializer): HResult; stdcall; external D3D12_DLL;
 
 
-function D3D12SerializeVersionedRootSignature(constref pRootSignature: TD3D12_VERSIONED_ROOT_SIGNATURE_DESC;
-    ppBlob: PID3DBlob; ppErrorBlob: PID3DBlob): HResult; stdcall; external D3D12_DLL;
+function D3D12SerializeVersionedRootSignature(constref pRootSignature: TD3D12_VERSIONED_ROOT_SIGNATURE_DESC; ppBlob: PID3DBlob; ppErrorBlob: PID3DBlob): HResult; stdcall; external D3D12_DLL;
 
-function D3D12CreateVersionedRootSignatureDeserializer(pSrcData: pointer; SrcDataSizeInBytes: SIZE_T;
-    const pRootSignatureDeserializerInterface: TGUID; out ppRootSignatureDeserializer): HResult; stdcall; external D3D12_DLL;
+function D3D12CreateVersionedRootSignatureDeserializer(pSrcData: pointer; SrcDataSizeInBytes: SIZE_T; const pRootSignatureDeserializerInterface: TGUID; out ppRootSignatureDeserializer): HResult; stdcall; external D3D12_DLL;
 
 
 
@@ -5266,9 +5390,8 @@ implementation
 
 function D3D12_ENCODE_SHADER_4_COMPONENT_MAPPING(Src0, Src1, Src2, Src3: byte): UINT; inline;
 begin
-    Result := ((Src0 and D3D12_SHADER_COMPONENT_MAPPING_MASK) or ((Src1 and D3D12_SHADER_COMPONENT_MAPPING_MASK) shl
-        D3D12_SHADER_COMPONENT_MAPPING_SHIFT) or ((Src2 and D3D12_SHADER_COMPONENT_MAPPING_MASK) shl (D3D12_SHADER_COMPONENT_MAPPING_SHIFT * 2)) or
-        ((Src3 and D3D12_SHADER_COMPONENT_MAPPING_MASK) shl (D3D12_SHADER_COMPONENT_MAPPING_SHIFT * 3)) or
+    Result := ((Src0 and D3D12_SHADER_COMPONENT_MAPPING_MASK) or ((Src1 and D3D12_SHADER_COMPONENT_MAPPING_MASK) shl D3D12_SHADER_COMPONENT_MAPPING_SHIFT) or
+        ((Src2 and D3D12_SHADER_COMPONENT_MAPPING_MASK) shl (D3D12_SHADER_COMPONENT_MAPPING_SHIFT * 2)) or ((Src3 and D3D12_SHADER_COMPONENT_MAPPING_MASK) shl (D3D12_SHADER_COMPONENT_MAPPING_SHIFT * 3)) or
         D3D12_SHADER_COMPONENT_MAPPING_ALWAYS_SET_BIT_AVOIDING_ZEROMEM_MISTAKES);
 end;
 
@@ -5276,17 +5399,15 @@ end;
 
 function D3D12_ENCODE_BASIC_FILTER(min, mag, mip, reduction: TD3D12_FILTER_TYPE): TD3D12_FILTER;
 begin
-    Result := TD3D12_FILTER(((Ord(min) and D3D12_FILTER_TYPE_MASK) shl D3D12_MIN_FILTER_SHIFT) or
-        ((Ord(mag) and D3D12_FILTER_TYPE_MASK) shl D3D12_MAG_FILTER_SHIFT) or ((Ord(mip) and D3D12_FILTER_TYPE_MASK) shl
-        D3D12_MIP_FILTER_SHIFT) or ((Ord(reduction) and D3D12_FILTER_REDUCTION_TYPE_MASK) shl D3D12_FILTER_REDUCTION_TYPE_SHIFT));
+    Result := TD3D12_FILTER(((Ord(min) and D3D12_FILTER_TYPE_MASK) shl D3D12_MIN_FILTER_SHIFT) or ((Ord(mag) and D3D12_FILTER_TYPE_MASK) shl D3D12_MAG_FILTER_SHIFT) or
+        ((Ord(mip) and D3D12_FILTER_TYPE_MASK) shl D3D12_MIP_FILTER_SHIFT) or ((Ord(reduction) and D3D12_FILTER_REDUCTION_TYPE_MASK) shl D3D12_FILTER_REDUCTION_TYPE_SHIFT));
 end;
 
 
 
 function D3D12_ENCODE_ANISOTROPIC_FILTER(reduction: TD3D12_FILTER_TYPE): TD3D12_FILTER;
 begin
-    Result := TD3D12_FILTER(Ord(D3D12_ANISOTROPIC_FILTERING_BIT) or Ord(D3D12_ENCODE_BASIC_FILTER(D3D12_FILTER_TYPE_LINEAR,
-        D3D12_FILTER_TYPE_LINEAR, D3D12_FILTER_TYPE_LINEAR, reduction)));
+    Result := TD3D12_FILTER(Ord(D3D12_ANISOTROPIC_FILTERING_BIT) or Ord(D3D12_ENCODE_BASIC_FILTER(D3D12_FILTER_TYPE_LINEAR, D3D12_FILTER_TYPE_LINEAR, D3D12_FILTER_TYPE_LINEAR, reduction)));
 end;
 
 
@@ -5314,8 +5435,7 @@ end;
 
 function D3D12_DECODE_FILTER_REDUCTION(D3D12Filter: TD3D12_FILTER): TD3D12_FILTER_REDUCTION_TYPE;
 begin
-    Result := TD3D12_FILTER_REDUCTION_TYPE((Ord(D3D12Filter) shr D3D12_FILTER_REDUCTION_TYPE_SHIFT) and
-        Ord(D3D12_FILTER_REDUCTION_TYPE_MASK));
+    Result := TD3D12_FILTER_REDUCTION_TYPE((Ord(D3D12Filter) shr D3D12_FILTER_REDUCTION_TYPE_SHIFT) and Ord(D3D12_FILTER_REDUCTION_TYPE_MASK));
 end;
 
 
@@ -5329,17 +5449,15 @@ end;
 
 function D3D12_DECODE_IS_ANISOTROPIC_FILTER(D3D12Filter: TD3D12_FILTER): boolean;
 begin
-    Result := ((Ord(D3D12Filter) and Ord(D3D12_ANISOTROPIC_FILTERING_BIT) = Ord(D3D12_ANISOTROPIC_FILTERING_BIT)) and
-        (D3D12_FILTER_TYPE_LINEAR = D3D12_DECODE_MIN_FILTER(D3D12Filter)) and (D3D12_FILTER_TYPE_LINEAR =
-        D3D12_DECODE_MAG_FILTER(D3D12Filter)) and (D3D12_FILTER_TYPE_LINEAR = D3D12_DECODE_MIP_FILTER(D3D12Filter)));
+    Result := ((Ord(D3D12Filter) and Ord(D3D12_ANISOTROPIC_FILTERING_BIT) = Ord(D3D12_ANISOTROPIC_FILTERING_BIT)) and (D3D12_FILTER_TYPE_LINEAR = D3D12_DECODE_MIN_FILTER(D3D12Filter)) and
+        (D3D12_FILTER_TYPE_LINEAR = D3D12_DECODE_MAG_FILTER(D3D12Filter)) and (D3D12_FILTER_TYPE_LINEAR = D3D12_DECODE_MIP_FILTER(D3D12Filter)));
 end;
 
 
 
 function D3D12_DECODE_SHADER_4_COMPONENT_MAPPING(ComponentToExtract: integer; Mapping: UINT): TD3D12_SHADER_COMPONENT_MAPPING; inline;
 begin
-    Result := TD3D12_SHADER_COMPONENT_MAPPING((Mapping shr Ord(D3D12_SHADER_COMPONENT_MAPPING_SHIFT * ComponentToExtract)) and
-        Ord(D3D12_SHADER_COMPONENT_MAPPING_MASK));
+    Result := TD3D12_SHADER_COMPONENT_MAPPING((Mapping shr Ord(D3D12_SHADER_COMPONENT_MAPPING_SHIFT * ComponentToExtract)) and Ord(D3D12_SHADER_COMPONENT_MAPPING_MASK));
 end;
 
 
@@ -5431,8 +5549,7 @@ end;
 
 
 
-procedure TD3D12_ROOT_DESCRIPTOR_TABLE1.Init(var rootDescriptorTable: TD3D12_ROOT_DESCRIPTOR_TABLE1; numDescriptorRanges: UINT;
-    const _pDescriptorRanges: PD3D12_DESCRIPTOR_RANGE1);
+procedure TD3D12_ROOT_DESCRIPTOR_TABLE1.Init(var rootDescriptorTable: TD3D12_ROOT_DESCRIPTOR_TABLE1; numDescriptorRanges: UINT; const _pDescriptorRanges: PD3D12_DESCRIPTOR_RANGE1);
 begin
     rootDescriptorTable.NumDescriptorRanges := numDescriptorRanges;
     rootDescriptorTable.pDescriptorRanges := _pDescriptorRanges;
@@ -5448,8 +5565,7 @@ end;
 { TD3D12_DESCRIPTOR_RANGE1 }
 
 
-constructor TD3D12_DESCRIPTOR_RANGE1.Create(rangeType: TD3D12_DESCRIPTOR_RANGE_TYPE; numDescriptors: UINT;
-    baseShaderRegister: UINT; registerSpace: UINT; flags: TD3D12_DESCRIPTOR_RANGE_FLAGS; offsetInDescriptorsFromTableStart: UINT);
+constructor TD3D12_DESCRIPTOR_RANGE1.Create(rangeType: TD3D12_DESCRIPTOR_RANGE_TYPE; numDescriptors: UINT; baseShaderRegister: UINT; registerSpace: UINT; flags: TD3D12_DESCRIPTOR_RANGE_FLAGS; offsetInDescriptorsFromTableStart: UINT);
 begin
     self.RangeType := rangeType;
     self.NumDescriptors := numDescriptors;
@@ -5461,9 +5577,8 @@ end;
 
 
 
-procedure TD3D12_DESCRIPTOR_RANGE1.Init(var range: TD3D12_DESCRIPTOR_RANGE1; rangeType: TD3D12_DESCRIPTOR_RANGE_TYPE;
-    numDescriptors: UINT; baseShaderRegister: UINT; registerSpace: UINT; flags: TD3D12_DESCRIPTOR_RANGE_FLAGS;
-    offsetInDescriptorsFromTableStart: UINT);
+procedure TD3D12_DESCRIPTOR_RANGE1.Init(var range: TD3D12_DESCRIPTOR_RANGE1; rangeType: TD3D12_DESCRIPTOR_RANGE_TYPE; numDescriptors: UINT; baseShaderRegister: UINT; registerSpace: UINT;
+    flags: TD3D12_DESCRIPTOR_RANGE_FLAGS; offsetInDescriptorsFromTableStart: UINT);
 begin
     range.RangeType := rangeType;
     range.NumDescriptors := numDescriptors;
@@ -5475,8 +5590,7 @@ end;
 
 
 
-procedure TD3D12_DESCRIPTOR_RANGE1.Init(rangeType: TD3D12_DESCRIPTOR_RANGE_TYPE; numDescriptors: UINT;
-    baseShaderRegister: UINT; registerSpace: UINT; flags: TD3D12_DESCRIPTOR_RANGE_FLAGS; offsetInDescriptorsFromTableStart: UINT);
+procedure TD3D12_DESCRIPTOR_RANGE1.Init(rangeType: TD3D12_DESCRIPTOR_RANGE_TYPE; numDescriptors: UINT; baseShaderRegister: UINT; registerSpace: UINT; flags: TD3D12_DESCRIPTOR_RANGE_FLAGS; offsetInDescriptorsFromTableStart: UINT);
 begin
     Init(self, rangeType, numDescriptors, baseShaderRegister, registerSpace, flags, offsetInDescriptorsFromTableStart);
 end;
@@ -5801,8 +5915,7 @@ end;
 
 
 
-constructor TD3D12_GPU_DESCRIPTOR_HANDLE.Create(const other: TD3D12_GPU_DESCRIPTOR_HANDLE; offsetInDescriptors: integer;
-    descriptorIncrementSize: UINT);
+constructor TD3D12_GPU_DESCRIPTOR_HANDLE.Create(const other: TD3D12_GPU_DESCRIPTOR_HANDLE; offsetInDescriptors: integer; descriptorIncrementSize: UINT);
 begin
     self.ptr := other.ptr + offsetInDescriptors * descriptorIncrementSize;
 end;
@@ -5854,8 +5967,7 @@ end;
 
 
 
-procedure TD3D12_VERSIONED_ROOT_SIGNATURE_DESC.Init_1_0(numParameters: UINT; const _pParameters: PD3D12_ROOT_PARAMETER;
-    numStaticSamplers: UINT; const _pStaticSamplers: PD3D12_STATIC_SAMPLER_DESC; flags: TD3D12_ROOT_SIGNATURE_FLAGS);
+procedure TD3D12_VERSIONED_ROOT_SIGNATURE_DESC.Init_1_0(numParameters: UINT; const _pParameters: PD3D12_ROOT_PARAMETER; numStaticSamplers: UINT; const _pStaticSamplers: PD3D12_STATIC_SAMPLER_DESC; flags: TD3D12_ROOT_SIGNATURE_FLAGS);
 begin
     Self.Version := D3D_ROOT_SIGNATURE_VERSION_1_0;
     Self.Desc_1_0.NumParameters := numParameters;
@@ -5867,17 +5979,15 @@ end;
 
 
 
-procedure TD3D12_VERSIONED_ROOT_SIGNATURE_DESC.Init_1_1(numParameters: UINT; const _pParameters: PD3D12_ROOT_PARAMETER1;
-    numStaticSamplers: UINT; const _pStaticSamplers: PD3D12_STATIC_SAMPLER_DESC; flags: TD3D12_ROOT_SIGNATURE_FLAGS);
+procedure TD3D12_VERSIONED_ROOT_SIGNATURE_DESC.Init_1_1(numParameters: UINT; const _pParameters: PD3D12_ROOT_PARAMETER1; numStaticSamplers: UINT; const _pStaticSamplers: PD3D12_STATIC_SAMPLER_DESC; flags: TD3D12_ROOT_SIGNATURE_FLAGS);
 begin
     Init_1_1(self, numParameters, _pParameters, numStaticSamplers, _pStaticSamplers, flags);
 end;
 
 
 
-procedure TD3D12_VERSIONED_ROOT_SIGNATURE_DESC.Init_1_1(var desc: TD3D12_VERSIONED_ROOT_SIGNATURE_DESC; numParameters: UINT;
-    const _pParameters: PD3D12_ROOT_PARAMETER1; numStaticSamplers: UINT; const _pStaticSamplers: PD3D12_STATIC_SAMPLER_DESC;
-    flags: TD3D12_ROOT_SIGNATURE_FLAGS);
+procedure TD3D12_VERSIONED_ROOT_SIGNATURE_DESC.Init_1_1(var desc: TD3D12_VERSIONED_ROOT_SIGNATURE_DESC; numParameters: UINT; const _pParameters: PD3D12_ROOT_PARAMETER1; numStaticSamplers: UINT;
+    const _pStaticSamplers: PD3D12_STATIC_SAMPLER_DESC; flags: TD3D12_ROOT_SIGNATURE_FLAGS);
 begin
     desc.Version := D3D_ROOT_SIGNATURE_VERSION_1_1;
     desc.Desc_1_1.NumParameters := numParameters;
@@ -5907,8 +6017,7 @@ end;
 
 { TD3D12_STATIC_SAMPLER_DESC }
 
-constructor TD3D12_ROOT_PARAMETER1.InitAsDescriptorTable(numDescriptorRanges: UINT; const pDescriptorRanges: PD3D12_DESCRIPTOR_RANGE1;
-    visibility: TD3D12_SHADER_VISIBILITY);
+constructor TD3D12_ROOT_PARAMETER1.InitAsDescriptorTable(numDescriptorRanges: UINT; const pDescriptorRanges: PD3D12_DESCRIPTOR_RANGE1; visibility: TD3D12_SHADER_VISIBILITY);
 begin
     InitAsDescriptorTable(self, numDescriptorRanges, pDescriptorRanges, visibility);
     //    .ParameterType := D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
@@ -5918,8 +6027,7 @@ end;
 
 
 
-constructor TD3D12_ROOT_PARAMETER1.InitAsDescriptorTable(var rootParam: TD3D12_ROOT_PARAMETER1; numDescriptorRanges: UINT;
-    const pDescriptorRanges: PD3D12_DESCRIPTOR_RANGE1; visibility: TD3D12_SHADER_VISIBILITY);
+constructor TD3D12_ROOT_PARAMETER1.InitAsDescriptorTable(var rootParam: TD3D12_ROOT_PARAMETER1; numDescriptorRanges: UINT; const pDescriptorRanges: PD3D12_DESCRIPTOR_RANGE1; visibility: TD3D12_SHADER_VISIBILITY);
 begin
     rootParam.ParameterType := D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
     rootParam.ShaderVisibility := visibility;
@@ -5928,8 +6036,7 @@ end;
 
 
 
-constructor TD3D12_ROOT_PARAMETER1.InitAsConstants(num32BitValues: UINT; shaderRegister: UINT; registerSpace: UINT;
-    visibility: TD3D12_SHADER_VISIBILITY);
+constructor TD3D12_ROOT_PARAMETER1.InitAsConstants(num32BitValues: UINT; shaderRegister: UINT; registerSpace: UINT; visibility: TD3D12_SHADER_VISIBILITY);
 begin
     self.ParameterType := D3D12_ROOT_PARAMETER_TYPE_32BIT_CONSTANTS;
     self.ShaderVisibility := visibility;
@@ -5938,8 +6045,7 @@ end;
 
 
 
-constructor TD3D12_ROOT_PARAMETER1.InitAsConstantBufferView(shaderRegister: UINT; registerSpace: UINT;
-    flags: TD3D12_ROOT_DESCRIPTOR_FLAGS; visibility: TD3D12_SHADER_VISIBILITY);
+constructor TD3D12_ROOT_PARAMETER1.InitAsConstantBufferView(shaderRegister: UINT; registerSpace: UINT; flags: TD3D12_ROOT_DESCRIPTOR_FLAGS; visibility: TD3D12_SHADER_VISIBILITY);
 begin
     self.ParameterType := D3D12_ROOT_PARAMETER_TYPE_CBV;
     self.ShaderVisibility := visibility;
@@ -5948,8 +6054,7 @@ end;
 
 
 
-constructor TD3D12_ROOT_PARAMETER1.InitAsShaderResourceView(shaderRegister: UINT; registerSpace: UINT;
-    flags: TD3D12_ROOT_DESCRIPTOR_FLAGS; visibility: TD3D12_SHADER_VISIBILITY);
+constructor TD3D12_ROOT_PARAMETER1.InitAsShaderResourceView(shaderRegister: UINT; registerSpace: UINT; flags: TD3D12_ROOT_DESCRIPTOR_FLAGS; visibility: TD3D12_SHADER_VISIBILITY);
 begin
     self.ParameterType := D3D12_ROOT_PARAMETER_TYPE_SRV;
     self.ShaderVisibility := visibility;
@@ -5958,8 +6063,7 @@ end;
 
 
 
-constructor TD3D12_ROOT_PARAMETER1.InitAsUnorderedAccessView(shaderRegister: UINT; registerSpace: UINT;
-    flags: TD3D12_ROOT_DESCRIPTOR_FLAGS; visibility: TD3D12_SHADER_VISIBILITY);
+constructor TD3D12_ROOT_PARAMETER1.InitAsUnorderedAccessView(shaderRegister: UINT; registerSpace: UINT; flags: TD3D12_ROOT_DESCRIPTOR_FLAGS; visibility: TD3D12_SHADER_VISIBILITY);
 begin
     self.ParameterType := D3D12_ROOT_PARAMETER_TYPE_UAV;
     self.ShaderVisibility := visibility;
@@ -5983,10 +6087,8 @@ end;
 
 
 
-constructor TD3D12_STATIC_SAMPLER_DESC.Create(shaderRegister: UINT; filter: TD3D12_FILTER; addressU: TD3D12_TEXTURE_ADDRESS_MODE;
-    addressV: TD3D12_TEXTURE_ADDRESS_MODE; addressW: TD3D12_TEXTURE_ADDRESS_MODE; mipLODBias: single; maxAnisotropy: UINT;
-    comparisonFunc: TD3D12_COMPARISON_FUNC; borderColor: TD3D12_STATIC_BORDER_COLOR; minLOD: single; maxLOD: single;
-    shaderVisibility: TD3D12_SHADER_VISIBILITY; registerSpace: UINT);
+constructor TD3D12_STATIC_SAMPLER_DESC.Create(shaderRegister: UINT; filter: TD3D12_FILTER; addressU: TD3D12_TEXTURE_ADDRESS_MODE; addressV: TD3D12_TEXTURE_ADDRESS_MODE; addressW: TD3D12_TEXTURE_ADDRESS_MODE;
+    mipLODBias: single; maxAnisotropy: UINT; comparisonFunc: TD3D12_COMPARISON_FUNC; borderColor: TD3D12_STATIC_BORDER_COLOR; minLOD: single; maxLOD: single; shaderVisibility: TD3D12_SHADER_VISIBILITY; registerSpace: UINT);
 begin
     self.ShaderRegister := shaderRegister;
     self.Filter := filter;
@@ -6173,8 +6275,7 @@ end;
 
 
 
-constructor TD3D12_PACKED_MIP_INFO.Create(numStandardMips: uint8; numPackedMips: uint8; numTilesForPackedMips: UINT;
-    startTileIndexInOverallResource: UINT);
+constructor TD3D12_PACKED_MIP_INFO.Create(numStandardMips: uint8; numPackedMips: uint8; numTilesForPackedMips: UINT; startTileIndexInOverallResource: UINT);
 begin
     self.NumStandardMips := numStandardMips;
     self.NumPackedMips := numPackedMips;
@@ -6226,8 +6327,7 @@ end;
 
 
 
-constructor TD3D12_SUBRESOURCE_TILING.Create(widthInTiles: UINT; heightInTiles: uint16; depthInTiles: uint16;
-    startTileIndexInOverallResource: UINT);
+constructor TD3D12_SUBRESOURCE_TILING.Create(widthInTiles: UINT; heightInTiles: uint16; depthInTiles: uint16; startTileIndexInOverallResource: UINT);
 begin
     self.WidthInTiles := widthInTiles;
     self.HeightInTiles := heightInTiles;
@@ -6428,8 +6528,7 @@ end;
 
 
 
-constructor TD3D12_HEAP_DESC.Create(size: uint64; cpuPageProperty: TD3D12_CPU_PAGE_PROPERTY; memoryPoolPreference: TD3D12_MEMORY_POOL;
-    alignment: uint64; flags: TD3D12_HEAP_FLAGS);
+constructor TD3D12_HEAP_DESC.Create(size: uint64; cpuPageProperty: TD3D12_CPU_PAGE_PROPERTY; memoryPoolPreference: TD3D12_MEMORY_POOL; alignment: uint64; flags: TD3D12_HEAP_FLAGS);
 begin
     Self.SizeInBytes := size;
     Self.Properties.Create(cpuPageProperty, memoryPoolPreference);
@@ -6439,8 +6538,7 @@ end;
 
 
 
-constructor TD3D12_HEAP_DESC.Create(const resAllocInfo: TD3D12_RESOURCE_ALLOCATION_INFO; properties: TD3D12_HEAP_PROPERTIES;
-    flags: TD3D12_HEAP_FLAGS);
+constructor TD3D12_HEAP_DESC.Create(const resAllocInfo: TD3D12_RESOURCE_ALLOCATION_INFO; properties: TD3D12_HEAP_PROPERTIES; flags: TD3D12_HEAP_FLAGS);
 begin
     Self.SizeInBytes := resAllocInfo.SizeInBytes;
     Self.Properties := properties;
@@ -6460,8 +6558,7 @@ end;
 
 
 
-constructor TD3D12_HEAP_DESC.Create(const resAllocInfo: TD3D12_RESOURCE_ALLOCATION_INFO; cpuPageProperty: TD3D12_CPU_PAGE_PROPERTY;
-    memoryPoolPreference: TD3D12_MEMORY_POOL; flags: TD3D12_HEAP_FLAGS);
+constructor TD3D12_HEAP_DESC.Create(const resAllocInfo: TD3D12_RESOURCE_ALLOCATION_INFO; cpuPageProperty: TD3D12_CPU_PAGE_PROPERTY; memoryPoolPreference: TD3D12_MEMORY_POOL; flags: TD3D12_HEAP_FLAGS);
 begin
     Self.SizeInBytes := resAllocInfo.SizeInBytes;
     Self.Properties.Create(cpuPageProperty, memoryPoolPreference);
@@ -6947,11 +7044,9 @@ end;
 
 
 
-constructor TD3D12_DEPTH_STENCIL_DESC1.Create(depthEnable: boolean; depthWriteMask: TD3D12_DEPTH_WRITE_MASK;
-    depthFunc: TD3D12_COMPARISON_FUNC; stencilEnable: boolean; stencilReadMask: uint8; stencilWriteMask: uint8;
-    frontStencilFailOp: TD3D12_STENCIL_OP; frontStencilDepthFailOp: TD3D12_STENCIL_OP; frontStencilPassOp: TD3D12_STENCIL_OP;
-    frontStencilFunc: TD3D12_COMPARISON_FUNC; backStencilFailOp: TD3D12_STENCIL_OP; backStencilDepthFailOp: TD3D12_STENCIL_OP;
-    backStencilPassOp: TD3D12_STENCIL_OP; backStencilFunc: TD3D12_COMPARISON_FUNC; depthBoundsTestEnable: boolean);
+constructor TD3D12_DEPTH_STENCIL_DESC1.Create(depthEnable: boolean; depthWriteMask: TD3D12_DEPTH_WRITE_MASK; depthFunc: TD3D12_COMPARISON_FUNC; stencilEnable: boolean; stencilReadMask: uint8;
+    stencilWriteMask: uint8; frontStencilFailOp: TD3D12_STENCIL_OP; frontStencilDepthFailOp: TD3D12_STENCIL_OP; frontStencilPassOp: TD3D12_STENCIL_OP; frontStencilFunc: TD3D12_COMPARISON_FUNC;
+    backStencilFailOp: TD3D12_STENCIL_OP; backStencilDepthFailOp: TD3D12_STENCIL_OP; backStencilPassOp: TD3D12_STENCIL_OP; backStencilFunc: TD3D12_COMPARISON_FUNC; depthBoundsTestEnable: boolean);
 begin
     Self.DepthEnable := depthEnable;
     Self.DepthWriteMask := depthWriteMask;
@@ -7345,16 +7440,14 @@ end;
 
 { TD3D12_ROOT_SIGNATURE_DESC }
 
-constructor TD3D12_ROOT_SIGNATURE_DESC.Create(numParameters: UINT; const pParameters: PD3D12_ROOT_PARAMETER;
-    numStaticSamplers: UINT; const pStaticSamplers: PD3D12_STATIC_SAMPLER_DESC; flags: TD3D12_ROOT_SIGNATURE_FLAGS);
+constructor TD3D12_ROOT_SIGNATURE_DESC.Create(numParameters: UINT; const pParameters: PD3D12_ROOT_PARAMETER; numStaticSamplers: UINT; const pStaticSamplers: PD3D12_STATIC_SAMPLER_DESC; flags: TD3D12_ROOT_SIGNATURE_FLAGS);
 begin
     Init(numParameters, pParameters, numStaticSamplers, pStaticSamplers, flags);
 end;
 
 
 
-procedure TD3D12_ROOT_SIGNATURE_DESC.Init(numParameters: UINT; const pParameters: PD3D12_ROOT_PARAMETER;
-    numStaticSamplers: UINT; const pStaticSamplers: PD3D12_STATIC_SAMPLER_DESC; flags: TD3D12_ROOT_SIGNATURE_FLAGS);
+procedure TD3D12_ROOT_SIGNATURE_DESC.Init(numParameters: UINT; const pParameters: PD3D12_ROOT_PARAMETER; numStaticSamplers: UINT; const pStaticSamplers: PD3D12_STATIC_SAMPLER_DESC; flags: TD3D12_ROOT_SIGNATURE_FLAGS);
 begin
     self.NumParameters := numParameters;
     self.pParameters := pParameters;
@@ -7396,8 +7489,7 @@ end;
 
 
 
-procedure TD3D12_ROOT_PARAMETER.InitAsDescriptorTable(numDescriptorRanges: UINT; const pDescriptorRanges: PD3D12_DESCRIPTOR_RANGE;
-    visibility: TD3D12_SHADER_VISIBILITY);
+procedure TD3D12_ROOT_PARAMETER.InitAsDescriptorTable(numDescriptorRanges: UINT; const pDescriptorRanges: PD3D12_DESCRIPTOR_RANGE; visibility: TD3D12_SHADER_VISIBILITY);
 begin
     self.ParameterType := D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
     self.ShaderVisibility := visibility;
@@ -7406,8 +7498,7 @@ end;
 
 
 
-procedure TD3D12_ROOT_PARAMETER.InitAsConstants(num32BitValues: UINT; shaderRegister: UINT; registerSpace: UINT;
-    visibility: TD3D12_SHADER_VISIBILITY);
+procedure TD3D12_ROOT_PARAMETER.InitAsConstants(num32BitValues: UINT; shaderRegister: UINT; registerSpace: UINT; visibility: TD3D12_SHADER_VISIBILITY);
 begin
     self.ParameterType := D3D12_ROOT_PARAMETER_TYPE_32BIT_CONSTANTS;
     self.ShaderVisibility := visibility;
@@ -7460,8 +7551,7 @@ end;
 
 
 
-procedure TD3D12_DESCRIPTOR_RANGE.Init(rangeType: TD3D12_DESCRIPTOR_RANGE_TYPE; numDescriptors: UINT; baseShaderRegister: UINT;
-    registerSpace: UINT; offsetInDescriptorsFromTableStart: UINT);
+procedure TD3D12_DESCRIPTOR_RANGE.Init(rangeType: TD3D12_DESCRIPTOR_RANGE_TYPE; numDescriptors: UINT; baseShaderRegister: UINT; registerSpace: UINT; offsetInDescriptorsFromTableStart: UINT);
 begin
     self.RangeType := rangeType;
     self.NumDescriptors := numDescriptors;
@@ -7472,8 +7562,7 @@ end;
 
 
 
-constructor TD3D12_DESCRIPTOR_RANGE.Create(rangeType: TD3D12_DESCRIPTOR_RANGE_TYPE; numDescriptors: UINT;
-    baseShaderRegister: UINT; registerSpace: UINT; offsetInDescriptorsFromTableStart: UINT);
+constructor TD3D12_DESCRIPTOR_RANGE.Create(rangeType: TD3D12_DESCRIPTOR_RANGE_TYPE; numDescriptors: UINT; baseShaderRegister: UINT; registerSpace: UINT; offsetInDescriptorsFromTableStart: UINT);
 begin
     Init(rangeType, numDescriptors, baseShaderRegister, registerSpace, offsetInDescriptorsFromTableStart);
 end;
@@ -7616,9 +7705,8 @@ end;
 
 
 
-constructor TD3D12_RASTERIZER_DESC.Create(fillMode: TD3D12_FILL_MODE; cullMode: TD3D12_CULL_MODE; frontCounterClockwise: boolean;
-    depthBias: integer; depthBiasClamp: single; slopeScaledDepthBias: single; depthClipEnable: boolean;
-    multisampleEnable: boolean; antialiasedLineEnable: boolean; forcedSampleCount: UINT; conservativeRaster: TD3D12_CONSERVATIVE_RASTERIZATION_MODE);
+constructor TD3D12_RASTERIZER_DESC.Create(fillMode: TD3D12_FILL_MODE; cullMode: TD3D12_CULL_MODE; frontCounterClockwise: boolean; depthBias: integer; depthBiasClamp: single; slopeScaledDepthBias: single;
+    depthClipEnable: boolean; multisampleEnable: boolean; antialiasedLineEnable: boolean; forcedSampleCount: UINT; conservativeRaster: TD3D12_CONSERVATIVE_RASTERIZATION_MODE);
 begin
     self.FillMode := fillMode;
     self.CullMode := cullMode;
@@ -7732,11 +7820,9 @@ end;
 
 
 
-constructor TD3D12_DEPTH_STENCIL_DESC.Create(depthEnable: boolean; depthWriteMask: TD3D12_DEPTH_WRITE_MASK;
-    depthFunc: TD3D12_COMPARISON_FUNC; stencilEnable: boolean; stencilReadMask: uint8; stencilWriteMask: uint8;
-    frontStencilFailOp: TD3D12_STENCIL_OP; frontStencilDepthFailOp: TD3D12_STENCIL_OP; frontStencilPassOp: TD3D12_STENCIL_OP;
-    frontStencilFunc: TD3D12_COMPARISON_FUNC; backStencilFailOp: TD3D12_STENCIL_OP; backStencilDepthFailOp: TD3D12_STENCIL_OP;
-    backStencilPassOp: TD3D12_STENCIL_OP; backStencilFunc: TD3D12_COMPARISON_FUNC);
+constructor TD3D12_DEPTH_STENCIL_DESC.Create(depthEnable: boolean; depthWriteMask: TD3D12_DEPTH_WRITE_MASK; depthFunc: TD3D12_COMPARISON_FUNC; stencilEnable: boolean; stencilReadMask: uint8;
+    stencilWriteMask: uint8; frontStencilFailOp: TD3D12_STENCIL_OP; frontStencilDepthFailOp: TD3D12_STENCIL_OP; frontStencilPassOp: TD3D12_STENCIL_OP; frontStencilFunc: TD3D12_COMPARISON_FUNC;
+    backStencilFailOp: TD3D12_STENCIL_OP; backStencilDepthFailOp: TD3D12_STENCIL_OP; backStencilPassOp: TD3D12_STENCIL_OP; backStencilFunc: TD3D12_COMPARISON_FUNC);
 begin
     self.DepthEnable := depthEnable;
     self.DepthWriteMask := depthWriteMask;
@@ -7779,8 +7865,7 @@ end;
 
 
 
-constructor TD3D12_RESOURCE_BARRIER.CreateTransition(pResource: pointer; stateBefore: TD3D12_RESOURCE_STATES;
-    stateAfter: TD3D12_RESOURCE_STATES; subresource: UINT; flags: TD3D12_RESOURCE_BARRIER_FLAGS);
+constructor TD3D12_RESOURCE_BARRIER.CreateTransition(pResource: pointer; stateBefore: TD3D12_RESOURCE_STATES; stateAfter: TD3D12_RESOURCE_STATES; subresource: UINT; flags: TD3D12_RESOURCE_BARRIER_FLAGS);
 begin
     self._Type := D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
     self.Flags := flags;
@@ -7841,9 +7926,8 @@ end;
 
 
 
-constructor TD3D12_RESOURCE_DESC.Create(dimension: TD3D12_RESOURCE_DIMENSION; alignment: uint64; Width: uint64;
-    Height: UINT; depthOrArraySize: uint16; mipLevels: uint16; format: TDXGI_FORMAT; sampleCount: UINT; sampleQuality: UINT;
-    layout: TD3D12_TEXTURE_LAYOUT; flags: TD3D12_RESOURCE_FLAGS);
+constructor TD3D12_RESOURCE_DESC.Create(dimension: TD3D12_RESOURCE_DIMENSION; alignment: uint64; Width: uint64; Height: UINT; depthOrArraySize: uint16; mipLevels: uint16; format: TDXGI_FORMAT;
+    sampleCount: UINT; sampleQuality: UINT; layout: TD3D12_TEXTURE_LAYOUT; flags: TD3D12_RESOURCE_FLAGS);
 begin
     Self.Dimension := dimension;
     Self.Alignment := alignment;
@@ -7894,9 +7978,8 @@ end;
 
 
 
-constructor TD3D12_RESOURCE_DESC.CreateTex1D(format: TDXGI_FORMAT; Width: uint64; arraySize: uint16 = 1;
-    mipLevels: uint16 = 0; flags: TD3D12_RESOURCE_FLAGS = D3D12_RESOURCE_FLAG_NONE; layout: TD3D12_TEXTURE_LAYOUT = D3D12_TEXTURE_LAYOUT_UNKNOWN;
-    alignment: uint64 = 0);
+constructor TD3D12_RESOURCE_DESC.CreateTex1D(format: TDXGI_FORMAT; Width: uint64; arraySize: uint16 = 1; mipLevels: uint16 = 0; flags: TD3D12_RESOURCE_FLAGS = D3D12_RESOURCE_FLAG_NONE;
+    layout: TD3D12_TEXTURE_LAYOUT = D3D12_TEXTURE_LAYOUT_UNKNOWN; alignment: uint64 = 0);
 begin
     Self.Dimension := D3D12_RESOURCE_DIMENSION_TEXTURE1D;
     Self.Alignment := Alignment;
@@ -7913,9 +7996,8 @@ end;
 
 
 
-constructor TD3D12_RESOURCE_DESC.CreateTex2D(format: TDXGI_FORMAT; Width: uint64; Height: UINT; arraySize: uint16 = 1;
-    mipLevels: uint16 = 0; sampleCount: UINT = 1; sampleQuality: UINT = 0; flags: TD3D12_RESOURCE_FLAGS = D3D12_RESOURCE_FLAG_NONE;
-    layout: TD3D12_TEXTURE_LAYOUT = D3D12_TEXTURE_LAYOUT_UNKNOWN; alignment: uint64 = 0);
+constructor TD3D12_RESOURCE_DESC.CreateTex2D(format: TDXGI_FORMAT; Width: uint64; Height: UINT; arraySize: uint16 = 1; mipLevels: uint16 = 0; sampleCount: UINT = 1; sampleQuality: UINT = 0;
+    flags: TD3D12_RESOURCE_FLAGS = D3D12_RESOURCE_FLAG_NONE; layout: TD3D12_TEXTURE_LAYOUT = D3D12_TEXTURE_LAYOUT_UNKNOWN; alignment: uint64 = 0);
 begin
     Self.Dimension := D3D12_RESOURCE_DIMENSION_TEXTURE2D;
     Self.Alignment := Alignment;
@@ -7932,9 +8014,8 @@ end;
 
 
 
-constructor TD3D12_RESOURCE_DESC.CreateTex3D(format: TDXGI_FORMAT; Width: uint64; Height: UINT; depth: uint16;
-    mipLevels: uint16 = 0; flags: TD3D12_RESOURCE_FLAGS = D3D12_RESOURCE_FLAG_NONE; layout: TD3D12_TEXTURE_LAYOUT = D3D12_TEXTURE_LAYOUT_UNKNOWN;
-    alignment: uint64 = 0);
+constructor TD3D12_RESOURCE_DESC.CreateTex3D(format: TDXGI_FORMAT; Width: uint64; Height: UINT; depth: uint16; mipLevels: uint16 = 0; flags: TD3D12_RESOURCE_FLAGS = D3D12_RESOURCE_FLAG_NONE;
+    layout: TD3D12_TEXTURE_LAYOUT = D3D12_TEXTURE_LAYOUT_UNKNOWN; alignment: uint64 = 0);
 begin
     Self.Dimension := D3D12_RESOURCE_DIMENSION_TEXTURE3D;
     Self.Alignment := Alignment;
@@ -8028,8 +8109,7 @@ end;
 
 
 
-constructor TD3D12_HEAP_PROPERTIES.Create(cpuPageProperty: TD3D12_CPU_PAGE_PROPERTY; memoryPoolPreference: TD3D12_MEMORY_POOL;
-    creationNodeMask: UINT; nodeMask: UINT);
+constructor TD3D12_HEAP_PROPERTIES.Create(cpuPageProperty: TD3D12_CPU_PAGE_PROPERTY; memoryPoolPreference: TD3D12_MEMORY_POOL; creationNodeMask: UINT; nodeMask: UINT);
 begin
     self._Type := D3D12_HEAP_TYPE_CUSTOM;
     self.CPUPageProperty := cpuPageProperty;
@@ -8042,24 +8122,22 @@ end;
 
 function TD3D12_HEAP_PROPERTIES.IsCPUAccessible(): boolean;
 begin
-    Result := (_Type = D3D12_HEAP_TYPE_UPLOAD) or (_Type = D3D12_HEAP_TYPE_READBACK) or ((_Type = D3D12_HEAP_TYPE_CUSTOM) and
-        ((CPUPageProperty = D3D12_CPU_PAGE_PROPERTY_WRITE_COMBINE) or (CPUPageProperty = D3D12_CPU_PAGE_PROPERTY_WRITE_BACK)));
+    Result := (_Type = D3D12_HEAP_TYPE_UPLOAD) or (_Type = D3D12_HEAP_TYPE_READBACK) or ((_Type = D3D12_HEAP_TYPE_CUSTOM) and ((CPUPageProperty = D3D12_CPU_PAGE_PROPERTY_WRITE_COMBINE) or
+        (CPUPageProperty = D3D12_CPU_PAGE_PROPERTY_WRITE_BACK)));
 end;
 
 
 
 class operator TD3D12_HEAP_PROPERTIES.Equal(l: TD3D12_HEAP_PROPERTIES; r: TD3D12_HEAP_PROPERTIES): boolean;
 begin
-    Result := (l._Type = r._Type) and (l.CPUPageProperty = r.CPUPageProperty) and (l.MemoryPoolPreference = r.MemoryPoolPreference) and
-        (l.CreationNodeMask = r.CreationNodeMask) and (l.VisibleNodeMask = r.VisibleNodeMask);
+    Result := (l._Type = r._Type) and (l.CPUPageProperty = r.CPUPageProperty) and (l.MemoryPoolPreference = r.MemoryPoolPreference) and (l.CreationNodeMask = r.CreationNodeMask) and (l.VisibleNodeMask = r.VisibleNodeMask);
 end;
 
 
 
 class operator TD3D12_HEAP_PROPERTIES.NotEqual(l: TD3D12_HEAP_PROPERTIES; r: TD3D12_HEAP_PROPERTIES): boolean;
 begin
-    Result := (l._Type <> r._Type) or (l.CPUPageProperty <> r.CPUPageProperty) or (l.MemoryPoolPreference <> r.MemoryPoolPreference) or
-        (l.CreationNodeMask <> r.CreationNodeMask) or (l.VisibleNodeMask <> r.VisibleNodeMask);
+    Result := (l._Type <> r._Type) or (l.CPUPageProperty <> r.CPUPageProperty) or (l.MemoryPoolPreference <> r.MemoryPoolPreference) or (l.CreationNodeMask <> r.CreationNodeMask) or (l.VisibleNodeMask <> r.VisibleNodeMask);
 end;
 
 
@@ -8086,8 +8164,7 @@ end;
 
 
 
-procedure TD3D12_CPU_DESCRIPTOR_HANDLE.InitOffsetted(const base: TD3D12_CPU_DESCRIPTOR_HANDLE; offsetInDescriptors: integer;
-    descriptorIncrementSize: UINT);
+procedure TD3D12_CPU_DESCRIPTOR_HANDLE.InitOffsetted(const base: TD3D12_CPU_DESCRIPTOR_HANDLE; offsetInDescriptors: integer; descriptorIncrementSize: UINT);
 begin
     ptr := base.ptr + offsetInDescriptors * descriptorIncrementSize;
 end;
@@ -8095,16 +8172,14 @@ end;
 
 
 
-procedure TD3D12_CPU_DESCRIPTOR_HANDLE.InitOffsetted(var handle: TD3D12_CPU_DESCRIPTOR_HANDLE; const base: TD3D12_CPU_DESCRIPTOR_HANDLE;
-    offsetScaledByIncrementSize: integer);
+procedure TD3D12_CPU_DESCRIPTOR_HANDLE.InitOffsetted(var handle: TD3D12_CPU_DESCRIPTOR_HANDLE; const base: TD3D12_CPU_DESCRIPTOR_HANDLE; offsetScaledByIncrementSize: integer);
 begin
     handle.ptr := base.ptr + offsetScaledByIncrementSize;
 end;
 
 
 
-procedure TD3D12_CPU_DESCRIPTOR_HANDLE.InitOffsetted(var handle: TD3D12_CPU_DESCRIPTOR_HANDLE; const base: TD3D12_CPU_DESCRIPTOR_HANDLE;
-    offsetInDescriptors: integer; descriptorIncrementSize: UINT);
+procedure TD3D12_CPU_DESCRIPTOR_HANDLE.InitOffsetted(var handle: TD3D12_CPU_DESCRIPTOR_HANDLE; const base: TD3D12_CPU_DESCRIPTOR_HANDLE; offsetInDescriptors: integer; descriptorIncrementSize: UINT);
 begin
     handle.ptr := base.ptr + offsetInDescriptors * descriptorIncrementSize;
 end;
@@ -8119,8 +8194,7 @@ end;
 
 
 
-constructor TD3D12_CPU_DESCRIPTOR_HANDLE.Create(const other: TD3D12_CPU_DESCRIPTOR_HANDLE; offsetInDescriptors: integer;
-    descriptorIncrementSize: UINT);
+constructor TD3D12_CPU_DESCRIPTOR_HANDLE.Create(const other: TD3D12_CPU_DESCRIPTOR_HANDLE; offsetInDescriptors: integer; descriptorIncrementSize: UINT);
 begin
     InitOffsetted(other, offsetInDescriptors, descriptorIncrementSize);
 end;
@@ -8189,16 +8263,14 @@ end;
 
 class operator TD3D12_VIEWPORT.Equal(l: TD3D12_VIEWPORT; r: TD3D12_VIEWPORT): boolean;
 begin
-    Result := (l.TopLeftX = r.TopLeftX) and (l.TopLeftY = r.TopLeftY) and (l.Width = r.Width) and (l.Height = r.Height) and
-        (l.MinDepth = r.MinDepth) and (l.MaxDepth = r.MaxDepth);
+    Result := (l.TopLeftX = r.TopLeftX) and (l.TopLeftY = r.TopLeftY) and (l.Width = r.Width) and (l.Height = r.Height) and (l.MinDepth = r.MinDepth) and (l.MaxDepth = r.MaxDepth);
 end;
 
 
 
 class operator TD3D12_VIEWPORT.NotEqual(l: TD3D12_VIEWPORT; r: TD3D12_VIEWPORT): boolean;
 begin
-    Result := (l.TopLeftX <> r.TopLeftX) or (l.TopLeftY <> r.TopLeftY) or (l.Width <> r.Width) or (l.Height <> r.Height) or
-        (l.MinDepth <> r.MinDepth) or (l.MaxDepth <> r.MaxDepth);
+    Result := (l.TopLeftX <> r.TopLeftX) or (l.TopLeftY <> r.TopLeftY) or (l.Width <> r.Width) or (l.Height <> r.Height) or (l.MinDepth <> r.MinDepth) or (l.MaxDepth <> r.MaxDepth);
 end;
 
 
@@ -8215,8 +8287,7 @@ end;
 
 
 
-constructor TD3D12_VIEWPORT.Create(pResource: ID3D12Resource; mipSlice: UINT; topLeftX: single; topLeftY: single;
-    minDepth: single; maxDepth: single);
+constructor TD3D12_VIEWPORT.Create(pResource: ID3D12Resource; mipSlice: UINT; topLeftX: single; topLeftY: single; minDepth: single; maxDepth: single);
 var
     Desc: TD3D12_RESOURCE_DESC;
     SubresourceWidth: uint64;

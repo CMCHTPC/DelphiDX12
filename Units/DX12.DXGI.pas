@@ -35,7 +35,7 @@
        DXGIType.h
        DXGICommon.h
 
-  Header version: 10.0.19041.0
+  Header version: 10.0.22621.0
 
   ************************************************************************** }
 unit DX12.DXGI;
@@ -134,6 +134,7 @@ type
     {$ENDIF}
 
   TDXGI_FORMAT = (
+    DXGI_FORMAT_FROM_FILE=-3,
     DXGI_FORMAT_UNKNOWN = 0,
     DXGI_FORMAT_R32G32B32A32_TYPELESS = 1,
     DXGI_FORMAT_R32G32B32A32_FLOAT = 2,
@@ -250,6 +251,9 @@ type
     DXGI_FORMAT_P8 = 113,
     DXGI_FORMAT_A8P8 = 114,
     DXGI_FORMAT_B4G4R4A4_UNORM = 115,
+
+    DXGI_FORMAT_R10G10B10_7E3_A2_FLOAT = 116,
+    DXGI_FORMAT_R10G10B10_6E4_A2_FLOAT  = 117,
 
     DXGI_FORMAT_P208 = 130,
     DXGI_FORMAT_V208 = 131,
@@ -669,7 +673,7 @@ type
     ['{54ec77fa-1377-44e6-8c32-88fd5f44c84c}']
     function GetAdapter(out pAdapter: IDXGIAdapter): HResult; stdcall;
     function CreateSurface(const pDesc: PDXGI_SURFACE_DESC; NumSurfaces: UINT; Usage: TDXGI_USAGE;
-      const pSharedResource: PDXGI_SHARED_RESOURCE; out ppSurface: IDXGISurface): HResult; stdcall;
+      const pSharedResource: PDXGI_SHARED_RESOURCE; out {NumSurfaces} ppSurface: PIDXGISurface): HResult; stdcall;
     function QueryResourceResidency(const ppResources: PIUnknown; out pResidencyStatus: PDXGI_RESIDENCY;
       NumResources: UINT): HResult; stdcall;
     function SetGPUThreadPriority(Priority: integer): HResult; stdcall;

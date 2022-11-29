@@ -427,8 +427,8 @@ function D3D12IsLayoutOpaque(Layout: TD3D12_TEXTURE_LAYOUT): boolean;
 // two code paths for building root signatures; this helper method reconstructs a 1.0 signature when
 // 1.1 is not supported.
 function D3DX12SerializeVersionedRootSignature(const pRootSignatureDesc: TD3D12_VERSIONED_ROOT_SIGNATURE_DESC;
-    MaxVersion: TD3D_ROOT_SIGNATURE_VERSION; out ppBlob;
-    {out} ppErrorBlob: PID3DBlob): HRESULT; {inline}
+    MaxVersion: TD3D_ROOT_SIGNATURE_VERSION;  ppBlob: PID3DBlob;
+     ppErrorBlob: PID3DBlob): HRESULT; {inline}
 
 function D3DX12GetBaseSubobjectType(SubobjectType: TD3D12_PIPELINE_STATE_SUBOBJECT_TYPE): TD3D12_PIPELINE_STATE_SUBOBJECT_TYPE;{inline}
 
@@ -587,7 +587,8 @@ begin
     if (MemToAlloc > SIZE_MAX) then
         Exit;
 
-    pMem := HeapAlloc(GetProcessHeap(), 0, MemToAlloc);
+    // pMem := HeapAlloc(GetProcessHeap(), 0, MemToAlloc);
+    GetMem(pMem,MemToAlloc);
     if (pMem = nil) then
         Exit;
 
@@ -603,7 +604,8 @@ begin
 
     Result := UpdateSubresources(pCmdList, pDestinationResource, pIntermediate, FirstSubresource, NumSubresources,
         RequiredSize, pLayouts, pNumRows, pRowSizesInBytes, pSrcData);
-    HeapFree(GetProcessHeap(), 0, pMem);
+    //HeapFree(GetProcessHeap(), 0, pMem);
+   FreeMem(pMem);
 end;
 
 
@@ -632,8 +634,8 @@ end;
 
 
 function D3DX12SerializeVersionedRootSignature(const pRootSignatureDesc: TD3D12_VERSIONED_ROOT_SIGNATURE_DESC;
-    MaxVersion: TD3D_ROOT_SIGNATURE_VERSION; out ppBlob;
-    {out} ppErrorBlob: PID3DBlob): HRESULT; {inline}
+    MaxVersion: TD3D_ROOT_SIGNATURE_VERSION;  ppBlob: PID3DBlob;
+     ppErrorBlob: PID3DBlob): HRESULT; {inline}
 
 var
     hr: HResult;
@@ -663,7 +665,7 @@ begin
                 D3D_ROOT_SIGNATURE_VERSION_1_0:
                 begin
                     Result := D3D12SerializeRootSignature(pRootSignatureDesc.Desc_1_0, D3D_ROOT_SIGNATURE_VERSION_1,
-                        ID3D10Blob(ppBlob), ppErrorBlob);
+                        ppBlob, ppErrorBlob);
                 end;
 
                 D3D_ROOT_SIGNATURE_VERSION_1_1:
@@ -748,7 +750,7 @@ begin
                         begin
                             desc_1_0.Create(desc_1_1.NumParameters, @pParameters_1_0[0], desc_1_1.NumStaticSamplers,
                                 desc_1_1.pStaticSamplers, desc_1_1.Flags);
-                            hr := D3D12SerializeRootSignature(desc_1_0, D3D_ROOT_SIGNATURE_VERSION_1, ID3DBlob(ppBlob), ppErrorBlob);
+                            hr := D3D12SerializeRootSignature(desc_1_0, D3D_ROOT_SIGNATURE_VERSION_1, ppBlob, ppErrorBlob);
                         end;
 
                         if (pParameters <> nil) then
@@ -768,7 +770,7 @@ begin
             end;
         D3D_ROOT_SIGNATURE_VERSION_1_1:
         begin
-            Result := D3D12SerializeVersionedRootSignature(pRootSignatureDesc, PID3DBlob(ppBlob), ppErrorBlob);
+            Result := D3D12SerializeVersionedRootSignature(pRootSignatureDesc, ppBlob, ppErrorBlob);
         end;
     end;
 end;
