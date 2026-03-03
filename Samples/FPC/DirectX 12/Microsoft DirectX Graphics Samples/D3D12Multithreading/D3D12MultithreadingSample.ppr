@@ -1,0 +1,24 @@
+program D3D12MultithreadingSample;
+
+{$mode objfpc}{$H+}
+
+uses
+    {$IFDEF UNIX}
+  cthreads,
+    {$ENDIF}
+    {$IFDEF HASAMIGA}
+  athreads,
+    {$ENDIF}
+    Windows, Interfaces, DX12.D3D12, DirectX.Math, CStdFunctions, Win32.FileApi, // this includes the CT adLCL widgetset
+    Camera, DXSample, DXSampleHelpers, Win32Application, D3D12Multithreading,
+    FrameResource, stdafx, SquidRoom, StepTimer, DX12.PIX3, DX12.PIXEvents { you can add units after this };
+
+    {$R *.res}
+
+
+begin
+    gWin32Application := TWin32Application.Create;
+    gD3D12Multithreading := TD3D12Multithreading.Create(1280, 720, 'FreePaD3D12 Multithreading Sample');
+    gWin32Application.Run(gD3D12Multithreading, hInstance, CmdShow);
+    gWin32Application.Free;
+end.

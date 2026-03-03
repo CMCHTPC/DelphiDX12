@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <PathDelim Value="\"/>
+    <Version Value="12"/>
+    <BuildModes Active="Default"/>
+    <Units>
+      <Unit>
+        <Filename Value="HelloWindow.ppr"/>
+        <FRMtype Value="0"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="8"/>
+        <CursorPos Y="27"/>
+        <UsageCount Value="23"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\..\..\Units\DirectX12\DX12.D3D12.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="3563"/>
+        <CursorPos X="3" Y="3578"/>
+        <UsageCount Value="23"/>
+      </Unit>
+      <Unit>
+        <Filename Value="D3D12HelloWindow.pas"/>
+        <EditorIndex Value="4"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="186"/>
+        <CursorPos X="71" Y="198"/>
+        <UsageCount Value="22"/>
+        <Bookmarks Count="1">
+          <Item0 Y="183"/>
+        </Bookmarks>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="DXSample.pas"/>
+        <EditorIndex Value="3"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="78"/>
+        <CursorPos X="39" Y="91"/>
+        <UsageCount Value="22"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="DXSampleHelper.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="4"/>
+        <CursorPos X="51" Y="12"/>
+        <UsageCount Value="22"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\..\..\Units\DX12.DXGI1_4.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit>
+      <Unit>
+        <Filename Value="Win32Application.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="37"/>
+        <CursorPos X="13" Y="52"/>
+        <UsageCount Value="22"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\..\..\Units\DX12.DXGI.pas"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="709"/>
+        <CursorPos X="26" Y="719"/>
+        <UsageCount Value="10"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\..\..\Units\DirectX12\DX12.D3DX12.pas"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="53"/>
+        <CursorPos X="69" Y="66"/>
+        <UsageCount Value="10"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3DX12_Barriers.pas"/>
+        <FRMtype Value="0"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="163"/>
+        <CursorPos X="47" Y="163"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3D12.pas"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="2"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="3351"/>
+        <CursorPos X="63" Y="3368"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit>
+    </Units>
+    <JumpHistory HistoryIndex="29">
+      <Position>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3DX12_Barriers.pas"/>
+        <Caret Line="166" Column="26" TopLine="163"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3DX12_Barriers.pas"/>
+        <Caret Line="69" Column="55" TopLine="56"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3DX12_Barriers.pas"/>
+        <Caret Line="153" Column="239" TopLine="153"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3DX12_Barriers.pas"/>
+        <Caret Line="76" Column="30" TopLine="53"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3DX12_Barriers.pas"/>
+        <Caret Line="182" Column="42" TopLine="175"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3DX12_Barriers.pas"/>
+        <Caret Line="68" Column="30" TopLine="59"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3DX12_Barriers.pas"/>
+        <Caret Line="158" Column="60" TopLine="137"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3DX12_Barriers.pas"/>
+        <Caret Line="78" Column="25" TopLine="51"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3DX12_Barriers.pas"/>
+        <Caret Line="186" Column="48" TopLine="174"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3DX12_Barriers.pas"/>
+        <Caret Line="75" Column="24" TopLine="58"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3DX12_Barriers.pas"/>
+        <Caret Line="186" Column="41" TopLine="186"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3DX12_Barriers.pas"/>
+        <Caret Line="79" Column="26" TopLine="58"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3DX12_Barriers.pas"/>
+        <Caret Line="195" Column="27" TopLine="190"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3DX12_Barriers.pas"/>
+        <Caret Line="78" Column="23" TopLine="61"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3DX12_Barriers.pas"/>
+        <Caret Line="195" Column="40" TopLine="195"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3DX12_Barriers.pas"/>
+        <Caret Line="78" Column="19" TopLine="61"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3DX12_Barriers.pas"/>
+        <Caret Line="195" Column="39" TopLine="180"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3DX12_Barriers.pas"/>
+        <Caret Line="67" Column="57" TopLine="61"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3DX12_Barriers.pas"/>
+        <Caret Line="78" Column="22" TopLine="61"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3DX12_Barriers.pas"/>
+        <Caret Line="197" Column="32" TopLine="195"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3DX12_Barriers.pas"/>
+        <Caret Line="136" Column="27" TopLine="119"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3D12.pas"/>
+        <Caret Line="3331" Column="9" TopLine="3314"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3DX12_Barriers.pas"/>
+        <Caret Line="132" Column="37" TopLine="120"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3DX12_Barriers.pas"/>
+        <Caret Line="69" Column="30" TopLine="62"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3DX12_Barriers.pas"/>
+        <Caret Line="163" Column="47" TopLine="150"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3DX12_Barriers.pas"/>
+        <Caret Line="69" Column="24" TopLine="53"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3DX12_Barriers.pas"/>
+        <Caret Line="136" Column="16" TopLine="119"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3D12.pas"/>
+        <Caret Line="3368" Column="63" TopLine="3351"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3DX12_Barriers.pas"/>
+        <Caret Line="136" Column="20" TopLine="119"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3DX12_Barriers.pas"/>
+        <Caret Line="69" Column="24" TopLine="63"/>
+      </Position>
+    </JumpHistory>
+    <RunParams>
+      <FormatVersion Value="2"/>
+      <Modes ActiveMode=""/>
+    </RunParams>
+  </ProjectSession>
+</CONFIG>

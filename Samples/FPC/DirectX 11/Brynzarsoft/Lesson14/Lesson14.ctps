@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <PathDelim Value="\"/>
+    <Version Value="12"/>
+    <BuildModes Active="Default"/>
+    <Units>
+      <Unit>
+        <Filename Value="Lesson14.ppr"/>
+        <FRMtype Value="0"/>
+        <IsPartOfProject Value="True"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="557"/>
+        <CursorPos X="76" Y="571"/>
+        <UsageCount Value="21"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\..\Units\DirectX12\DX12.D3D11.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\..\Units\DirectXMath\DirectX.Math.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\..\Units\DX12.D3D11.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="771"/>
+        <CursorPos X="45" Y="790"/>
+        <UsageCount Value="21"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\..\..\DirectXMathPAS_20211102\DirectXMathPAS_20211028\DirectXMath_unit\DirectX.Math.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="9400"/>
+        <CursorPos X="10" Y="9408"/>
+        <UsageCount Value="21"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\Lesson04\UnitLesson04.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <UsageCount Value="20"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\..\Units\DX12\DX12.D2D1.pas"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="1"/>
+        <WindowIndex Value="0"/>
+        <CursorPos X="106" Y="20"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\..\Units\DX12\DX12.D2D1Helper.pas"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="2"/>
+        <WindowIndex Value="0"/>
+        <CursorPos X="21"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit>
+    </Units>
+    <JumpHistory HistoryIndex="29">
+      <Position>
+        <Filename Value="Lesson14.ppr"/>
+        <Caret Line="13" Column="17"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson14.ppr"/>
+        <Caret Line="10" Column="17"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson14.ppr"/>
+        <Caret Line="221" Column="68" TopLine="206"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson14.ppr"/>
+        <Caret Line="222" Column="64" TopLine="207"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\Units\DX12\DX12.D2D1.pas"/>
+        <Caret Line="20" Column="106"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\Units\DX12\DX12.D2D1Helper.pas"/>
+        <Caret Line="234" Column="10" TopLine="219"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\Units\DX12\DX12.D2D1Helper.pas"/>
+        <Caret Line="232" Column="28" TopLine="207"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\Units\DX12\DX12.D2D1Helper.pas"/>
+        <Caret Line="824" Column="5" TopLine="820"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\Units\DX12\DX12.D2D1Helper.pas"/>
+        <Caret Line="232" Column="16" TopLine="226"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\Units\DX12\DX12.D2D1Helper.pas"/>
+        <Caret Line="233" Column="16" TopLine="226"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\Units\DX12\DX12.D2D1Helper.pas"/>
+        <Caret Line="334" Column="16" TopLine="309"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\Units\DX12\DX12.D2D1Helper.pas"/>
+        <Caret Line="335" Column="16" TopLine="310"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\Units\DX12\DX12.D2D1Helper.pas"/>
+        <Caret Line="820" Column="16" TopLine="795"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\Units\DX12\DX12.D2D1Helper.pas"/>
+        <Caret Line="828" Column="16" TopLine="803"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\Units\DX12\DX12.D2D1Helper.pas"/>
+        <Caret Line="926" Column="37" TopLine="901"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\Units\DX12\DX12.D2D1Helper.pas"/>
+        <Caret Line="933" Column="37" TopLine="908"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\Units\DX12\DX12.D2D1Helper.pas"/>
+        <Caret Line="180" Column="25" TopLine="165"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\Units\DX12\DX12.D2D1Helper.pas"/>
+        <Caret Line="181" Column="25" TopLine="165"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\Units\DX12\DX12.D2D1Helper.pas"/>
+        <Caret Line="232" Column="16" TopLine="207"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\Units\DX12\DX12.D2D1Helper.pas"/>
+        <Caret Line="233" Column="16" TopLine="208"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\Units\DX12\DX12.D2D1Helper.pas"/>
+        <Caret Line="334" Column="16" TopLine="315"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\Units\DX12\DX12.D2D1Helper.pas"/>
+        <Caret Line="335" Column="16" TopLine="315"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\Units\DX12\DX12.D2D1Helper.pas"/>
+        <Caret Line="820" Column="16" TopLine="795"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\Units\DX12\DX12.D2D1Helper.pas"/>
+        <Caret Line="828" Column="16" TopLine="803"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\Units\DX12\DX12.D2D1Helper.pas"/>
+        <Caret Line="926" Column="37" TopLine="901"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\Units\DX12\DX12.D2D1Helper.pas"/>
+        <Caret Line="933" Column="37" TopLine="908"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\Units\DX12\DX12.D2D1Helper.pas"/>
+        <Caret Line="180" Column="25" TopLine="165"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\Units\DX12\DX12.D2D1Helper.pas"/>
+        <Caret Line="181" Column="25" TopLine="165"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson14.ppr"/>
+        <Caret Line="11" Column="21"/>
+      </Position>
+      <Position>
+        <Filename Value="Lesson14.ppr"/>
+        <Caret Line="659" Column="19" TopLine="654"/>
+      </Position>
+    </JumpHistory>
+    <RunParams>
+      <FormatVersion Value="2"/>
+      <Modes ActiveMode=""/>
+    </RunParams>
+  </ProjectSession>
+</CONFIG>

@@ -1,0 +1,724 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectOptions>
+    <Version Value="12"/>
+    <PathDelim Value="\"/>
+    <General>
+      <Flags>
+        <MainUnitHasUsesSectionForAllUnits Value="False"/>
+        <MainUnitHasCreateFormStatements Value="False"/>
+        <MainUnitHasTitleStatement Value="False"/>
+        <MainUnitHasScaledStatement Value="False"/>
+        <CompatibilityMode Value="True"/>
+      </Flags>
+      <Title Value="Textures"/>
+      <UseXPManifest Value="True"/>
+    </General>
+    <CustomData Count="3">
+      <Item0 Name="OpenAPIBase"/>
+      <Item1 Name="OpenAPIConfig"/>
+      <Item2 Name="OpenAPIFile"/>
+    </CustomData>
+    <BuildModes Count="1">
+      <Item1 Name="default" Default="True"/>
+    </BuildModes>
+    <PublishOptions>
+      <Version Value="2"/>
+    </PublishOptions>
+    <RunParams>
+      <local>
+        <LaunchingApplication PathPlusParams="/usr/X11R6/bin/xterm -T &apos;Typhon Run Output&apos; -e $(TyphonDir)/tools/runwait.sh $(TargetCmdLine)"/>
+      </local>
+      <FormatVersion Value="2"/>
+      <Modes Count="1">
+        <Mode0 Name="default">
+          <local>
+            <LaunchingApplication PathPlusParams="/usr/X11R6/bin/xterm -T &apos;Typhon Run Output&apos; -e $(TyphonDir)/tools/runwait.sh $(TargetCmdLine)"/>
+          </local>
+        </Mode0>
+      </Modes>
+    </RunParams>
+    <RequiredPackages Count="3">
+      <Item1>
+        <PackageName Value="pl_win_directx"/>
+      </Item1>
+      <Item2>
+        <PackageName Value="adLCL"/>
+      </Item2>
+      <Item3>
+        <PackageName Value="adFCL"/>
+      </Item3>
+    </RequiredPackages>
+    <Units Count="58">
+      <Unit0>
+        <Filename Value="Textures.pas"/>
+        <IsPartOfProject Value="True"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="272"/>
+        <CursorPos Y="286"/>
+        <UsageCount Value="29"/>
+        <Loaded Value="True"/>
+      </Unit0>
+      <Unit1>
+        <Filename Value="..\..\AntiAlias\AntiAlias.dpr"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <CursorPos X="55" Y="19"/>
+        <UsageCount Value="10"/>
+      </Unit1>
+      <Unit2>
+        <Filename Value="..\..\Common\DXUT.pas"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="31"/>
+        <CursorPos X="28" Y="48"/>
+        <UsageCount Value="10"/>
+      </Unit2>
+      <Unit3>
+        <Filename Value="..\..\..\source\DXUTgui.pas"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="31"/>
+        <CursorPos X="33" Y="56"/>
+        <UsageCount Value="10"/>
+      </Unit3>
+      <Unit4>
+        <Filename Value="..\..\..\source\DXUTmisc.pas"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="37"/>
+        <CursorPos X="31" Y="63"/>
+        <UsageCount Value="10"/>
+      </Unit4>
+      <Unit5>
+        <Filename Value="C:\pp\rtl\inc\varianth.inc"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <CursorPos X="10" Y="499"/>
+        <UsageCount Value="10"/>
+      </Unit5>
+      <Unit6>
+        <Filename Value="..\..\..\source\imm.pp"/>
+        <UnitName Value="Imm"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="13"/>
+        <CursorPos X="10" Y="31"/>
+        <UsageCount Value="10"/>
+      </Unit6>
+      <Unit7>
+        <Filename Value="..\..\..\source\Direct3D.pas"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="55"/>
+        <UsageCount Value="10"/>
+      </Unit7>
+      <Unit8>
+        <Filename Value="..\..\..\source\DXUT.pas"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="49"/>
+        <CursorPos X="30" Y="75"/>
+        <UsageCount Value="10"/>
+      </Unit8>
+      <Unit9>
+        <Filename Value="..\..\AntiAlias\AntiAliasUnit.pas"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <CursorPos X="30" Y="11"/>
+        <UsageCount Value="10"/>
+      </Unit9>
+      <Unit10>
+        <Filename Value="..\..\..\source\DirectX.inc"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="7"/>
+        <UsageCount Value="10"/>
+      </Unit10>
+      <Unit11>
+        <Filename Value="..\..\BasicHLSL\BasicHLSL.dpr"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="6"/>
+        <CursorPos X="9" Y="16"/>
+        <UsageCount Value="10"/>
+      </Unit11>
+      <Unit12>
+        <Filename Value="..\..\BasicHLSL\BasicHLSLunit.pas"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="756"/>
+        <CursorPos X="11" Y="99"/>
+        <UsageCount Value="10"/>
+      </Unit12>
+      <Unit13>
+        <Filename Value="..\..\Blobs\Blobs.dpr"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <CursorPos X="6" Y="18"/>
+        <UsageCount Value="10"/>
+      </Unit13>
+      <Unit14>
+        <Filename Value="..\..\Blobs\BlobsUnit.pas"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <CursorPos X="35" Y="1076"/>
+        <UsageCount Value="10"/>
+      </Unit14>
+      <Unit15>
+        <Filename Value="..\..\..\source\DXUTRes.pas"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="34"/>
+        <CursorPos X="6" Y="51"/>
+        <UsageCount Value="10"/>
+      </Unit15>
+      <Unit16>
+        <Filename Value="..\..\..\source\DXUTSettingsDlg.pas"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="55"/>
+        <CursorPos X="38" Y="58"/>
+        <UsageCount Value="10"/>
+      </Unit16>
+      <Unit17>
+        <Filename Value="..\..\..\source\StrSafe.pas"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <CursorPos X="32" Y="4"/>
+        <UsageCount Value="10"/>
+      </Unit17>
+      <Unit18>
+        <Filename Value="..\..\..\source\usp10.pas"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <CursorPos X="39" Y="5"/>
+        <UsageCount Value="10"/>
+      </Unit18>
+      <Unit19>
+        <Filename Value="..\..\..\source\DirectSetup.pas"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <CursorPos X="36" Y="8"/>
+        <UsageCount Value="10"/>
+      </Unit19>
+      <Unit20>
+        <Filename Value="..\..\..\..\..\xxDowmloads\DirectX_92_Samples\Samples\Delphi\Common\DDUtil.pas"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <CursorPos X="38" Y="7"/>
+        <UsageCount Value="10"/>
+      </Unit20>
+      <Unit21>
+        <Filename Value="..\..\..\..\..\xxDowmloads\DirectX_92_Samples\Samples\Delphi\Common\DXUT.pas"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <CursorPos X="57" Y="6"/>
+        <UsageCount Value="10"/>
+      </Unit21>
+      <Unit22>
+        <Filename Value="..\..\..\..\..\xxDowmloads\DirectX_92_Samples\Samples\Delphi\Common\DXUTcore.pas"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <CursorPos X="54" Y="7"/>
+        <UsageCount Value="10"/>
+      </Unit22>
+      <Unit23>
+        <Filename Value="..\..\..\..\..\xxDowmloads\DirectX_92_Samples\Samples\Delphi\Common\DXUTEnum.pas"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <CursorPos X="51" Y="6"/>
+        <UsageCount Value="10"/>
+      </Unit23>
+      <Unit24>
+        <Filename Value="..\..\..\..\..\xxDowmloads\DirectX_92_Samples\Samples\Delphi\Common\DXUTgui.pas"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <CursorPos X="47" Y="9"/>
+        <UsageCount Value="10"/>
+      </Unit24>
+      <Unit25>
+        <Filename Value="..\..\..\..\..\xxDowmloads\DirectX_92_Samples\Samples\Delphi\Common\DXUTmesh.pas"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <CursorPos X="48" Y="8"/>
+        <UsageCount Value="10"/>
+      </Unit25>
+      <Unit26>
+        <Filename Value="..\..\..\..\..\xxDowmloads\DirectX_92_Samples\Samples\Delphi\Common\DXUTmisc.pas"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <CursorPos X="39" Y="9"/>
+        <UsageCount Value="10"/>
+      </Unit26>
+      <Unit27>
+        <Filename Value="..\..\..\..\..\xxDowmloads\DirectX_92_Samples\Samples\Delphi\Common\DXUTRes.pas"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="64"/>
+        <CursorPos X="44" Y="8"/>
+        <UsageCount Value="10"/>
+      </Unit27>
+      <Unit28>
+        <Filename Value="..\..\..\..\..\xxDowmloads\DirectX_92_Samples\Samples\Delphi\Common\DXUTSettingsDlg.pas"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <CursorPos X="54" Y="6"/>
+        <UsageCount Value="10"/>
+      </Unit28>
+      <Unit29>
+        <Filename Value="..\..\..\..\..\xxDowmloads\DirectX_92_Samples\Samples\Delphi\Common\DXUTsound.pas"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <CursorPos X="35" Y="7"/>
+        <UsageCount Value="10"/>
+      </Unit29>
+      <Unit30>
+        <Filename Value="..\..\..\..\..\xxDowmloads\DirectX_92_Samples\Samples\Delphi\Common\StrSafe.pas"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <CursorPos X="41" Y="10"/>
+        <UsageCount Value="10"/>
+      </Unit30>
+      <Unit31>
+        <Filename Value="..\..\..\..\..\xxDowmloads\DirectX_92_Samples\Samples\Delphi\Common\usp10.pas"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <CursorPos X="37" Y="10"/>
+        <UsageCount Value="10"/>
+      </Unit31>
+      <Unit32>
+        <Filename Value="..\..\EmptyProject\EmptyProject.dpr"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="4"/>
+        <CursorPos X="12" Y="25"/>
+        <UsageCount Value="10"/>
+      </Unit32>
+      <Unit33>
+        <Filename Value="C:\typhon\lcl\controls.pp"/>
+        <UnitName Value="Controls"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="31"/>
+        <UsageCount Value="10"/>
+      </Unit33>
+      <Unit34>
+        <Filename Value="C:\pp\rtl\win32\classes.pp"/>
+        <UnitName Value="Classes"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="40"/>
+        <UsageCount Value="10"/>
+      </Unit34>
+      <Unit35>
+        <Filename Value="C:\typhon\lcl\forms.pp"/>
+        <UnitName Value="Forms"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="37"/>
+        <UsageCount Value="10"/>
+      </Unit35>
+      <Unit36>
+        <Filename Value="..\..\..\..\pl_OpenGL\source\openglcontext.pas"/>
+        <UnitName Value="OpenGLContext"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="34"/>
+        <CursorPos X="50" Y="51"/>
+        <UsageCount Value="10"/>
+      </Unit36>
+      <Unit37>
+        <Filename Value="C:\typhon\lcl\widgetset\wslclclasses.pp"/>
+        <UnitName Value="WSLCLClasses"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="491"/>
+        <CursorPos X="25" Y="522"/>
+        <UsageCount Value="10"/>
+      </Unit37>
+      <Unit38>
+        <Filename Value="C:\typhon\lcl\widgetset\wscontrols.pp"/>
+        <UnitName Value="WSControls"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="344"/>
+        <CursorPos X="25" Y="363"/>
+        <UsageCount Value="10"/>
+      </Unit38>
+      <Unit39>
+        <Filename Value="C:\typhon\lcl\widgetset\wsfactory.pas"/>
+        <UnitName Value="WSFactory"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <CursorPos Y="3"/>
+        <UsageCount Value="10"/>
+      </Unit39>
+      <Unit40>
+        <Filename Value="..\..\EmptyProject\EmptyUnit.pas"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="4"/>
+        <CursorPos X="15" Y="24"/>
+        <UsageCount Value="10"/>
+      </Unit40>
+      <Unit41>
+        <Filename Value="..\..\..\source\DXUTcore.pas"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="22"/>
+        <CursorPos X="3" Y="48"/>
+        <UsageCount Value="10"/>
+      </Unit41>
+      <Unit42>
+        <Filename Value="..\..\EmptyProject\Jedi.inc"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="365"/>
+        <CursorPos X="4" Y="384"/>
+        <UsageCount Value="10"/>
+      </Unit42>
+      <Unit43>
+        <Filename Value="..\Tut02_Vertices\Vertices.dpr"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="13"/>
+        <CursorPos X="32" Y="31"/>
+        <UsageCount Value="10"/>
+      </Unit43>
+      <Unit44>
+        <Filename Value="..\Tut01_CreateDevice\CreateDevice.dpr"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <CursorPos Y="24"/>
+        <UsageCount Value="10"/>
+      </Unit44>
+      <Unit45>
+        <Filename Value="..\..\source\Jedi.inc"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="377"/>
+        <CursorPos Y="383"/>
+        <UsageCount Value="10"/>
+      </Unit45>
+      <Unit46>
+        <Filename Value="..\..\source\DirectX.inc"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <CursorPos X="3" Y="3"/>
+        <UsageCount Value="10"/>
+      </Unit46>
+      <Unit47>
+        <Filename Value="..\..\..\Units\DX12\DX12.D3D9.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1374"/>
+        <CursorPos X="5" Y="70"/>
+        <UsageCount Value="29"/>
+      </Unit47>
+      <Unit48>
+        <Filename Value="..\..\..\Units\DX12\DX12.D3D9Types.pas"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="698"/>
+        <CursorPos Y="705"/>
+        <UsageCount Value="14"/>
+      </Unit48>
+      <Unit49>
+        <Filename Value="C:\codetyphon\typhon\components\packages_pl\pl_Win_DirectX\source\D3DX9.pas"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="9297"/>
+        <CursorPos X="10" Y="192"/>
+        <UsageCount Value="12"/>
+      </Unit49>
+      <Unit50>
+        <Filename Value="..\..\..\Units\DX12\DX12.D3DX9Tex.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <CursorPos X="10" Y="7"/>
+        <UsageCount Value="26"/>
+      </Unit50>
+      <Unit51>
+        <Filename Value="..\..\..\Units\DX12\DX12.D3DX9.pas"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="66"/>
+        <CursorPos Y="42"/>
+        <UsageCount Value="13"/>
+      </Unit51>
+      <Unit52>
+        <Filename Value="..\..\..\Units\DX12\DX12.D3DX9Math.pas"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="952"/>
+        <CursorPos X="28" Y="964"/>
+        <UsageCount Value="12"/>
+      </Unit52>
+      <Unit53>
+        <Filename Value="C:\codetyphon\fpcsrc\rtl\win\wininc\ascdef.inc"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <UsageCount Value="12"/>
+      </Unit53>
+      <Unit54>
+        <Filename Value="C:\codetyphon\fpcsrc\rtl\win64\windows.pp"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="51"/>
+        <CursorPos X="10" Y="76"/>
+        <UsageCount Value="12"/>
+      </Unit54>
+      <Unit55>
+        <Filename Value="..\..\..\Units\DX12\DX12.D3D9Caps.pas"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="459"/>
+        <CursorPos X="7" Y="472"/>
+        <UsageCount Value="11"/>
+      </Unit55>
+      <Unit56>
+        <Filename Value="..\..\..\Units\DX12\DX12.D3DCaps.pas"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="407"/>
+        <CursorPos X="4" Y="420"/>
+        <UsageCount Value="10"/>
+      </Unit56>
+      <Unit57>
+        <Filename Value="..\..\..\Units\DX12\DX12.D3DTypes.pas"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="435"/>
+        <CursorPos X="7" Y="448"/>
+        <UsageCount Value="10"/>
+      </Unit57>
+    </Units>
+    <JumpHistory Count="27" HistoryIndex="26">
+      <Position1>
+        <Filename Value="Textures.pas"/>
+        <Caret Line="286" TopLine="270"/>
+      </Position1>
+      <Position2>
+        <Filename Value="Textures.pas"/>
+        <Caret Line="287" TopLine="270"/>
+      </Position2>
+      <Position3>
+        <Filename Value="Textures.pas"/>
+        <Caret Line="288" TopLine="270"/>
+      </Position3>
+      <Position4>
+        <Filename Value="Textures.pas"/>
+        <Caret Line="289" TopLine="270"/>
+      </Position4>
+      <Position5>
+        <Filename Value="Textures.pas"/>
+        <Caret Line="290" TopLine="270"/>
+      </Position5>
+      <Position6>
+        <Filename Value="Textures.pas"/>
+        <Caret Line="286" Column="21" TopLine="270"/>
+      </Position6>
+      <Position7>
+        <Filename Value="Textures.pas"/>
+        <Caret Line="273" Column="39" TopLine="270"/>
+      </Position7>
+      <Position8>
+        <Filename Value="Textures.pas"/>
+        <Caret Line="291" Column="19" TopLine="270"/>
+      </Position8>
+      <Position9>
+        <Filename Value="Textures.pas"/>
+        <Caret Line="273" Column="44" TopLine="270"/>
+      </Position9>
+      <Position10>
+        <Filename Value="Textures.pas"/>
+        <Caret Line="286" TopLine="270"/>
+      </Position10>
+      <Position11>
+        <Filename Value="Textures.pas"/>
+        <Caret Line="287" TopLine="270"/>
+      </Position11>
+      <Position12>
+        <Filename Value="Textures.pas"/>
+        <Caret Line="288" TopLine="270"/>
+      </Position12>
+      <Position13>
+        <Filename Value="Textures.pas"/>
+        <Caret Line="289" TopLine="270"/>
+      </Position13>
+      <Position14>
+        <Filename Value="Textures.pas"/>
+        <Caret Line="290" TopLine="270"/>
+      </Position14>
+      <Position15>
+        <Filename Value="Textures.pas"/>
+        <Caret Line="291" TopLine="270"/>
+      </Position15>
+      <Position16>
+        <Filename Value="Textures.pas"/>
+        <Caret Line="286" TopLine="270"/>
+      </Position16>
+      <Position17>
+        <Filename Value="Textures.pas"/>
+        <Caret Line="287" TopLine="270"/>
+      </Position17>
+      <Position18>
+        <Filename Value="Textures.pas"/>
+        <Caret Line="288" TopLine="270"/>
+      </Position18>
+      <Position19>
+        <Filename Value="Textures.pas"/>
+        <Caret Line="289" TopLine="270"/>
+      </Position19>
+      <Position20>
+        <Filename Value="Textures.pas"/>
+        <Caret Line="290" TopLine="270"/>
+      </Position20>
+      <Position21>
+        <Filename Value="Textures.pas"/>
+        <Caret Line="291" TopLine="270"/>
+      </Position21>
+      <Position22>
+        <Filename Value="Textures.pas"/>
+        <Caret Line="286" TopLine="270"/>
+      </Position22>
+      <Position23>
+        <Filename Value="Textures.pas"/>
+        <Caret Line="287" TopLine="270"/>
+      </Position23>
+      <Position24>
+        <Filename Value="Textures.pas"/>
+        <Caret Line="288" TopLine="270"/>
+      </Position24>
+      <Position25>
+        <Filename Value="Textures.pas"/>
+        <Caret Line="273" Column="39" TopLine="270"/>
+      </Position25>
+      <Position26>
+        <Filename Value="Textures.pas"/>
+        <Caret Line="272" Column="40" TopLine="268"/>
+      </Position26>
+      <Position27>
+        <Filename Value="Textures.pas"/>
+        <Caret Line="291" Column="21" TopLine="272"/>
+      </Position27>
+    </JumpHistory>
+  </ProjectOptions>
+  <CompilerOptions>
+    <Version Value="11"/>
+    <PathDelim Value="\"/>
+    <Target>
+      <Filename Value="c:\temp\xbin\DX9\Textures"/>
+    </Target>
+    <SearchPaths>
+      <IncludeFiles Value="$(ProjOutDir)"/>
+      <OtherUnitFiles Value="..\..\..\Units\DX12"/>
+      <UnitOutputDirectory Value="c:\temp\xbin\lib"/>
+    </SearchPaths>
+    <Parsing>
+      <SyntaxOptions>
+        <SyntaxMode Value="Delphi"/>
+        <UseAnsiStrings Value="False"/>
+      </SyntaxOptions>
+    </Parsing>
+  </CompilerOptions>
+  <Debugging>
+    <BreakPoints Count="10">
+      <Item1>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="Textures.pas"/>
+        <Line Value="286"/>
+      </Item1>
+      <Item2>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="Textures.pas"/>
+        <Line Value="290"/>
+      </Item2>
+      <Item3>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="Textures.pas"/>
+        <Line Value="292"/>
+      </Item3>
+      <Item4>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="Textures.pas"/>
+        <Line Value="300"/>
+      </Item4>
+      <Item5>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="Textures.pas"/>
+        <Line Value="301"/>
+      </Item5>
+      <Item6>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="Textures.pas"/>
+        <Line Value="291"/>
+      </Item6>
+      <Item7>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="Textures.pas"/>
+        <Line Value="330"/>
+      </Item7>
+      <Item8>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="Textures.pas"/>
+        <Line Value="287"/>
+      </Item8>
+      <Item9>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="Textures.pas"/>
+        <Line Value="288"/>
+      </Item9>
+      <Item10>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="Textures.pas"/>
+        <Line Value="289"/>
+      </Item10>
+    </BreakPoints>
+    <Exceptions Count="3">
+      <Item1>
+        <Name Value="EAbort"/>
+      </Item1>
+      <Item2>
+        <Name Value="ECodetoolError"/>
+      </Item2>
+      <Item3>
+        <Name Value="EFOpenError"/>
+      </Item3>
+    </Exceptions>
+  </Debugging>
+</CONFIG>

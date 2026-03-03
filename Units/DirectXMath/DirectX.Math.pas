@@ -102,8 +102,9 @@ type
             4: (f: array [0 .. 3] of single);
             5: (u: array [0 .. 3] of uint32);
             6: (i: array [0 .. 3] of int32);
-            7: (b: array [0 .. 15] of byte);
+            7: (by: array [0 .. 15] of byte);
             8: (x, y, z, w: single);
+            9: (a, b, c, d: single);
     end;
 
     PXMVECTOR = ^TXMVECTOR;
@@ -158,6 +159,8 @@ type
 
     TFXMMATRIX = TXMMATRIX;
     TCXMMATRIX = TXMMATRIX;
+
+    PXMMATRIX = ^TXMMATRIX;
 
     // ------------------------------------------------------------------------------
     // 2D Vector; 32 bit floating point components
@@ -545,7 +548,7 @@ const
     g_XMFlipYZ: TXMVECTOR = (vector4_u32: (0, $80000000, $80000000, 0));
     g_XMFlipZW: TXMVECTOR = (vector4_u32: (0, 0, $80000000, $80000000));
     g_XMFlipYW: TXMVECTOR = (vector4_u32: (0, $80000000, 0, $80000000));
-    g_XMMaskDec4: TXMVECTOR = (vector4_i32: ($3FF, $3FF shl 10, $3FF shl 20, $C0000000));
+    g_XMMaskDec4: TXMVECTOR = (vector4_i32: ($3FF, $3FF shl 10, $3FF shl 20, longint($C0000000)));
     g_XMXorDec4: TXMVECTOR = (vector4_i32: ($200, $200 shl 10, $200 shl 20, 0));
     g_XMAddUDec4: TXMVECTOR = (vector4_f32: (0, 0, 0, 32768.0 * 65536.0));
     g_XMAddDec4: TXMVECTOR = (vector4_f32: (-512.0, -512.0 * 1024.0, -512.0 * 1024.0 * 1024.0, 0));
@@ -659,21 +662,21 @@ procedure XMStoreFloat(out pDestination: single; v: TFXMVECTOR);
 
 procedure XMStoreInt2(out pDestination: array of uint32; v: TFXMVECTOR);
 procedure XMStoreInt2A(out pDestination: array of uint32; v: TFXMVECTOR);
-procedure XMStoreFloat2(var pDestination: PXMFLOAT2; v: TFXMVECTOR);
+procedure XMStoreFloat2(pDestination: PXMFLOAT2; v: TFXMVECTOR);
 procedure XMStoreFloat2A(out pDestination: TXMFLOAT2A; v: TFXMVECTOR);
 procedure XMStoreSInt2(out pDestination: TXMINT2; v: TFXMVECTOR);
 procedure XMStoreUInt2(out pDestination: TXMUINT2; v: TFXMVECTOR);
 
 procedure XMStoreInt3(out pDestination: array of uint32; v: TFXMVECTOR);
 procedure XMStoreInt3A(out pDestination: array of uint32; v: TFXMVECTOR);
-procedure XMStoreFloat3(var pDestination: TXMFLOAT3; v: TFXMVECTOR);
+procedure XMStoreFloat3(pDestination: PXMFLOAT3; v: TFXMVECTOR);
 procedure XMStoreFloat3A(out pDestination: TXMFLOAT3A; v: TFXMVECTOR);
 procedure XMStoreSInt3(out pDestination: TXMINT3; v: TFXMVECTOR);
 procedure XMStoreUInt3(out pDestination: TXMUINT3; v: TFXMVECTOR);
 
 procedure XMStoreInt4(out pDestination: array { 4 } of uint32; v: TFXMVECTOR);
 procedure XMStoreInt4A(out pDestination: array of uint32; v: TFXMVECTOR);
-procedure XMStoreFloat4(var pDestination: TXMFLOAT4; v: TFXMVECTOR);
+procedure XMStoreFloat4(pDestination: PXMFLOAT4; v: TFXMVECTOR);
 procedure XMStoreFloat4A(out pDestination: TXMFLOAT4A; v: TFXMVECTOR);
 procedure XMStoreSInt4(out pDestination: TXMINT4; v: TFXMVECTOR);
 procedure XMStoreUInt4(out pDestination: TXMUINT4; v: TFXMVECTOR);
@@ -1031,7 +1034,7 @@ function XMMatrixIsIdentity(m: TFXMMATRIX): boolean;
 function XMMatrixMultiply(M1: TFXMMATRIX; M2: TCXMMATRIX): TXMMATRIX;
 function XMMatrixMultiplyTranspose(M1: TFXMMATRIX; M2: TCXMMATRIX): TXMMATRIX;
 function XMMatrixTranspose(m: TFXMMATRIX): TXMMATRIX;
-function XMMatrixInverse(var pDeterminant: TXMVECTOR; m: TFXMMATRIX): TXMMATRIX;
+function XMMatrixInverse({_Out_opt_} pDeterminant: PXMVECTOR; {_In_} m: TFXMMATRIX): TXMMATRIX;
 function XMMatrixVectorTensorProduct(V1: TFXMVECTOR; V2: TFXMVECTOR): TXMMATRIX;
 function XMMatrixDeterminant(m: TFXMMATRIX): TXMVECTOR;
 
@@ -1956,7 +1959,7 @@ end;
 
 
 
-procedure XMStoreFloat2(var pDestination: PXMFLOAT2; v: TFXMVECTOR);
+procedure XMStoreFloat2(pDestination: PXMFLOAT2; v: TFXMVECTOR);
 begin
     pDestination.x := v.vector4_f32[0];
     pDestination.y := v.vector4_f32[1];
@@ -2006,7 +2009,7 @@ end;
 
 
 
-procedure XMStoreFloat3(var pDestination: TXMFLOAT3; v: TFXMVECTOR);
+procedure XMStoreFloat3(pDestination: PXMFLOAT3; v: TFXMVECTOR);
 begin
     pDestination.x := v.vector4_f32[0];
     pDestination.y := v.vector4_f32[1];
@@ -2062,7 +2065,7 @@ end;
 
 
 
-procedure XMStoreFloat4(var pDestination: TXMFLOAT4; v: TFXMVECTOR);
+procedure XMStoreFloat4(pDestination:PXMFLOAT4; v: TFXMVECTOR);
 begin
     pDestination.x := v.vector4_f32[0];
     pDestination.y := v.vector4_f32[1];
@@ -4836,7 +4839,7 @@ begin
         x := XMVectorSplatX(v);
         vResult := XMVectorMultiplyAdd(y, row1, row3);
         vResult := XMVectorMultiplyAdd(x, row0, vResult);
-        XMStoreFloat4(PXMFLOAT4(pOutputVector)^, vResult);
+        XMStoreFloat4(PXMFLOAT4(pOutputVector), vResult);
         pInputVector := pInputVector + InputStride;
         pOutputVector := pOutputVector + OutputStride;
     end;
@@ -5443,7 +5446,7 @@ begin
         vResult := XMVectorMultiplyAdd(y, row1, vResult);
         vResult := XMVectorMultiplyAdd(x, row0, vResult);
 
-        XMStoreFloat4(PXMFLOAT4(pOutputVector)^, vResult);
+        XMStoreFloat4(PXMFLOAT4(pOutputVector), vResult);
 
         pInputVector := pInputVector + InputStride;
         pOutputVector := pOutputVector + OutputStride;
@@ -5504,7 +5507,7 @@ begin
 
         vResult := XMVectorDivide(vResult, w);
 
-        XMStoreFloat3(PXMFLOAT3(pOutputVector)^, vResult);
+        XMStoreFloat3(PXMFLOAT3(pOutputVector), vResult);
 
         pInputVector := pInputVector + InputStride;
         pOutputVector := pOutputVector + OutputStride;
@@ -5557,7 +5560,7 @@ begin
         vResult := XMVectorMultiplyAdd(y, row1, vResult);
         vResult := XMVectorMultiplyAdd(x, row0, vResult);
 
-        XMStoreFloat3(PXMFLOAT3(pOutputVector)^, vResult);
+        XMStoreFloat3(PXMFLOAT3(pOutputVector), vResult);
 
         pInputVector := pInputVector + InputStride;
         pOutputVector := pOutputVector + OutputStride;
@@ -5620,7 +5623,7 @@ begin
         vResult := XMVector3TransformCoord(v, Transform);
         vResult := XMVectorMultiplyAdd(vResult, Scale, Offset);
 
-        XMStoreFloat3(PXMFLOAT3(pOutputVector)^, vResult);
+        XMStoreFloat3(PXMFLOAT3(pOutputVector), vResult);
 
         pInputVector := pInputVector + InputStride;
         pOutputVector := pOutputVector + OutputStride;
@@ -5646,7 +5649,7 @@ begin
 
     Transform := XMMatrixMultiply(World, View);
     Transform := XMMatrixMultiply(Transform, Projection);
-    Transform := XMMatrixInverse(TXMVECTOR(nil^), Transform);
+    Transform := XMMatrixInverse(nil, Transform);
 
     Result := XMVectorMultiplyAdd(v, Scale, Offset);
 
@@ -5677,7 +5680,7 @@ begin
 
     Transform := XMMatrixMultiply(World, View);
     Transform := XMMatrixMultiply(Transform, Projection);
-    Transform := XMMatrixInverse(TXMVECTOR(nil^), Transform);
+    Transform := XMMatrixInverse(nil, Transform);
 
     pInputVector := pbyte(pInputStream);
     pOutputVector := pbyte(pOutputStream);
@@ -5687,7 +5690,7 @@ begin
         v := XMLoadFloat3(PXMFLOAT3(pInputVector)^);
         vResult := XMVectorMultiplyAdd(v, Scale, Offset);
         vResult := XMVector3TransformCoord(vResult, Transform);
-        XMStoreFloat3(PXMFLOAT3(pOutputVector)^, vResult);
+        XMStoreFloat3(PXMFLOAT3(pOutputVector), vResult);
 
         pInputVector := pInputVector + InputStride;
         pOutputVector := pOutputVector + OutputStride;
@@ -6126,7 +6129,7 @@ begin
         vResult := XMVectorMultiplyAdd(y, row1, vResult);
         vResult := XMVectorMultiplyAdd(x, row0, vResult);
 
-        XMStoreFloat4(PXMFLOAT4(pOutputVector)^, vResult);
+        XMStoreFloat4(PXMFLOAT4(pOutputVector), vResult);
 
         pInputVector := pInputVector + InputStride;
         pOutputVector := pOutputVector + OutputStride;
@@ -6637,7 +6640,7 @@ end;
 
 // Return the inverse and the determinant of a 4x4 matrix
 
-function XMMatrixInverse(var pDeterminant: TXMVECTOR; m: TFXMMATRIX): TXMMATRIX;
+function XMMatrixInverse({_Out_opt_} pDeterminant: PXMVECTOR; {_In_} m: TFXMMATRIX): TXMMATRIX;
 var
     MT: TXMMATRIX;
     V0, V1: array [0 .. 3] of TXMVECTOR;
@@ -6724,8 +6727,8 @@ begin
 
     Determinant := XMVector4Dot(r.r[0], MT.r[0]);
 
-    if (@pDeterminant <> nil) then
-        pDeterminant := Determinant;
+    if (pDeterminant <> nil) then
+        pDeterminant^ := Determinant;
 
     Reciprocal := XMVectorReciprocal(Determinant);
 

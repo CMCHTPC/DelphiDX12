@@ -1,0 +1,4 @@
+Terrain Filename: .\data\heightmap.bmp
+Terrain Height: 257
+Terrain Width: 257
+Terrain Scaling: 12.0

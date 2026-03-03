@@ -1,0 +1,442 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <PathDelim Value="\"/>
+    <Version Value="12"/>
+    <BuildModes Active="Debug"/>
+    <Units Count="34">
+      <Unit0>
+        <Filename Value="DirectComposition_Effects.ppr"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="14"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="7"/>
+        <CursorPos Y="23"/>
+        <UsageCount Value="68"/>
+        <Loaded Value="True"/>
+      </Unit0>
+      <Unit1>
+        <Filename Value="App.pas"/>
+        <IsPartOfProject Value="True"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="610"/>
+        <CursorPos Y="618"/>
+        <UsageCount Value="68"/>
+        <Bookmarks Count="1">
+          <Item0 X="2" Y="1411"/>
+        </Bookmarks>
+        <Loaded Value="True"/>
+      </Unit1>
+      <Unit2>
+        <Filename Value="..\SimpleComposition\Demo.rc"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <CursorPos X="23"/>
+        <UsageCount Value="68"/>
+      </Unit2>
+      <Unit3>
+        <Filename Value="App.rc"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <CursorPos X="37" Y="11"/>
+        <UsageCount Value="44"/>
+      </Unit3>
+      <Unit4>
+        <Filename Value="..\..\..\Units\DX12.D3D11.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <CursorPos X="61" Y="15"/>
+        <UsageCount Value="34"/>
+      </Unit4>
+      <Unit5>
+        <Filename Value="..\..\Units\DX12.D3D11.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="3161"/>
+        <CursorPos X="65" Y="2970"/>
+        <UsageCount Value="33"/>
+      </Unit5>
+      <Unit6>
+        <Filename Value="..\..\Units\DX12.DXGI1_2.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <CursorPos X="18"/>
+        <UsageCount Value="15"/>
+      </Unit6>
+      <Unit7>
+        <Filename Value="C:\codetyphon\fpcsrc\rtl\win\wininc\base.inc"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="634"/>
+        <CursorPos X="6" Y="651"/>
+        <UsageCount Value="17"/>
+      </Unit7>
+      <Unit8>
+        <Filename Value="C:\codetyphon\fpcsrc\rtl\win\wininc\defines.inc"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="348"/>
+        <CursorPos X="6" Y="359"/>
+        <UsageCount Value="15"/>
+      </Unit8>
+      <Unit9>
+        <Filename Value="..\..\Units\DX12.DComp.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="193"/>
+        <CursorPos X="74" Y="205"/>
+        <UsageCount Value="15"/>
+      </Unit9>
+      <Unit10>
+        <Filename Value="..\..\Units\DX12.D3DX11Effect.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="223"/>
+        <CursorPos X="24" Y="237"/>
+        <UsageCount Value="15"/>
+      </Unit10>
+      <Unit11>
+        <Filename Value="C:\codetyphon\fpcsrc\rtl\inc\objpash.inc"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="255"/>
+        <CursorPos X="51" Y="260"/>
+        <UsageCount Value="15"/>
+      </Unit11>
+      <Unit12>
+        <Filename Value="C:\codetyphon\fpcsrc\rtl\win\wininc\redef.inc"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1014"/>
+        <CursorPos X="6" Y="1022"/>
+        <UsageCount Value="14"/>
+      </Unit12>
+      <Unit13>
+        <Filename Value="..\..\Units\DX12.D3D9Types.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="25"/>
+        <CursorPos X="5" Y="19"/>
+        <UsageCount Value="12"/>
+      </Unit13>
+      <Unit14>
+        <Filename Value="..\..\Units\DX12.D2D1.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="215"/>
+        <CursorPos X="130" Y="221"/>
+        <UsageCount Value="9"/>
+      </Unit14>
+      <Unit15>
+        <Filename Value="R:\GitHub_2018\DelphiDX12\Units\DX12.D2D1.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="4209"/>
+        <CursorPos X="5" Y="4215"/>
+        <UsageCount Value="9"/>
+      </Unit15>
+      <Unit16>
+        <Filename Value="R:\GitHub_2018\DelphiDX12\Units\DX12.D3D11.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="6345"/>
+        <CursorPos Y="6347"/>
+        <UsageCount Value="9"/>
+      </Unit16>
+      <Unit17>
+        <Filename Value="..\..\..\Units\DX12.D2D1.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1580"/>
+        <CursorPos X="25" Y="1593"/>
+        <UsageCount Value="16"/>
+      </Unit17>
+      <Unit18>
+        <Filename Value="C:\codetyphon\fpcsrc\rtl\win\wininc\ascfun.inc"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="350"/>
+        <CursorPos X="10" Y="367"/>
+        <UsageCount Value="11"/>
+      </Unit18>
+      <Unit19>
+        <Filename Value="..\..\..\Units\DX12.DComp.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1060"/>
+        <CursorPos X="65" Y="1088"/>
+        <UsageCount Value="11"/>
+      </Unit19>
+      <Unit20>
+        <Filename Value="..\..\..\..\Units\DX12\DX12.D3D11.pas"/>
+        <EditorIndex Value="3"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1068"/>
+        <CursorPos X="35" Y="1082"/>
+        <UsageCount Value="29"/>
+        <Loaded Value="True"/>
+      </Unit20>
+      <Unit21>
+        <Filename Value="..\..\..\..\Units\DX12\DX12.D2D1_1.pas"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="4"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="959"/>
+        <CursorPos X="18" Y="968"/>
+        <UsageCount Value="20"/>
+        <Loaded Value="True"/>
+      </Unit21>
+      <Unit22>
+        <Filename Value="..\..\..\..\Units\DX12\DX12.D2D1.pas"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="5"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="550"/>
+        <CursorPos Y="538"/>
+        <UsageCount Value="20"/>
+        <Loaded Value="True"/>
+      </Unit22>
+      <Unit23>
+        <Filename Value="..\..\..\..\Units\DX12\DX12.D2D1EffectAuthor.pas"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="10"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="4"/>
+        <CursorPos X="10" Y="20"/>
+        <UsageCount Value="20"/>
+        <Loaded Value="True"/>
+      </Unit23>
+      <Unit24>
+        <Filename Value="..\..\..\..\Units\DX12\DX12.D2D1_2.pas"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="11"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="43"/>
+        <CursorPos X="24" Y="51"/>
+        <UsageCount Value="20"/>
+        <Loaded Value="True"/>
+      </Unit24>
+      <Unit25>
+        <Filename Value="..\..\..\..\Units\DX12\DX12.D2D1Effects.pas"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="12"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="812"/>
+        <CursorPos Y="821"/>
+        <UsageCount Value="20"/>
+        <Loaded Value="True"/>
+      </Unit25>
+      <Unit26>
+        <Filename Value="..\..\..\..\Units\DX12\DX12.D2D1Effects_1.pas"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="13"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="43"/>
+        <UsageCount Value="20"/>
+        <Loaded Value="True"/>
+      </Unit26>
+      <Unit27>
+        <Filename Value="..\..\..\..\Units\DX12\DX12.D2D1Helper.pas"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="9"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="183"/>
+        <CursorPos X="26" Y="203"/>
+        <UsageCount Value="19"/>
+        <Loaded Value="True"/>
+      </Unit27>
+      <Unit28>
+        <Filename Value="..\..\..\..\Units\DX12\DX12.DComp.pas"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="2"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1694"/>
+        <CursorPos X="51" Y="1647"/>
+        <UsageCount Value="19"/>
+        <Loaded Value="True"/>
+      </Unit28>
+      <Unit29>
+        <Filename Value="..\..\..\..\Units\DX12\DX12.D2D1_1Helper.pas"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="226"/>
+        <CursorPos Y="233"/>
+        <UsageCount Value="19"/>
+        <Loaded Value="True"/>
+      </Unit29>
+      <Unit30>
+        <Filename Value="..\..\..\..\Units\DX12\DX12.D2DErr.pas"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="8"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="95"/>
+        <CursorPos X="53" Y="65"/>
+        <UsageCount Value="19"/>
+        <Loaded Value="True"/>
+      </Unit30>
+      <Unit31>
+        <Filename Value="..\..\..\..\Units\DX12\DX12.DCommon.pas"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="7"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="334"/>
+        <CursorPos X="30" Y="348"/>
+        <UsageCount Value="19"/>
+        <Loaded Value="True"/>
+      </Unit31>
+      <Unit32>
+        <Filename Value="..\..\..\..\Units\old\D2D1_OldGit\DX12.D2D1.pas"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="380"/>
+        <CursorPos X="19" Y="402"/>
+        <UsageCount Value="9"/>
+      </Unit32>
+      <Unit33>
+        <Filename Value="..\..\..\..\Units\DX12\DX12.D2D1DWrite.pas"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="6"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="83"/>
+        <CursorPos X="5" Y="57"/>
+        <UsageCount Value="18"/>
+        <Loaded Value="True"/>
+      </Unit33>
+    </Units>
+    <JumpHistory Count="28" HistoryIndex="27">
+      <Position1>
+        <Filename Value="..\..\..\..\Units\DX12\DX12.DComp.pas"/>
+        <Caret Line="816" Column="50" TopLine="808"/>
+      </Position1>
+      <Position2>
+        <Filename Value="..\..\..\..\Units\DX12\DX12.DComp.pas"/>
+        <Caret Line="823" Column="50" TopLine="808"/>
+      </Position2>
+      <Position3>
+        <Filename Value="..\..\..\..\Units\DX12\DX12.DComp.pas"/>
+        <Caret Line="830" Column="50" TopLine="814"/>
+      </Position3>
+      <Position4>
+        <Filename Value="..\..\..\..\Units\DX12\DX12.DComp.pas"/>
+        <Caret Line="905" Column="69" TopLine="886"/>
+      </Position4>
+      <Position5>
+        <Filename Value="..\..\..\..\Units\DX12\DX12.DComp.pas"/>
+        <Caret Line="981" Column="66" TopLine="967"/>
+      </Position5>
+      <Position6>
+        <Filename Value="..\..\..\..\Units\DX12\DX12.DComp.pas"/>
+        <Caret Line="1007" Column="52" TopLine="995"/>
+      </Position6>
+      <Position7>
+        <Filename Value="..\..\..\..\Units\DX12\DX12.DComp.pas"/>
+        <Caret Line="1012" Column="50" TopLine="995"/>
+      </Position7>
+      <Position8>
+        <Filename Value="..\..\..\..\Units\DX12\DX12.DComp.pas"/>
+        <Caret Line="1162" Column="50" TopLine="1153"/>
+      </Position8>
+      <Position9>
+        <Filename Value="..\..\..\..\Units\DX12\DX12.DComp.pas"/>
+        <Caret Line="1333" Column="59" TopLine="1317"/>
+      </Position9>
+      <Position10>
+        <Filename Value="..\..\..\..\Units\DX12\DX12.DComp.pas"/>
+        <Caret Line="1497" TopLine="1497"/>
+      </Position10>
+      <Position11>
+        <Filename Value="..\..\..\..\Units\DX12\DX12.DComp.pas"/>
+        <Caret Line="1500" Column="50" TopLine="1496"/>
+      </Position11>
+      <Position12>
+        <Filename Value="..\..\..\..\Units\DX12\DX12.DComp.pas"/>
+        <Caret Line="1614" TopLine="1604"/>
+      </Position12>
+      <Position13>
+        <Filename Value="App.pas"/>
+        <Caret Line="1073" Column="39" TopLine="1064"/>
+      </Position13>
+      <Position14>
+        <Filename Value="App.pas"/>
+        <Caret Line="1136" Column="39" TopLine="1126"/>
+      </Position14>
+      <Position15>
+        <Filename Value="App.pas"/>
+        <Caret Line="466" TopLine="456"/>
+      </Position15>
+      <Position16>
+        <Filename Value="App.pas"/>
+        <Caret Line="618" TopLine="608"/>
+      </Position16>
+      <Position17>
+        <Filename Value="App.pas"/>
+        <Caret Line="1136" TopLine="1126"/>
+      </Position17>
+      <Position18>
+        <Filename Value="App.pas"/>
+        <Caret Line="1139" TopLine="1126"/>
+      </Position18>
+      <Position19>
+        <Filename Value="App.pas"/>
+        <Caret Line="1141" TopLine="1126"/>
+      </Position19>
+      <Position20>
+        <Filename Value="App.pas"/>
+        <Caret Line="1144" TopLine="1128"/>
+      </Position20>
+      <Position21>
+        <Filename Value="App.pas"/>
+        <Caret Line="1146" TopLine="1130"/>
+      </Position21>
+      <Position22>
+        <Filename Value="App.pas"/>
+        <Caret Line="1136" TopLine="1133"/>
+      </Position22>
+      <Position23>
+        <Filename Value="App.pas"/>
+        <Caret Line="481" TopLine="471"/>
+      </Position23>
+      <Position24>
+        <Filename Value="App.pas"/>
+        <Caret Line="364" TopLine="353"/>
+      </Position24>
+      <Position25>
+        <Filename Value="App.pas"/>
+        <Caret Line="483" TopLine="474"/>
+      </Position25>
+      <Position26>
+        <Filename Value="App.pas"/>
+        <Caret Line="364" TopLine="353"/>
+      </Position26>
+      <Position27>
+        <Filename Value="App.pas"/>
+        <Caret Line="481" TopLine="474"/>
+      </Position27>
+      <Position28>
+        <Filename Value="App.pas"/>
+        <Caret Line="202" TopLine="191"/>
+      </Position28>
+    </JumpHistory>
+    <RunParams>
+      <FormatVersion Value="2"/>
+      <Modes ActiveMode=""/>
+    </RunParams>
+  </ProjectSession>
+  <Debugging>
+    <BreakPoints>
+      <Item>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="App.pas"/>
+        <Line Value="466"/>
+      </Item>
+    </BreakPoints>
+  </Debugging>
+</CONFIG>

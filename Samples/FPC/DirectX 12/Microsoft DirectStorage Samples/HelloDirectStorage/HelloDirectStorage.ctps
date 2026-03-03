@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <PathDelim Value="\"/>
+    <Version Value="12"/>
+    <BuildModes Active="Default"/>
+    <Units>
+      <Unit>
+        <Filename Value="HelloDirectStorage.ppr"/>
+        <FRMtype Value="0"/>
+        <IsPartOfProject Value="True"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="76"/>
+        <CursorPos Y="59"/>
+        <UsageCount Value="21"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\..\Units\DX12\DX12.DStorage.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="50"/>
+        <CursorPos Y="52"/>
+        <UsageCount Value="21"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\..\Units\Win32\Win32.FileApi.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="2"/>
+        <WindowIndex Value="0"/>
+        <UsageCount Value="21"/>
+        <Loaded Value="True"/>
+      </Unit>
+    </Units>
+    <JumpHistory HistoryIndex="29">
+      <Position>
+        <Filename Value="..\..\..\..\..\Units\DX12\DX12.DStorage.pas"/>
+        <Caret Line="1139" Column="40" TopLine="1114"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\Units\DX12\DX12.DStorage.pas"/>
+        <Caret Line="52" TopLine="50"/>
+      </Position>
+      <Position>
+        <Filename Value="HelloDirectStorage.ppr"/>
+        <Caret Line="65" Column="13" TopLine="54"/>
+      </Position>
+      <Position>
+        <Filename Value="HelloDirectStorage.ppr"/>
+        <Caret Line="68" Column="56" TopLine="55"/>
+      </Position>
+      <Position>
+        <Filename Value="HelloDirectStorage.ppr"/>
+        <Caret Line="27" Column="28" TopLine="14"/>
+      </Position>
+      <Position>
+        <Filename Value="HelloDirectStorage.ppr"/>
+        <Caret Line="68" Column="49" TopLine="55"/>
+      </Position>
+      <Position>
+        <Filename Value="HelloDirectStorage.ppr"/>
+        <Caret Line="84" Column="28" TopLine="76"/>
+      </Position>
+      <Position>
+        <Filename Value="HelloDirectStorage.ppr"/>
+        <Caret Line="90" Column="56" TopLine="68"/>
+      </Position>
+      <Position>
+        <Filename Value="HelloDirectStorage.ppr"/>
+        <Caret Line="34" Column="27" TopLine="21"/>
+      </Position>
+      <Position>
+        <Filename Value="HelloDirectStorage.ppr"/>
+        <Caret Line="71" Column="18" TopLine="58"/>
+      </Position>
+      <Position>
+        <Filename Value="HelloDirectStorage.ppr"/>
+        <Caret Line="4" Column="22"/>
+      </Position>
+      <Position>
+        <Filename Value="HelloDirectStorage.ppr"/>
+        <Caret Line="91" Column="43" TopLine="76"/>
+      </Position>
+      <Position>
+        <Filename Value="HelloDirectStorage.ppr"/>
+        <Caret Line="7" Column="21"/>
+      </Position>
+      <Position>
+        <Filename Value="HelloDirectStorage.ppr"/>
+        <Caret Line="119" Column="6" TopLine="94"/>
+      </Position>
+      <Position>
+        <Filename Value="HelloDirectStorage.ppr"/>
+        <Caret Line="116" Column="14" TopLine="103"/>
+      </Position>
+      <Position>
+        <Filename Value="HelloDirectStorage.ppr"/>
+        <Caret Line="129" Column="58" TopLine="110"/>
+      </Position>
+      <Position>
+        <Filename Value="HelloDirectStorage.ppr"/>
+        <Caret Line="123" Column="68" TopLine="110"/>
+      </Position>
+      <Position>
+        <Filename Value="HelloDirectStorage.ppr"/>
+        <Caret Line="124" Column="80" TopLine="111"/>
+      </Position>
+      <Position>
+        <Filename Value="HelloDirectStorage.ppr"/>
+        <Caret Line="29" Column="14" TopLine="25"/>
+      </Position>
+      <Position>
+        <Filename Value="HelloDirectStorage.ppr"/>
+        <Caret Line="73" Column="43" TopLine="60"/>
+      </Position>
+      <Position>
+        <Filename Value="HelloDirectStorage.ppr"/>
+        <Caret Line="125" Column="67" TopLine="112"/>
+      </Position>
+      <Position>
+        <Filename Value="HelloDirectStorage.ppr"/>
+        <Caret Line="129" Column="48" TopLine="116"/>
+      </Position>
+      <Position>
+        <Filename Value="HelloDirectStorage.ppr"/>
+        <Caret Line="140" Column="6" TopLine="115"/>
+      </Position>
+      <Position>
+        <Filename Value="HelloDirectStorage.ppr"/>
+        <Caret Line="44" Column="22" TopLine="20"/>
+      </Position>
+      <Position>
+        <Filename Value="HelloDirectStorage.ppr"/>
+        <Caret Line="4" Column="13"/>
+      </Position>
+      <Position>
+        <Filename Value="HelloDirectStorage.ppr"/>
+        <Caret Line="142" Column="52" TopLine="129"/>
+      </Position>
+      <Position>
+        <Filename Value="HelloDirectStorage.ppr"/>
+        <Caret Line="147" Column="5" TopLine="131"/>
+      </Position>
+      <Position>
+        <Filename Value="HelloDirectStorage.ppr"/>
+        <Caret Line="148" Column="44" TopLine="135"/>
+      </Position>
+      <Position>
+        <Filename Value="HelloDirectStorage.ppr"/>
+        <Caret Line="45" Column="45" TopLine="40"/>
+      </Position>
+      <Position>
+        <Filename Value="HelloDirectStorage.ppr"/>
+        <Caret Line="170" Column="107" TopLine="154"/>
+      </Position>
+    </JumpHistory>
+    <RunParams>
+      <FormatVersion Value="2"/>
+      <Modes ActiveMode=""/>
+    </RunParams>
+  </ProjectSession>
+</CONFIG>

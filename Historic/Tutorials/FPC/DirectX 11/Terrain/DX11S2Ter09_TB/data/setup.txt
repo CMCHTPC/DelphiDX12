@@ -1,0 +1,7 @@
+Terrain Filename: .\data\heightmap.r16
+Terrain Height: 1025
+Terrain Width: 1025
+Terrain Scaling: 300.0
+Color Map Filename: .\data\colormap.bmp
+MaterialFilename: .\data\legend.txt
+MaterialMapFilename: .\data\materialmap01.bmp

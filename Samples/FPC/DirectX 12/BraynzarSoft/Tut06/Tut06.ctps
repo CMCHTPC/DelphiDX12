@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <PathDelim Value="\"/>
+    <Version Value="12"/>
+    <BuildModes Active="Default"/>
+    <Units Count="13">
+      <Unit0>
+        <Filename Value="Tut06.ppr"/>
+        <IsPartOfProject Value="True"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="761"/>
+        <CursorPos X="39" Y="773"/>
+        <UsageCount Value="27"/>
+        <Loaded Value="True"/>
+      </Unit0>
+      <Unit1>
+        <Filename Value="..\..\..\..\Units\DX12.D3D12.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="2412"/>
+        <CursorPos X="6" Y="2418"/>
+        <UsageCount Value="27"/>
+      </Unit1>
+      <Unit2>
+        <Filename Value="..\..\..\..\..\DirectXMath\Units\DirectX.Math.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="401"/>
+        <CursorPos X="63" Y="403"/>
+        <UsageCount Value="27"/>
+      </Unit2>
+      <Unit3>
+        <Filename Value="C:\temp\testingaunit.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="27"/>
+        <CursorPos X="13" Y="33"/>
+        <UsageCount Value="27"/>
+      </Unit3>
+      <Unit4>
+        <Filename Value="C:\FreePascal\laz\components\lazutils\utf8process.pp"/>
+        <UnitName Value="UTF8Process"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="533"/>
+        <CursorPos X="30" Y="546"/>
+        <UsageCount Value="9"/>
+      </Unit4>
+      <Unit5>
+        <Filename Value="C:\FreePascal\fpc\Trunk\packages\fcl-process\src\process.pp"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <CursorPos X="21" Y="47"/>
+        <UsageCount Value="13"/>
+      </Unit5>
+      <Unit6>
+        <Filename Value="..\..\..\..\Units\format_test_dx12.d3dx12.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1310"/>
+        <CursorPos X="43" Y="1322"/>
+        <UsageCount Value="13"/>
+      </Unit6>
+      <Unit7>
+        <Filename Value="C:\FreePascal\laz\components\jcf2\Parse\Tokens.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="269"/>
+        <CursorPos X="18" Y="272"/>
+        <UsageCount Value="13"/>
+      </Unit7>
+      <Unit8>
+        <Filename Value="C:\FreePascal\laz\components\jcf2\Parse\ParseTreeNode.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="142"/>
+        <CursorPos X="18" Y="142"/>
+        <UsageCount Value="13"/>
+      </Unit8>
+      <Unit9>
+        <Filename Value="C:\FreePascal\laz\components\jcf2\Parse\BuildParseTree.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="5274"/>
+        <CursorPos Y="5289"/>
+        <UsageCount Value="13"/>
+        <Bookmarks Count="2">
+          <Item0 Y="5255"/>
+          <Item1 X="49" Y="2426" ID="1"/>
+        </Bookmarks>
+      </Unit9>
+      <Unit10>
+        <Filename Value="..\..\..\..\..\Units\DX12\DX12.D3D.pas"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="3"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="26"/>
+        <CursorPos X="14" Y="38"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit10>
+      <Unit11>
+        <Filename Value="..\..\..\..\..\Units\DX12\DX12.D3D12.pas"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="2"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="3085"/>
+        <CursorPos X="25" Y="3094"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit11>
+      <Unit12>
+        <Filename Value="..\..\..\..\..\Units\DX12\DX12.D3DX12_Core.pas"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="243"/>
+        <CursorPos X="19" Y="243"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit12>
+    </Units>
+    <JumpHistory Count="30" HistoryIndex="29">
+      <Position1>
+        <Filename Value="Tut06.ppr"/>
+        <Caret Line="249" Column="178" TopLine="248"/>
+      </Position1>
+      <Position2>
+        <Filename Value="Tut06.ppr"/>
+        <Caret Line="260" Column="18" TopLine="247"/>
+      </Position2>
+      <Position3>
+        <Filename Value="Tut06.ppr"/>
+        <Caret Line="544" Column="23" TopLine="531"/>
+      </Position3>
+      <Position4>
+        <Filename Value="Tut06.ppr"/>
+        <Caret Line="543" Column="17" TopLine="531"/>
+      </Position4>
+      <Position5>
+        <Filename Value="Tut06.ppr"/>
+        <Caret Line="544" Column="9" TopLine="532"/>
+      </Position5>
+      <Position6>
+        <Filename Value="Tut06.ppr"/>
+        <Caret Line="260" Column="23" TopLine="248"/>
+      </Position6>
+      <Position7>
+        <Filename Value="..\..\..\..\..\Units\DX12\DX12.D3DX12_Core.pas"/>
+        <Caret Line="14" Column="42"/>
+      </Position7>
+      <Position8>
+        <Filename Value="..\..\..\..\..\Units\DX12\DX12.D3DX12_Core.pas"/>
+        <Caret Line="210" Column="53" TopLine="190"/>
+      </Position8>
+      <Position9>
+        <Filename Value="..\..\..\..\..\Units\DX12\DX12.D3DX12_Core.pas"/>
+        <Caret Line="238" Column="28" TopLine="227"/>
+      </Position9>
+      <Position10>
+        <Filename Value="Tut06.ppr"/>
+        <Caret Line="544" Column="14" TopLine="532"/>
+      </Position10>
+      <Position11>
+        <Filename Value="..\..\..\..\..\Units\DX12\DX12.D3DX12_Core.pas"/>
+        <Caret Line="243" Column="19" TopLine="243"/>
+      </Position11>
+      <Position12>
+        <Filename Value="Tut06.ppr"/>
+        <Caret Line="544" Column="11" TopLine="532"/>
+      </Position12>
+      <Position13>
+        <Filename Value="Tut06.ppr"/>
+        <Caret Line="260" Column="34" TopLine="248"/>
+      </Position13>
+      <Position14>
+        <Filename Value="Tut06.ppr"/>
+        <Caret Line="544" Column="34" TopLine="532"/>
+      </Position14>
+      <Position15>
+        <Filename Value="Tut06.ppr"/>
+        <Caret Line="551" Column="14" TopLine="539"/>
+      </Position15>
+      <Position16>
+        <Filename Value="Tut06.ppr"/>
+        <Caret Line="566" Column="19" TopLine="548"/>
+      </Position16>
+      <Position17>
+        <Filename Value="Tut06.ppr"/>
+        <Caret Line="561" Column="61" TopLine="549"/>
+      </Position17>
+      <Position18>
+        <Filename Value="Tut06.ppr"/>
+        <Caret Line="578" Column="32" TopLine="566"/>
+      </Position18>
+      <Position19>
+        <Filename Value="Tut06.ppr"/>
+        <Caret Line="582" Column="62" TopLine="569"/>
+      </Position19>
+      <Position20>
+        <Filename Value="Tut06.ppr"/>
+        <Caret Line="593" Column="61" TopLine="580"/>
+      </Position20>
+      <Position21>
+        <Filename Value="Tut06.ppr"/>
+        <Caret Line="600" Column="14" TopLine="588"/>
+      </Position21>
+      <Position22>
+        <Filename Value="Tut06.ppr"/>
+        <Caret Line="614" Column="14" TopLine="594"/>
+      </Position22>
+      <Position23>
+        <Filename Value="Tut06.ppr"/>
+        <Caret Line="626" Column="32" TopLine="614"/>
+      </Position23>
+      <Position24>
+        <Filename Value="Tut06.ppr"/>
+        <Caret Line="630" Column="62" TopLine="617"/>
+      </Position24>
+      <Position25>
+        <Filename Value="Tut06.ppr"/>
+        <Caret Line="561" Column="17" TopLine="549"/>
+      </Position25>
+      <Position26>
+        <Filename Value="Tut06.ppr"/>
+        <Caret Line="581" Column="23" TopLine="570"/>
+      </Position26>
+      <Position27>
+        <Filename Value="Tut06.ppr"/>
+        <Caret Line="592" Column="18" TopLine="580"/>
+      </Position27>
+      <Position28>
+        <Filename Value="Tut06.ppr"/>
+        <Caret Line="593" Column="17" TopLine="581"/>
+      </Position28>
+      <Position29>
+        <Filename Value="Tut06.ppr"/>
+        <Caret Line="607" Column="17" TopLine="595"/>
+      </Position29>
+      <Position30>
+        <Filename Value="Tut06.ppr"/>
+        <Caret Line="629" Column="23" TopLine="618"/>
+      </Position30>
+    </JumpHistory>
+    <RunParams>
+      <FormatVersion Value="2"/>
+      <Modes ActiveMode="default"/>
+    </RunParams>
+  </ProjectSession>
+</CONFIG>

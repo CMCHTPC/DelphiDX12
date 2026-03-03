@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <PathDelim Value="\"/>
+    <Version Value="12"/>
+    <BuildModes Active="Default"/>
+    <Units Count="12">
+      <Unit0>
+        <Filename Value="WICAnimatedGIF.ppr"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <CursorPos Y="21"/>
+        <UsageCount Value="24"/>
+        <Loaded Value="True"/>
+      </Unit0>
+      <Unit1>
+        <Filename Value="AppUnit.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="400"/>
+        <CursorPos Y="426"/>
+        <UsageCount Value="24"/>
+        <Loaded Value="True"/>
+      </Unit1>
+      <Unit2>
+        <Filename Value="..\..\..\Units\DX12.D2D1.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="24"/>
+      </Unit2>
+      <Unit3>
+        <Filename Value="..\..\..\Units\DX12.WinCodec.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="24"/>
+      </Unit3>
+      <Unit4>
+        <Filename Value="..\..\..\..\WinUnits\CMC.COMBaseAPI.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="24"/>
+      </Unit4>
+      <Unit5>
+        <Filename Value="..\..\..\..\Units\Win32\Win32.COMBaseAPI.pas"/>
+        <IsPartOfProject Value="True"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="5"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="887"/>
+        <CursorPos X="43" Y="906"/>
+        <UsageCount Value="24"/>
+        <Loaded Value="True"/>
+      </Unit5>
+      <Unit6>
+        <Filename Value="..\..\..\..\WinUnitNeu\CMC.COMBaseAPI.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit6>
+      <Unit7>
+        <Filename Value="..\..\..\..\Units\DX12\DX12.D2D1Helper.pas"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="3"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="815"/>
+        <CursorPos Y="847"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit7>
+      <Unit8>
+        <Filename Value="..\..\..\..\Units\DX12\DX12.DCommon.pas"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="4"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="382"/>
+        <CursorPos X="20" Y="402"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit8>
+      <Unit9>
+        <Filename Value="..\..\..\..\Units\DX12\DX12.WinCodec.pas"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="2"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1195"/>
+        <CursorPos X="18" Y="1214"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit9>
+      <Unit10>
+        <Filename Value="C:\codetyphon\fpcsrc\rtl\win\wininc\struct.inc"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="6"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="2219"/>
+        <CursorPos X="20" Y="2242"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit10>
+      <Unit11>
+        <Filename Value="C:\codetyphon\fpcsrc\rtl\win32\windows.pp"/>
+        <FRMtype Value="0"/>
+        <UnitName Value="Windows"/>
+        <EditorIndex Value="7"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="37"/>
+        <CursorPos X="6" Y="76"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit11>
+    </Units>
+    <JumpHistory Count="30" HistoryIndex="29">
+      <Position1>
+        <Filename Value="AppUnit.pas"/>
+        <Caret Line="317" TopLine="281"/>
+      </Position1>
+      <Position2>
+        <Filename Value="AppUnit.pas"/>
+        <Caret Line="666" TopLine="653"/>
+      </Position2>
+      <Position3>
+        <Filename Value="AppUnit.pas"/>
+        <Caret Line="668" TopLine="653"/>
+      </Position3>
+      <Position4>
+        <Filename Value="AppUnit.pas"/>
+        <Caret Line="669" TopLine="653"/>
+      </Position4>
+      <Position5>
+        <Filename Value="AppUnit.pas"/>
+        <Caret Line="1260" TopLine="1227"/>
+      </Position5>
+      <Position6>
+        <Filename Value="WICAnimatedGIF.ppr"/>
+        <Caret Line="21"/>
+      </Position6>
+      <Position7>
+        <Filename Value="AppUnit.pas"/>
+        <Caret Line="1248" TopLine="1227"/>
+      </Position7>
+      <Position8>
+        <Filename Value="AppUnit.pas"/>
+        <Caret Line="1250" TopLine="1227"/>
+      </Position8>
+      <Position9>
+        <Filename Value="AppUnit.pas"/>
+        <Caret Line="1260" TopLine="1234"/>
+      </Position9>
+      <Position10>
+        <Filename Value="AppUnit.pas"/>
+        <Caret Line="1303" TopLine="1274"/>
+      </Position10>
+      <Position11>
+        <Filename Value="AppUnit.pas"/>
+        <Caret Line="1285" TopLine="1274"/>
+      </Position11>
+      <Position12>
+        <Filename Value="AppUnit.pas"/>
+        <Caret Line="666" TopLine="640"/>
+      </Position12>
+      <Position13>
+        <Filename Value="AppUnit.pas"/>
+        <Caret Line="1296" TopLine="1268"/>
+      </Position13>
+      <Position14>
+        <Filename Value="AppUnit.pas"/>
+        <Caret Line="1285" TopLine="1268"/>
+      </Position14>
+      <Position15>
+        <Filename Value="AppUnit.pas"/>
+        <Caret Line="1296" TopLine="1271"/>
+      </Position15>
+      <Position16>
+        <Filename Value="AppUnit.pas"/>
+        <Caret Line="672" TopLine="647"/>
+      </Position16>
+      <Position17>
+        <Filename Value="AppUnit.pas"/>
+        <Caret Line="703" TopLine="684"/>
+      </Position17>
+      <Position18>
+        <Filename Value="AppUnit.pas"/>
+        <Caret Line="737" TopLine="718"/>
+      </Position18>
+      <Position19>
+        <Filename Value="AppUnit.pas"/>
+        <Caret Line="794" TopLine="775"/>
+      </Position19>
+      <Position20>
+        <Filename Value="AppUnit.pas"/>
+        <Caret Line="822" TopLine="803"/>
+      </Position20>
+      <Position21>
+        <Filename Value="..\..\..\..\Units\DX12\DX12.D2D1Helper.pas"/>
+        <Caret Line="848" Column="16" TopLine="831"/>
+      </Position21>
+      <Position22>
+        <Filename Value="..\..\..\..\Units\DX12\DX12.D2D1Helper.pas"/>
+        <Caret Line="337" TopLine="317"/>
+      </Position22>
+      <Position23>
+        <Filename Value="..\..\..\..\Units\DX12\DX12.DCommon.pas"/>
+        <Caret Line="402" Column="20" TopLine="382"/>
+      </Position23>
+      <Position24>
+        <Filename Value="..\..\..\..\Units\DX12\DX12.D2D1Helper.pas"/>
+        <Caret Line="338" Column="49" TopLine="317"/>
+      </Position24>
+      <Position25>
+        <Filename Value="..\..\..\..\Units\DX12\DX12.D2D1Helper.pas"/>
+        <Caret Line="847" TopLine="815"/>
+      </Position25>
+      <Position26>
+        <Filename Value="AppUnit.pas"/>
+        <Caret Line="426" TopLine="399"/>
+      </Position26>
+      <Position27>
+        <Filename Value="..\..\..\..\Units\Win32\Win32.COMBaseAPI.pas"/>
+        <Caret Line="910" Column="26" TopLine="875"/>
+      </Position27>
+      <Position28>
+        <Filename Value="..\..\..\..\Units\Win32\Win32.COMBaseAPI.pas"/>
+        <Caret Line="912" Column="23" TopLine="875"/>
+      </Position28>
+      <Position29>
+        <Filename Value="..\..\..\..\Units\Win32\Win32.COMBaseAPI.pas"/>
+        <Caret Line="910" Column="36" TopLine="877"/>
+      </Position29>
+      <Position30>
+        <Filename Value="..\..\..\..\Units\Win32\Win32.COMBaseAPI.pas"/>
+        <Caret Line="906" Column="38" TopLine="886"/>
+      </Position30>
+    </JumpHistory>
+    <RunParams>
+      <FormatVersion Value="2"/>
+      <Modes ActiveMode="default"/>
+    </RunParams>
+  </ProjectSession>
+  <Debugging>
+    <BreakPoints>
+      <Item>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="..\..\..\..\Units\Win32\Win32.COMBaseAPI.pas"/>
+        <Line Value="836"/>
+      </Item>
+      <Item>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="..\..\..\..\Units\Win32\Win32.COMBaseAPI.pas"/>
+        <Line Value="848"/>
+      </Item>
+    </BreakPoints>
+  </Debugging>
+</CONFIG>

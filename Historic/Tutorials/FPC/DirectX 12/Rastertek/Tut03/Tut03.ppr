@@ -1,0 +1,39 @@
+program Tut03;
+
+{$mode delphi}{$H+}
+
+uses {$IFDEF UNIX} {$IFDEF UseCThreads}
+    cthreads, {$ENDIF} {$ENDIF}
+    Interfaces, // this includes the adLCL widgetset
+    DX12.D3D12,
+    SystemClass;
+
+{$R *.res}
+
+var
+    System: TSystemClass;
+    Result: boolean;
+begin
+    // Create the system object.
+    Result := false;
+    System := TSystemClass.Create;
+    if (System = nil) then
+        Exit;
+
+    // Initialize and run the system object.
+    Result := System.Initialize();
+    if (Result) then
+        System.Run();
+
+
+    // Shutdown and release the system object.
+    System.Shutdown();
+    System.Free;
+    System := nil;
+
+    Result := false;
+end.
+
+
+
+

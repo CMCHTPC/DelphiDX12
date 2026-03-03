@@ -1,0 +1,59 @@
+Texture2D Texture;
+Texture2D AlphaTexture;
+Texture2D AlphaTexture2;
+SamplerState TextureSampler;
+
+struct PixelInputType
+{
+	float4 Position			: SV_POSITION;
+	float2 TexCoord			: TEXCOORD;
+	float4 Normal			: NORMAL0;
+	float3 VertexToLight	: NORMAL1;
+	float3 VertexToCamera	: NORMAL2;
+	float3 LevelOfDetail	: NORMAL3;
+	float Random			: NORMAL4;
+};
+
+float3 HUEtoRGB(in float H)
+{
+	float R = abs(H * 6 - 3) - 1;
+	float G = 2 - abs(H * 6 - 2);
+	float B = 2 - abs(H * 6 - 4);
+	return saturate(float3(R, G, B));
+}
+
+float3 HSVtoRGB(in float3 HSV)
+{
+	float3 RGB = HUEtoRGB(HSV.x);
+	return ((RGB - 1) * HSV.y + 1) * HSV.z;
+}
+
+
+float4 GrassPixelShader(PixelInputType input) : SV_TARGET
+{
+	float4 textureColor = Texture.Sample(TextureSampler, input.TexCoord);
+	float4 alphaColor = AlphaTexture.Sample(TextureSampler, input.TexCoord);
+	float4 alphaColor2 = AlphaTexture.Sample(TextureSampler, input.TexCoord);
+
+	// Phong
+	float3 r = normalize(reflect(input.VertexToLight.xyz, input.Normal.xyz));
+	float shininess = 100;
+
+	float ambientLight = 0.1;
+	float diffuseLight = saturate(dot(input.VertexToLight, input.Normal.xyz));
+	float specularLight = saturate(dot(-input.VertexToCamera, r));
+	specularLight = saturate(pow(specularLight, shininess));
+	
+	float light = ambientLight + (diffuseLight * 1.55) + (specularLight * 0.5);
+	
+	float3 grassColorHSV = { 0.17 + (input.Random / 20), 1, 1 };
+	float3 grassColorRGB = HSVtoRGB(grassColorHSV);
+
+	float3 lightColor = float3(1.0, 0.8, 0.8);
+
+	if (alphaColor.g <= 0.8) {
+		alphaColor.g = 0;
+	}
+
+	return float4(light * textureColor.rgb * grassColorRGB, alphaColor2.g);
+}

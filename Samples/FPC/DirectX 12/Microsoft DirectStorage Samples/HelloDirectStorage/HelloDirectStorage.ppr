@@ -1,0 +1,175 @@
+program HelloDirectStorage;
+
+uses
+    Windows,
+    Classes,
+    SysUtils,
+    DX12.DStorage,
+    DX12.D3D12,
+    DX12.DXGIFormat,
+    DX12.D3DCommon,
+    DX12.DXGI1_4,
+    Win32.FileAPI;
+
+
+
+
+    // Copyright (c) Microsoft. All rights reserved.
+    // This code is licensed under the MIT License (MIT).
+    // THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF
+    // ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY
+    // IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR
+    // PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.
+
+
+
+var
+    device:      ID3D12Device;
+    factory:     IDStorageFactory;
+    StorageFile: IDStorageFile;
+
+    hr:   HResult;
+    info: TBY_HANDLE_FILE_INFORMATION;
+    fileSize: uint32;
+
+    queueDesc:  TDSTORAGE_QUEUE_DESC;
+    queue:      IDStorageQueue;
+    bufferHeapProps: TD3D12_HEAP_PROPERTIES;
+    bufferDesc: TD3D12_RESOURCE_DESC;
+    bufferResource: ID3D12Resource;
+    request:    TDSTORAGE_REQUEST;
+    fence:      ID3D12Fence;
+    fenceValue: uint64;
+    fileToLoad: widestring;
+    fenceEvent: Handle;
+    errorRecord: TDSTORAGE_ERROR_RECORD;
+
+
+
+    procedure ShowHelpText();
+    begin
+        writeln('Reads the contents of a file and writes them out to a buffer on the GPU using DirectStorage.');
+        writeln('USAGE: HelloDirectStorage [path]');
+    end;
+
+    // The following example reads from a specified data file and writes the contents
+    // to a D3D12 buffer resource.
+
+begin
+    if (argc < 2) then
+    begin
+        ShowHelpText();
+        // result:= -1;
+    end;
+
+    hr := D3D12CreateDevice(nil, D3D_FEATURE_LEVEL_12_1, @IID_ID3D12Device, @device);
+    if hr <> S_OK then
+        Exit;
+
+    hr := DStorageGetFactory(@IID_IDStorageFactory, factory);
+    if hr <> S_OK then
+        Exit;
+
+    fileToLoad := argv[1];
+    hr := factory.OpenFile(pwidechar(fileToLoad), @IID_IDStorageFile, StorageFile);
+    if hr <> S_OK then
+    begin
+        Writeln('The file ' + fileToLoad + Format(' could not be opened. HRESULT=0x', [hr]));
+        ShowHelpText();
+        //   return -1;
+    end;
+
+
+    hr := Storagefile.GetFileInformation(@info);
+    if hr <> S_OK then
+        Exit;
+    fileSize := info.nFileSizeLow;
+
+    // Create a DirectStorage queue which will be used to load data into a
+    // buffer on the GPU.
+
+    queueDesc.Capacity   := DSTORAGE_MAX_QUEUE_CAPACITY;
+    queueDesc.Priority   := DSTORAGE_PRIORITY_NORMAL;
+    queueDesc.SourceType := DSTORAGE_REQUEST_SOURCE_FILE;
+    queueDesc.Device     := PID3D12Device(device);
+
+    hr := factory.CreateQueue(@queueDesc, @IID_IDStorageQueue, queue);
+    if hr <> S_OK then
+        Exit;
+
+    // Create the ID3D12Resource buffer which will be populated with the file's contents
+
+    bufferHeapProps.HeapType := D3D12_HEAP_TYPE_DEFAULT;
+
+    bufferDesc.Dimension := D3D12_RESOURCE_DIMENSION_BUFFER;
+    bufferDesc.Width     := fileSize;
+    bufferDesc.Height    := 1;
+    bufferDesc.DepthOrArraySize := 1;
+    bufferDesc.MipLevels := 1;
+    bufferDesc.Format    := DXGI_FORMAT_UNKNOWN;
+    bufferDesc.Layout    := D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+    bufferDesc.SampleDesc.Count := 1;
+
+
+    hr := device.CreateCommittedResource(@bufferHeapProps, D3D12_HEAP_FLAG_NONE, @bufferDesc, D3D12_RESOURCE_STATE_COMMON, nil, @IID_ID3D12Resource, bufferResource);
+    if hr <> S_OK then
+        Exit;
+
+    // Enqueue a request to read the file contents into a destination D3D12 buffer resource.
+    // Note: The example request below is performing a single read of the entire file contents.
+
+    request.Options.SourceType := Ord(DSTORAGE_REQUEST_SOURCE_FILE);
+    request.Options.DestinationType := Ord(DSTORAGE_REQUEST_DESTINATION_BUFFER);
+    request.Source.SourceFile.Source := PIDStorageFile(StorageFile);
+    request.Source.SourceFile.Offset := 0;
+    request.Source.SourceFile.Size := fileSize;
+    request.UncompressedSize := fileSize;
+    request.Destination.Buffer.Resource := PID3D12Resource(bufferResource);
+    request.Destination.Buffer.Offset := 0;
+    request.Destination.Buffer.Size := request.Source.SourceFile.Size;
+
+    queue.EnqueueRequest(@request);
+
+    // Configure a fence to be signaled when the request is completed
+
+    hr := device.CreateFence(0, D3D12_FENCE_FLAG_NONE, @IID_ID3D12Fence, fence);
+    if hr <> S_OK then
+        Exit;
+
+    fenceEvent := CreateEvent(nil, False, False, nil);
+    fenceValue := 1;
+    hr := fence.SetEventOnCompletion(fenceValue, fenceEvent);
+    if hr <> S_OK then
+        Exit;
+
+    queue.EnqueueSignal(PID3D12Fence(fence), fenceValue);
+
+    // Tell DirectStorage to start executing all queued items.
+    queue.Submit();
+
+    // Wait for the submitted work to complete
+    Writeln('Waiting for the DirectStorage request to complete...');
+    WaitForSingleObject(fenceEvent, INFINITE);
+
+    // Check the status array for errors.
+    // If an error was detected the first failure record
+    // can be retrieved to get more details.
+
+    queue.RetrieveErrorRecord(@errorRecord);
+    if (FAILED(errorRecord.FirstFailure.HResult)) then
+    begin
+
+        // errorRecord.FailureCount - The number of failed requests in the queue since the last
+        //                            RetrieveErrorRecord call.
+        // errorRecord.FirstFailure - Detailed record about the first failed command in the enqueue order.
+
+        Writeln(Format('The DirectStorage request failed! HRESULT=0x', [errorRecord.FirstFailure.HResult]));
+    end
+    else
+    begin
+        Writeln('The DirectStorage request completed successfully!');
+    end;
+
+    //return 0;
+
+end.

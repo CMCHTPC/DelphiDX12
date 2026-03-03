@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <PathDelim Value="\"/>
+    <Version Value="12"/>
+    <BuildModes Active="Default"/>
+    <Units>
+      <Unit>
+        <Filename Value="HelloTexture.ppr"/>
+        <FRMtype Value="0"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="7"/>
+        <CursorPos X="42" Y="20"/>
+        <UsageCount Value="57"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\..\..\Units\DirectX12\DX12.D3D12.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="3552"/>
+        <CursorPos X="96" Y="3565"/>
+        <UsageCount Value="57"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\..\..\Units\DirectXMath\DirectX.Math.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="55"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\HelloWindow\D3D12HelloWindow.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="2"/>
+        <CursorPos X="6" Y="207"/>
+        <UsageCount Value="19"/>
+        <Bookmarks Count="1">
+          <Item0 Y="183"/>
+        </Bookmarks>
+      </Unit>
+      <Unit>
+        <Filename Value="..\HelloWindow\DXSample.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="26"/>
+        <CursorPos X="5" Y="19"/>
+        <UsageCount Value="19"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\HelloWindow\DXSampleHelper.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="4"/>
+        <CursorPos X="51" Y="12"/>
+        <UsageCount Value="19"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\..\..\Units\DX12.DXGI1_4.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="17"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\HelloWindow\Win32Application.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="37"/>
+        <CursorPos X="13" Y="52"/>
+        <UsageCount Value="19"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\..\..\Units\DX12.DXGI.pas"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="709"/>
+        <CursorPos X="26" Y="719"/>
+        <UsageCount Value="7"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\..\..\Units\DirectX12\DX12.D3DX12.pas"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="53"/>
+        <CursorPos X="69" Y="66"/>
+        <UsageCount Value="7"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\HelloTriangle\D3D12HelloTriangle.pas"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="70"/>
+        <CursorPos X="81" Y="77"/>
+        <UsageCount Value="7"/>
+        <Bookmarks Count="1">
+          <Item0 Y="225"/>
+        </Bookmarks>
+      </Unit>
+      <Unit>
+        <Filename Value="..\HelloTriangle\DXSampleHelper.pas"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="19"/>
+        <CursorPos Y="35"/>
+        <UsageCount Value="7"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\D3D12Multithreading\DXSampleHelper.pas"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="169"/>
+        <CursorPos X="33" Y="172"/>
+        <UsageCount Value="7"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\HelloTriangle\DXSample.pas"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="34"/>
+        <CursorPos X="19" Y="46"/>
+        <UsageCount Value="7"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\HelloTriangle\Win32Application.pas"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="65"/>
+        <CursorPos X="30" Y="77"/>
+        <UsageCount Value="7"/>
+      </Unit>
+      <Unit>
+        <Filename Value="D3D12HelloTexture.pas"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="467"/>
+        <CursorPos X="53" Y="484"/>
+        <UsageCount Value="29"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="DXSample.pas"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="10"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="96"/>
+        <CursorPos Y="113"/>
+        <UsageCount Value="29"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3D.pas"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="3"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="26"/>
+        <CursorPos X="14" Y="38"/>
+        <UsageCount Value="17"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="DXSampleHelper.pas"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="11"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="22"/>
+        <CursorPos Y="43"/>
+        <UsageCount Value="29"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3D12.pas"/>
+        <FRMtype Value="0"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="1"/>
+        <TopLine Value="8995"/>
+        <CursorPos X="13" Y="9022"/>
+        <UsageCount Value="29"/>
+        <Bookmarks Count="1">
+          <Item0 X="66" Y="10357" Left="1" Top="10339"/>
+        </Bookmarks>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3DX12_Root_Signature.pas"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="6"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="135"/>
+        <CursorPos X="19" Y="148"/>
+        <UsageCount Value="28"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3DX12_Core.pas"/>
+        <FRMtype Value="0"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="7"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="489"/>
+        <CursorPos X="4" Y="509"/>
+        <UsageCount Value="28"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3DX12_Resource_Helpers.pas"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="4"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="59"/>
+        <CursorPos X="15" Y="59"/>
+        <UsageCount Value="20"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3DCommon.pas"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="5"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="118"/>
+        <CursorPos X="17" Y="138"/>
+        <UsageCount Value="20"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3DX12_Barriers.pas"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="9"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="175"/>
+        <CursorPos X="26" Y="191"/>
+        <UsageCount Value="19"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="Win32Application.pas"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="2"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="134"/>
+        <CursorPos Y="147"/>
+        <UsageCount Value="17"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3DX12_Default.pas"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="8"/>
+        <WindowIndex Value="0"/>
+        <CursorPos Y="10"/>
+        <UsageCount Value="16"/>
+        <Loaded Value="True"/>
+      </Unit>
+    </Units>
+    <General>
+      <ActiveWindowIndexAtStart Value="1"/>
+    </General>
+    <JumpHistory HistoryIndex="29">
+      <Position>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3D12.pas"/>
+        <Caret Line="2866" Column="49" TopLine="2843"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3D12.pas"/>
+        <Caret Line="2886" Column="49" TopLine="2863"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3D12.pas"/>
+        <Caret Line="2896" Column="45" TopLine="2891"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3D12.pas"/>
+        <Caret Line="2905" Column="47" TopLine="2891"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3D12.pas"/>
+        <Caret Line="2914" Column="67" TopLine="2891"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3D12.pas"/>
+        <Caret Line="2923" Column="64" TopLine="2900"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3D12.pas"/>
+        <Caret Line="2933" Column="45" TopLine="2910"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3D12.pas"/>
+        <Caret Line="2943" Column="46" TopLine="2920"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3D12.pas"/>
+        <Caret Line="2981" Column="36" TopLine="2958"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3D12.pas"/>
+        <Caret Line="3018" Column="30" TopLine="3010"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3D12.pas"/>
+        <Caret Line="3042" Column="62" TopLine="3031"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3D12.pas"/>
+        <Caret Line="3080" Column="31" TopLine="3069"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3D12.pas"/>
+        <Caret Line="69" Column="42" TopLine="52"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3D12.pas"/>
+        <Caret Line="1549" Column="94" TopLine="1524"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3DX12_Core.pas"/>
+        <Caret Line="34" Column="26" TopLine="13"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3D12.pas"/>
+        <Caret Line="8957" Column="24" TopLine="8946"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3D12.pas"/>
+        <Caret Line="1550" Column="108" TopLine="1535"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3D12.pas"/>
+        <Caret Line="1549" Column="53" TopLine="1535"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3DX12_Core.pas"/>
+        <Caret Line="492" Column="13" TopLine="481"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3DX12_Core.pas"/>
+        <Caret Line="390" TopLine="376"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3DX12_Core.pas"/>
+        <Caret Line="494" Column="5" TopLine="492"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3D12.pas"/>
+        <Caret Line="8776" Column="25" TopLine="8763"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3DX12_Core.pas"/>
+        <Caret Line="390" Column="15" TopLine="376"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3D12.pas"/>
+        <Caret Line="8890" Column="29" TopLine="8872"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3DX12_Core.pas"/>
+        <Caret Line="498" Column="24" TopLine="486"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3D12.pas"/>
+        <Caret Line="1197" Column="116" TopLine="1180"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3D12.pas"/>
+        <Caret Line="1543" Column="200" TopLine="1516"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3D12.pas"/>
+        <Caret Line="1541" Column="26" TopLine="1516"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3DX12_Core.pas"/>
+        <Caret Line="34" Column="31" TopLine="25"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\..\..\..\..\Units\DX12\DX12.D3D12.pas"/>
+        <Caret Line="9022" Column="28" TopLine="8993"/>
+      </Position>
+    </JumpHistory>
+    <RunParams>
+      <FormatVersion Value="2"/>
+      <Modes ActiveMode=""/>
+    </RunParams>
+  </ProjectSession>
+  <Debugging>
+    <BreakPoints>
+      <Item>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="DXSampleHelper.pas"/>
+        <Line Value="43"/>
+      </Item>
+    </BreakPoints>
+  </Debugging>
+</CONFIG>

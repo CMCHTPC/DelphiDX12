@@ -1,0 +1,5860 @@
+(************************************************************************
+*                                                                       *
+*   winbase.h -- This module defines the 32-Bit Windows Base APIs       *
+*                                                                       *
+*   Copyright (c) Microsoft Corp. All rights reserved.                  *
+*                                                                       *
+************************************************************************)
+unit Win32.WinBase;
+
+{$mode ObjFPC}{$H+}
+
+interface
+
+uses
+    Windows, Classes, SysUtils,
+    Win32.LibLoaderAPI,
+    Win32.MinWinBase,
+    Win32.FileAPI,
+    Win32.WinNT;
+
+    {$Z4}
+
+
+    {$DEFINE NTDDI_WINXPSP3}
+    {$DEFINE NTDDI_WIN11_ZN}
+    {$DEFINE NTDDI_WIN11_GA}
+    {$DEFINE WIN32_WINNT_WIN10_RS1}
+    {$DEFINE NTDDI_WIN10_RS3}
+    {$DEFINE NTDDI_WIN10_GE}
+    {$DEFINE WIN32_WINNT_WIN8}
+
+
+const
+    KERNEL32_DLL = 'Kernel32.dll';
+    ADVAPI32_DLL ='Advapi32.dll';
+
+    FILE_BEGIN = 0;
+    FILE_CURRENT = 1;
+    FILE_END = 2;
+
+    WAIT_FAILED = DWORD($FFFFFFFF);
+    WAIT_OBJECT_0 = ((STATUS_WAIT_0) + 0);
+
+    WAIT_ABANDONED = ((STATUS_ABANDONED_WAIT_0) + 0);
+    WAIT_ABANDONED_0 = ((STATUS_ABANDONED_WAIT_0) + 0);
+
+    WAIT_IO_COMPLETION = STATUS_USER_APC;
+
+
+(*
+SecureZeroMemory = RtlSecureZeroMemory;
+CaptureStackBackTrace = RtlCaptureStackBackTrace;
+
+CopyVolatileMemory = RtlCopyVolatileMemory;
+MoveVolatileMemory = RtlMoveVolatileMemory;
+FillVolatileMemory = RtlFillVolatileMemory;
+SecureZeroMemory2 = RtlSecureZeroMemory2;
+ZeroVolatileMemory = RtlZeroVolatileMemory;
+
+CopyDeviceMemory = RtlCopyDeviceMemory;
+FillDeviceMemory = RtlFillDeviceMemory;
+ZeroDeviceMemory = RtlZeroDeviceMemory;    *)
+
+
+    // File creation flags must start at the high end since they
+    // are combined with the attributes
+
+
+    //  These are flags supported through CreateFile (W7) and CreateFile2 (W8 and beyond)
+
+
+    FILE_FLAG_WRITE_THROUGH = $80000000;
+    FILE_FLAG_OVERLAPPED = $40000000;
+    FILE_FLAG_NO_BUFFERING = $20000000;
+    FILE_FLAG_RANDOM_ACCESS = $10000000;
+    FILE_FLAG_SEQUENTIAL_SCAN = $08000000;
+    FILE_FLAG_DELETE_ON_CLOSE = $04000000;
+    FILE_FLAG_BACKUP_SEMANTICS = $02000000;
+    FILE_FLAG_POSIX_SEMANTICS = $01000000;
+    FILE_FLAG_SESSION_AWARE = $00800000;
+    FILE_FLAG_OPEN_REPARSE_POINT = $00200000;
+    FILE_FLAG_OPEN_NO_RECALL = $00100000;
+    FILE_FLAG_FIRST_PIPE_INSTANCE = $00080000;
+
+
+    //  These are flags supported only through CreateFile2 (W8 and beyond)
+
+    //  Due to the multiplexing of file creation flags, file attribute flags and
+    //  security QoS flags into a single DWORD (dwFlagsAndAttributes) parameter for
+    //  CreateFile, there is no way to add any more flags to CreateFile. Additional
+    //  flags for the create operation must be added to CreateFile2 only
+
+
+    FILE_FLAG_OPEN_REQUIRING_OPLOCK = $00040000;
+
+
+    FILE_FLAG_IGNORE_IMPERSONATED_DEVICEMAP = $00020000;
+
+
+    FILE_FLAG_DISALLOW_PATH_REDIRECTS = $00010000;
+
+
+    // Define possible return codes from the CopyFileEx callback routine
+
+
+    PROGRESS_CONTINUE = 0;
+    PROGRESS_CANCEL = 1;
+    PROGRESS_STOP = 2;
+    PROGRESS_QUIET = 3;
+
+
+    // Define CopyFileEx callback routine state change values
+
+
+    CALLBACK_CHUNK_FINISHED = $00000000;
+    CALLBACK_STREAM_SWITCH = $00000001;
+
+
+    // Define CopyFileEx option flags
+
+
+    COPY_FILE_FAIL_IF_EXISTS = $00000001;
+    COPY_FILE_RESTARTABLE = $00000002;
+    COPY_FILE_OPEN_SOURCE_FOR_WRITE = $00000004;
+    COPY_FILE_ALLOW_DECRYPTED_DESTINATION = $00000008;
+
+
+    //  Gap for private copyfile flags
+
+
+    COPY_FILE_COPY_SYMLINK = $00000800;
+    COPY_FILE_NO_BUFFERING = $00001000;
+
+
+    //  CopyFile2 flags
+
+
+    COPY_FILE_REQUEST_SECURITY_PRIVILEGES = $00002000;
+    COPY_FILE_RESUME_FROM_PAUSE = $00004000;
+
+
+    COPY_FILE_NO_OFFLOAD = $00040000;
+
+
+    COPY_FILE_IGNORE_EDP_BLOCK = $00400000;
+    COPY_FILE_IGNORE_SOURCE_ENCRYPTION = $00800000;
+
+    // Don't request WRITE_DAC for the destination file access.
+    COPY_FILE_DONT_REQUEST_DEST_WRITE_DAC = $02000000;
+
+    // If either source or target is an SMB share, compression
+    // will be requested on all READs and WRITEs.
+    COPY_FILE_REQUEST_COMPRESSED_TRAFFIC = $10000000;
+
+
+    //  Additional flags for CopyFileEx() and CopyFile2().
+
+
+    COPY_FILE_OPEN_AND_COPY_REPARSE_POINT = $00200000;
+    COPY_FILE_DIRECTORY = $00000080;
+    COPY_FILE_SKIP_ALTERNATE_STREAMS = $00008000;
+    COPY_FILE_DISABLE_PRE_ALLOCATION = $04000000;
+
+
+    //  Additional flags for CopyFile2().
+
+
+    COPY_FILE_ENABLE_LOW_FREE_SPACE_MODE = $08000000;
+
+
+    //  CopyFile flag to explicitly enable retaining sparse state
+    //  during copying.
+
+
+    COPY_FILE_ENABLE_SPARSE_COPY = $20000000;
+
+
+    {$IFDEF NTDDI_WIN11_ZN}
+
+
+    //  CopyFile flag to explicitly disable retaining sparse state
+    //  during copying. COPY_FILE_DISABLE_SPARSE_COPY overrides
+    //  COPY_FILE_ENABLE_SPARSE_COPY
+
+
+    COPY_FILE_DISABLE_SPARSE_COPY = $80000000;
+
+    {$ENDIF}// (NTDDI_VERSION >= NTDDI_WIN11_ZN)
+
+
+    // Define ReplaceFile option flags
+
+
+    REPLACEFILE_WRITE_THROUGH = $00000001;
+    REPLACEFILE_IGNORE_MERGE_ERRORS = $00000002;
+
+
+    REPLACEFILE_IGNORE_ACL_ERRORS = $00000004;
+
+
+    // Define the NamedPipe definitions
+
+
+    // Define the dwOpenMode values for CreateNamedPipe
+
+
+    PIPE_ACCESS_INBOUND = $00000001;
+    PIPE_ACCESS_OUTBOUND = $00000002;
+    PIPE_ACCESS_DUPLEX = $00000003;
+
+
+    // Define the Named Pipe End flags for GetNamedPipeInfo
+
+
+    PIPE_CLIENT_END = $00000000;
+    PIPE_SERVER_END = $00000001;
+
+
+    // Define the dwPipeMode values for CreateNamedPipe
+
+
+    PIPE_WAIT = $00000000;
+    PIPE_NOWAIT = $00000001;
+    PIPE_READMODE_BYTE = $00000000;
+    PIPE_READMODE_MESSAGE = $00000002;
+    PIPE_TYPE_BYTE = $00000000;
+    PIPE_TYPE_MESSAGE = $00000004;
+    PIPE_ACCEPT_REMOTE_CLIENTS = $00000000;
+    PIPE_REJECT_REMOTE_CLIENTS = $00000008;
+
+
+    // Define the well known values for CreateNamedPipe nMaxInstances
+
+
+    PIPE_UNLIMITED_INSTANCES = 255;
+
+
+    // Define the Security Quality of Service bits to be passed
+    // into CreateFile
+
+
+    SECURITY_ANONYMOUS = (Ord(SecurityAnonymous) shl 16);
+    SECURITY_IDENTIFICATION = (Ord(SecurityIdentification) shl 16);
+    SECURITY_IMPERSONATION = (Ord(SecurityImpersonation) shl 16);
+    SECURITY_DELEGATION = (Ord(SecurityDelegation) shl 16);
+
+    SECURITY_CONTEXT_TRACKING = $00040000;
+    SECURITY_EFFECTIVE_ONLY = $00080000;
+
+    SECURITY_SQOS_PRESENT = $00100000;
+    SECURITY_VALID_SQOS_FLAGS = $001F0000;
+
+
+    // FailFast Exception Flags
+
+
+    FAIL_FAST_GENERATE_EXCEPTION_ADDRESS = $1;
+    FAIL_FAST_NO_HARD_ERROR_DLG = $2;
+
+
+    // Serial provider type.
+
+
+    SP_SERIALCOMM = DWORD($00000001);
+
+
+    // Provider SubTypes
+
+
+    PST_UNSPECIFIED = DWORD($00000000);
+    PST_RS232 = DWORD($00000001);
+    PST_PARALLELPORT = DWORD($00000002);
+    PST_RS422 = DWORD($00000003);
+    PST_RS423 = DWORD($00000004);
+    PST_RS449 = DWORD($00000005);
+    PST_MODEM = DWORD($00000006);
+    PST_FAX = DWORD($00000021);
+    PST_SCANNER = DWORD($00000022);
+    PST_NETWORK_BRIDGE = DWORD($00000100);
+    PST_LAT = DWORD($00000101);
+    PST_TCPIP_TELNET = DWORD($00000102);
+    PST_X25 = DWORD($00000103);
+
+
+    // Provider capabilities flags.
+
+
+    PCF_DTRDSR = DWORD($0001);
+    PCF_RTSCTS = DWORD($0002);
+    PCF_RLSD = DWORD($0004);
+    PCF_PARITY_CHECK = DWORD($0008);
+    PCF_XONXOFF = DWORD($0010);
+    PCF_SETXCHAR = DWORD($0020);
+    PCF_TOTALTIMEOUTS = DWORD($0040);
+    PCF_INTTIMEOUTS = DWORD($0080);
+    PCF_SPECIALCHARS = DWORD($0100);
+    PCF_16BITMODE = DWORD($0200);
+
+
+    // Comm provider settable parameters.
+
+
+    SP_PARITY = DWORD($0001);
+    SP_BAUD = DWORD($0002);
+    SP_DATABITS = DWORD($0004);
+    SP_STOPBITS = DWORD($0008);
+    SP_HANDSHAKING = DWORD($0010);
+    SP_PARITY_CHECK = DWORD($0020);
+    SP_RLSD = DWORD($0040);
+
+
+    // Settable baud rates in the provider.
+
+
+    BAUD_075 = DWORD($00000001);
+    BAUD_110 = DWORD($00000002);
+    BAUD_134_5 = DWORD($00000004);
+    BAUD_150 = DWORD($00000008);
+    BAUD_300 = DWORD($00000010);
+    BAUD_600 = DWORD($00000020);
+    BAUD_1200 = DWORD($00000040);
+    BAUD_1800 = DWORD($00000080);
+    BAUD_2400 = DWORD($00000100);
+    BAUD_4800 = DWORD($00000200);
+    BAUD_7200 = DWORD($00000400);
+    BAUD_9600 = DWORD($00000800);
+    BAUD_14400 = DWORD($00001000);
+    BAUD_19200 = DWORD($00002000);
+    BAUD_38400 = DWORD($00004000);
+    BAUD_56K = DWORD($00008000);
+    BAUD_128K = DWORD($00010000);
+    BAUD_115200 = DWORD($00020000);
+    BAUD_57600 = DWORD($00040000);
+    BAUD_USER = DWORD($10000000);
+
+
+    // Settable Data Bits
+
+
+    DATABITS_5 = word($0001);
+    DATABITS_6 = word($0002);
+    DATABITS_7 = word($0004);
+    DATABITS_8 = word($0008);
+    DATABITS_16 = word($0010);
+    DATABITS_16X = word($0020);
+
+
+    // Settable Stop and Parity bits.
+
+
+    STOPBITS_10 = word($0001);
+    STOPBITS_15 = word($0002);
+    STOPBITS_20 = word($0004);
+    PARITY_NONE = word($0100);
+    PARITY_ODD = word($0200);
+    PARITY_EVEN = word($0400);
+    PARITY_MARK = word($0800);
+    PARITY_SPACE = word($1000);
+
+
+    // Set dwProvSpec1 to COMMPROP_INITIALIZED to indicate that wPacketLength
+    // is valid before a call to GetCommProperties().
+
+    COMMPROP_INITIALIZED = DWORD($E73CF52E);
+
+
+    // DTR Control Flow Values.
+
+    DTR_CONTROL_DISABLE = $00;
+    DTR_CONTROL_ENABLE = $01;
+    DTR_CONTROL_HANDSHAKE = $02;
+
+
+    // RTS Control Flow Values
+
+    RTS_CONTROL_DISABLE = $00;
+    RTS_CONTROL_ENABLE = $01;
+    RTS_CONTROL_HANDSHAKE = $02;
+    RTS_CONTROL_TOGGLE = $03;
+
+
+    (* Global Memory Flags *)
+    GMEM_FIXED = $0000;
+    GMEM_MOVEABLE = $0002;
+    GMEM_NOCOMPACT = $0010;
+    GMEM_NODISCARD = $0020;
+    GMEM_ZEROINIT = $0040;
+    GMEM_MODIFY = $0080;
+    GMEM_DISCARDABLE = $0100;
+    GMEM_NOT_BANKED = $1000;
+    GMEM_SHARE = $2000;
+    GMEM_DDESHARE = $2000;
+    GMEM_NOTIFY = $4000;
+    GMEM_LOWER = GMEM_NOT_BANKED;
+    GMEM_VALID_FLAGS = $7F72;
+    GMEM_INVALID_HANDLE = $8000;
+
+    GHND = (GMEM_MOVEABLE or GMEM_ZEROINIT);
+    GPTR = (GMEM_FIXED or GMEM_ZEROINIT);
+
+
+    (* Flags returned by GlobalFlags (in addition to GMEM_DISCARDABLE) *)
+    GMEM_DISCARDED = $4000;
+    GMEM_LOCKCOUNT = $00FF;
+
+
+    // Process dwCreationFlag values
+
+
+    DEBUG_PROCESS = $00000001;
+    DEBUG_ONLY_THIS_PROCESS = $00000002;
+    CREATE_SUSPENDED = $00000004;
+    DETACHED_PROCESS = $00000008;
+
+    CREATE_NEW_CONSOLE = $00000010;
+    NORMAL_PRIORITY_CLASS = $00000020;
+    IDLE_PRIORITY_CLASS = $00000040;
+    HIGH_PRIORITY_CLASS = $00000080;
+
+    REALTIME_PRIORITY_CLASS = $00000100;
+    CREATE_NEW_PROCESS_GROUP = $00000200;
+    CREATE_UNICODE_ENVIRONMENT = $00000400;
+    CREATE_SEPARATE_WOW_VDM = $00000800;
+
+    CREATE_SHARED_WOW_VDM = $00001000;
+    CREATE_FORCEDOS = $00002000;
+    BELOW_NORMAL_PRIORITY_CLASS = $00004000;
+    ABOVE_NORMAL_PRIORITY_CLASS = $00008000;
+
+    INHERIT_PARENT_AFFINITY = $00010000;
+    INHERIT_CALLER_PRIORITY = $00020000; // Deprecated
+    CREATE_PROTECTED_PROCESS = $00040000;
+    EXTENDED_STARTUPINFO_PRESENT = $00080000;
+
+    PROCESS_MODE_BACKGROUND_BEGIN = $00100000;
+    PROCESS_MODE_BACKGROUND_END = $00200000;
+    CREATE_SECURE_PROCESS = $00400000;
+
+    CREATE_BREAKAWAY_FROM_JOB = $01000000;
+    CREATE_PRESERVE_CODE_AUTHZ_LEVEL = $02000000;
+    CREATE_DEFAULT_ERROR_MODE = $04000000;
+    CREATE_NO_WINDOW = $08000000;
+
+    PROFILE_USER = $10000000;
+    PROFILE_KERNEL = $20000000;
+    PROFILE_SERVER = $40000000;
+    CREATE_IGNORE_SYSTEM_DEFAULT = $80000000;
+
+
+    // Thread dwCreationFlag values
+
+    // CREATE_SUSPENDED = $00000004;
+
+
+    STACK_SIZE_PARAM_IS_A_RESERVATION = $00010000; // Threads only
+
+
+    // Priority flags
+
+    { <from winnt.h>}
+    THREAD_DYNAMIC_CODE_ALLOW = 1; // Opt-out of dynamic code generation.
+    THREAD_BASE_PRIORITY_LOWRT = 15; // value that gets a thread to LowRealtime-1
+    THREAD_BASE_PRIORITY_MAX = 2; // maximum thread base priority boost
+    THREAD_BASE_PRIORITY_MIN = (-2); // minimum thread base priority boost
+    THREAD_BASE_PRIORITY_IDLE = (-15); // value that gets a thread to idle
+    FILE_CASE_SENSITIVE_SEARCH = $00000001;
+    FILE_CASE_PRESERVED_NAMES = $00000002;
+    FILE_UNICODE_ON_DISK = $00000004;
+    FILE_PERSISTENT_ACLS = $00000008;
+    FILE_FILE_COMPRESSION = $00000010;
+    FILE_VOLUME_QUOTAS = $00000020;
+    FILE_SUPPORTS_SPARSE_FILES = $00000040;
+    FILE_SUPPORTS_REPARSE_POINTS = $00000080;
+    FILE_SUPPORTS_REMOTE_STORAGE = $00000100;
+    FILE_RETURNS_CLEANUP_RESULT_INFO = $00000200;
+    FILE_SUPPORTS_POSIX_UNLINK_RENAME = $00000400;
+    FILE_SUPPORTS_BYPASS_IO = $00000800;
+    FILE_SUPPORTS_STREAM_SNAPSHOTS = $00001000;
+    FILE_SUPPORTS_CASE_SENSITIVE_DIRS = $00002000;
+    FILE_VOLUME_IS_COMPRESSED = $00008000;
+    FILE_SUPPORTS_OBJECT_IDS = $00010000;
+    FILE_SUPPORTS_ENCRYPTION = $00020000;
+    FILE_NAMED_STREAMS = $00040000;
+    FILE_READ_ONLY_VOLUME = $00080000;
+    FILE_SEQUENTIAL_WRITE_ONCE = $00100000;
+    FILE_SUPPORTS_TRANSACTIONS = $00200000;
+    FILE_SUPPORTS_HARD_LINKS = $00400000;
+    FILE_SUPPORTS_EXTENDED_ATTRIBUTES = $00800000;
+    FILE_SUPPORTS_OPEN_BY_FILE_ID = $01000000;
+    FILE_SUPPORTS_USN_JOURNAL = $02000000;
+    FILE_SUPPORTS_INTEGRITY_STREAMS = $04000000;
+    FILE_SUPPORTS_BLOCK_REFCOUNTING = $08000000;
+    FILE_SUPPORTS_SPARSE_VDL = $10000000;
+    FILE_DAX_VOLUME = $20000000;
+    FILE_SUPPORTS_GHOSTING = $40000000;
+
+    { end of <from winnt.h>}
+
+    THREAD_PRIORITY_LOWEST = THREAD_BASE_PRIORITY_MIN;
+    THREAD_PRIORITY_BELOW_NORMAL = (THREAD_PRIORITY_LOWEST + 1);
+    THREAD_PRIORITY_NORMAL = 0;
+    THREAD_PRIORITY_HIGHEST = THREAD_BASE_PRIORITY_MAX;
+    THREAD_PRIORITY_ABOVE_NORMAL = (THREAD_PRIORITY_HIGHEST - 1);
+    THREAD_PRIORITY_ERROR_RETURN = (MAXLONG);
+
+    THREAD_PRIORITY_TIME_CRITICAL = THREAD_BASE_PRIORITY_LOWRT;
+    THREAD_PRIORITY_IDLE = THREAD_BASE_PRIORITY_IDLE;
+
+    THREAD_MODE_BACKGROUND_BEGIN = $00010000;
+    THREAD_MODE_BACKGROUND_END = $00020000;
+
+
+    // GetFinalPathNameByHandle
+
+
+    VOLUME_NAME_DOS = $0; //default
+    VOLUME_NAME_GUID = $1;
+    VOLUME_NAME_NT = $2;
+    VOLUME_NAME_NONE = $4;
+
+    FILE_NAME_NORMALIZED = $0; //default
+    FILE_NAME_OPENED = $8;
+
+
+    DRIVE_UNKNOWN = 0;
+    DRIVE_NO_ROOT_DIR = 1;
+    DRIVE_REMOVABLE = 2;
+    DRIVE_FIXED = 3;
+    DRIVE_REMOTE = 4;
+    DRIVE_CDROM = 5;
+    DRIVE_RAMDISK = 6;
+
+
+    FILE_TYPE_UNKNOWN = $0000;
+    FILE_TYPE_DISK = $0001;
+    FILE_TYPE_CHAR = $0002;
+    FILE_TYPE_PIPE = $0003;
+    FILE_TYPE_REMOTE = $8000;
+
+
+    STD_INPUT_HANDLE = DWORD(-10);
+    STD_OUTPUT_HANDLE = DWORD(-11);
+    STD_ERROR_HANDLE = DWORD(-12);
+
+
+    NOPARITY = 0;
+    ODDPARITY = 1;
+    EVENPARITY = 2;
+    MARKPARITY = 3;
+    SPACEPARITY = 4;
+
+    ONESTOPBIT = 0;
+    ONE5STOPBITS = 1;
+    TWOSTOPBITS = 2;
+
+    IGNORE = 0; // Ignore signal
+
+
+    INFINITE = $FFFFFFFF; // Infinite timeout
+
+
+    // Baud rates at which the communication device operates
+
+
+    CBR_110 = 110;
+    CBR_300 = 300;
+    CBR_600 = 600;
+    CBR_1200 = 1200;
+    CBR_2400 = 2400;
+    CBR_4800 = 4800;
+    CBR_9600 = 9600;
+    CBR_14400 = 14400;
+    CBR_19200 = 19200;
+    CBR_38400 = 38400;
+    CBR_56000 = 56000;
+    CBR_57600 = 57600;
+    CBR_115200 = 115200;
+    CBR_128000 = 128000;
+    CBR_256000 = 256000;
+
+
+    // Error Flags
+
+
+    CE_RXOVER = $0001; // Receive Queue overflow
+    CE_OVERRUN = $0002; // Receive Overrun Error
+    CE_RXPARITY = $0004; // Receive Parity Error
+    CE_FRAME = $0008; // Receive Framing error
+    CE_BREAK = $0010; // Break Detected
+    CE_TXFULL = $0100; // TX Queue is full
+    CE_PTO = $0200; // LPTx Timeout
+    CE_IOE = $0400; // LPTx I/O Error
+    CE_DNS = $0800; // LPTx Device not selected
+    CE_OOP = $1000; // LPTx Out-Of-Paper
+    CE_MODE = $8000; // Requested mode unsupported
+
+    IE_BADID = (-1); // Invalid or unsupported id
+    IE_OPEN = (-2); // Device Already Open
+    IE_NOPEN = (-3); // Device Not Open
+    IE_MEMORY = (-4); // Unable to allocate queues
+    IE_DEFAULT = (-5); // Error in default parameters
+    IE_HARDWARE = (-10); // Hardware Not Present
+    IE_BYTESIZE = (-11); // Illegal Byte Size
+    IE_BAUDRATE = (-12); // Unsupported BaudRate
+
+
+    // Events
+
+
+    EV_RXCHAR = $0001; // Any Character received
+    EV_RXFLAG = $0002; // Received certain character
+    EV_TXEMPTY = $0004; // Transmitt Queue Empty
+    EV_CTS = $0008; // CTS changed state
+    EV_DSR = $0010; // DSR changed state
+    EV_RLSD = $0020; // RLSD changed state
+    EV_BREAK = $0040; // BREAK received
+    EV_ERR = $0080; // Line status error occurred
+    EV_RING = $0100; // Ring signal detected
+    EV_PERR = $0200; // Printer error occured
+    EV_RX80FULL = $0400; // Receive buffer is 80 percent full
+    EV_EVENT1 = $0800; // Provider specific event 1
+    EV_EVENT2 = $1000; // Provider specific event 2
+
+
+    // Escape Functions
+
+
+    SETXOFF = 1; // Simulate XOFF received
+    SETXON = 2; // Simulate XON received
+    SETRTS = 3; // Set RTS high
+    CLRRTS = 4; // Set RTS low
+    SETDTR = 5; // Set DTR high
+    CLRDTR = 6; // Set DTR low
+    RESETDEV = 7; // Reset device if possible
+    SETBREAK = 8; // Set the device break line.
+    CLRBREAK = 9; // Clear the device break line.
+
+
+    // PURGE function flags.
+
+    PURGE_TXABORT = $0001; // Kill the pending/current writes to the comm port.
+    PURGE_RXABORT = $0002; // Kill the pending/current reads to the comm port.
+    PURGE_TXCLEAR = $0004; // Kill the transmit queue if there.
+    PURGE_RXCLEAR = $0008; // Kill the typeahead buffer if there.
+
+    LPTx = $80; // Set if ID is for LPT device
+
+
+    // Modem Status Flags
+
+    MS_CTS_ON = DWORD($0010);
+    MS_DSR_ON = DWORD($0020);
+    MS_RING_ON = DWORD($0040);
+    MS_RLSD_ON = DWORD($0080);
+
+
+    // WaitSoundState() Constants
+
+
+    S_QUEUEEMPTY = 0;
+    S_THRESHOLD = 1;
+    S_ALLTHRESHOLD = 2;
+
+
+    // Accent Modes
+
+
+    S_NORMAL = 0;
+    S_LEGATO = 1;
+    S_STACCATO = 2;
+
+
+    // SetSoundNoise() Sources
+
+
+    S_PERIOD512 = 0; // Freq = N/512 high pitch, less coarse hiss
+    S_PERIOD1024 = 1; // Freq = N/1024
+    S_PERIOD2048 = 2; // Freq = N/2048 low pitch, more coarse hiss
+    S_PERIODVOICE = 3; // Source is frequency from voice channel (3)
+    S_WHITE512 = 4; // Freq = N/512 high pitch, less coarse hiss
+    S_WHITE1024 = 5; // Freq = N/1024
+    S_WHITE2048 = 6; // Freq = N/2048 low pitch, more coarse hiss
+    S_WHITEVOICE = 7; // Source is frequency from voice channel (3)
+
+    S_SERDVNA = (-1); // Device not available
+    S_SEROFM = (-2); // Out of memory
+    S_SERMACT = (-3); // Music active
+    S_SERQFUL = (-4); // Queue full
+    S_SERBDNT = (-5); // Invalid note
+    S_SERDLN = (-6); // Invalid note length
+    S_SERDCC = (-7); // Invalid note count
+    S_SERDTP = (-8); // Invalid tempo
+    S_SERDVL = (-9); // Invalid volume
+    S_SERDMD = (-10); // Invalid mode
+    S_SERDSH = (-11); // Invalid shape
+    S_SERDPT = (-12); // Invalid pitch
+    S_SERDFQ = (-13); // Invalid frequency
+    S_SERDDR = (-14); // Invalid duration
+    S_SERDSR = (-15); // Invalid source
+    S_SERDST = (-16); // Invalid state
+
+
+    NMPWAIT_WAIT_FOREVER = $ffffffff;
+    NMPWAIT_NOWAIT = $00000001;
+    NMPWAIT_USE_DEFAULT_WAIT = $00000000;
+
+    FS_CASE_IS_PRESERVED = FILE_CASE_PRESERVED_NAMES;
+    FS_CASE_SENSITIVE = FILE_CASE_SENSITIVE_SEARCH;
+    FS_UNICODE_STORED_ON_DISK = FILE_UNICODE_ON_DISK;
+    FS_PERSISTENT_ACLS = FILE_PERSISTENT_ACLS;
+    FS_VOL_IS_COMPRESSED = FILE_VOLUME_IS_COMPRESSED;
+    FS_FILE_COMPRESSION = FILE_FILE_COMPRESSION;
+    FS_FILE_ENCRYPTION = FILE_SUPPORTS_ENCRYPTION;
+
+    OF_READ = $00000000;
+    OF_WRITE = $00000001;
+    OF_READWRITE = $00000002;
+    OF_SHARE_COMPAT = $00000000;
+    OF_SHARE_EXCLUSIVE = $00000010;
+    OF_SHARE_DENY_WRITE = $00000020;
+    OF_SHARE_DENY_READ = $00000030;
+    OF_SHARE_DENY_NONE = $00000040;
+    OF_PARSE = $00000100;
+    OF_DELETE = $00000200;
+    OF_VERIFY = $00000400;
+    OF_CANCEL = $00000800;
+    OF_CREATE = $00001000;
+    OF_PROMPT = $00002000;
+    OF_EXIST = $00004000;
+    OF_REOPEN = $00008000;
+
+    OFS_MAXPATHNAME = 128;
+
+
+    // GetBinaryType return values.
+
+    SCS_32BIT_BINARY = 0;
+    SCS_DOS_BINARY = 1;
+    SCS_WOW_BINARY = 2;
+    SCS_PIF_BINARY = 3;
+    SCS_POSIX_BINARY = 4;
+    SCS_OS216_BINARY = 5;
+    SCS_64BIT_BINARY = 6;
+
+
+    {$IFDEF WIN64}
+    SCS_THIS_PLATFORM_BINARY =  SCS_64BIT_BINARY;
+    {$ELSE}
+    SCS_THIS_PLATFORM_BINARY = SCS_32BIT_BINARY;
+    {$ENDIF}
+
+
+    // Fiber begin
+    FIBER_FLAG_FLOAT_SWITCH = $1; // context switch floating point
+
+
+    PROCESS_DEP_ENABLE = $00000001;
+    PROCESS_DEP_DISABLE_ATL_THUNK_EMULATION = $00000002;
+
+    RESTORE_LAST_ERROR_NAME_A = ansistring('RestoreLastError');
+    RESTORE_LAST_ERROR_NAME_W = WideString('RestoreLastError');
+    RESTORE_LAST_ERROR_NAME = 'RestoreLastError';
+
+
+    // The following flags allows an application to change
+    // the semantics of IO completion notification.
+
+
+    // Don't queue an entry to an associated completion port if returning success
+    // synchronously.
+
+
+    FILE_SKIP_COMPLETION_PORT_ON_SUCCESS = $1;
+
+
+    // Don't set the file handle event on IO completion.
+
+    FILE_SKIP_SET_EVENT_ON_HANDLE = $2;
+
+
+    SEM_FAILCRITICALERRORS = $0001;
+    SEM_NOGPFAULTERRORBOX = $0002;
+    SEM_NOALIGNMENTFAULTEXCEPT = $0004;
+    SEM_NOOPENFILEERRORBOX = $8000;
+
+
+    HANDLE_FLAG_INHERIT = $00000001;
+    HANDLE_FLAG_PROTECT_FROM_CLOSE = $00000002;
+
+    HINSTANCE_ERROR = 32;
+
+    GET_TAPE_MEDIA_INFORMATION = 0;
+    GET_TAPE_DRIVE_INFORMATION = 1;
+
+
+    SET_TAPE_MEDIA_INFORMATION = 0;
+    SET_TAPE_DRIVE_INFORMATION = 1;
+
+
+    FORMAT_MESSAGE_ALLOCATE_BUFFER = $00000100;
+
+
+    FORMAT_MESSAGE_IGNORE_INSERTS = $00000200;
+    FORMAT_MESSAGE_FROM_STRING = $00000400;
+    FORMAT_MESSAGE_FROM_HMODULE = $00000800;
+    FORMAT_MESSAGE_FROM_SYSTEM = $00001000;
+    FORMAT_MESSAGE_ARGUMENT_ARRAY = $00002000;
+    FORMAT_MESSAGE_MAX_WIDTH_MASK = $000000FF;
+
+
+    //  Encryption Status Value
+
+
+    FILE_ENCRYPTABLE = 0;
+    FILE_IS_ENCRYPTED = 1;
+    FILE_SYSTEM_ATTR = 2;
+    FILE_ROOT_DIR = 3;
+    FILE_SYSTEM_DIR = 4;
+    FILE_UNKNOWN = 5;
+    FILE_SYSTEM_NOT_SUPPORT = 6;
+    FILE_USER_DISALLOWED = 7;
+    FILE_READ_ONLY = 8;
+    FILE_DIR_DISALLOWED = 9;
+
+
+    // Currently defined recovery flags
+
+
+    EFS_USE_RECOVERY_KEYS = ($1);
+
+
+    //  OpenRaw flag values
+
+
+    CREATE_FOR_IMPORT = (1);
+    CREATE_FOR_DIR = (2);
+    OVERWRITE_HIDDEN = (4);
+    EFSRPC_SECURE_ONLY = (8);
+    EFS_DROP_ALTERNATE_STREAMS = ($10);
+
+
+    //  Stream Ids
+
+
+    BACKUP_INVALID = $00000000;
+    BACKUP_DATA = $00000001;
+    BACKUP_EA_DATA = $00000002;
+    BACKUP_SECURITY_DATA = $00000003;
+    BACKUP_ALTERNATE_DATA = $00000004;
+    BACKUP_LINK = $00000005;
+    BACKUP_PROPERTY_DATA = $00000006;
+    BACKUP_OBJECT_ID = $00000007;
+    BACKUP_REPARSE_DATA = $00000008;
+    BACKUP_SPARSE_BLOCK = $00000009;
+    BACKUP_TXFS_DATA = $0000000a;
+    BACKUP_GHOSTED_FILE_EXTENTS = $0000000b;
+
+
+    //  Stream Attributes
+
+
+    STREAM_NORMAL_ATTRIBUTE = $00000000;
+    STREAM_MODIFIED_WHEN_READ = $00000001;
+    STREAM_CONTAINS_SECURITY = $00000002;
+    STREAM_CONTAINS_PROPERTIES = $00000004;
+    STREAM_SPARSE_ATTRIBUTE = $00000008;
+    STREAM_CONTAINS_GHOSTED_FILE_EXTENTS = $00000010;
+
+
+    // Dual Mode API below this line. Dual Mode Structures also included.
+
+
+    STARTF_USESHOWWINDOW = $00000001;
+    STARTF_USESIZE = $00000002;
+    STARTF_USEPOSITION = $00000004;
+    STARTF_USECOUNTCHARS = $00000008;
+    STARTF_USEFILLATTRIBUTE = $00000010;
+    STARTF_RUNFULLSCREEN = $00000020; // ignored for non-x86 platforms
+    STARTF_FORCEONFEEDBACK = $00000040;
+    STARTF_FORCEOFFFEEDBACK = $00000080;
+    STARTF_USESTDHANDLES = $00000100;
+
+
+    STARTF_USEHOTKEY = $00000200;
+    STARTF_TITLEISLINKNAME = $00000800;
+    STARTF_TITLEISAPPID = $00001000;
+    STARTF_PREVENTPINNING = $00002000;
+
+
+    STARTF_UNTRUSTEDSOURCE = $00008000;
+
+
+    STARTF_HOLOGRAPHIC = $00040000;
+
+
+    SHUTDOWN_NORETRY = $00000001;
+
+
+    // Supported process protection levels.
+
+
+    PROTECTION_LEVEL_WINTCB_LIGHT = $00000000;
+    PROTECTION_LEVEL_WINDOWS = $00000001;
+    PROTECTION_LEVEL_WINDOWS_LIGHT = $00000002;
+    PROTECTION_LEVEL_ANTIMALWARE_LIGHT = $00000003;
+    PROTECTION_LEVEL_LSA_LIGHT = $00000004;
+
+
+    // The following protection levels are supplied for testing only (no win32
+    // callers need these).
+
+
+    PROTECTION_LEVEL_WINTCB = $00000005;
+    PROTECTION_LEVEL_CODEGEN_LIGHT = $00000006;
+    PROTECTION_LEVEL_AUTHENTICODE = $00000007;
+    PROTECTION_LEVEL_PPL_APP = $00000008;
+
+    PROTECTION_LEVEL_SAME = $FFFFFFFF;
+
+
+    // The following is only used as a value for ProtectionLevel
+    // when querying ProcessProtectionLevelInfo in GetProcessInformation.
+
+    PROTECTION_LEVEL_NONE = $FFFFFFFE;
+
+
+    PROCESS_NAME_NATIVE = $00000001;
+
+
+    // Extended process and thread attribute support
+
+
+    PROC_THREAD_ATTRIBUTE_NUMBER = $0000FFFF;
+    PROC_THREAD_ATTRIBUTE_THREAD = $00010000; // Attribute may be used with thread creation
+    PROC_THREAD_ATTRIBUTE_INPUT = $00020000; // Attribute is input only
+    PROC_THREAD_ATTRIBUTE_ADDITIVE = $00040000; // Attribute may be "accumulated," e.g. bitmasks, counters, etc.
+
+
+    // Define legacy creation mitigation policy options, which are straight
+    // bitmasks.  Bits 0-5 are legacy bits.
+
+
+    PROCESS_CREATION_MITIGATION_POLICY_DEP_ENABLE = $01;
+    PROCESS_CREATION_MITIGATION_POLICY_DEP_ATL_THUNK_ENABLE = $02;
+    PROCESS_CREATION_MITIGATION_POLICY_SEHOP_ENABLE = $04;
+
+
+    // Define mandatory ASLR options.  Mandatory ASLR forcibly rebases images that
+    // are not dynamic base compatible by acting as though there were an image base
+    // collision at load time.
+
+    // Note that 'require relocations' mode refuses load of images that do not have
+    // a base relocation section.
+
+
+    PROCESS_CREATION_MITIGATION_POLICY_FORCE_RELOCATE_IMAGES_MASK = ($00000003 shl 8);
+    PROCESS_CREATION_MITIGATION_POLICY_FORCE_RELOCATE_IMAGES_DEFER = ($00000000 shl 8);
+    PROCESS_CREATION_MITIGATION_POLICY_FORCE_RELOCATE_IMAGES_ALWAYS_ON = ($00000001 shl 8);
+    PROCESS_CREATION_MITIGATION_POLICY_FORCE_RELOCATE_IMAGES_ALWAYS_OFF = ($00000002 shl 8);
+    PROCESS_CREATION_MITIGATION_POLICY_FORCE_RELOCATE_IMAGES_ALWAYS_ON_REQ_RELOCS = ($00000003 shl 8);
+
+
+    // Define heap terminate on corruption options.  Note that 'always off' does
+    // not override the default opt-in for binaries with current subsystem versions
+    // set in the image header.
+
+    // Heap terminate on corruption is user mode enforced.
+
+
+    PROCESS_CREATION_MITIGATION_POLICY_HEAP_TERMINATE_MASK = ($00000003 shl 12);
+    PROCESS_CREATION_MITIGATION_POLICY_HEAP_TERMINATE_DEFER = ($00000000 shl 12);
+    PROCESS_CREATION_MITIGATION_POLICY_HEAP_TERMINATE_ALWAYS_ON = ($00000001 shl 12);
+    PROCESS_CREATION_MITIGATION_POLICY_HEAP_TERMINATE_ALWAYS_OFF = ($00000002 shl 12);
+    PROCESS_CREATION_MITIGATION_POLICY_HEAP_TERMINATE_RESERVED = ($00000003 shl 12);
+
+
+    // Define bottom up randomization (includes stack randomization) options,
+    // i.e. randomization of the lowest user address.
+
+
+    PROCESS_CREATION_MITIGATION_POLICY_BOTTOM_UP_ASLR_MASK = ($00000003 shl 16);
+    PROCESS_CREATION_MITIGATION_POLICY_BOTTOM_UP_ASLR_DEFER = ($00000000 shl 16);
+    PROCESS_CREATION_MITIGATION_POLICY_BOTTOM_UP_ASLR_ALWAYS_ON = ($00000001 shl 16);
+    PROCESS_CREATION_MITIGATION_POLICY_BOTTOM_UP_ASLR_ALWAYS_OFF = ($00000002 shl 16);
+    PROCESS_CREATION_MITIGATION_POLICY_BOTTOM_UP_ASLR_RESERVED = ($00000003 shl 16);
+
+
+    // Define high entropy bottom up randomization.  Note that high entropy bottom
+    // up randomization is effective if and only if bottom up ASLR is also enabled.
+
+    // N.B.  High entropy mode is only meaningful for native 64-bit processes.  in
+    //       high entropy mode, up to 1TB of bottom up variance is enabled.
+
+
+    PROCESS_CREATION_MITIGATION_POLICY_HIGH_ENTROPY_ASLR_MASK = ($00000003 shl 20);
+    PROCESS_CREATION_MITIGATION_POLICY_HIGH_ENTROPY_ASLR_DEFER = ($00000000 shl 20);
+    PROCESS_CREATION_MITIGATION_POLICY_HIGH_ENTROPY_ASLR_ALWAYS_ON = ($00000001 shl 20);
+    PROCESS_CREATION_MITIGATION_POLICY_HIGH_ENTROPY_ASLR_ALWAYS_OFF = ($00000002 shl 20);
+    PROCESS_CREATION_MITIGATION_POLICY_HIGH_ENTROPY_ASLR_RESERVED = ($00000003 shl 20);
+
+
+    // Define handle checking enforcement options.  Handle checking enforcement
+    // causes an exception to be raised immediately on a bad handle reference,
+    // versus simply returning a failure status from the handle reference.
+
+
+    PROCESS_CREATION_MITIGATION_POLICY_STRICT_HANDLE_CHECKS_MASK = ($00000003 shl 24);
+    PROCESS_CREATION_MITIGATION_POLICY_STRICT_HANDLE_CHECKS_DEFER = ($00000000 shl 24);
+    PROCESS_CREATION_MITIGATION_POLICY_STRICT_HANDLE_CHECKS_ALWAYS_ON = ($00000001 shl 24);
+    PROCESS_CREATION_MITIGATION_POLICY_STRICT_HANDLE_CHECKS_ALWAYS_OFF = ($00000002 shl 24);
+    PROCESS_CREATION_MITIGATION_POLICY_STRICT_HANDLE_CHECKS_RESERVED = ($00000003 shl 24);
+
+
+    // Define win32k system call disable options.  Win32k system call disable
+    // prevents a process from making Win32k calls.
+
+
+    PROCESS_CREATION_MITIGATION_POLICY_WIN32K_SYSTEM_CALL_DISABLE_MASK = ($00000003 shl 28);
+    PROCESS_CREATION_MITIGATION_POLICY_WIN32K_SYSTEM_CALL_DISABLE_DEFER = ($00000000 shl 28);
+    PROCESS_CREATION_MITIGATION_POLICY_WIN32K_SYSTEM_CALL_DISABLE_ALWAYS_ON = ($00000001 shl 28);
+    PROCESS_CREATION_MITIGATION_POLICY_WIN32K_SYSTEM_CALL_DISABLE_ALWAYS_OFF = ($00000002 shl 28);
+    PROCESS_CREATION_MITIGATION_POLICY_WIN32K_SYSTEM_CALL_DISABLE_RESERVED = ($00000003 shl 28);
+
+
+    // Define the extension point disable options.  Extension point disable allows
+    // a process to opt-out of loading various arbitrary extension point DLLs.
+
+
+    PROCESS_CREATION_MITIGATION_POLICY_EXTENSION_POINT_DISABLE_MASK = ($00000003 shl 32);
+    PROCESS_CREATION_MITIGATION_POLICY_EXTENSION_POINT_DISABLE_DEFER = ($00000000 shl 32);
+    PROCESS_CREATION_MITIGATION_POLICY_EXTENSION_POINT_DISABLE_ALWAYS_ON = ($00000001 shl 32);
+    PROCESS_CREATION_MITIGATION_POLICY_EXTENSION_POINT_DISABLE_ALWAYS_OFF = ($00000002 shl 32);
+    PROCESS_CREATION_MITIGATION_POLICY_EXTENSION_POINT_DISABLE_RESERVED = ($00000003 shl 32);
+
+
+    // Define dynamic code options.
+
+
+    PROCESS_CREATION_MITIGATION_POLICY_PROHIBIT_DYNAMIC_CODE_MASK = ($00000003 shl 36);
+    PROCESS_CREATION_MITIGATION_POLICY_PROHIBIT_DYNAMIC_CODE_DEFER = ($00000000 shl 36);
+    PROCESS_CREATION_MITIGATION_POLICY_PROHIBIT_DYNAMIC_CODE_ALWAYS_ON = ($00000001 shl 36);
+    PROCESS_CREATION_MITIGATION_POLICY_PROHIBIT_DYNAMIC_CODE_ALWAYS_OFF = ($00000002 shl 36);
+    PROCESS_CREATION_MITIGATION_POLICY_PROHIBIT_DYNAMIC_CODE_ALWAYS_ON_ALLOW_OPT_OUT = ($00000003 shl 36);
+
+
+    // Define Control Flow Guard (CFG) mitigation policy options.  Control Flow
+    // Guard allows indirect control transfers to be checked at runtime.
+
+
+    PROCESS_CREATION_MITIGATION_POLICY_CONTROL_FLOW_GUARD_MASK = ($00000003 shl 40);
+    PROCESS_CREATION_MITIGATION_POLICY_CONTROL_FLOW_GUARD_DEFER = ($00000000 shl 40);
+    PROCESS_CREATION_MITIGATION_POLICY_CONTROL_FLOW_GUARD_ALWAYS_ON = ($00000001 shl 40);
+    PROCESS_CREATION_MITIGATION_POLICY_CONTROL_FLOW_GUARD_ALWAYS_OFF = ($00000002 shl 40);
+    PROCESS_CREATION_MITIGATION_POLICY_CONTROL_FLOW_GUARD_EXPORT_SUPPRESSION = ($00000003 shl 40);
+
+
+    // Define module signature options.  When enabled, this option will
+    // block mapping of non-microsoft binaries.
+
+
+    PROCESS_CREATION_MITIGATION_POLICY_BLOCK_NON_MICROSOFT_BINARIES_MASK = ($00000003 shl 44);
+    PROCESS_CREATION_MITIGATION_POLICY_BLOCK_NON_MICROSOFT_BINARIES_DEFER = ($00000000 shl 44);
+    PROCESS_CREATION_MITIGATION_POLICY_BLOCK_NON_MICROSOFT_BINARIES_ALWAYS_ON = ($00000001 shl 44);
+    PROCESS_CREATION_MITIGATION_POLICY_BLOCK_NON_MICROSOFT_BINARIES_ALWAYS_OFF = ($00000002 shl 44);
+    PROCESS_CREATION_MITIGATION_POLICY_BLOCK_NON_MICROSOFT_BINARIES_ALLOW_STORE = ($00000003 shl 44);
+
+
+    // Define Font Disable Policy.  When enabled, this option will
+    // block loading Non System Fonts.
+
+
+    PROCESS_CREATION_MITIGATION_POLICY_FONT_DISABLE_MASK = ($00000003 shl 48);
+    PROCESS_CREATION_MITIGATION_POLICY_FONT_DISABLE_DEFER = ($00000000 shl 48);
+    PROCESS_CREATION_MITIGATION_POLICY_FONT_DISABLE_ALWAYS_ON = ($00000001 shl 48);
+    PROCESS_CREATION_MITIGATION_POLICY_FONT_DISABLE_ALWAYS_OFF = ($00000002 shl 48);
+    PROCESS_CREATION_MITIGATION_POLICY_AUDIT_NONSYSTEM_FONTS = ($00000003 shl 48);
+
+
+    // Define remote image load options.  When enabled, this option will
+    // block mapping of images from remote devices.
+
+
+    PROCESS_CREATION_MITIGATION_POLICY_IMAGE_LOAD_NO_REMOTE_MASK = ($00000003 shl 52);
+    PROCESS_CREATION_MITIGATION_POLICY_IMAGE_LOAD_NO_REMOTE_DEFER = ($00000000 shl 52);
+    PROCESS_CREATION_MITIGATION_POLICY_IMAGE_LOAD_NO_REMOTE_ALWAYS_ON = ($00000001 shl 52);
+    PROCESS_CREATION_MITIGATION_POLICY_IMAGE_LOAD_NO_REMOTE_ALWAYS_OFF = ($00000002 shl 52);
+    PROCESS_CREATION_MITIGATION_POLICY_IMAGE_LOAD_NO_REMOTE_RESERVED = ($00000003 shl 52);
+
+
+    // Define low IL image load options.  When enabled, this option will
+    // block mapping of images that have the low mandatory label.
+
+
+    PROCESS_CREATION_MITIGATION_POLICY_IMAGE_LOAD_NO_LOW_LABEL_MASK = ($00000003 shl 56);
+    PROCESS_CREATION_MITIGATION_POLICY_IMAGE_LOAD_NO_LOW_LABEL_DEFER = ($00000000 shl 56);
+    PROCESS_CREATION_MITIGATION_POLICY_IMAGE_LOAD_NO_LOW_LABEL_ALWAYS_ON = ($00000001 shl 56);
+    PROCESS_CREATION_MITIGATION_POLICY_IMAGE_LOAD_NO_LOW_LABEL_ALWAYS_OFF = ($00000002 shl 56);
+    PROCESS_CREATION_MITIGATION_POLICY_IMAGE_LOAD_NO_LOW_LABEL_RESERVED = ($00000003 shl 56);
+
+
+    // Define image load options to prefer System32 images compared to
+    // the same images in application directory. When enabled, this option
+    // will prefer loading images from system32 folder.
+
+
+    PROCESS_CREATION_MITIGATION_POLICY_IMAGE_LOAD_PREFER_SYSTEM32_MASK = ($00000003 shl 60);
+    PROCESS_CREATION_MITIGATION_POLICY_IMAGE_LOAD_PREFER_SYSTEM32_DEFER = ($00000000 shl 60);
+    PROCESS_CREATION_MITIGATION_POLICY_IMAGE_LOAD_PREFER_SYSTEM32_ALWAYS_ON = ($00000001 shl 60);
+    PROCESS_CREATION_MITIGATION_POLICY_IMAGE_LOAD_PREFER_SYSTEM32_ALWAYS_OFF = ($00000002 shl 60);
+    PROCESS_CREATION_MITIGATION_POLICY_IMAGE_LOAD_PREFER_SYSTEM32_RESERVED = ($00000003 shl 60);
+
+
+    // Define Loader Integrity Continuity mitigation policy options.  This mitigation
+    // enforces OS signing levels for depenedent module loads.
+
+
+    PROCESS_CREATION_MITIGATION_POLICY2_LOADER_INTEGRITY_CONTINUITY_MASK = ($00000003 shl 4);
+    PROCESS_CREATION_MITIGATION_POLICY2_LOADER_INTEGRITY_CONTINUITY_DEFER = ($00000000 shl 4);
+    PROCESS_CREATION_MITIGATION_POLICY2_LOADER_INTEGRITY_CONTINUITY_ALWAYS_ON = ($00000001 shl 4);
+    PROCESS_CREATION_MITIGATION_POLICY2_LOADER_INTEGRITY_CONTINUITY_ALWAYS_OFF = ($00000002 shl 4);
+    PROCESS_CREATION_MITIGATION_POLICY2_LOADER_INTEGRITY_CONTINUITY_AUDIT = ($00000003 shl 4);
+
+
+    // Define the strict Control Flow Guard (CFG) mitigation policy options. This mitigation
+    // requires all images that load in the process to be instrumented by CFG.
+
+
+    PROCESS_CREATION_MITIGATION_POLICY2_STRICT_CONTROL_FLOW_GUARD_MASK = ($00000003 shl 8);
+    PROCESS_CREATION_MITIGATION_POLICY2_STRICT_CONTROL_FLOW_GUARD_DEFER = ($00000000 shl 8);
+    PROCESS_CREATION_MITIGATION_POLICY2_STRICT_CONTROL_FLOW_GUARD_ALWAYS_ON = ($00000001 shl 8);
+    PROCESS_CREATION_MITIGATION_POLICY2_STRICT_CONTROL_FLOW_GUARD_ALWAYS_OFF = ($00000002 shl 8);
+    PROCESS_CREATION_MITIGATION_POLICY2_STRICT_CONTROL_FLOW_GUARD_RESERVED = ($00000003 shl 8);
+
+
+    // Define the module tampering mitigation policy options.
+
+
+    PROCESS_CREATION_MITIGATION_POLICY2_MODULE_TAMPERING_PROTECTION_MASK = ($00000003 shl 12);
+    PROCESS_CREATION_MITIGATION_POLICY2_MODULE_TAMPERING_PROTECTION_DEFER = ($00000000 shl 12);
+    PROCESS_CREATION_MITIGATION_POLICY2_MODULE_TAMPERING_PROTECTION_ALWAYS_ON = ($00000001 shl 12);
+    PROCESS_CREATION_MITIGATION_POLICY2_MODULE_TAMPERING_PROTECTION_ALWAYS_OFF = ($00000002 shl 12);
+    PROCESS_CREATION_MITIGATION_POLICY2_MODULE_TAMPERING_PROTECTION_NOINHERIT = ($00000003 shl 12);
+
+
+    // Define the restricted indirect branch prediction mitigation policy options.
+
+
+    PROCESS_CREATION_MITIGATION_POLICY2_RESTRICT_INDIRECT_BRANCH_PREDICTION_MASK = ($00000003 shl 16);
+    PROCESS_CREATION_MITIGATION_POLICY2_RESTRICT_INDIRECT_BRANCH_PREDICTION_DEFER = ($00000000 shl 16);
+    PROCESS_CREATION_MITIGATION_POLICY2_RESTRICT_INDIRECT_BRANCH_PREDICTION_ALWAYS_ON = ($00000001 shl 16);
+    PROCESS_CREATION_MITIGATION_POLICY2_RESTRICT_INDIRECT_BRANCH_PREDICTION_ALWAYS_OFF = ($00000002 shl 16);
+    PROCESS_CREATION_MITIGATION_POLICY2_RESTRICT_INDIRECT_BRANCH_PREDICTION_RESERVED = ($00000003 shl 16);
+
+
+    // Define the policy option that allows a broker to downgrade the dynamic code policy for a process.
+
+
+    PROCESS_CREATION_MITIGATION_POLICY2_ALLOW_DOWNGRADE_DYNAMIC_CODE_POLICY_MASK = ($00000003 shl 20);
+    PROCESS_CREATION_MITIGATION_POLICY2_ALLOW_DOWNGRADE_DYNAMIC_CODE_POLICY_DEFER = ($00000000 shl 20);
+    PROCESS_CREATION_MITIGATION_POLICY2_ALLOW_DOWNGRADE_DYNAMIC_CODE_POLICY_ALWAYS_ON = ($00000001 shl 20);
+    PROCESS_CREATION_MITIGATION_POLICY2_ALLOW_DOWNGRADE_DYNAMIC_CODE_POLICY_ALWAYS_OFF = ($00000002 shl 20);
+    PROCESS_CREATION_MITIGATION_POLICY2_ALLOW_DOWNGRADE_DYNAMIC_CODE_POLICY_RESERVED = ($00000003 shl 20);
+
+
+    // Define the Memory Disambiguation Disable mitigation policy options.
+
+
+    PROCESS_CREATION_MITIGATION_POLICY2_SPECULATIVE_STORE_BYPASS_DISABLE_MASK = ($00000003 shl 24);
+    PROCESS_CREATION_MITIGATION_POLICY2_SPECULATIVE_STORE_BYPASS_DISABLE_DEFER = ($00000000 shl 24);
+    PROCESS_CREATION_MITIGATION_POLICY2_SPECULATIVE_STORE_BYPASS_DISABLE_ALWAYS_ON = ($00000001 shl 24);
+    PROCESS_CREATION_MITIGATION_POLICY2_SPECULATIVE_STORE_BYPASS_DISABLE_ALWAYS_OFF = ($00000002 shl 24);
+    PROCESS_CREATION_MITIGATION_POLICY2_SPECULATIVE_STORE_BYPASS_DISABLE_RESERVED = ($00000003 shl 24);
+
+
+    // Define the user-mode shadow stack mitigation policy options.
+
+
+    PROCESS_CREATION_MITIGATION_POLICY2_CET_USER_SHADOW_STACKS_MASK = ($00000003 shl 28);
+    PROCESS_CREATION_MITIGATION_POLICY2_CET_USER_SHADOW_STACKS_DEFER = ($00000000 shl 28);
+    PROCESS_CREATION_MITIGATION_POLICY2_CET_USER_SHADOW_STACKS_ALWAYS_ON = ($00000001 shl 28);
+    PROCESS_CREATION_MITIGATION_POLICY2_CET_USER_SHADOW_STACKS_ALWAYS_OFF = ($00000002 shl 28);
+    PROCESS_CREATION_MITIGATION_POLICY2_CET_USER_SHADOW_STACKS_STRICT_MODE = ($00000003 shl 28);
+
+
+    // Define the user-mode CET set context instruction pointer validation mitigation policy options.
+
+
+    PROCESS_CREATION_MITIGATION_POLICY2_USER_CET_SET_CONTEXT_IP_VALIDATION_MASK = ($00000003 shl 32);
+    PROCESS_CREATION_MITIGATION_POLICY2_USER_CET_SET_CONTEXT_IP_VALIDATION_DEFER = ($00000000 shl 32);
+    PROCESS_CREATION_MITIGATION_POLICY2_USER_CET_SET_CONTEXT_IP_VALIDATION_ALWAYS_ON = ($00000001 shl 32);
+    PROCESS_CREATION_MITIGATION_POLICY2_USER_CET_SET_CONTEXT_IP_VALIDATION_ALWAYS_OFF = ($00000002 shl 32);
+    PROCESS_CREATION_MITIGATION_POLICY2_USER_CET_SET_CONTEXT_IP_VALIDATION_RELAXED_MODE = ($00000003 shl 32);
+
+
+    // Define the block non-CET/non-EHCONT binaries mitigation policy options.
+
+
+    PROCESS_CREATION_MITIGATION_POLICY2_BLOCK_NON_CET_BINARIES_MASK = ($00000003 shl 36);
+    PROCESS_CREATION_MITIGATION_POLICY2_BLOCK_NON_CET_BINARIES_DEFER = ($00000000 shl 36);
+    PROCESS_CREATION_MITIGATION_POLICY2_BLOCK_NON_CET_BINARIES_ALWAYS_ON = ($00000001 shl 36);
+    PROCESS_CREATION_MITIGATION_POLICY2_BLOCK_NON_CET_BINARIES_ALWAYS_OFF = ($00000002 shl 36);
+    PROCESS_CREATION_MITIGATION_POLICY2_BLOCK_NON_CET_BINARIES_NON_EHCONT = ($00000003 shl 36);
+
+
+    // Define the XFG mitigation policy options.
+
+
+    PROCESS_CREATION_MITIGATION_POLICY2_XTENDED_CONTROL_FLOW_GUARD_MASK = ($00000003 shl 40);
+    PROCESS_CREATION_MITIGATION_POLICY2_XTENDED_CONTROL_FLOW_GUARD_DEFER = ($00000000 shl 40);
+    PROCESS_CREATION_MITIGATION_POLICY2_XTENDED_CONTROL_FLOW_GUARD_ALWAYS_ON = ($00000001 shl 40);
+    PROCESS_CREATION_MITIGATION_POLICY2_XTENDED_CONTROL_FLOW_GUARD_ALWAYS_OFF = ($00000002 shl 40);
+    PROCESS_CREATION_MITIGATION_POLICY2_XTENDED_CONTROL_FLOW_GUARD_RESERVED = ($00000003 shl 40);
+
+
+    // Define the ARM64 user-mode per-process instruction pointer authentication
+    // mitigation policy options.
+
+
+    PROCESS_CREATION_MITIGATION_POLICY2_POINTER_AUTH_USER_IP_MASK = ($00000003 shl 44);
+    PROCESS_CREATION_MITIGATION_POLICY2_POINTER_AUTH_USER_IP_DEFER = ($00000000 shl 44);
+    PROCESS_CREATION_MITIGATION_POLICY2_POINTER_AUTH_USER_IP_ALWAYS_ON = ($00000001 shl 44);
+    PROCESS_CREATION_MITIGATION_POLICY2_POINTER_AUTH_USER_IP_ALWAYS_OFF = ($00000002 shl 44);
+    PROCESS_CREATION_MITIGATION_POLICY2_POINTER_AUTH_USER_IP_RESERVED = ($00000003 shl 44);
+
+
+    // Define the CET-related dynamic code validation data APIs out-of-proc mitigation policy options.
+
+
+    PROCESS_CREATION_MITIGATION_POLICY2_CET_DYNAMIC_APIS_OUT_OF_PROC_ONLY_MASK = ($00000003 shl 48);
+    PROCESS_CREATION_MITIGATION_POLICY2_CET_DYNAMIC_APIS_OUT_OF_PROC_ONLY_DEFER = ($00000000 shl 48);
+    PROCESS_CREATION_MITIGATION_POLICY2_CET_DYNAMIC_APIS_OUT_OF_PROC_ONLY_ALWAYS_ON = ($00000001 shl 48);
+    PROCESS_CREATION_MITIGATION_POLICY2_CET_DYNAMIC_APIS_OUT_OF_PROC_ONLY_ALWAYS_OFF = ($00000002 shl 48);
+    PROCESS_CREATION_MITIGATION_POLICY2_CET_DYNAMIC_APIS_OUT_OF_PROC_ONLY_RESERVED = ($00000003 shl 48);
+
+
+    // Define the restrict core sharing policy options.
+
+
+    PROCESS_CREATION_MITIGATION_POLICY2_RESTRICT_CORE_SHARING_MASK = ($00000003 shl 52);
+    PROCESS_CREATION_MITIGATION_POLICY2_RESTRICT_CORE_SHARING_DEFER = ($00000000 shl 52);
+    PROCESS_CREATION_MITIGATION_POLICY2_RESTRICT_CORE_SHARING_ALWAYS_ON = ($00000001 shl 52);
+    PROCESS_CREATION_MITIGATION_POLICY2_RESTRICT_CORE_SHARING_ALWAYS_OFF = ($00000002 shl 52);
+    PROCESS_CREATION_MITIGATION_POLICY2_RESTRICT_CORE_SHARING_RESERVED = ($00000003 shl 52);
+
+
+    // Define FSCTL system call disable options.  FSCTL system call disable
+    // prevents a process from making NtFsControlFile calls.
+
+
+    PROCESS_CREATION_MITIGATION_POLICY2_FSCTL_SYSTEM_CALL_DISABLE_MASK = ($00000003 shl 56);
+    PROCESS_CREATION_MITIGATION_POLICY2_FSCTL_SYSTEM_CALL_DISABLE_DEFER = ($00000000 shl 56);
+    PROCESS_CREATION_MITIGATION_POLICY2_FSCTL_SYSTEM_CALL_DISABLE_ALWAYS_ON = ($00000001 shl 56);
+    PROCESS_CREATION_MITIGATION_POLICY2_FSCTL_SYSTEM_CALL_DISABLE_ALWAYS_OFF = ($00000002 shl 56);
+    PROCESS_CREATION_MITIGATION_POLICY2_FSCTL_SYSTEM_CALL_DISABLE_RESERVED = ($00000003 shl 56);
+
+
+    // Define Attribute to disable creation of child process
+
+
+    PROCESS_CREATION_CHILD_PROCESS_RESTRICTED = $01;
+    PROCESS_CREATION_CHILD_PROCESS_OVERRIDE = $02;
+    PROCESS_CREATION_CHILD_PROCESS_RESTRICTED_UNLESS_SECURE = $04;
+
+
+    // Define Attribute to opt out of matching All Application Packages
+
+
+    PROCESS_CREATION_ALL_APPLICATION_PACKAGES_OPT_OUT = $01;
+
+
+    // Define Attribute for Desktop App Override
+
+
+    PROCESS_CREATION_DESKTOP_APP_BREAKAWAY_ENABLE_PROCESS_TREE = $01;
+    PROCESS_CREATION_DESKTOP_APP_BREAKAWAY_DISABLE_PROCESS_TREE = $02;
+    PROCESS_CREATION_DESKTOP_APP_BREAKAWAY_OVERRIDE = $04;
+
+
+    // Define the user-mode shadow stack mitigation audit policy options.
+
+
+    PROCESS_CREATION_MITIGATION_AUDIT_POLICY2_CET_USER_SHADOW_STACKS_MASK = ($00000003 shl 28);
+    PROCESS_CREATION_MITIGATION_AUDIT_POLICY2_CET_USER_SHADOW_STACKS_DEFER = ($00000000 shl 28);
+    PROCESS_CREATION_MITIGATION_AUDIT_POLICY2_CET_USER_SHADOW_STACKS_ALWAYS_ON = ($00000001 shl 28);
+    PROCESS_CREATION_MITIGATION_AUDIT_POLICY2_CET_USER_SHADOW_STACKS_ALWAYS_OFF = ($00000002 shl 28);
+    PROCESS_CREATION_MITIGATION_AUDIT_POLICY2_CET_USER_SHADOW_STACKS_RESERVED = ($00000003 shl 28);
+
+
+    // Define the user-mode CET set context instruction pointer validation mitigation audit policy options.
+
+
+    PROCESS_CREATION_MITIGATION_AUDIT_POLICY2_USER_CET_SET_CONTEXT_IP_VALIDATION_MASK = ($00000003 shl 32);
+    PROCESS_CREATION_MITIGATION_AUDIT_POLICY2_USER_CET_SET_CONTEXT_IP_VALIDATION_DEFER = ($00000000 shl 32);
+    PROCESS_CREATION_MITIGATION_AUDIT_POLICY2_USER_CET_SET_CONTEXT_IP_VALIDATION_ALWAYS_ON = ($00000001 shl 32);
+    PROCESS_CREATION_MITIGATION_AUDIT_POLICY2_USER_CET_SET_CONTEXT_IP_VALIDATION_ALWAYS_OFF = ($00000002 shl 32);
+    PROCESS_CREATION_MITIGATION_AUDIT_POLICY2_USER_CET_SET_CONTEXT_IP_VALIDATION_RESERVED = ($00000003 shl 32);
+
+
+    // Define the block non-CET/non-EHCONT binaries mitigation audit policy options.
+
+
+    PROCESS_CREATION_MITIGATION_AUDIT_POLICY2_BLOCK_NON_CET_BINARIES_MASK = ($00000003 shl 36);
+    PROCESS_CREATION_MITIGATION_AUDIT_POLICY2_BLOCK_NON_CET_BINARIES_DEFER = ($00000000 shl 36);
+    PROCESS_CREATION_MITIGATION_AUDIT_POLICY2_BLOCK_NON_CET_BINARIES_ALWAYS_ON = ($00000001 shl 36);
+    PROCESS_CREATION_MITIGATION_AUDIT_POLICY2_BLOCK_NON_CET_BINARIES_ALWAYS_OFF = ($00000002 shl 36);
+    PROCESS_CREATION_MITIGATION_AUDIT_POLICY2_BLOCK_NON_CET_BINARIES_RESERVED = ($00000003 shl 36);
+
+
+    // Define the XFG mitigation audit policy options.
+
+
+    PROCESS_CREATION_MITIGATION_AUDIT_POLICY2_XTENDED_CONTROL_FLOW_GUARD_MASK = ($00000003 shl 40);
+    PROCESS_CREATION_MITIGATION_AUDIT_POLICY2_XTENDED_CONTROL_FLOW_GUARD_DEFER = ($00000000 shl 40);
+    PROCESS_CREATION_MITIGATION_AUDIT_POLICY2_XTENDED_CONTROL_FLOW_GUARD_ALWAYS_ON = ($00000001 shl 40);
+    PROCESS_CREATION_MITIGATION_AUDIT_POLICY2_XTENDED_CONTROL_FLOW_GUARD_ALWAYS_OFF = ($00000002 shl 40);
+    PROCESS_CREATION_MITIGATION_AUDIT_POLICY2_XTENDED_CONTROL_FLOW_GUARD_RESERVED = ($00000003 shl 40);
+
+
+    ATOM_FLAG_GLOBAL = $2;
+
+
+    // GetProcAddress only accepts GET_SYSTEM_WOW64_DIRECTORY_NAME_A_A,
+    // GET_SYSTEM_WOW64_DIRECTORY_NAME_W_A, GET_SYSTEM_WOW64_DIRECTORY_NAME_T_A.
+    // The others are if you want to use the strings in some other way.
+
+    GET_SYSTEM_WOW64_DIRECTORY_NAME_A_A = ansistring('GetSystemWow64DirectoryA');
+    GET_SYSTEM_WOW64_DIRECTORY_NAME_A_W = WideString('GetSystemWow64DirectoryA');
+    GET_SYSTEM_WOW64_DIRECTORY_NAME_A_T = 'GetSystemWow64DirectoryA';
+    GET_SYSTEM_WOW64_DIRECTORY_NAME_W_A = ansistring('GetSystemWow64DirectoryW');
+    GET_SYSTEM_WOW64_DIRECTORY_NAME_W_W = WideString('GetSystemWow64DirectoryW');
+    GET_SYSTEM_WOW64_DIRECTORY_NAME_W_T = 'GetSystemWow64DirectoryW';
+
+    BASE_SEARCH_PATH_ENABLE_SAFE_SEARCHMODE = $1;
+    BASE_SEARCH_PATH_DISABLE_SAFE_SEARCHMODE = $10000;
+    BASE_SEARCH_PATH_PERMANENT = $8000;
+    BASE_SEARCH_PATH_INVALID_FLAGS = not ($18001);
+
+    DDD_RAW_TARGET_PATH = $00000001;
+    DDD_REMOVE_DEFINITION = $00000002;
+    DDD_EXACT_MATCH_ON_REMOVE = $00000004;
+    DDD_NO_BROADCAST_SYSTEM = $00000008;
+    DDD_LUID_BROADCAST_DRIVE = $00000010;
+
+    COPYFILE2_MESSAGE_COPY_OFFLOAD = ($00000001);
+
+    // minimum allowed requested i/o size, in bytes
+    // (constrains COPYFILE2_EXTENDED_PARAMETERS_V2 ioDesiredSize field).
+    COPYFILE2_IO_CYCLE_SIZE_MIN = 4096;
+
+    // maximum allowed requested i/o size, in bytes (1GB)
+    // (constrains COPYFILE2_EXTENDED_PARAMETERS_V2 ioDesiredSize field).
+    COPYFILE2_IO_CYCLE_SIZE_MAX = $40000000;
+
+    // minimum allowed requested average i/o rate, in kbytes per second
+    // (constrains COPYFILE2_EXTENDED_PARAMETERS_V2 ioDesiredRate field).
+    COPYFILE2_IO_RATE_MIN = 512;
+
+
+    //  Disable copying junctions (dwCopyFlagsV2 field of COPYFILE2_EXTENDED_PARAMETERS_V2).
+
+
+    COPY_FILE2_V2_DONT_COPY_JUNCTIONS = $00000001;
+
+
+    {$IFDEF NTDDI_WIN11_GA}
+    //  Disable attempting block cloning during copy
+    COPY_FILE2_V2_DISABLE_BLOCK_CLONING = $00000002;
+    COPY_FILE2_V2_VALID_FLAGS = (COPY_FILE2_V2_DONT_COPY_JUNCTIONS) or (COPY_FILE2_V2_DISABLE_BLOCK_CLONING);
+    {$ELSE} // (NTDDI_VERSION < NTDDI_WIN11_GA)
+    COPY_FILE2_V2_VALID_FLAGS = (COPY_FILE2_V2_DONT_COPY_JUNCTIONS);
+    {$ENDIF}// (NTDDI_VERSION >= NTDDI_WIN11_GA)
+
+    MOVEFILE_REPLACE_EXISTING = $00000001;
+    MOVEFILE_COPY_ALLOWED = $00000002;
+    MOVEFILE_DELAY_UNTIL_REBOOT = $00000004;
+    MOVEFILE_WRITE_THROUGH = $00000008;
+
+    MOVEFILE_CREATE_HARDLINK = $00000010;
+    MOVEFILE_FAIL_IF_NOT_TRACKABLE = $00000020;
+
+    EVENTLOG_FULL_INFO = 0;
+
+    // Operation prefetch API.
+
+
+    OPERATION_API_VERSION = 1;
+
+
+    OPERATION_START_TRACE_CURRENT_THREAD = $1;
+    OPERATION_END_DISCARD = $1;
+
+    {$IFNDEF DARWIN}
+    MAX_COMPUTERNAME_LENGTH = 15;
+    {$ELSE}
+    MAX_COMPUTERNAME_LENGTH = 31;
+    {$ENDIF}
+
+
+    // Logon Support APIs
+
+
+    LOGON32_LOGON_INTERACTIVE = 2;
+    LOGON32_LOGON_NETWORK = 3;
+    LOGON32_LOGON_BATCH = 4;
+    LOGON32_LOGON_SERVICE = 5;
+    LOGON32_LOGON_UNLOCK = 7;
+    LOGON32_LOGON_NETWORK_CLEARTEXT = 8;
+    LOGON32_LOGON_NEW_CREDENTIALS = 9;
+
+
+    LOGON32_PROVIDER_DEFAULT = 0;
+    LOGON32_PROVIDER_WINNT35 = 1;
+
+    LOGON32_PROVIDER_WINNT40 = 2;
+
+
+    LOGON32_PROVIDER_WINNT50 = 3;
+
+
+    LOGON32_PROVIDER_VIRTUAL = 4;
+
+
+    // LogonFlags
+
+    LOGON_WITH_PROFILE = $00000001;
+    LOGON_NETCREDENTIALS_ONLY = $00000002;
+    LOGON_ZERO_PASSWORD_BUFFER = $80000000;
+
+
+    // Plug-and-Play API's
+
+
+    HW_PROFILE_GUIDLEN = 39; // 36-characters plus NULL terminator
+    MAX_PROFILE_LEN = 80;
+
+    DOCKINFO_UNDOCKED = ($1);
+    DOCKINFO_DOCKED = ($2);
+    DOCKINFO_USER_SUPPLIED = ($4);
+    DOCKINFO_USER_UNDOCKED = (DOCKINFO_USER_SUPPLIED or DOCKINFO_UNDOCKED);
+    DOCKINFO_USER_DOCKED = (DOCKINFO_USER_SUPPLIED or DOCKINFO_DOCKED);
+
+
+    // DOS and OS/2 Compatible Error Code definitions returned by the Win32 Base
+    // API functions.
+
+    (* Abnormal termination codes *)
+
+
+    TC_NORMAL = 0;
+    TC_HARDERR = 1;
+    TC_GP_TRAP = 2;
+    TC_SIGNAL = 3;
+
+
+    // Power Management APIs
+
+
+    AC_LINE_OFFLINE = $00;
+    AC_LINE_ONLINE = $01;
+    AC_LINE_BACKUP_POWER = $02; // Deprecated value; Not used on any NT based version of Windows
+    AC_LINE_UNKNOWN = $FF;
+
+    BATTERY_FLAG_HIGH = $01;
+    BATTERY_FLAG_LOW = $02;
+    BATTERY_FLAG_CRITICAL = $04;
+    BATTERY_FLAG_CHARGING = $08;
+    BATTERY_FLAG_NO_BATTERY = $80;
+    BATTERY_FLAG_UNKNOWN = $FF;
+
+    BATTERY_PERCENTAGE_UNKNOWN = $FF;
+
+    SYSTEM_STATUS_FLAG_POWER_SAVING_ON = $01;
+
+    BATTERY_LIFE_UNKNOWN = $FFFFFFFF;
+
+
+    ACTCTX_FLAG_PROCESSOR_ARCHITECTURE_VALID = ($00000001);
+    ACTCTX_FLAG_LANGID_VALID = ($00000002);
+    ACTCTX_FLAG_ASSEMBLY_DIRECTORY_VALID = ($00000004);
+    ACTCTX_FLAG_RESOURCE_NAME_VALID = ($00000008);
+    ACTCTX_FLAG_SET_PROCESS_DEFAULT = ($00000010);
+    ACTCTX_FLAG_APPLICATION_NAME_VALID = ($00000020);
+    ACTCTX_FLAG_SOURCE_IS_ASSEMBLYREF = ($00000040);
+    ACTCTX_FLAG_HMODULE_VALID = ($00000080);
+
+
+    DEACTIVATE_ACTCTX_FLAG_FORCE_EARLY_DEACTIVATION = ($00000001);
+
+    FIND_ACTCTX_SECTION_KEY_RETURN_HACTCTX = ($00000001);
+    FIND_ACTCTX_SECTION_KEY_RETURN_FLAGS = ($00000002);
+    FIND_ACTCTX_SECTION_KEY_RETURN_ASSEMBLY_METADATA = ($00000004);
+
+    ACTIVATION_CONTEXT_BASIC_INFORMATION_DEFINED = 1;
+
+
+    QUERY_ACTCTX_FLAG_USE_ACTIVE_ACTCTX = ($00000004);
+    QUERY_ACTCTX_FLAG_ACTCTX_IS_HMODULE = ($00000008);
+    QUERY_ACTCTX_FLAG_ACTCTX_IS_ADDRESS = ($00000010);
+    QUERY_ACTCTX_FLAG_NO_ADDREF = ($80000000);
+
+
+    // switch (ulInfoClass)
+
+    //  case ActivationContextBasicInformation:
+    //    pvSubInstance == NULL
+    //    pvBuffer is of type PACTIVATION_CONTEXT_BASIC_INFORMATION
+
+    //  case ActivationContextDetailedInformation:
+    //    pvSubInstance == NULL
+    //    pvBuffer is of type PACTIVATION_CONTEXT_DETAILED_INFORMATION
+
+    //  case AssemblyDetailedInformationInActivationContext:
+    //    pvSubInstance is of type PULONG
+    //      *pvSubInstance < ACTIVATION_CONTEXT_DETAILED_INFORMATION::ulAssemblyCount
+    //    pvBuffer is of type PACTIVATION_CONTEXT_ASSEMBLY_DETAILED_INFORMATION
+
+    //  case FileInformationInAssemblyOfAssemblyInActivationContext:
+    //    pvSubInstance is of type PACTIVATION_CONTEXT_QUERY_INDEX
+    //      pvSubInstance->ulAssemblyIndex < ACTIVATION_CONTEXT_DETAILED_INFORMATION::ulAssemblyCount
+    //      pvSubInstance->ulFileIndexInAssembly < ACTIVATION_CONTEXT_ASSEMBLY_DETAILED_INFORMATION::ulFileCount
+    //    pvBuffer is of type PASSEMBLY_FILE_DETAILED_INFORMATION
+
+    //  case RunlevelInformationInActivationContext :
+    //    pvSubInstance == NULL
+    //    pvBuffer is of type PACTIVATION_CONTEXT_RUN_LEVEL_INFORMATION
+
+    // String are placed after the structs.
+
+
+    // Max length of commandline in characters (including the NULL character that can be registered for restart)
+
+    RESTART_MAX_CMD_LINE = 1024;
+
+
+    // Do not restart the process for termination due to application crashes
+
+    RESTART_NO_CRASH = 1;
+
+
+    // Do not restart the process for termination due to application hangs
+
+    RESTART_NO_HANG = 2;
+
+
+    // Do not restart the process for termination due to patch installations
+
+    RESTART_NO_PATCH = 4;
+
+
+    // Do not restart the process when the system is rebooted due to patch installations
+
+    RESTART_NO_REBOOT = 8;
+
+    RECOVERY_DEFAULT_PING_INTERVAL = 5000;
+    RECOVERY_MAX_PING_INTERVAL = (5 * 60 * 1000);
+
+
+    FILE_RENAME_FLAG_REPLACE_IF_EXISTS = $00000001;
+    FILE_RENAME_FLAG_POSIX_SEMANTICS = $00000002;
+    FILE_RENAME_FLAG_SUPPRESS_PIN_STATE_INHERITANCE = $00000004;
+
+    FILE_DISPOSITION_FLAG_DO_NOT_DELETE = $00000000;
+    FILE_DISPOSITION_FLAG_DELETE = $00000001;
+    FILE_DISPOSITION_FLAG_POSIX_SEMANTICS = $00000002;
+    FILE_DISPOSITION_FLAG_FORCE_IMAGE_SECTION_CHECK = $00000004;
+    FILE_DISPOSITION_FLAG_ON_CLOSE = $00000008;
+
+    FILE_DISPOSITION_FLAG_IGNORE_READONLY_ATTRIBUTE = $00000010;
+
+
+    //  Flag definitions for FILE_STORAGE_INFO structure
+
+
+    //  If this flag is set then the partition is correctly aligned with the
+    //  physical sector size of the device for optimial performance.
+
+
+    STORAGE_INFO_FLAGS_ALIGNED_DEVICE = $00000001;
+    STORAGE_INFO_FLAGS_PARTITION_ALIGNED_ON_DEVICE = $00000002;
+
+
+    //  If this value is set for the Sector and Parition alignment
+    //  fields then it means the alignment is not known and the
+    //  alignment flags have no meaning
+
+    STORAGE_INFO_OFFSET_UNKNOWN = ($ffffffff);
+
+
+    // File Remote protocol info (FileRemoteProtocolInfo)
+
+    // Protocol generic flags.
+
+
+    REMOTE_PROTOCOL_INFO_FLAG_LOOPBACK = $00000001;
+    REMOTE_PROTOCOL_INFO_FLAG_OFFLINE = $00000002;
+
+
+    REMOTE_PROTOCOL_INFO_FLAG_PERSISTENT_HANDLE = $00000004;
+
+
+    // Protocol specific SMB2 share capability flags.
+
+
+    RPI_FLAG_SMB2_SHARECAP_TIMEWARP = $00000002;
+    RPI_FLAG_SMB2_SHARECAP_DFS = $00000008;
+    RPI_FLAG_SMB2_SHARECAP_CONTINUOUS_AVAILABILITY = $00000010;
+    RPI_FLAG_SMB2_SHARECAP_SCALEOUT = $00000020;
+    RPI_FLAG_SMB2_SHARECAP_CLUSTER = $00000040;
+
+
+    // Protocol specific SMB2 share flags
+
+    RPI_SMB2_SHAREFLAG_ENCRYPT_DATA = $00000001;
+    RPI_SMB2_SHAREFLAG_COMPRESS_DATA = $00000002;
+
+    // Protocol specific SMB2 server capability flags.
+
+
+    RPI_SMB2_FLAG_SERVERCAP_DFS = $00000001;
+    RPI_SMB2_FLAG_SERVERCAP_LEASING = $00000002;
+    RPI_SMB2_FLAG_SERVERCAP_LARGEMTU = $00000004;
+    RPI_SMB2_FLAG_SERVERCAP_MULTICHANNEL = $00000008;
+    RPI_SMB2_FLAG_SERVERCAP_PERSISTENT_HANDLES = $00000010;
+    RPI_SMB2_FLAG_SERVERCAP_DIRECTORY_LEASING = $00000020;
+
+
+    //  Flag values for the dwFlags parameter of the CreateSymbolicLink API
+
+    //  Request to create a directory symbolic link
+
+    SYMBOLIC_LINK_FLAG_DIRECTORY = ($1);
+
+    //  Specify this flag if you want to allow creation of symbolic links when the
+    //  process is not elevated.  As of now enabling DEVELOPER MODE on a system
+    //  is the only scenario that allow unprivileged symlink creation. There may
+    //  be future scenarios that this flag will enable in the future.
+
+    //  Also be aware that the behavior of this API with this flag set will likely
+    //  be different between a development environment and an and customers
+    //  environment so please be careful with the usage of this flag.
+
+    SYMBOLIC_LINK_FLAG_ALLOW_UNPRIVILEGED_CREATE = ($2);
+
+    CRITICAL_SECTION_NO_DEBUG_INFO = RTL_CRITICAL_SECTION_FLAG_NO_DEBUG_INFO;
+
+    MAXINTATOM = $C000;
+
+type
+
+    PPSID = ^PSID;
+    PPVOID = ^PVOID;
+    PPCONTEXT = ^PCONTEXT;
+
+    TFILE_WRITE_FLAGS = (
+        FILE_WRITE_FLAGS_NONE = 0,
+        FILE_WRITE_FLAGS_WRITE_THROUGH = $000000001);
+
+    PFILE_WRITE_FLAGS = ^TFILE_WRITE_FLAGS;
+
+
+    {$IFDEF WIN64}
+     LPLDT_ENTRY = LPVOID;
+    {$ELSE}
+    LPLDT_ENTRY = PLDT_ENTRY;
+    {$ENDIF}
+
+
+    _COMMPROP = record
+        wPacketLength: word;
+        wPacketVersion: word;
+        dwServiceMask: DWORD;
+        dwReserved1: DWORD;
+        dwMaxTxQueue: DWORD;
+        dwMaxRxQueue: DWORD;
+        dwMaxBaud: DWORD;
+        dwProvSubType: DWORD;
+        dwProvCapabilities: DWORD;
+        dwSettableParams: DWORD;
+        dwSettableBaud: DWORD;
+        wSettableData: word;
+        wSettableStopParity: word;
+        dwCurrentTxQueue: DWORD;
+        dwCurrentRxQueue: DWORD;
+        dwProvSpec1: DWORD;
+        dwProvSpec2: DWORD;
+        wcProvChar: array [0..1 - 1] of WCHAR;
+    end;
+    TCOMMPROP = _COMMPROP;
+    PCOMMPROP = ^TCOMMPROP;
+
+    LPCOMMPROP = ^TCOMMPROP;
+
+    _COMSTAT = bitpacked record
+        fCtsHold: 0..1;
+        fDsrHold: 0..1;
+        fRlsdHold: 0..1;
+        fXoffHold: 0..1;
+        fXoffSent: 0..1;
+        fEof: 0..1;
+        fTxim: 0..1;
+        fReserved: 0..33554431;
+        cbInQue: DWORD;
+        cbOutQue: DWORD;
+    end;
+    TCOMSTAT = _COMSTAT;
+    LPCOMSTAT = ^TCOMSTAT;
+
+
+    _DCB = bitpacked record
+        DCBlength: DWORD; (* sizeof(DCB)                     *)
+        BaudRate: DWORD; (* Baudrate at which running       *)
+        fBinary: 0..1; (* Binary Mode (skip EOF check)    *)
+        fParity: 0..1; (* Enable parity checking          *)
+        fOutxCtsFlow: 0..1; (* CTS handshaking on output       *)
+        fOutxDsrFlow: 0..1; (* DSR handshaking on output       *)
+        fDtrControl: 0..3; (* DTR Flow control                *)
+        fDsrSensitivity: 0..1; (* DSR Sensitivity              *)
+        fTXContinueOnXoff: 0..1; (* Continue TX when Xoff sent *)
+        fOutX: 0..1; (* Enable output X-ON/X-OFF        *)
+        fInX: 0..1; (* Enable input X-ON/X-OFF         *)
+        fErrorChar: 0..1; (* Enable Err Replacement          *)
+        fNull: 0..1; (* Enable Null stripping           *)
+        fRtsControl: 0..3; (* Rts Flow control                *)
+        fAbortOnError: 0..1; (* Abort all reads and writes on Error *)
+        fDummy2: 0..131071; (* Reserved                        *)
+        wReserved: word; (* Not currently used              *)
+        XonLim: word; (* Transmit X-ON threshold         *)
+        XoffLim: word; (* Transmit X-OFF threshold        *)
+        ByteSize: byte; (* Number of bits/byte, 4-8        *)
+        Parity: byte; (* 0-4=None,Odd,Even,Mark,Space    *)
+        StopBits: byte; (* 0,1,2 = 1, 1.5, 2               *)
+        XonChar: char; (* Tx and Rx X-ON character        *)
+        XoffChar: char; (* Tx and Rx X-OFF character       *)
+        ErrorChar: char; (* Error replacement char          *)
+        EofChar: char; (* End of Input character          *)
+        EvtChar: char; (* Received Event character        *)
+        wReserved1: word; (* Fill for now.                   *)
+    end;
+
+    TDCB = _DCB;
+    PDCB = ^TDCB;
+    LPDCB = ^TDCB;
+
+    _COMMTIMEOUTS = record
+        ReadIntervalTimeout: DWORD; (* Maximum time between read chars. *)
+        ReadTotalTimeoutMultiplier: DWORD; (* Multiplier of characters.        *)
+        ReadTotalTimeoutConstant: DWORD; (* Constant in milliseconds.        *)
+        WriteTotalTimeoutMultiplier: DWORD; (* Multiplier of characters.        *)
+        WriteTotalTimeoutConstant: DWORD; (* Constant in milliseconds.        *)
+    end;
+    TCOMMTIMEOUTS = _COMMTIMEOUTS;
+    PCOMMTIMEOUTS = ^TCOMMTIMEOUTS;
+
+    LPCOMMTIMEOUTS = ^TCOMMTIMEOUTS;
+
+    _COMMCONFIG = record
+        dwSize: DWORD; (* Size of the entire struct *)
+        wVersion: word; (* version of the structure *)
+        wReserved: word; (* alignment *)
+        dcb: TDCB; (* device control block *)
+        dwProviderSubType: DWORD; (* ordinal value for identifying
+                                   provider-defined data structure format*)
+        dwProviderOffset: DWORD; (* Specifies the offset of provider specific
+                                   data field in bytes from the start *)
+        dwProviderSize: DWORD; (* size of the provider-specific data field *)
+        wcProviderData: array [0..0] of WCHAR; (* provider-specific data *)
+    end;
+    TCOMMCONFIG = _COMMCONFIG;
+    PCOMMCONFIG = ^TCOMMCONFIG;
+
+    LPCOMMCONFIG = ^TCOMMCONFIG;
+
+
+    // Fiber structures
+
+
+    PFIBER_START_ROUTINE = procedure(lpFiberParameter: LPVOID); stdcall;
+
+    LPFIBER_START_ROUTINE = PFIBER_START_ROUTINE;
+
+    PFIBER_CALLOUT_ROUTINE = function(lpParameter: LPVOID): LPVOID; stdcall;
+
+
+    _MEMORYSTATUS = record
+        dwLength: DWORD;
+        dwMemoryLoad: DWORD;
+        dwTotalPhys: SIZE_T;
+        dwAvailPhys: SIZE_T;
+        dwTotalPageFile: SIZE_T;
+        dwAvailPageFile: SIZE_T;
+        dwTotalVirtual: SIZE_T;
+        dwAvailVirtual: SIZE_T;
+    end;
+    TMEMORYSTATUS = _MEMORYSTATUS;
+    PMEMORYSTATUS = ^TMEMORYSTATUS;
+
+    LPMEMORYSTATUS = ^TMEMORYSTATUS;
+
+
+    // JIT Debugging Info. This structure is defined to have constant size in
+    // both the emulated and native environment.
+
+
+    _JIT_DEBUG_INFO = record
+        dwSize: DWORD;
+        dwProcessorArchitecture: DWORD;
+        dwThreadID: DWORD;
+        dwReserved0: DWORD;
+        lpExceptionAddress: ULONG64;
+        lpExceptionRecord: ULONG64;
+        lpContextRecord: ULONG64;
+    end;
+    TJIT_DEBUG_INFO = _JIT_DEBUG_INFO;
+    PJIT_DEBUG_INFO = ^TJIT_DEBUG_INFO;
+
+    LPJIT_DEBUG_INFO = ^TJIT_DEBUG_INFO;
+
+    TJIT_DEBUG_INFO32 = TJIT_DEBUG_INFO;
+    PLPJIT_DEBUG_INFO32 = ^TJIT_DEBUG_INFO;
+    TJIT_DEBUG_INFO64 = TJIT_DEBUG_INFO;
+    PLPJIT_DEBUG_INFO64 = ^TJIT_DEBUG_INFO;
+
+
+    _OFSTRUCT = record
+        cBytes: byte;
+        fFixedDisk: byte;
+        nErrCode: word;
+        Reserved1: word;
+        Reserved2: word;
+        szPathName: array [0..OFS_MAXPATHNAME - 1] of ansichar;
+    end;
+    TOFSTRUCT = _OFSTRUCT;
+    POFSTRUCT = ^TOFSTRUCT;
+
+    LPOFSTRUCT = ^TOFSTRUCT;
+
+
+    // Fiber end
+
+
+    // UMS begin
+
+
+    PUMS_CONTEXT = pointer;
+    PPUMS_CONTEXT = ^PUMS_CONTEXT;
+
+    PUMS_COMPLETION_LIST = pointer;
+    PPUMS_COMPLETION_LIST = ^PUMS_COMPLETION_LIST;
+
+    TUMS_THREAD_INFO_CLASS = _RTL_UMS_THREAD_INFO_CLASS;
+    PUMS_THREAD_INFO_CLASS = ^TUMS_THREAD_INFO_CLASS;
+
+    UMS_SCHEDULER_REASON = _RTL_UMS_SCHEDULER_REASON;
+
+    PUMS_SCHEDULER_ENTRY_POINT = PRTL_UMS_SCHEDULER_ENTRY_POINT;
+
+
+    _UMS_SCHEDULER_STARTUP_INFO = record
+
+        // UMS Version the application was built to. Should be set to UMS_VERSION
+
+        UmsVersion: ULONG;
+
+        // Completion List to associate the new User Scheduler to.
+
+        CompletionList: PUMS_COMPLETION_LIST;
+
+        // A pointer to the application-defined function that represents the starting
+        // address of the Sheduler.
+
+        SchedulerProc: PUMS_SCHEDULER_ENTRY_POINT;
+
+        // pointer to a variable to be passed to the scheduler uppon first activation.
+
+        SchedulerParam: PVOID;
+    end;
+    TUMS_SCHEDULER_STARTUP_INFO = _UMS_SCHEDULER_STARTUP_INFO;
+    PUMS_SCHEDULER_STARTUP_INFO = ^TUMS_SCHEDULER_STARTUP_INFO;
+
+
+    _UMS_SYSTEM_THREAD_INFORMATION = bitpacked record
+        UmsVersion: ULONG;
+        case byte of
+            0: (
+                IsUmsSchedulerThread: 0..1;
+                IsUmsWorkerThread: 0..1;
+            );
+            1: (ThreadUmsFlags: ULONG);
+    end;
+    TUMS_SYSTEM_THREAD_INFORMATION = _UMS_SYSTEM_THREAD_INFORMATION;
+    PUMS_SYSTEM_THREAD_INFORMATION = ^TUMS_SYSTEM_THREAD_INFORMATION;
+
+
+    // UMS end
+
+
+    // Power Request APIs
+
+
+    TPOWER_REQUEST_CONTEXT = TREASON_CONTEXT;
+    PPPOWER_REQUEST_CONTEXT = ^TREASON_CONTEXT;
+    PLPPOWER_REQUEST_CONTEXT = ^TREASON_CONTEXT;
+
+    PRESTORE_LAST_ERROR = procedure(error: DWORD); stdcall;
+
+    _DEP_SYSTEM_POLICY_TYPE = (
+        DEPPolicyAlwaysOff = 0,
+        DEPPolicyAlwaysOn,
+        DEPPolicyOptIn,
+        DEPPolicyOptOut,
+        DEPTotalPolicyCount);
+
+    TDEP_SYSTEM_POLICY_TYPE = _DEP_SYSTEM_POLICY_TYPE;
+    PDEP_SYSTEM_POLICY_TYPE = ^TDEP_SYSTEM_POLICY_TYPE;
+
+
+    PFE_EXPORT_FUNC = function(
+        {_In_reads_bytes_(ulLength) } pbData: pbyte;
+        {_In_opt_ } pvCallbackContext: PVOID;
+        {_In_     } ulLength: ULONG): DWORD; stdcall;
+
+    PFE_IMPORT_FUNC = function(
+        {_Out_writes_bytes_to_(*ulLength, *ulLength) } pbData: pbyte;
+        {_In_opt_ } pvCallbackContext: PVOID;
+        {_Inout_  } ulLength: PULONG): DWORD; stdcall;
+
+
+    //  Stream id structure
+
+    _WIN32_STREAM_ID = record
+        dwStreamId: DWORD;
+        dwStreamAttributes: DWORD;
+        Size: LARGE_INTEGER;
+        dwStreamNameSize: DWORD;
+        cStreamName: array [0..ANYSIZE_ARRAY - 1] of WCHAR;
+    end;
+    TWIN32_STREAM_ID = _WIN32_STREAM_ID;
+    PWIN32_STREAM_ID = ^TWIN32_STREAM_ID;
+
+    LPWIN32_STREAM_ID = ^TWIN32_STREAM_ID;
+
+    LPPROC_THREAD_ATTRIBUTE_LIST = pointer;
+
+    _STARTUPINFOEXA = record
+        StartupInfo: TSTARTUPINFOA;
+        lpAttributeList: LPPROC_THREAD_ATTRIBUTE_LIST;
+    end;
+    TSTARTUPINFOEXA = _STARTUPINFOEXA;
+    PSTARTUPINFOEXA = ^TSTARTUPINFOEXA;
+
+    LPSTARTUPINFOEXA = ^TSTARTUPINFOEXA;
+
+    _STARTUPINFOEXW = record
+        StartupInfo: TSTARTUPINFOW;
+        lpAttributeList: LPPROC_THREAD_ATTRIBUTE_LIST;
+    end;
+    TSTARTUPINFOEXW = _STARTUPINFOEXW;
+    PSTARTUPINFOEXW = ^TSTARTUPINFOEXW;
+
+    LPSTARTUPINFOEXW = ^TSTARTUPINFOEXW;
+
+    _PROC_THREAD_ATTRIBUTE_NUM = (
+        ProcThreadAttributeParentProcess = 0,
+        ProcThreadAttributeHandleList = 2,
+        ProcThreadAttributeGroupAffinity = 3,
+        ProcThreadAttributePreferredNode = 4,
+        ProcThreadAttributeIdealProcessor = 5,
+        ProcThreadAttributeUmsThread = 6,
+        ProcThreadAttributeMitigationPolicy = 7,
+        ProcThreadAttributeSecurityCapabilities = 9,
+        ProcThreadAttributeProtectionLevel = 11,
+        ProcThreadAttributeJobList = 13,
+        ProcThreadAttributeChildProcessPolicy = 14,
+        ProcThreadAttributeAllApplicationPackagesPolicy = 15,
+        ProcThreadAttributeWin32kFilter = 16,
+        ProcThreadAttributeSafeOpenPromptOriginClaim = 17,
+        ProcThreadAttributeDesktopAppPolicy = 18,
+        ProcThreadAttributePseudoConsole = 22,
+        ProcThreadAttributeMitigationAuditPolicy = 24,
+        ProcThreadAttributeMachineType = 25,
+        ProcThreadAttributeComponentFilter = 26,
+        ProcThreadAttributeEnableOptionalXStateFeatures = 27,
+        ProcThreadAttributeTrustedApp = 29,
+        ProcThreadAttributeSveVectorLength = 30);
+
+    TPROC_THREAD_ATTRIBUTE_NUM = _PROC_THREAD_ATTRIBUTE_NUM;
+    PPROC_THREAD_ATTRIBUTE_NUM = ^TPROC_THREAD_ATTRIBUTE_NUM;
+
+
+    _PROCESS_CREATION_SVE_VECTOR_LENGTH = bitpacked record
+        case integer of
+            0: (
+                Data: ULONG;);
+            1: (
+                VectorLength: 0..16777215;
+                FlagsReserved: 0..255;);
+    end;
+    TPROCESS_CREATION_SVE_VECTOR_LENGTH = _PROCESS_CREATION_SVE_VECTOR_LENGTH;
+    PPROCESS_CREATION_SVE_VECTOR_LENGTH = ^TPROCESS_CREATION_SVE_VECTOR_LENGTH;
+
+    LPPROGRESS_ROUTINE = function(
+        {_In_     } TotalFileSize: LARGE_INTEGER;
+        {_In_     } TotalBytesTransferred: LARGE_INTEGER;
+        {_In_     } StreamSize: LARGE_INTEGER;
+        {_In_     } StreamBytesTransferred: LARGE_INTEGER;
+        {_In_     } dwStreamNumber: DWORD;
+        {_In_     } dwCallbackReason: DWORD;
+        {_In_     } hSourceFile: HANDLE;
+        {_In_     } hDestinationFile: HANDLE;
+        {_In_opt_ } lpData: LPVOID): DWORD; stdcall;
+
+
+    // TODO: Win7 for now, when we roll over the version number this needs to be updated.
+
+
+    _COPYFILE2_MESSAGE_TYPE = (
+        COPYFILE2_CALLBACK_NONE = 0,
+        COPYFILE2_CALLBACK_CHUNK_STARTED,
+        COPYFILE2_CALLBACK_CHUNK_FINISHED,
+        COPYFILE2_CALLBACK_STREAM_STARTED,
+        COPYFILE2_CALLBACK_STREAM_FINISHED,
+        COPYFILE2_CALLBACK_POLL_CONTINUE,
+        COPYFILE2_CALLBACK_ERROR,
+        COPYFILE2_CALLBACK_MAX);
+
+    TCOPYFILE2_MESSAGE_TYPE = _COPYFILE2_MESSAGE_TYPE;
+    PCOPYFILE2_MESSAGE_TYPE = ^TCOPYFILE2_MESSAGE_TYPE;
+
+
+    _COPYFILE2_MESSAGE_ACTION = (
+        COPYFILE2_PROGRESS_CONTINUE = 0,
+        COPYFILE2_PROGRESS_CANCEL,
+        COPYFILE2_PROGRESS_STOP,
+        COPYFILE2_PROGRESS_QUIET,
+        COPYFILE2_PROGRESS_PAUSE);
+
+    TCOPYFILE2_MESSAGE_ACTION = _COPYFILE2_MESSAGE_ACTION;
+    PCOPYFILE2_MESSAGE_ACTION = ^TCOPYFILE2_MESSAGE_ACTION;
+
+
+    _COPYFILE2_COPY_PHASE = (
+        COPYFILE2_PHASE_NONE = 0,
+        COPYFILE2_PHASE_PREPARE_SOURCE,
+        COPYFILE2_PHASE_PREPARE_DEST,
+        COPYFILE2_PHASE_READ_SOURCE,
+        COPYFILE2_PHASE_WRITE_DESTINATION,
+        COPYFILE2_PHASE_SERVER_COPY,
+        COPYFILE2_PHASE_NAMEGRAFT_COPY,
+        // ... etc phases.
+        COPYFILE2_PHASE_MAX);
+
+    TCOPYFILE2_COPY_PHASE = _COPYFILE2_COPY_PHASE;
+    PCOPYFILE2_COPY_PHASE = ^TCOPYFILE2_COPY_PHASE;
+
+
+    TCOPYFILE2_MESSAGE = record
+        MessageType: TCOPYFILE2_MESSAGE_TYPE;
+        dwPadding: DWORD;
+        case integer of
+            0: (
+                ChunkStarted: record
+                    dwStreamNumber: DWORD; // monotonically increasing stream number
+                    dwReserved: DWORD;
+                    hSourceFile: HANDLE; // handle to the source stream
+                    hDestinationFile: HANDLE; // handle to the destination stream
+                    uliChunkNumber: ULARGE_INTEGER; // monotonically increasing chunk number
+                    uliChunkSize: ULARGE_INTEGER; // size of the copied chunk
+                    uliStreamSize: ULARGE_INTEGER; // size of the current stream
+                    uliTotalFileSize: ULARGE_INTEGER; // size of all streams for this file
+                    end;
+            );
+            1: (
+                ChunkFinished: record
+                    dwStreamNumber: DWORD; // monotonically increasing stream number
+                    dwFlags: DWORD;
+                    hSourceFile: HANDLE; // handle to the source stream
+                    hDestinationFile: HANDLE; // handle to the destination stream
+                    uliChunkNumber: ULARGE_INTEGER; // monotonically increasing chunk number
+                    uliChunkSize: ULARGE_INTEGER; // size of the copied chunk
+                    uliStreamSize: ULARGE_INTEGER; // size of the current stream
+                    uliStreamBytesTransferred: ULARGE_INTEGER; // bytes copied for this stream so far
+                    uliTotalFileSize: ULARGE_INTEGER; // size of all streams for this file
+                    uliTotalBytesTransferred: ULARGE_INTEGER; // total bytes copied so far
+                    end;
+            );
+            2: (
+                StreamStarted: record
+                    dwStreamNumber: DWORD;
+                    dwReserved: DWORD;
+                    hSourceFile: HANDLE; // handle to the source stream
+                    hDestinationFile: HANDLE; // handle to the destination stream
+                    uliStreamSize: ULARGE_INTEGER; // size of this stream
+                    uliTotalFileSize: ULARGE_INTEGER; // total size of all streams for this file
+                    end;
+            );
+            3: (
+                StreamFinished: record
+                    dwStreamNumber: DWORD;
+                    dwReserved: DWORD;
+                    hSourceFile: HANDLE; // handle to the source stream
+                    hDestinationFile: HANDLE; // handle to the destination stream
+                    uliStreamSize: ULARGE_INTEGER;
+                    uliStreamBytesTransferred: ULARGE_INTEGER;
+                    uliTotalFileSize: ULARGE_INTEGER;
+                    uliTotalBytesTransferred: ULARGE_INTEGER;
+                    end;
+            );
+            4: (
+                PollContinue: record
+                    dwReserved: DWORD;
+                    end;
+            );
+            5: (
+                Error: record
+                    CopyPhase: TCOPYFILE2_COPY_PHASE;
+                    dwStreamNumber: DWORD;
+                    hrFailure: HRESULT;
+                    dwReserved: DWORD;
+                    uliChunkNumber: ULARGE_INTEGER;
+                    uliStreamSize: ULARGE_INTEGER;
+                    uliStreamBytesTransferred: ULARGE_INTEGER;
+                    uliTotalFileSize: ULARGE_INTEGER;
+                    uliTotalBytesTransferred: ULARGE_INTEGER;
+                    end;);
+    end;
+    PCOPYFILE2_MESSAGE = ^TCOPYFILE2_MESSAGE;
+
+    PCOPYFILE2_PROGRESS_ROUTINE = function(
+        {_In_      } pMessage: PCOPYFILE2_MESSAGE;
+        {_In_opt_  } pvCallbackContext: PVOID): TCOPYFILE2_MESSAGE_ACTION; stdcall;
+
+
+    TCOPYFILE2_EXTENDED_PARAMETERS = record
+        dwSize: DWORD;
+        dwCopyFlags: DWORD;
+        pfCancel: Pwinbool;
+        pProgressRoutine: PCOPYFILE2_PROGRESS_ROUTINE;
+        pvCallbackContext: PVOID;
+    end;
+    PCOPYFILE2_EXTENDED_PARAMETERS = ^TCOPYFILE2_EXTENDED_PARAMETERS;
+
+    {$IFDEF NTDDI_WIN10_GE}
+    _COPYFILE2_CREATE_OPLOCK_KEYS = record
+
+        //  Parent oplock key.
+        //  All-zero if not set.
+
+        ParentOplockKey: TGUID;
+
+        //  Target oplock key.
+        //  All-zero if not set.
+
+        TargetOplockKey: TGUID;
+    end;
+    TCOPYFILE2_CREATE_OPLOCK_KEYS = _COPYFILE2_CREATE_OPLOCK_KEYS;
+    PCOPYFILE2_CREATE_OPLOCK_KEYS = ^TCOPYFILE2_CREATE_OPLOCK_KEYS;
+    {$ENDIF}
+
+
+    TCOPYFILE2_EXTENDED_PARAMETERS_V2 = record
+        dwSize: DWORD;
+        dwCopyFlags: DWORD;
+        pfCancel: Pwinbool;
+        pProgressRoutine: PCOPYFILE2_PROGRESS_ROUTINE;
+        pvCallbackContext: PVOID;
+        // Additional copy flags (COPYFILE2_EXTENDED_PARAMETERS_V2 only;
+        // treated as zero if COPYFILE2_EXTENDED_PARAMETERS is used).
+        dwCopyFlagsV2: DWORD;
+        // size of the i/o for each {read, write} cycle, in bytes
+        // (may be reduced, if insufficient memory is available)
+        // if zero: use a suitable default.
+
+        // may be ignored if ioDesiredRate is specified (i.e.,
+        // CopyFile2() will disregard if a requested size is
+        // rate is inappropriate for a requested rate.)
+        ioDesiredSize: ULONG;
+        // requested average i/o rate, in kbytes per second.
+        // if zero: use a suitable default (usually as fast as possible).
+        ioDesiredRate: ULONG;
+        {$IFDEF NTDDI_WIN11_GA}
+        // Callers may request to use the old-style progress routine,
+        // which reports more callback message types than the CopyFile2
+        // progress routine does. This routine takes precedence over the
+        // CopyFile2 progress routine.
+        pProgressRoutineOld: LPPROGRESS_ROUTINE;
+
+        {$IFDEF NTDDI_WIN10_GE}
+        // optional oplock keys for opening the source file.
+        SourceOplockKeys: PCOPYFILE2_CREATE_OPLOCK_KEYS;
+        // reserved for future use; must be set to zero.
+        reserved: array [0..6 - 1] of PVOID;
+        {$ELSE} // (NTDDI_VERSION >= NTDDI_WIN10_GE)
+        // reserved for future use; must be set to zero
+        reserved : array [0..7-1] of PVOID;
+        {$ENDIF}// (NTDDI_VERSION >= NTDDI_WIN10_GE)
+        {$ELSE} // (NTDDI_VERSION < NTDDI_WIN11_GA)
+        // reserved for future use; must be set to zero
+        reserved : array [0..8-1] of PVOID;
+        {$ENDIF}// (NTDDI_VERSION >= NTDDI_WIN11_GA)
+    end;
+    PCOPYFILE2_EXTENDED_PARAMETERS_V2 = ^TCOPYFILE2_EXTENDED_PARAMETERS_V2;
+
+    _EVENTLOG_FULL_INFORMATION = record
+        dwFull: DWORD;
+    end;
+    TEVENTLOG_FULL_INFORMATION = _EVENTLOG_FULL_INFORMATION;
+    PEVENTLOG_FULL_INFORMATION = ^TEVENTLOG_FULL_INFORMATION;
+
+
+    // Operation prefetch API.
+
+    TOPERATION_ID = ULONG;
+
+
+    // OperationStart() parameters.
+
+
+    _OPERATION_START_PARAMETERS = record
+        Version: ULONG;
+        OperationId: TOPERATION_ID;
+        Flags: ULONG;
+    end;
+    TOPERATION_START_PARAMETERS = _OPERATION_START_PARAMETERS;
+    POPERATION_START_PARAMETERS = ^TOPERATION_START_PARAMETERS;
+
+
+    // OperationEnd() parameters.
+
+
+    _OPERATION_END_PARAMETERS = record
+        Version: ULONG;
+        OperationId: TOPERATION_ID;
+        Flags: ULONG;
+    end;
+    TOPERATION_END_PARAMETERS = _OPERATION_END_PARAMETERS;
+    POPERATION_END_PARAMETERS = ^TOPERATION_END_PARAMETERS;
+
+
+    tagHW_PROFILE_INFOA = record
+        dwDockInfo: DWORD;
+        szHwProfileGuid: array [0..HW_PROFILE_GUIDLEN - 1] of TCHAR;
+        szHwProfileName: array [0..MAX_PROFILE_LEN - 1] of TCHAR;
+    end;
+    THW_PROFILE_INFOA = tagHW_PROFILE_INFOA;
+    PHW_PROFILE_INFOA = ^THW_PROFILE_INFOA;
+
+    LPHW_PROFILE_INFOA = ^THW_PROFILE_INFOA;
+
+    tagHW_PROFILE_INFOW = record
+        dwDockInfo: DWORD;
+        szHwProfileGuid: array [0..HW_PROFILE_GUIDLEN - 1] of WCHAR;
+        szHwProfileName: array [0..MAX_PROFILE_LEN - 1] of WCHAR;
+    end;
+    THW_PROFILE_INFOW = tagHW_PROFILE_INFOW;
+    PHW_PROFILE_INFOW = ^THW_PROFILE_INFOW;
+
+    LPHW_PROFILE_INFOW = ^THW_PROFILE_INFOW;
+
+
+    _SYSTEM_POWER_STATUS = record
+        ACLineStatus: TBYTE;
+        BatteryFlag: TBYTE;
+        BatteryLifePercent: TBYTE;
+        SystemStatusFlag: TBYTE;
+        BatteryLifeTime: DWORD;
+        BatteryFullLifeTime: DWORD;
+    end;
+    TSYSTEM_POWER_STATUS = _SYSTEM_POWER_STATUS;
+    PSYSTEM_POWER_STATUS = ^TSYSTEM_POWER_STATUS;
+
+    LPSYSTEM_POWER_STATUS = ^TSYSTEM_POWER_STATUS;
+
+
+    tagACTCTXA = record
+        cbSize: ULONG;
+        dwFlags: DWORD;
+        lpSource: LPCSTR;
+        wProcessorArchitecture: USHORT;
+        wLangId: LANGID;
+        lpAssemblyDirectory: LPCSTR;
+        lpResourceName: LPCSTR;
+        lpApplicationName: LPCSTR;
+        hModule: HMODULE;
+    end;
+    TACTCTXA = tagACTCTXA;
+    PACTCTXA = ^TACTCTXA;
+
+    tagACTCTXW = record
+        cbSize: ULONG;
+        dwFlags: DWORD;
+        lpSource: LPCWSTR;
+        wProcessorArchitecture: USHORT;
+        wLangId: LANGID;
+        lpAssemblyDirectory: LPCWSTR;
+        lpResourceName: LPCWSTR;
+        lpApplicationName: LPCWSTR;
+        hModule: HMODULE;
+    end;
+    TACTCTXW = tagACTCTXW;
+    PACTCTXW = ^TACTCTXW;
+
+    PCACTCTXA = ^TACTCTXA;
+    PCACTCTXW = ^TACTCTXW;
+
+
+    tagACTCTX_SECTION_KEYED_DATA_2600 = record
+        cbSize: ULONG;
+        ulDataFormatVersion: ULONG;
+        lpData: PVOID;
+        ulLength: ULONG;
+        lpSectionGlobalData: PVOID;
+        ulSectionGlobalDataLength: ULONG;
+        lpSectionBase: PVOID;
+        ulSectionTotalLength: ULONG;
+        hActCtx: HANDLE;
+        ulAssemblyRosterIndex: ULONG;
+    end;
+    TACTCTX_SECTION_KEYED_DATA_2600 = tagACTCTX_SECTION_KEYED_DATA_2600;
+    PACTCTX_SECTION_KEYED_DATA_2600 = ^TACTCTX_SECTION_KEYED_DATA_2600;
+
+    PPCACTCTX_SECTION_KEYED_DATA_2600 = ^TACTCTX_SECTION_KEYED_DATA_2600;
+
+    tagACTCTX_SECTION_KEYED_DATA_ASSEMBLY_METADATA = record
+        lpInformation: PVOID;
+        lpSectionBase: PVOID;
+        ulSectionLength: ULONG;
+        lpSectionGlobalDataBase: PVOID;
+        ulSectionGlobalDataLength: ULONG;
+    end;
+    TACTCTX_SECTION_KEYED_DATA_ASSEMBLY_METADATA = tagACTCTX_SECTION_KEYED_DATA_ASSEMBLY_METADATA;
+    PACTCTX_SECTION_KEYED_DATA_ASSEMBLY_METADATA = ^TACTCTX_SECTION_KEYED_DATA_ASSEMBLY_METADATA;
+
+    PPCACTCTX_SECTION_KEYED_DATA_ASSEMBLY_METADATA = ^TACTCTX_SECTION_KEYED_DATA_ASSEMBLY_METADATA;
+
+    tagACTCTX_SECTION_KEYED_DATA = record
+        cbSize: ULONG;
+        ulDataFormatVersion: ULONG;
+        lpData: PVOID;
+        ulLength: ULONG;
+        lpSectionGlobalData: PVOID;
+        ulSectionGlobalDataLength: ULONG;
+        lpSectionBase: PVOID;
+        ulSectionTotalLength: ULONG;
+        hActCtx: HANDLE;
+        ulAssemblyRosterIndex: ULONG;
+        // 2600 stops here
+        ulFlags: ULONG;
+        AssemblyMetadata: TACTCTX_SECTION_KEYED_DATA_ASSEMBLY_METADATA;
+    end;
+    TACTCTX_SECTION_KEYED_DATA = tagACTCTX_SECTION_KEYED_DATA;
+    PACTCTX_SECTION_KEYED_DATA = ^TACTCTX_SECTION_KEYED_DATA;
+    PPCACTCTX_SECTION_KEYED_DATA = ^TACTCTX_SECTION_KEYED_DATA;
+
+
+    _ACTIVATION_CONTEXT_BASIC_INFORMATION = record
+        hActCtx: HANDLE;
+        dwFlags: DWORD;
+    end;
+    TACTIVATION_CONTEXT_BASIC_INFORMATION = _ACTIVATION_CONTEXT_BASIC_INFORMATION;
+    PACTIVATION_CONTEXT_BASIC_INFORMATION = ^TACTIVATION_CONTEXT_BASIC_INFORMATION;
+    PCACTIVATION_CONTEXT_BASIC_INFORMATION = _ACTIVATION_CONTEXT_BASIC_INFORMATION;
+
+
+    PQUERYACTCTXW_FUNC = function(
+        {_In_      } dwFlags: DWORD;
+        {_In_      } hActCtx: HANDLE;
+        {_In_opt_  } pvSubInstance: PVOID;
+        {_In_      } ulInfoClass: ULONG;
+        {_Out_writes_bytes_to_opt_(cbBuffer, *pcbWrittenOrRequired) } pvBuffer: PVOID;
+        {_In_      } cbBuffer: SIZE_T;
+        {_Out_opt_ } pcbWrittenOrRequired: PSIZE_T): winBOOL; stdcall;
+
+
+    // Application restart and data recovery callback
+    TAPPLICATION_RECOVERY_CALLBACK = function(pvParameter: PVOID): DWORD; stdcall;
+    PAPPLICATION_RECOVERY_CALLBACK = ^TAPPLICATION_RECOVERY_CALLBACK;
+
+    _FILE_BASIC_INFO = record
+        CreationTime: LARGE_INTEGER;
+        LastAccessTime: LARGE_INTEGER;
+        LastWriteTime: LARGE_INTEGER;
+        ChangeTime: LARGE_INTEGER;
+        FileAttributes: DWORD;
+    end;
+    TFILE_BASIC_INFO = _FILE_BASIC_INFO;
+    PFILE_BASIC_INFO = ^TFILE_BASIC_INFO;
+
+    _FILE_STANDARD_INFO = record
+        AllocationSize: LARGE_INTEGER;
+        EndOfFile: LARGE_INTEGER;
+        NumberOfLinks: DWORD;
+        DeletePending: winbool;
+        Directory: winbool;
+    end;
+    TFILE_STANDARD_INFO = _FILE_STANDARD_INFO;
+    PFILE_STANDARD_INFO = ^TFILE_STANDARD_INFO;
+
+    _FILE_NAME_INFO = record
+        FileNameLength: DWORD;
+        FileName: array [0..1 - 1] of WCHAR;
+    end;
+    TFILE_NAME_INFO = _FILE_NAME_INFO;
+    PFILE_NAME_INFO = ^TFILE_NAME_INFO;
+
+    _FILE_CASE_SENSITIVE_INFO = record
+        Flags: ULONG;
+    end;
+    TFILE_CASE_SENSITIVE_INFO = _FILE_CASE_SENSITIVE_INFO;
+    PFILE_CASE_SENSITIVE_INFO = ^TFILE_CASE_SENSITIVE_INFO;
+
+
+    _FILE_RENAME_INFO = record
+        {$IFDEF WIN32_WINNT_WIN10_RS1}
+        case integer of
+            0: (ReplaceIfExists: winbool;
+                RootDirectory: HANDLE;
+                FileNameLength: DWORD;
+                FileName: PWCHAR;);  // FileRenameInfo
+            1: (Flags: DWORD);              // FileRenameInfoEx
+        {$ELSE}
+        ReplaceIfExists: winbool;
+        RootDirectory : HANDLE;
+        FileNameLength :DWORD;
+        FileName: PWCHAR;
+        {$ENDIF}
+
+    end;
+    TFILE_RENAME_INFO = _FILE_RENAME_INFO;
+    PFILE_RENAME_INFO = ^TFILE_RENAME_INFO;
+
+
+    TWinMain = function(
+        {_In_ } hInstance: HINST;
+        {_In_opt_ } hPrevInstance: HINST;
+        {_In_ } lpCmdLine: LPSTR;
+        {_In_ } nShowCmd: int32): int32; stdcall;
+
+    TwWinMain = function(
+        {_In_ } hInstance: HINST;
+        {_In_opt_ } hPrevInstance: HINST;
+        {_In_ } lpCmdLine: LPWSTR;
+        {_In_ } nShowCmd: int32): int32; stdcall;
+
+
+    // for GetProcAddress
+
+    PGET_SYSTEM_WOW64_DIRECTORY_A = function(
+        {_Out_writes_to_opt_(uSize, return + 1) } lpBuffer: LPSTR;
+        {_In_ } uSize: UINT): UINT; stdcall;
+
+    PGET_SYSTEM_WOW64_DIRECTORY_W = function(
+        {_Out_writes_to_opt_(uSize, return + 1) } lpBuffer: LPWSTR;
+        {_In_ } uSize: UINT): UINT; stdcall;
+
+
+    _FILE_ALLOCATION_INFO = record
+        AllocationSize: LARGE_INTEGER;
+    end;
+    TFILE_ALLOCATION_INFO = _FILE_ALLOCATION_INFO;
+    PFILE_ALLOCATION_INFO = ^TFILE_ALLOCATION_INFO;
+
+
+    _FILE_END_OF_FILE_INFO = record
+        EndOfFile: LARGE_INTEGER;
+    end;
+    TFILE_END_OF_FILE_INFO = _FILE_END_OF_FILE_INFO;
+    PFILE_END_OF_FILE_INFO = ^TFILE_END_OF_FILE_INFO;
+
+    _FILE_STREAM_INFO = record
+        NextEntryOffset: DWORD;
+        StreamNameLength: DWORD;
+        StreamSize: LARGE_INTEGER;
+        StreamAllocationSize: LARGE_INTEGER;
+        StreamName: array [0..1 - 1] of WCHAR;
+    end;
+    TFILE_STREAM_INFO = _FILE_STREAM_INFO;
+    PFILE_STREAM_INFO = ^TFILE_STREAM_INFO;
+
+
+    _FILE_COMPRESSION_INFO = record
+        CompressedFileSize: LARGE_INTEGER;
+        CompressionFormat: word;
+        CompressionUnitShift: UCHAR;
+        ChunkShift: UCHAR;
+        ClusterShift: UCHAR;
+        Reserved: array [0..3 - 1] of UCHAR;
+    end;
+    TFILE_COMPRESSION_INFO = _FILE_COMPRESSION_INFO;
+    PFILE_COMPRESSION_INFO = ^TFILE_COMPRESSION_INFO;
+
+    _FILE_ATTRIBUTE_TAG_INFO = record
+        FileAttributes: DWORD;
+        ReparseTag: DWORD;
+    end;
+    TFILE_ATTRIBUTE_TAG_INFO = _FILE_ATTRIBUTE_TAG_INFO;
+    PFILE_ATTRIBUTE_TAG_INFO = ^TFILE_ATTRIBUTE_TAG_INFO;
+
+    _FILE_DISPOSITION_INFO = record
+        DeleteFile: winbool;
+    end;
+    TFILE_DISPOSITION_INFO = _FILE_DISPOSITION_INFO;
+    PFILE_DISPOSITION_INFO = ^TFILE_DISPOSITION_INFO;
+
+
+    _FILE_DISPOSITION_INFO_EX = record
+        Flags: DWORD;
+    end;
+    TFILE_DISPOSITION_INFO_EX = _FILE_DISPOSITION_INFO_EX;
+    PFILE_DISPOSITION_INFO_EX = ^TFILE_DISPOSITION_INFO_EX;
+
+
+    _FILE_ID_BOTH_DIR_INFO = record
+        NextEntryOffset: DWORD;
+        FileIndex: DWORD;
+        CreationTime: LARGE_INTEGER;
+        LastAccessTime: LARGE_INTEGER;
+        LastWriteTime: LARGE_INTEGER;
+        ChangeTime: LARGE_INTEGER;
+        EndOfFile: LARGE_INTEGER;
+        AllocationSize: LARGE_INTEGER;
+        FileAttributes: DWORD;
+        FileNameLength: DWORD;
+        EaSize: DWORD;
+        ShortNameLength: CCHAR;
+        ShortName: array [0..12 - 1] of WCHAR;
+        FileId: LARGE_INTEGER;
+        FileName: array [0..1 - 1] of WCHAR;
+    end;
+    TFILE_ID_BOTH_DIR_INFO = _FILE_ID_BOTH_DIR_INFO;
+    PFILE_ID_BOTH_DIR_INFO = ^TFILE_ID_BOTH_DIR_INFO;
+
+    _FILE_FULL_DIR_INFO = record
+        NextEntryOffset: ULONG;
+        FileIndex: ULONG;
+        CreationTime: LARGE_INTEGER;
+        LastAccessTime: LARGE_INTEGER;
+        LastWriteTime: LARGE_INTEGER;
+        ChangeTime: LARGE_INTEGER;
+        EndOfFile: LARGE_INTEGER;
+        AllocationSize: LARGE_INTEGER;
+        FileAttributes: ULONG;
+        FileNameLength: ULONG;
+        EaSize: ULONG;
+        FileName: array [0..1 - 1] of WCHAR;
+    end;
+    TFILE_FULL_DIR_INFO = _FILE_FULL_DIR_INFO;
+    PFILE_FULL_DIR_INFO = ^TFILE_FULL_DIR_INFO;
+
+    _PRIORITY_HINT = (
+        IoPriorityHintVeryLow = 0,
+        IoPriorityHintLow,
+        IoPriorityHintNormal,
+        MaximumIoPriorityHintType);
+
+    TPRIORITY_HINT = _PRIORITY_HINT;
+    PPRIORITY_HINT = ^TPRIORITY_HINT;
+
+
+    _FILE_IO_PRIORITY_HINT_INFO = record
+        PriorityHint: TPRIORITY_HINT;
+    end;
+    TFILE_IO_PRIORITY_HINT_INFO = _FILE_IO_PRIORITY_HINT_INFO;
+    PFILE_IO_PRIORITY_HINT_INFO = ^TFILE_IO_PRIORITY_HINT_INFO;
+
+    // Structure and constants must match those in ntioapi_x.w
+
+
+    _FILE_ALIGNMENT_INFO = record
+        AlignmentRequirement: ULONG;
+    end;
+    TFILE_ALIGNMENT_INFO = _FILE_ALIGNMENT_INFO;
+    PFILE_ALIGNMENT_INFO = ^TFILE_ALIGNMENT_INFO;
+
+
+    _FILE_STORAGE_INFO = record
+        LogicalBytesPerSector: ULONG;
+        PhysicalBytesPerSectorForAtomicity: ULONG;
+        PhysicalBytesPerSectorForPerformance: ULONG;
+        FileSystemEffectivePhysicalBytesPerSectorForAtomicity: ULONG;
+        Flags: ULONG;
+        ByteOffsetForSectorAlignment: ULONG;
+        ByteOffsetForPartitionAlignment: ULONG;
+    end;
+    TFILE_STORAGE_INFO = _FILE_STORAGE_INFO;
+    PFILE_STORAGE_INFO = ^TFILE_STORAGE_INFO;
+
+
+    //  Structure definition for FileIdInfo
+
+    _FILE_ID_INFO = record
+        VolumeSerialNumber: ULONGLONG;
+        FileId: TFILE_ID_128;
+    end;
+    TFILE_ID_INFO = _FILE_ID_INFO;
+    PFILE_ID_INFO = ^TFILE_ID_INFO;
+
+
+    //  Structure definition for FileIdExtdDirectoryInfo
+
+    _FILE_ID_EXTD_DIR_INFO = record
+        NextEntryOffset: ULONG;
+        FileIndex: ULONG;
+        CreationTime: LARGE_INTEGER;
+        LastAccessTime: LARGE_INTEGER;
+        LastWriteTime: LARGE_INTEGER;
+        ChangeTime: LARGE_INTEGER;
+        EndOfFile: LARGE_INTEGER;
+        AllocationSize: LARGE_INTEGER;
+        FileAttributes: ULONG;
+        FileNameLength: ULONG;
+        EaSize: ULONG;
+        ReparsePointTag: ULONG;
+        FileId: TFILE_ID_128;
+        FileName: array [0..1 - 1] of WCHAR;
+    end;
+    TFILE_ID_EXTD_DIR_INFO = _FILE_ID_EXTD_DIR_INFO;
+    PFILE_ID_EXTD_DIR_INFO = ^TFILE_ID_EXTD_DIR_INFO;
+
+
+    _FILE_REMOTE_PROTOCOL_INFO = record
+        // Structure Version
+        StructureVersion: USHORT; // 1 for Win7, 2 for Win8 SMB3, 3 for Blue SMB3.
+        StructureSize: USHORT; // sizeof(FILE_REMOTE_PROTOCOL_INFO)
+        Protocol: ULONG; // Protocol (WNNC_NET_*) defined in winnetwk.h or ntifs.h.
+        // Protocol Version & Type
+        ProtocolMajorVersion: USHORT;
+        ProtocolMinorVersion: USHORT;
+        ProtocolRevision: USHORT;
+        Reserved: USHORT;
+        // Protocol-Generic Information
+        Flags: ULONG;
+        GenericReserved: record
+            Reserved: array [0..8 - 1] of ULONG;
+            end;
+            // Protocol specific information
+            {$IFNDEF WIN32_WINNT_WIN8}
+         ProtocolSpecificReserved : record
+             Reserved : array [0..16-1] of ULONG;
+          end;
+            {$ENDIF}
+        {$IFDEF WIN32_WINNT_WIN8}
+        case integer of
+            0: (
+                Smb2: record
+                    Server: record
+                        Capabilities: ULONG;
+                        end;
+                    Share: record
+                        Capabilities: ULONG;
+                        {$IFDEF NTDDI_WIN10_NI}
+                        ShareFlags : ULONG;
+                        {$ELSE}
+                        CachingFlags: ULONG;
+                        {$ENDIF}
+                        end;
+
+                    end;
+            );
+            1: (
+                Reserved3: array [0..16 - 1] of ULONG;
+            );
+        {$ENDIF}
+    end;
+    TFILE_REMOTE_PROTOCOL_INFO = _FILE_REMOTE_PROTOCOL_INFO;
+    PFILE_REMOTE_PROTOCOL_INFO = ^TFILE_REMOTE_PROTOCOL_INFO;
+
+
+    _FILE_ID_TYPE = (
+        FileIdType,
+        ObjectIdType,
+        ExtendedFileIdType,
+        MaximumFileIdType);
+
+    TFILE_ID_TYPE = _FILE_ID_TYPE;
+    PFILE_ID_TYPE = ^TFILE_ID_TYPE;
+
+
+    TFILE_ID_DESCRIPTOR = record
+        dwSize: DWORD; // Size of the struct
+        FileType: TFILE_ID_TYPE; // Describes the type of identifier passed in.
+
+        case integer of
+            0: (
+                FileId: LARGE_INTEGER;
+            );
+            1: (
+                ObjectId: TGUID;
+            );
+        {$IFDEF WIN32_WINNT_WIN8}
+            2: (
+                ExtendedFileId: TFILE_ID_128;
+            );
+        {$ENDIF}
+    end;
+    PFILE_ID_DESCRIPTOR = ^TFILE_ID_DESCRIPTOR;
+    LPFILE_ID_DESCRIPTOR = ^TFILE_ID_DESCRIPTOR;
+
+
+const
+  {  PROC_THREAD_ATTRIBUTE_PARENT_PROCESS =
+      ((ProcThreadAttributeParentProcess and PROC_THREAD_ATTRIBUTE_NUMBER) or PROC_THREAD_ATTRIBUTE_THREAD or PROC_THREAD_ATTRIBUTE_INPUT or  PROC_THREAD_ATTRIBUTE_ADDITIVE)}
+
+    PROC_THREAD_ATTRIBUTE_PARENT_PROCESS =
+        ((Ord(ProcThreadAttributeParentProcess) and PROC_THREAD_ATTRIBUTE_NUMBER) or 0 or PROC_THREAD_ATTRIBUTE_INPUT or 0);
+
+    PROC_THREAD_ATTRIBUTE_HANDLE_LIST =
+        ((Ord(ProcThreadAttributeHandleList) and PROC_THREAD_ATTRIBUTE_NUMBER) or 0 or PROC_THREAD_ATTRIBUTE_INPUT or 0);
+
+    PROC_THREAD_ATTRIBUTE_GROUP_AFFINITY =
+        ((Ord(ProcThreadAttributeGroupAffinity) and PROC_THREAD_ATTRIBUTE_NUMBER) or PROC_THREAD_ATTRIBUTE_THREAD or PROC_THREAD_ATTRIBUTE_INPUT or 0);
+    PROC_THREAD_ATTRIBUTE_PREFERRED_NODE =
+        ((Ord(ProcThreadAttributePreferredNode) and PROC_THREAD_ATTRIBUTE_NUMBER) or 0 or PROC_THREAD_ATTRIBUTE_INPUT or 0);
+    PROC_THREAD_ATTRIBUTE_IDEAL_PROCESSOR =
+        ((Ord(ProcThreadAttributeIdealProcessor) and PROC_THREAD_ATTRIBUTE_NUMBER) or PROC_THREAD_ATTRIBUTE_THREAD or PROC_THREAD_ATTRIBUTE_INPUT or 0);
+    PROC_THREAD_ATTRIBUTE_UMS_THREAD =
+        ((Ord(ProcThreadAttributeUmsThread) and PROC_THREAD_ATTRIBUTE_NUMBER) or PROC_THREAD_ATTRIBUTE_THREAD or PROC_THREAD_ATTRIBUTE_INPUT or 0);
+    PROC_THREAD_ATTRIBUTE_MITIGATION_POLICY =
+        ((Ord(ProcThreadAttributeMitigationPolicy) and PROC_THREAD_ATTRIBUTE_NUMBER) or 0 or PROC_THREAD_ATTRIBUTE_INPUT or 0);
+
+    PROC_THREAD_ATTRIBUTE_SECURITY_CAPABILITIES =
+        ((Ord(ProcThreadAttributeSecurityCapabilities) and PROC_THREAD_ATTRIBUTE_NUMBER) or 0 or PROC_THREAD_ATTRIBUTE_INPUT or 0);
+
+    PROC_THREAD_ATTRIBUTE_PROTECTION_LEVEL =
+        ((Ord(ProcThreadAttributeProtectionLevel) and PROC_THREAD_ATTRIBUTE_NUMBER) or 0 or PROC_THREAD_ATTRIBUTE_INPUT or 0);
+
+    PROC_THREAD_ATTRIBUTE_PSEUDOCONSOLE =
+        ((Ord(ProcThreadAttributePseudoConsole) and PROC_THREAD_ATTRIBUTE_NUMBER) or 0 or PROC_THREAD_ATTRIBUTE_INPUT or 0);
+
+    PROC_THREAD_ATTRIBUTE_MACHINE_TYPE =
+        ((Ord(ProcThreadAttributeMachineType) and PROC_THREAD_ATTRIBUTE_NUMBER) or 0 or PROC_THREAD_ATTRIBUTE_INPUT or 0);
+
+    PROC_THREAD_ATTRIBUTE_ENABLE_OPTIONAL_XSTATE_FEATURES =
+        ((Ord(ProcThreadAttributeEnableOptionalXStateFeatures) and PROC_THREAD_ATTRIBUTE_NUMBER) or PROC_THREAD_ATTRIBUTE_THREAD or PROC_THREAD_ATTRIBUTE_INPUT or 0);
+
+    PROC_THREAD_ATTRIBUTE_SVE_VECTOR_LENGTH =
+        ((Ord(ProcThreadAttributeSveVectorLength) and PROC_THREAD_ATTRIBUTE_NUMBER) or 0 or PROC_THREAD_ATTRIBUTE_INPUT or 0);
+
+    PROC_THREAD_ATTRIBUTE_JOB_LIST =
+        ((Ord(ProcThreadAttributeJobList) and PROC_THREAD_ATTRIBUTE_NUMBER) or 0 or PROC_THREAD_ATTRIBUTE_INPUT or 0);
+
+    PROC_THREAD_ATTRIBUTE_CHILD_PROCESS_POLICY =
+        ((Ord(ProcThreadAttributeChildProcessPolicy) and PROC_THREAD_ATTRIBUTE_NUMBER) or 0 or PROC_THREAD_ATTRIBUTE_INPUT or 0);
+
+    PROC_THREAD_ATTRIBUTE_ALL_APPLICATION_PACKAGES_POLICY =
+        ((Ord(ProcThreadAttributeAllApplicationPackagesPolicy) and PROC_THREAD_ATTRIBUTE_NUMBER) or 0 or PROC_THREAD_ATTRIBUTE_INPUT or 0);
+
+    PROC_THREAD_ATTRIBUTE_WIN32K_FILTER =
+        ((Ord(ProcThreadAttributeWin32kFilter) and PROC_THREAD_ATTRIBUTE_NUMBER) or 0 or PROC_THREAD_ATTRIBUTE_INPUT or 0);
+
+    PROC_THREAD_ATTRIBUTE_DESKTOP_APP_POLICY =
+        ((Ord(ProcThreadAttributeDesktopAppPolicy) and PROC_THREAD_ATTRIBUTE_NUMBER) or 0 or PROC_THREAD_ATTRIBUTE_INPUT or 0);
+
+    PROC_THREAD_ATTRIBUTE_MITIGATION_AUDIT_POLICY =
+        ((Ord(ProcThreadAttributeMitigationAuditPolicy) and PROC_THREAD_ATTRIBUTE_NUMBER) or 0 or PROC_THREAD_ATTRIBUTE_INPUT or 0);
+
+    PROC_THREAD_ATTRIBUTE_COMPONENT_FILTER =
+        ((Ord(ProcThreadAttributeComponentFilter) and PROC_THREAD_ATTRIBUTE_NUMBER) or 0 or PROC_THREAD_ATTRIBUTE_INPUT or 0);
+
+    PROC_THREAD_ATTRIBUTE_TRUSTED_APP =
+        ((Ord(ProcThreadAttributeTrustedApp) and PROC_THREAD_ATTRIBUTE_NUMBER) or 0 or PROC_THREAD_ATTRIBUTE_INPUT or 0);
+
+    INVALID_ATOM = ATOM(0);
+
+function GlobalAlloc(
+    {_In_ } uFlags: UINT;
+    {_In_ } dwBytes: SIZE_T): HGLOBAL; stdcall; external KERNEL32_DLL;
+
+
+function GlobalReAlloc(hMem: HGLOBAL;
+    {_In_ } dwBytes: SIZE_T;
+    {_In_ } uFlags: UINT): HGLOBAL; stdcall; external KERNEL32_DLL;
+
+
+function GlobalSize(
+    {_In_ } hMem: HGLOBAL): SIZE_T; stdcall; external KERNEL32_DLL;
+
+
+function GlobalUnlock(
+    {_In_ } hMem: HGLOBAL): winbool; stdcall; external KERNEL32_DLL;
+
+
+function GlobalLock(
+    {_In_ } hMem: HGLOBAL): LPVOID; stdcall; external KERNEL32_DLL;
+
+
+function GlobalFlags(
+    {_In_ } hMem: HGLOBAL): UINT; stdcall; external KERNEL32_DLL;
+
+
+function GlobalHandle(
+    {_In_ } pMem: LPCVOID): HGLOBAL; stdcall; external KERNEL32_DLL;
+
+
+function GlobalFree(hMem: HGLOBAL): HGLOBAL; stdcall; external KERNEL32_DLL;
+
+
+function GlobalCompact(
+    {_In_ } dwMinFree: DWORD): SIZE_T; stdcall; external KERNEL32_DLL;
+
+
+procedure GlobalFix(
+    {_In_ } hMem: HGLOBAL); stdcall; external KERNEL32_DLL;
+
+
+procedure GlobalUnfix(
+    {_In_ } hMem: HGLOBAL); stdcall; external KERNEL32_DLL;
+
+
+function GlobalWire(
+    {_In_ } hMem: HGLOBAL): LPVOID; stdcall; external KERNEL32_DLL;
+
+
+function GlobalUnWire(
+    {_In_ } hMem: HGLOBAL): winbool; stdcall; external KERNEL32_DLL;
+
+
+procedure GlobalMemoryStatus(
+    {_Out_ } lpBuffer: LPMEMORYSTATUS); stdcall; external KERNEL32_DLL;
+
+
+function LocalAlloc(
+    {_In_ } uFlags: UINT;
+    {_In_ } uBytes: SIZE_T): HLOCAL; stdcall; external KERNEL32_DLL;
+
+
+function LocalReAlloc(hMem: HLOCAL;
+    {_In_ } uBytes: SIZE_T;
+    {_In_ } uFlags: UINT): HLOCAL; stdcall; external KERNEL32_DLL;
+
+
+function LocalLock(
+    {_In_ } hMem: HLOCAL): LPVOID; stdcall; external KERNEL32_DLL;
+
+
+function LocalHandle(
+    {_In_ } pMem: LPCVOID): HLOCAL; stdcall; external KERNEL32_DLL;
+
+
+function LocalUnlock(
+    {_In_ } hMem: HLOCAL): winbool; stdcall; external KERNEL32_DLL;
+
+
+function LocalSize(
+    {_In_ } hMem: HLOCAL): SIZE_T; stdcall; external KERNEL32_DLL;
+
+
+function LocalFlags(
+    {_In_ } hMem: HLOCAL): UINT; stdcall; external KERNEL32_DLL;
+
+
+function LocalFree(hMem: HLOCAL): HLOCAL; stdcall; external KERNEL32_DLL;
+
+
+function LocalShrink(
+    {_In_ } hMem: HLOCAL;
+    {_In_ } cbNewSize: UINT): SIZE_T; stdcall; external KERNEL32_DLL;
+
+
+function LocalCompact(
+    {_In_ } uMinFree: UINT): SIZE_T; stdcall; external KERNEL32_DLL;
+
+
+function GetBinaryTypeA(
+    {_In_  } lpApplicationName: LPCSTR;
+    {_Out_ } lpBinaryType: LPDWORD): winbool; stdcall; external KERNEL32_DLL;
+
+
+function GetBinaryTypeW(
+    {_In_  } lpApplicationName: LPCWSTR;
+    {_Out_ } lpBinaryType: LPDWORD): winbool; stdcall; external KERNEL32_DLL;
+
+
+function GetShortPathNameA(
+    {_In_ } lpszLongPath: LPCSTR;
+    {_Out_writes_to_opt_(cchBuffer, return + 1) } lpszShortPath: LPSTR;
+    {_In_ } cchBuffer: DWORD): DWORD; stdcall; external KERNEL32_DLL;
+
+
+function GetLongPathNameTransactedA(
+    {_In_     } lpszShortPath: LPCSTR;
+    {_Out_writes_to_opt_(cchBuffer, return + 1) } lpszLongPath: LPSTR;
+    {_In_     } cchBuffer: DWORD;
+    {_In_     } hTransaction: HANDLE): DWORD; stdcall; external KERNEL32_DLL;
+
+
+function GetLongPathNameTransactedW(
+    {_In_     } lpszShortPath: LPCWSTR;
+    {_Out_writes_to_opt_(cchBuffer, return + 1) } lpszLongPath: LPWSTR;
+    {_In_     } cchBuffer: DWORD;
+    {_In_     } hTransaction: HANDLE): DWORD; stdcall; external KERNEL32_DLL;
+
+
+function GetProcessAffinityMask(
+    {_In_  } hProcess: HANDLE;
+    {_Out_ } lpProcessAffinityMask: PDWORD_PTR;
+    {_Out_ } lpSystemAffinityMask: PDWORD_PTR): winbool; stdcall; external KERNEL32_DLL;
+
+
+function SetProcessAffinityMask(
+    {_In_ } hProcess: HANDLE;
+    {_In_ } dwProcessAffinityMask: DWORD_PTR): winbool; stdcall; external KERNEL32_DLL;
+
+
+function GetProcessIoCounters(
+    {_In_  } hProcess: HANDLE;
+    {_Out_ } lpIoCounters: PIO_COUNTERS): winbool; stdcall; external KERNEL32_DLL;
+
+
+procedure FatalExit(
+    {_In_ } ExitCode: int32); stdcall; external KERNEL32_DLL;
+
+
+function SetEnvironmentStringsA(
+    {_In_ _Pre_ _NullNull_terminated_ }NewEnvironment: LPCH): winbool; stdcall; external KERNEL32_DLL;
+
+
+// Fiber begin
+
+
+procedure SwitchToFiber(
+    {_In_ } lpFiber: LPVOID); stdcall; external KERNEL32_DLL;
+
+
+procedure DeleteFiber(
+    {_In_ } lpFiber: LPVOID); stdcall; external KERNEL32_DLL;
+
+
+function ConvertFiberToThread(): winbool; stdcall; external KERNEL32_DLL;
+
+
+function CreateFiberEx(
+    {_In_     } dwStackCommitSize: SIZE_T;
+    {_In_     } dwStackReserveSize: SIZE_T;
+    {_In_     } dwFlags: DWORD;
+    {_In_     } lpStartAddress: LPFIBER_START_ROUTINE;
+    {_In_opt_ } lpParameter: LPVOID): LPVOID; stdcall; external KERNEL32_DLL;
+
+
+function ConvertThreadToFiberEx(
+    {_In_opt_ } lpParameter: LPVOID;
+    {_In_     } dwFlags: DWORD): LPVOID; stdcall; external KERNEL32_DLL;
+
+
+function CreateFiber(
+    {_In_     } dwStackSize: SIZE_T;
+    {_In_     } lpStartAddress: LPFIBER_START_ROUTINE;
+    {_In_opt_ } lpParameter: LPVOID): LPVOID; stdcall; external KERNEL32_DLL;
+
+
+function ConvertThreadToFiber(
+    {_In_opt_ } lpParameter: LPVOID): LPVOID; stdcall; external KERNEL32_DLL;
+
+
+// Fiber end
+
+
+// UMS begin
+
+
+function CreateUmsCompletionList(
+    {_Outptr_ } UmsCompletionList: PPUMS_COMPLETION_LIST): winbool; stdcall; external KERNEL32_DLL;
+
+
+function DequeueUmsCompletionListItems(
+    {_In_ } UmsCompletionList: PUMS_COMPLETION_LIST;
+    {_In_ } WaitTimeOut: DWORD;
+    {_Out_ } UmsThreadList: PPUMS_CONTEXT): winbool; stdcall; external KERNEL32_DLL;
+
+
+function GetUmsCompletionListEvent(
+    {_In_ } UmsCompletionList: PUMS_COMPLETION_LIST;
+    {_Inout_ } UmsCompletionEvent: PHANDLE): winbool; stdcall; external KERNEL32_DLL;
+
+
+function ExecuteUmsThread(
+    {_Inout_ } UmsThread: PUMS_CONTEXT): winbool; stdcall; external KERNEL32_DLL;
+
+
+function UmsThreadYield(
+    {_In_ } SchedulerParam: PVOID): winbool; stdcall; external KERNEL32_DLL;
+
+
+function DeleteUmsCompletionList(
+    {_In_ } UmsCompletionList: PUMS_COMPLETION_LIST): winbool; stdcall; external KERNEL32_DLL;
+
+
+function GetCurrentUmsThread(): PUMS_CONTEXT; stdcall; external KERNEL32_DLL;
+
+
+function GetNextUmsListItem(
+    {_Inout_ } UmsContext: PUMS_CONTEXT): PUMS_CONTEXT; stdcall; external KERNEL32_DLL;
+
+
+function QueryUmsThreadInformation(
+    {_In_ } UmsThread: PUMS_CONTEXT;
+    {_In_ } UmsThreadInfoClass: TUMS_THREAD_INFO_CLASS;
+    {_Out_writes_bytes_to_(UmsThreadInformationLength, *ReturnLength) } UmsThreadInformation: PVOID;
+    {_In_ } UmsThreadInformationLength: ULONG;
+    {_Out_opt_ } ReturnLength: PULONG): winbool; stdcall; external KERNEL32_DLL;
+
+
+function SetUmsThreadInformation(
+    {_In_ } UmsThread: PUMS_CONTEXT;
+    {_In_ } UmsThreadInfoClass: TUMS_THREAD_INFO_CLASS;
+    {_In_ } UmsThreadInformation: PVOID;
+    {_In_ } UmsThreadInformationLength: ULONG): winbool; stdcall; external KERNEL32_DLL;
+
+
+function DeleteUmsThreadContext(
+    {_In_ } UmsThread: PUMS_CONTEXT): winbool; stdcall; external KERNEL32_DLL;
+
+
+function CreateUmsThreadContext(
+    {_Outptr_ } lpUmsThread: PPUMS_CONTEXT): winbool; stdcall; external KERNEL32_DLL;
+
+
+function EnterUmsSchedulingMode(
+    {_In_ } SchedulerStartupInfo: PUMS_SCHEDULER_STARTUP_INFO): winbool; stdcall; external KERNEL32_DLL;
+
+
+function GetUmsSystemThreadInformation(
+    {_In_ } ThreadHandle: HANDLE;
+    {_Inout_ } SystemThreadInfo: PUMS_SYSTEM_THREAD_INFORMATION): winbool; stdcall; external KERNEL32_DLL;
+
+
+// UMS end
+
+
+function SetThreadAffinityMask(
+    {_In_ } hThread: HANDLE;
+    {_In_ } dwThreadAffinityMask: DWORD_PTR): DWORD_PTR; stdcall; external KERNEL32_DLL;
+
+
+function SetProcessDEPPolicy(
+    {_In_ } dwFlags: DWORD): winbool; stdcall; external KERNEL32_DLL;
+
+
+function GetProcessDEPPolicy(
+    {_In_ } hProcess: HANDLE;
+    {_Out_ } lpFlags: LPDWORD;
+    {_Out_ } lpPermanent: PWinbool): winbool; stdcall; external KERNEL32_DLL;
+
+
+function RequestWakeupLatency(
+    {_In_ } latency: TLATENCY_TIME): winbool; stdcall; external KERNEL32_DLL;
+
+
+function IsSystemResumeAutomatic(): winbool; stdcall; external KERNEL32_DLL;
+
+
+function GetThreadSelectorEntry(
+    {_In_  } hThread: HANDLE;
+    {_In_  } dwSelector: DWORD;
+    {_Out_ } lpSelectorEntry: LPLDT_ENTRY): winbool; stdcall; external KERNEL32_DLL;
+
+
+function SetThreadExecutionState(
+    {_In_ } esFlags: TEXECUTION_STATE): TEXECUTION_STATE; stdcall; external KERNEL32_DLL;
+
+
+// Power Request APIs
+
+
+function PowerCreateRequest(
+    {_In_ } Context: PREASON_CONTEXT): HANDLE; stdcall; external KERNEL32_DLL;
+
+
+function PowerSetRequest(
+    {_In_ } PowerRequest: HANDLE;
+    {_In_ } RequestType: TPOWER_REQUEST_TYPE): winbool; stdcall; external KERNEL32_DLL;
+
+
+function PowerClearRequest(
+    {_In_ } PowerRequest: HANDLE;
+    {_In_ } RequestType: TPOWER_REQUEST_TYPE): winbool; stdcall; external KERNEL32_DLL;
+
+
+procedure RestoreLastError(
+    {_In_ } dwErrCode: DWORD); stdcall; external KERNEL32_DLL;
+
+
+function SetFileCompletionNotificationModes(
+    {_In_ } FileHandle: HANDLE;
+    {_In_ } Flags: UCHAR): winbool; stdcall; external KERNEL32_DLL;
+
+
+function Wow64GetThreadSelectorEntry(
+    {_In_ } hThread: HANDLE;
+    {_In_ } dwSelector: DWORD;
+    {_Out_ } lpSelectorEntry: PWOW64_LDT_ENTRY): winbool; stdcall; external KERNEL32_DLL;
+
+
+function DebugSetProcessKillOnExit(
+    {_In_ } KillOnExit: winbool): winbool; stdcall; external KERNEL32_DLL;
+
+
+function DebugBreakProcess(
+    {_In_ } Process: HANDLE): winbool; stdcall; external KERNEL32_DLL;
+
+
+function PulseEvent(
+    {_In_ } hEvent: HANDLE): winbool; stdcall; external KERNEL32_DLL;
+
+
+function GlobalDeleteAtom(
+    {_In_ } nAtom: TATOM): TATOM; stdcall; external KERNEL32_DLL;
+
+
+function InitAtomTable(
+    {_In_ } nSize: DWORD): winbool; stdcall; external KERNEL32_DLL;
+
+
+function DeleteAtom(
+    {_In_ } nAtom: TATOM): TATOM; stdcall; external KERNEL32_DLL;
+
+
+function SetHandleCount(
+    {_In_ } uNumber: UINT): UINT; stdcall; external KERNEL32_DLL;
+
+
+function RequestDeviceWakeup(
+    {_In_ } hDevice: HANDLE): winbool; stdcall; external KERNEL32_DLL;
+
+
+function CancelDeviceWakeupRequest(
+    {_In_ } hDevice: HANDLE): winbool; stdcall; external KERNEL32_DLL;
+
+
+function GetDevicePowerState(
+    {_In_  } hDevice: HANDLE;
+    {_Out_ } pfOn: PWinBool): winbool; stdcall; external KERNEL32_DLL;
+
+
+function SetMessageWaitingIndicator(
+    {_In_ } hMsgIndicator: HANDLE;
+    {_In_ } ulMsgCount: ULONG): winbool; stdcall; external KERNEL32_DLL;
+
+
+function SetFileShortNameA(
+    {_In_ } hFile: HANDLE;
+    {_In_ } lpShortName: LPCSTR): winbool; stdcall; external KERNEL32_DLL;
+
+
+function SetFileShortNameW(
+    {_In_ } hFile: HANDLE;
+    {_In_ } lpShortName: LPCWSTR): winbool; stdcall; external KERNEL32_DLL;
+
+
+function LoadModule(
+    {_In_ } lpModuleName: LPCSTR;
+    {_In_ } lpParameterBlock: LPVOID): DWORD; stdcall; external KERNEL32_DLL;
+
+
+function WinExec(
+    {_In_ } lpCmdLine: LPCSTR;
+    {_In_ } uCmdShow: UINT): UINT; stdcall; external KERNEL32_DLL;
+
+
+function ClearCommBreak(
+    {_In_ } hFile: HANDLE): winbool; stdcall; external KERNEL32_DLL;
+
+
+function ClearCommError(
+    {_In_      } hFile: HANDLE;
+    {_Out_opt_ } lpErrors: LPDWORD;
+    {_Out_opt_ } lpStat: LPCOMSTAT): winbool; stdcall; external KERNEL32_DLL;
+
+
+function SetupComm(
+    {_In_ } hFile: HANDLE;
+    {_In_ } dwInQueue: DWORD;
+    {_In_ } dwOutQueue: DWORD): winbool; stdcall; external KERNEL32_DLL;
+
+
+function EscapeCommFunction(
+    {_In_ } hFile: HANDLE;
+    {_In_ } dwFunc: DWORD): winbool; stdcall; external KERNEL32_DLL;
+
+
+function GetCommConfig(
+    {_In_      } hCommDev: HANDLE;
+    {_Out_writes_bytes_opt_(*lpdwSize) } lpCC: LPCOMMCONFIG;
+    {_Inout_   } lpdwSize: LPDWORD): winbool; stdcall; external KERNEL32_DLL;
+
+
+function GetCommMask(
+    {_In_  } hFile: HANDLE;
+    {_Out_ } lpEvtMask: LPDWORD): winbool; stdcall; external KERNEL32_DLL;
+
+
+function GetCommProperties(
+    {_In_    } hFile: HANDLE;
+    {_Inout_ } lpCommProp: LPCOMMPROP): winbool; stdcall; external KERNEL32_DLL;
+
+
+function GetCommModemStatus(
+    {_In_  } hFile: HANDLE;
+    {_Out_ } lpModemStat: LPDWORD): winbool; stdcall; external KERNEL32_DLL;
+
+
+function GetCommState(
+    {_In_  } hFile: HANDLE;
+    {_Out_ } lpDCB: LPDCB): winbool; stdcall; external KERNEL32_DLL;
+
+
+function GetCommTimeouts(
+    {_In_  } hFile: HANDLE;
+    {_Out_ } lpCommTimeouts: LPCOMMTIMEOUTS): winbool; stdcall; external KERNEL32_DLL;
+
+
+function PurgeComm(
+    {_In_ } hFile: HANDLE;
+    {_In_ } dwFlags: DWORD): winbool; stdcall; external KERNEL32_DLL;
+
+
+function SetCommBreak(
+    {_In_ } hFile: HANDLE): winbool; stdcall; external KERNEL32_DLL;
+
+
+function SetCommConfig(
+    {_In_ } hCommDev: HANDLE;
+    {_In_reads_bytes_(dwSize) } lpCC: LPCOMMCONFIG;
+    {_In_ } dwSize: DWORD): winbool; stdcall; external KERNEL32_DLL;
+
+
+function SetCommMask(
+    {_In_ } hFile: HANDLE;
+    {_In_ } dwEvtMask: DWORD): winbool; stdcall; external KERNEL32_DLL;
+
+
+function SetCommState(
+    {_In_ } hFile: HANDLE;
+    {_In_ } lpDCB: LPDCB): winbool; stdcall; external KERNEL32_DLL;
+
+
+function SetCommTimeouts(
+    {_In_ } hFile: HANDLE;
+    {_In_ } lpCommTimeouts: LPCOMMTIMEOUTS): winbool; stdcall; external KERNEL32_DLL;
+
+
+function TransmitCommChar(
+    {_In_ } hFile: HANDLE;
+    {_In_ } cChar: char): winbool; stdcall; external KERNEL32_DLL;
+
+
+function WaitCommEvent(
+    {_In_        } hFile: HANDLE;
+    {_Inout_     } lpEvtMask: LPDWORD;
+    {_Inout_opt_ } lpOverlapped: LPOVERLAPPED): winbool; stdcall; external KERNEL32_DLL;
+
+
+{$IFDEF NTDDI_WIN10_RS3}
+
+
+function OpenCommPort(
+    {_In_ } uPortNumber: ULONG;
+    {_In_ } dwDesiredAccess: DWORD;
+    {_In_ } dwFlagsAndAttributes: DWORD): HANDLE; stdcall; external KERNEL32_DLL;
+
+
+function GetCommPorts(
+    {_Out_writes_(uPortNumbersCount) } lpPortNumbers: PULONG;
+    {_In_                            } uPortNumbersCount: ULONG;
+    {_Out_                           } puPortNumbersFound: PULONG): ULONG; stdcall; external KERNEL32_DLL;
+
+{$ENDIF}// (NTDDI_VERSION >= NTDDI_WIN10_RS3) // NTDDI_WIN10_RS4NTDDI_WIN10_RS4
+
+
+function SetTapePosition(
+    {_In_ } hDevice: HANDLE;
+    {_In_ } dwPositionMethod: DWORD;
+    {_In_ } dwPartition: DWORD;
+    {_In_ } dwOffsetLow: DWORD;
+    {_In_ } dwOffsetHigh: DWORD;
+    {_In_ } bImmediate: winbool): DWORD; stdcall; external KERNEL32_DLL;
+
+
+function GetTapePosition(
+    {_In_  } hDevice: HANDLE;
+    {_In_  } dwPositionType: DWORD;
+    {_Out_ } lpdwPartition: LPDWORD;
+    {_Out_ } lpdwOffsetLow: LPDWORD;
+    {_Out_ } lpdwOffsetHigh: LPDWORD): DWORD; stdcall; external KERNEL32_DLL;
+
+
+function PrepareTape(
+    {_In_ } hDevice: HANDLE;
+    {_In_ } dwOperation: DWORD;
+    {_In_ } bImmediate: winbool): DWORD; stdcall; external KERNEL32_DLL;
+
+
+function EraseTape(
+    {_In_ } hDevice: HANDLE;
+    {_In_ } dwEraseType: DWORD;
+    {_In_ } bImmediate: winbool): DWORD; stdcall; external KERNEL32_DLL;
+
+
+function CreateTapePartition(
+    {_In_ } hDevice: HANDLE;
+    {_In_ } dwPartitionMethod: DWORD;
+    {_In_ } dwCount: DWORD;
+    {_In_ } dwSize: DWORD): DWORD; stdcall; external KERNEL32_DLL;
+
+
+function WriteTapemark(
+    {_In_ } hDevice: HANDLE;
+    {_In_ } dwTapemarkType: DWORD;
+    {_In_ } dwTapemarkCount: DWORD;
+    {_In_ } bImmediate: winbool): DWORD; stdcall; external KERNEL32_DLL;
+
+
+function GetTapeStatus(
+    {_In_ } hDevice: HANDLE): DWORD; stdcall; external KERNEL32_DLL;
+
+
+function GetTapeParameters(
+    {_In_    } hDevice: HANDLE;
+    {_In_    } dwOperation: DWORD;
+    {_Inout_ } lpdwSize: LPDWORD;
+    {_Out_writes_bytes_(*lpdwSize) } lpTapeInformation: LPVOID): DWORD; stdcall; external KERNEL32_DLL;
+
+
+function SetTapeParameters(
+    {_In_ } hDevice: HANDLE;
+    {_In_ } dwOperation: DWORD;
+    {_In_ } lpTapeInformation: LPVOID): DWORD; stdcall; external KERNEL32_DLL;
+
+
+function MulDiv(
+    {_In_ } nNumber: int32;
+    {_In_ } nNumerator: int32;
+    {_In_ } nDenominator: int32): int32; stdcall; external KERNEL32_DLL;
+
+{$IFDEF NTDDI_WINXPSP3}
+
+function GetSystemDEPPolicy(): TDEP_SYSTEM_POLICY_TYPE; stdcall; external KERNEL32_DLL;
+
+{$ENDIF}
+
+
+function GetSystemRegistryQuota(
+    {_Out_opt_ } pdwQuotaAllowed: PDWORD;
+    {_Out_opt_ } pdwQuotaUsed: PDWORD): winbool; stdcall; external KERNEL32_DLL;
+
+
+// Routines to convert back and forth between system time and file time
+
+
+function FileTimeToDosDateTime(
+    {_In_  } lpFileTime: PFILETIME;
+    {_Out_ } lpFatDate: LPWORD;
+    {_Out_ } lpFatTime: LPWORD): winbool; stdcall; external KERNEL32_DLL;
+
+
+function DosDateTimeToFileTime(
+    {_In_  } wFatDate: word;
+    {_In_  } wFatTime: word;
+    {_Out_ } lpFileTime: LPFILETIME): winbool; stdcall; external KERNEL32_DLL;
+
+
+function FormatMessageA(
+    {_In_     } dwFlags: DWORD;
+    {_In_opt_ } lpSource: LPCVOID;
+    {_In_     } dwMessageId: DWORD;
+    {_In_     } dwLanguageId: DWORD; lpBuffer: LPSTR;
+    {_In_     } nSize: DWORD;
+    {_In_opt_ } const Arguments: array of const): DWORD; stdcall; external KERNEL32_DLL;
+
+
+function FormatMessageW(
+    {_In_     } dwFlags: DWORD;
+    {_In_opt_ } lpSource: LPCVOID;
+    {_In_     } dwMessageId: DWORD;
+    {_In_     } dwLanguageId: DWORD; lpBuffer: LPWSTR;
+    {_In_     } nSize: DWORD;
+    {_In_opt_ } const Arguments: array of const): DWORD; stdcall; external KERNEL32_DLL;
+
+
+function CreateMailslotA(
+    {_In_     } lpName: LPCSTR;
+    {_In_     } nMaxMessageSize: DWORD;
+    {_In_     } lReadTimeout: DWORD;
+    {_In_opt_ } lpSecurityAttributes: LPSECURITY_ATTRIBUTES): HANDLE; stdcall; external KERNEL32_DLL;
+
+
+function CreateMailslotW(
+    {_In_     } lpName: LPCWSTR;
+    {_In_     } nMaxMessageSize: DWORD;
+    {_In_     } lReadTimeout: DWORD;
+    {_In_opt_ } lpSecurityAttributes: LPSECURITY_ATTRIBUTES): HANDLE; stdcall; external KERNEL32_DLL;
+
+
+function GetMailslotInfo(
+    {_In_      } hMailslot: HANDLE;
+    {_Out_opt_ } lpMaxMessageSize: LPDWORD;
+    {_Out_opt_ } lpNextSize: LPDWORD;
+    {_Out_opt_ } lpMessageCount: LPDWORD;
+    {_Out_opt_ } lpReadTimeout: LPDWORD): winbool; stdcall; external KERNEL32_DLL;
+
+
+function SetMailslotInfo(
+    {_In_ } hMailslot: HANDLE;
+    {_In_ } lReadTimeout: DWORD): winbool; stdcall; external KERNEL32_DLL;
+
+
+// File Encryption API
+
+
+function EncryptFileA(
+    {_In_ } lpFileName: LPCSTR): winbool; stdcall; external KERNEL32_DLL;
+
+
+function EncryptFileW(
+    {_In_ } lpFileName: LPCWSTR): winbool; stdcall; external KERNEL32_DLL;
+
+
+function DecryptFileA(
+    {_In_       } lpFileName: LPCSTR;
+    {_Reserved_ } dwReserved: DWORD): winbool; stdcall; external KERNEL32_DLL;
+
+
+function DecryptFileW(
+    {_In_       } lpFileName: LPCWSTR;
+    {_Reserved_ } dwReserved: DWORD): winbool; stdcall; external KERNEL32_DLL;
+
+
+function FileEncryptionStatusA(
+    {_In_  } lpFileName: LPCSTR;
+    {_Out_ } lpStatus: LPDWORD): winbool; stdcall; external KERNEL32_DLL;
+
+
+function FileEncryptionStatusW(
+    {_In_  } lpFileName: LPCWSTR;
+    {_Out_ } lpStatus: LPDWORD): winbool; stdcall; external KERNEL32_DLL;
+
+
+function OpenEncryptedFileRawA(
+    {_In_        } lpFileName: LPCSTR;
+    {_In_        } ulFlags: ULONG;
+    {_Outptr_ } pvContext: PPVOID): DWORD; stdcall; external KERNEL32_DLL;
+
+
+function OpenEncryptedFileRawW(
+    {_In_        } lpFileName: LPCWSTR;
+    {_In_        } ulFlags: ULONG;
+    {_Outptr_ } pvContext: PPVOID): DWORD; stdcall; external KERNEL32_DLL;
+
+
+function ReadEncryptedFileRaw(
+    {_In_     } pfExportCallback: PFE_EXPORT_FUNC;
+    {_In_opt_ } pvCallbackContext: PVOID;
+    {_In_     } pvContext: PVOID): DWORD; stdcall; external KERNEL32_DLL;
+
+
+function WriteEncryptedFileRaw(
+    {_In_     } pfImportCallback: PFE_IMPORT_FUNC;
+    {_In_opt_ } pvCallbackContext: PVOID;
+    {_In_     } pvContext: PVOID): DWORD; stdcall; external KERNEL32_DLL;
+
+
+procedure CloseEncryptedFileRaw(
+    {_In_ } pvContext: PVOID); stdcall; external KERNEL32_DLL;
+
+
+// _l Compat Functions
+
+
+function lstrcmpA(
+    {_In_ } lpString1: LPCSTR;
+    {_In_ } lpString2: LPCSTR): int32; stdcall; external KERNEL32_DLL;
+
+
+function lstrcmpW(
+    {_In_ } lpString1: LPCWSTR;
+    {_In_ } lpString2: LPCWSTR): int32; stdcall; external KERNEL32_DLL;
+
+
+function lstrcmpiA(
+    {_In_ } lpString1: LPCSTR;
+    {_In_ } lpString2: LPCSTR): int32; stdcall; external KERNEL32_DLL;
+
+
+function lstrcmpiW(
+    {_In_ } lpString1: LPCWSTR;
+    {_In_ } lpString2: LPCWSTR): int32; stdcall; external KERNEL32_DLL;
+
+
+function lstrcpynA(
+    {_Out_writes_(iMaxLength) } lpString1: LPSTR;
+    {_In_ } lpString2: LPCSTR;
+    {_In_ } iMaxLength: int32): LPSTR; stdcall; external KERNEL32_DLL;
+
+
+function lstrcpynW(
+    {_Out_writes_(iMaxLength) } lpString1: LPWSTR;
+    {_In_ } lpString2: LPCWSTR;
+    {_In_ } iMaxLength: int32): LPWSTR; stdcall; external KERNEL32_DLL;
+
+
+function lstrcpyA(
+    // deprecated: annotation is as good as it gets
+    {_Out_writes_(_String_length_(lpString2) + 1) } lpString1: LPSTR;
+    {_In_  } lpString2: LPCSTR): LPSTR; stdcall; external KERNEL32_DLL;
+
+
+function lstrcpyW(
+    // deprecated: annotation is as good as it gets
+    {_Out_writes_(_String_length_(lpString2) + 1) } lpString1: LPWSTR;
+    {_In_  } lpString2: LPCWSTR): LPWSTR; stdcall; external KERNEL32_DLL;
+
+
+function lstrcatA(
+    // deprecated: annotation is as good as it gets
+    {_Inout_updates_z_(_String_length_(lpString1) + _String_length_(lpString2) + 1) } lpString1: LPSTR;
+    {_In_    } lpString2: LPCSTR): LPSTR; stdcall; external KERNEL32_DLL;
+
+
+function lstrcatW(
+    // deprecated: annotation is as good as it gets
+    {_Inout_updates_z_(_String_length_(lpString1) + _String_length_(lpString2) + 1) } lpString1: LPWSTR;
+    {_In_    } lpString2: LPCWSTR): LPWSTR; stdcall; external KERNEL32_DLL;
+
+
+function lstrlenA(
+    {_In_ } lpString: LPCSTR): int32; stdcall; external KERNEL32_DLL;
+
+
+function lstrlenW(
+    {_In_ } lpString: LPCWSTR): int32; stdcall; external KERNEL32_DLL;
+
+
+function OpenFile(
+    {_In_    } lpFileName: LPCSTR;
+    {_Inout_ } lpReOpenBuff: LPOFSTRUCT;
+    {_In_    } uStyle: UINT): HFILE; stdcall; external KERNEL32_DLL;
+
+
+function _lopen(
+    {_In_ } lpPathName: LPCSTR;
+    {_In_ } iReadWrite: int32): HFILE; stdcall; external KERNEL32_DLL;
+
+
+function _lcreat(
+    {_In_ } lpPathName: LPCSTR;
+    {_In_ } iAttribute: int32): HFILE; stdcall; external KERNEL32_DLL;
+
+
+function _lread(
+    {_In_ } hFile: HFILE;
+    {_Out_writes_bytes_to_(uBytes, return) } lpBuffer: LPVOID;
+    {_In_ } uBytes: UINT): UINT; stdcall; external KERNEL32_DLL;
+
+
+function _lwrite(
+    {_In_ } hFile: HFILE;
+    {_In_reads_bytes_(uBytes) } lpBuffer: LPCCH;
+    {_In_ } uBytes: UINT): UINT; stdcall; external KERNEL32_DLL;
+
+
+function _hread(
+    {_In_ } hFile: HFILE;
+    {_Out_writes_bytes_to_(lBytes, return) } lpBuffer: LPVOID;
+    {_In_ }  lBytes: long): int32; stdcall; external KERNEL32_DLL;
+
+
+function _hwrite(
+    {_In_ } hFile: HFILE;
+    {_In_reads_bytes_(lBytes) } lpBuffer: LPCCH;
+    {_In_ }  lBytes: long): int32; stdcall; external KERNEL32_DLL;
+
+
+function _lclose(
+    {_In_ } hFile: HFILE): HFILE; stdcall; external KERNEL32_DLL;
+
+
+function _llseek(
+    {_In_ } hFile: HFILE;
+    {_In_ } lOffset: LONG;
+    {_In_ } iOrigin: int32): LONG; stdcall; external KERNEL32_DLL;
+
+
+function IsTextUnicode(
+    {_In_reads_bytes_(iSize) } lpv: PVOID;
+    {_In_        } iSize: int32;
+    {_Inout_opt_ } lpiResult: LPINT): winbool; stdcall; external KERNEL32_DLL;
+
+
+function SignalObjectAndWait(
+    {_In_ } hObjectToSignal: HANDLE;
+    {_In_ } hObjectToWaitOn: HANDLE;
+    {_In_ } dwMilliseconds: DWORD;
+    {_In_ } bAlertable: winbool): DWORD; stdcall; external KERNEL32_DLL;
+
+
+function BackupRead(
+    {_In_    } hFile: HANDLE;
+    {_Out_writes_bytes_to_(nNumberOfBytesToRead, *lpNumberOfBytesRead) } lpBuffer: LPBYTE;
+    {_In_    } nNumberOfBytesToRead: DWORD;
+    {_Out_   } lpNumberOfBytesRead: LPDWORD;
+    {_In_    } bAbort: winbool;
+    {_In_    } bProcessSecurity: winbool;
+    {_Inout_ } lpContext: LPVOID): winbool; stdcall; external KERNEL32_DLL;
+
+
+function BackupSeek(
+    {_In_    } hFile: HANDLE;
+    {_In_    } dwLowBytesToSeek: DWORD;
+    {_In_    } dwHighBytesToSeek: DWORD;
+    {_Out_   } lpdwLowByteSeeked: LPDWORD;
+    {_Out_   } lpdwHighByteSeeked: LPDWORD;
+    {_Inout_ } lpContext: LPVOID): winbool; stdcall; external KERNEL32_DLL;
+
+
+function BackupWrite(
+    {_In_    } hFile: HANDLE;
+    {_In_reads_bytes_(nNumberOfBytesToWrite) } lpBuffer: LPBYTE;
+    {_In_    } nNumberOfBytesToWrite: DWORD;
+    {_Out_   } lpNumberOfBytesWritten: LPDWORD;
+    {_In_    } bAbort: winbool;
+    {_In_    } bProcessSecurity: winbool;
+    {_Inout_ } lpContext: LPVOID): winbool; stdcall; external KERNEL32_DLL;
+
+
+function OpenMutexA(
+    {_In_ } dwDesiredAccess: DWORD;
+    {_In_ } bInheritHandle: winbool;
+    {_In_ } lpName: LPCSTR): HANDLE; stdcall; external KERNEL32_DLL;
+
+
+function CreateSemaphoreA(
+    {_In_opt_ } lpSemaphoreAttributes: LPSECURITY_ATTRIBUTES;
+    {_In_     } lInitialCount: LONG;
+    {_In_     } lMaximumCount: LONG;
+    {_In_opt_ } lpName: LPCSTR): HANDLE; stdcall; external KERNEL32_DLL;
+
+
+function OpenSemaphoreA(
+    {_In_ } dwDesiredAccess: DWORD;
+    {_In_ } bInheritHandle: winbool;
+    {_In_ } lpName: LPCSTR): HANDLE; stdcall; external KERNEL32_DLL;
+
+
+function CreateWaitableTimerA(
+    {_In_opt_ } lpTimerAttributes: LPSECURITY_ATTRIBUTES;
+    {_In_     } bManualReset: winbool;
+    {_In_opt_ } lpTimerName: LPCSTR): HANDLE; stdcall; external KERNEL32_DLL;
+
+
+function OpenWaitableTimerA(
+    {_In_ } dwDesiredAccess: DWORD;
+    {_In_ } bInheritHandle: winbool;
+    {_In_ } lpTimerName: LPCSTR): HANDLE; stdcall; external KERNEL32_DLL;
+
+
+function CreateSemaphoreExA(
+    {_In_opt_    } lpSemaphoreAttributes: LPSECURITY_ATTRIBUTES;
+    {_In_        } lInitialCount: LONG;
+    {_In_        } lMaximumCount: LONG;
+    {_In_opt_    } lpName: LPCSTR;
+    {_Reserved_  } dwFlags: DWORD;
+    {_In_        } dwDesiredAccess: DWORD): HANDLE; stdcall; external KERNEL32_DLL;
+
+
+function CreateWaitableTimerExA(
+    {_In_opt_ } lpTimerAttributes: LPSECURITY_ATTRIBUTES;
+    {_In_opt_ } lpTimerName: LPCSTR;
+    {_In_     } dwFlags: DWORD;
+    {_In_     } dwDesiredAccess: DWORD): HANDLE; stdcall; external KERNEL32_DLL;
+
+
+function CreateFileMappingA(
+    {_In_     } hFile: HANDLE;
+    {_In_opt_ } lpFileMappingAttributes: LPSECURITY_ATTRIBUTES;
+    {_In_     } flProtect: DWORD;
+    {_In_     } dwMaximumSizeHigh: DWORD;
+    {_In_     } dwMaximumSizeLow: DWORD;
+    {_In_opt_ } lpName: LPCSTR): HANDLE; stdcall; external KERNEL32_DLL;
+
+
+function CreateFileMappingNumaA(
+    {_In_     } hFile: HANDLE;
+    {_In_opt_ } lpFileMappingAttributes: LPSECURITY_ATTRIBUTES;
+    {_In_     } flProtect: DWORD;
+    {_In_     } dwMaximumSizeHigh: DWORD;
+    {_In_     } dwMaximumSizeLow: DWORD;
+    {_In_opt_ } lpName: LPCSTR;
+    {_In_     } nndPreferred: DWORD): HANDLE; stdcall; external KERNEL32_DLL;
+
+
+function OpenFileMappingA(
+    {_In_ } dwDesiredAccess: DWORD;
+    {_In_ } bInheritHandle: winbool;
+    {_In_ } lpName: LPCSTR): HANDLE; stdcall; external KERNEL32_DLL;
+
+
+function GetLogicalDriveStringsA(
+    {_In_ } nBufferLength: DWORD;
+    {_Out_writes_to_opt_(nBufferLength, return + 1) } lpBuffer: LPSTR): DWORD; stdcall; external KERNEL32_DLL;
+
+
+function LoadPackagedLibrary(
+    {_In_       } lpwLibFileName: LPCWSTR;
+    {_Reserved_ } Reserved: DWORD): HMODULE; stdcall; external KERNEL32_DLL;
+
+
+function QueryFullProcessImageNameA(
+    {_In_ } hProcess: HANDLE;
+    {_In_ } dwFlags: DWORD;
+    {_Out_writes_to_(*lpdwSize, *lpdwSize) } lpExeName: LPSTR;
+    {_Inout_ } lpdwSize: PDWORD): winbool; stdcall; external KERNEL32_DLL;
+
+
+function QueryFullProcessImageNameW(
+    {_In_ } hProcess: HANDLE;
+    {_In_ } dwFlags: DWORD;
+    {_Out_writes_to_(*lpdwSize, *lpdwSize) } lpExeName: LPWSTR;
+    {_Inout_ } lpdwSize: PDWORD): winbool; stdcall; external KERNEL32_DLL;
+
+
+procedure GetStartupInfoA(
+    {_Out_ } lpStartupInfo: LPSTARTUPINFOA); stdcall; external KERNEL32_DLL;
+
+
+function GetFirmwareEnvironmentVariableA(
+    {_In_ } lpName: LPCSTR;
+    {_In_ } lpGuid: LPCSTR;
+    {_Out_writes_bytes_to_opt_(nSize, return) } pBuffer: PVOID;
+    {_In_ } nSize: DWORD): DWORD; stdcall; external KERNEL32_DLL;
+
+
+function GetFirmwareEnvironmentVariableW(
+    {_In_ } lpName: LPCWSTR;
+    {_In_ } lpGuid: LPCWSTR;
+    {_Out_writes_bytes_to_opt_(nSize, return) } pBuffer: PVOID;
+    {_In_ } nSize: DWORD): DWORD; stdcall; external KERNEL32_DLL;
+
+
+function GetFirmwareEnvironmentVariableExA(
+    {_In_ } lpName: LPCSTR;
+    {_In_ } lpGuid: LPCSTR;
+    {_Out_writes_bytes_to_opt_(nSize, return) } pBuffer: PVOID;
+    {_In_ } nSize: DWORD;
+    {_Out_opt_ } pdwAttribubutes: PDWORD): DWORD; stdcall; external KERNEL32_DLL;
+
+
+function GetFirmwareEnvironmentVariableExW(
+    {_In_ } lpName: LPCWSTR;
+    {_In_ } lpGuid: LPCWSTR;
+    {_Out_writes_bytes_to_opt_(nSize, return) } pBuffer: PVOID;
+    {_In_ } nSize: DWORD;
+    {_Out_opt_ } pdwAttribubutes: PDWORD): DWORD; stdcall; external KERNEL32_DLL;
+
+
+function SetFirmwareEnvironmentVariableA(
+    {_In_ } lpName: LPCSTR;
+    {_In_ } lpGuid: LPCSTR;
+    {_In_reads_bytes_opt_(nSize) } pValue: PVOID;
+    {_In_ } nSize: DWORD): winbool; stdcall; external KERNEL32_DLL;
+
+
+function SetFirmwareEnvironmentVariableW(
+    {_In_ } lpName: LPCWSTR;
+    {_In_ } lpGuid: LPCWSTR;
+    {_In_reads_bytes_opt_(nSize) } pValue: PVOID;
+    {_In_ } nSize: DWORD): winbool; stdcall; external KERNEL32_DLL;
+
+
+function SetFirmwareEnvironmentVariableExA(
+    {_In_ } lpName: LPCSTR;
+    {_In_ } lpGuid: LPCSTR;
+    {_In_reads_bytes_opt_(nSize) } pValue: PVOID;
+    {_In_ } nSize: DWORD;
+    {_In_ } dwAttributes: DWORD): winbool; stdcall; external KERNEL32_DLL;
+
+
+function SetFirmwareEnvironmentVariableExW(
+    {_In_ } lpName: LPCWSTR;
+    {_In_ } lpGuid: LPCWSTR;
+    {_In_reads_bytes_opt_(nSize) } pValue: PVOID;
+    {_In_ } nSize: DWORD;
+    {_In_ } dwAttributes: DWORD): winbool; stdcall; external KERNEL32_DLL;
+
+
+function GetFirmwareType(
+    {_Inout_ } FirmwareType: PFIRMWARE_TYPE): winbool; stdcall; external KERNEL32_DLL;
+
+
+function IsNativeVhdBoot(
+    {_Out_ } NativeVhdBoot: PWinBOOL): winbool; stdcall; external KERNEL32_DLL;
+
+
+function FindResourceA(
+    {_In_opt_ } hModule: HMODULE;
+    {_In_     } lpName: LPCSTR;
+    {_In_     } lpType: LPCSTR): HRSRC; stdcall; external KERNEL32_DLL;
+
+
+function FindResourceExA(
+    {_In_opt_ } hModule: HMODULE;
+    {_In_     } lpType: LPCSTR;
+    {_In_     } lpName: LPCSTR;
+    {_In_     } wLanguage: word): HRSRC; stdcall; external KERNEL32_DLL;
+
+
+function EnumResourceTypesA(
+    {_In_opt_ } hModule: HMODULE;
+    {_In_     } lpEnumFunc: TENUMRESTYPEPROCA;
+    {_In_     } lParam: LONG_PTR): winbool; stdcall; external KERNEL32_DLL;
+
+
+function EnumResourceTypesW(
+    {_In_opt_ } hModule: HMODULE;
+    {_In_     } lpEnumFunc: TENUMRESTYPEPROCW;
+    {_In_     } lParam: LONG_PTR): winbool; stdcall; external KERNEL32_DLL;
+
+
+function EnumResourceLanguagesA(
+    {_In_opt_ } hModule: HMODULE;
+    {_In_     } lpType: LPCSTR;
+    {_In_     } lpName: LPCSTR;
+    {_In_     } lpEnumFunc: TENUMRESLANGPROCA;
+    {_In_     } lParam: LONG_PTR): winbool; stdcall; external KERNEL32_DLL;
+
+
+function EnumResourceLanguagesW(
+    {_In_opt_ } hModule: HMODULE;
+    {_In_     } lpType: LPCWSTR;
+    {_In_     } lpName: LPCWSTR;
+    {_In_     } lpEnumFunc: TENUMRESLANGPROCW;
+    {_In_     } lParam: LONG_PTR): winbool; stdcall; external KERNEL32_DLL;
+
+
+function BeginUpdateResourceA(
+    {_In_ } pFileName: LPCSTR;
+    {_In_ } bDeleteExistingResources: winbool): HANDLE; stdcall; external KERNEL32_DLL;
+
+
+function BeginUpdateResourceW(
+    {_In_ } pFileName: LPCWSTR;
+    {_In_ } bDeleteExistingResources: winbool): HANDLE; stdcall; external KERNEL32_DLL;
+
+
+function UpdateResourceA(
+    {_In_ } hUpdate: HANDLE;
+    {_In_ } lpType: LPCSTR;
+    {_In_ } lpName: LPCSTR;
+    {_In_ } wLanguage: word;
+    {_In_reads_bytes_opt_(cb) } lpData: LPVOID;
+    {_In_ } cb: DWORD): winbool; stdcall; external KERNEL32_DLL;
+
+
+function UpdateResourceW(
+    {_In_ } hUpdate: HANDLE;
+    {_In_ } lpType: LPCWSTR;
+    {_In_ } lpName: LPCWSTR;
+    {_In_ } wLanguage: word;
+    {_In_reads_bytes_opt_(cb) } lpData: LPVOID;
+    {_In_ } cb: DWORD): winbool; stdcall; external KERNEL32_DLL;
+
+
+function EndUpdateResourceA(
+    {_In_ } hUpdate: HANDLE;
+    {_In_ } fDiscard: winbool): winbool; stdcall; external KERNEL32_DLL;
+
+
+function EndUpdateResourceW(
+    {_In_ } hUpdate: HANDLE;
+    {_In_ } fDiscard: winbool): winbool; stdcall; external KERNEL32_DLL;
+
+
+function GlobalAddAtomA(
+    {_In_opt_ } lpString: LPCSTR): TATOM; stdcall; external KERNEL32_DLL;
+
+
+function GlobalAddAtomW(
+    {_In_opt_ } lpString: LPCWSTR): TATOM; stdcall; external KERNEL32_DLL;
+
+
+function GlobalAddAtomExA(
+    {_In_opt_ } lpString: LPCSTR;
+    {_In_ } Flags: DWORD): TATOM; stdcall; external KERNEL32_DLL;
+
+
+function GlobalAddAtomExW(
+    {_In_opt_ } lpString: LPCWSTR;
+    {_In_ } Flags: DWORD): TATOM; stdcall; external KERNEL32_DLL;
+
+
+function GlobalFindAtomA(
+    {_In_opt_ } lpString: LPCSTR): TATOM; stdcall; external KERNEL32_DLL;
+
+
+function GlobalFindAtomW(
+    {_In_opt_ } lpString: LPCWSTR): TATOM; stdcall; external KERNEL32_DLL;
+
+
+function GlobalGetAtomNameA(
+    {_In_ } nAtom: TATOM;
+    {_Out_writes_to_(nSize, return + 1) } lpBuffer: LPSTR;
+    {_In_ } nSize: int32): UINT; stdcall; external KERNEL32_DLL;
+
+
+function GlobalGetAtomNameW(
+    {_In_ } nAtom: TATOM;
+    {_Out_writes_to_(nSize, return + 1) } lpBuffer: LPWSTR;
+    {_In_ } nSize: int32): UINT; stdcall; external KERNEL32_DLL;
+
+
+function AddAtomA(
+    {_In_opt_ } lpString: LPCSTR): TATOM; stdcall; external KERNEL32_DLL;
+
+
+function AddAtomW(
+    {_In_opt_ } lpString: LPCWSTR): TATOM; stdcall; external KERNEL32_DLL;
+
+
+function FindAtomA(
+    {_In_opt_ } lpString: LPCSTR): TATOM; stdcall; external KERNEL32_DLL;
+
+
+function FindAtomW(
+    {_In_opt_ } lpString: LPCWSTR): TATOM; stdcall; external KERNEL32_DLL;
+
+
+function GetAtomNameA(
+    {_In_ } nAtom: TATOM;
+    {_Out_writes_to_(nSize, return + 1) } lpBuffer: LPSTR;
+    {_In_ } nSize: int32): UINT; stdcall; external KERNEL32_DLL;
+
+
+function GetAtomNameW(
+    {_In_ } nAtom: TATOM;
+    {_Out_writes_to_(nSize, return + 1) } lpBuffer: LPWSTR;
+    {_In_ } nSize: int32): UINT; stdcall; external KERNEL32_DLL;
+
+
+function GetProfileIntA(
+    {_In_ } lpAppName: LPCSTR;
+    {_In_ } lpKeyName: LPCSTR;
+    {_In_ } nDefault: int32): UINT; stdcall; external KERNEL32_DLL;
+
+
+function GetProfileIntW(
+    {_In_ } lpAppName: LPCWSTR;
+    {_In_ } lpKeyName: LPCWSTR;
+    {_In_ } nDefault: int32): UINT; stdcall; external KERNEL32_DLL;
+
+
+function GetProfileStringA(
+    {_In_opt_ } lpAppName: LPCSTR;
+    {_In_opt_ } lpKeyName: LPCSTR;
+    {_In_opt_ } lpDefault: LPCSTR;
+    {_Out_writes_to_opt_(nSize, return + 1) } lpReturnedString: LPSTR;
+    {_In_     } nSize: DWORD): DWORD; stdcall; external KERNEL32_DLL;
+
+
+function GetProfileStringW(
+    {_In_opt_ } lpAppName: LPCWSTR;
+    {_In_opt_ } lpKeyName: LPCWSTR;
+    {_In_opt_ } lpDefault: LPCWSTR;
+    {_Out_writes_to_opt_(nSize, return + 1) } lpReturnedString: LPWSTR;
+    {_In_     } nSize: DWORD): DWORD; stdcall; external KERNEL32_DLL;
+
+
+function WriteProfileStringA(
+    {_In_opt_ } lpAppName: LPCSTR;
+    {_In_opt_ } lpKeyName: LPCSTR;
+    {_In_opt_ } lpString: LPCSTR): winbool; stdcall; external KERNEL32_DLL;
+
+
+function WriteProfileStringW(
+    {_In_opt_ } lpAppName: LPCWSTR;
+    {_In_opt_ } lpKeyName: LPCWSTR;
+    {_In_opt_ } lpString: LPCWSTR): winbool; stdcall; external KERNEL32_DLL;
+
+
+function GetProfileSectionA(
+    {_In_ } lpAppName: LPCSTR;
+    {_Out_writes_to_opt_(nSize, return + 1) } lpReturnedString: LPSTR;
+    {_In_ } nSize: DWORD): DWORD; stdcall; external KERNEL32_DLL;
+
+
+function GetProfileSectionW(
+    {_In_ } lpAppName: LPCWSTR;
+    {_Out_writes_to_opt_(nSize, return + 1) } lpReturnedString: LPWSTR;
+    {_In_ } nSize: DWORD): DWORD; stdcall; external KERNEL32_DLL;
+
+
+function WriteProfileSectionA(
+    {_In_ } lpAppName: LPCSTR;
+    {_In_ } lpString: LPCSTR): winbool; stdcall; external KERNEL32_DLL;
+
+
+function WriteProfileSectionW(
+    {_In_ } lpAppName: LPCWSTR;
+    {_In_ } lpString: LPCWSTR): winbool; stdcall; external KERNEL32_DLL;
+
+
+function GetPrivateProfileIntA(
+    {_In_     } lpAppName: LPCSTR;
+    {_In_     } lpKeyName: LPCSTR;
+    {_In_     } nDefault: int32;
+    {_In_opt_ } lpFileName: LPCSTR): UINT; stdcall; external KERNEL32_DLL;
+
+
+function GetPrivateProfileIntW(
+    {_In_     } lpAppName: LPCWSTR;
+    {_In_     } lpKeyName: LPCWSTR;
+    {_In_     } nDefault: int32;
+    {_In_opt_ } lpFileName: LPCWSTR): UINT; stdcall; external KERNEL32_DLL;
+
+
+function GetPrivateProfileStringA(
+    {_In_opt_ } lpAppName: LPCSTR;
+    {_In_opt_ } lpKeyName: LPCSTR;
+    {_In_opt_ } lpDefault: LPCSTR;
+    {_Out_writes_to_opt_(nSize, return + 1) } lpReturnedString: LPSTR;
+    {_In_     } nSize: DWORD;
+    {_In_opt_ } lpFileName: LPCSTR): DWORD; stdcall; external KERNEL32_DLL;
+
+
+function GetPrivateProfileStringW(
+    {_In_opt_ } lpAppName: LPCWSTR;
+    {_In_opt_ } lpKeyName: LPCWSTR;
+    {_In_opt_ } lpDefault: LPCWSTR;
+    {_Out_writes_to_opt_(nSize, return + 1) } lpReturnedString: LPWSTR;
+    {_In_     } nSize: DWORD;
+    {_In_opt_ } lpFileName: LPCWSTR): DWORD; stdcall; external KERNEL32_DLL;
+
+
+function WritePrivateProfileStringA(
+    {_In_opt_ } lpAppName: LPCSTR;
+    {_In_opt_ } lpKeyName: LPCSTR;
+    {_In_opt_ } lpString: LPCSTR;
+    {_In_opt_ } lpFileName: LPCSTR): winbool; stdcall; external KERNEL32_DLL;
+
+
+function WritePrivateProfileStringW(
+    {_In_opt_ } lpAppName: LPCWSTR;
+    {_In_opt_ } lpKeyName: LPCWSTR;
+    {_In_opt_ } lpString: LPCWSTR;
+    {_In_opt_ } lpFileName: LPCWSTR): winbool; stdcall; external KERNEL32_DLL;
+
+
+function GetPrivateProfileSectionA(
+    {_In_     } lpAppName: LPCSTR;
+    {_Out_writes_to_opt_(nSize, return + 1) } lpReturnedString: LPSTR;
+    {_In_     } nSize: DWORD;
+    {_In_opt_ } lpFileName: LPCSTR): DWORD; stdcall; external KERNEL32_DLL;
+
+
+function GetPrivateProfileSectionW(
+    {_In_     } lpAppName: LPCWSTR;
+    {_Out_writes_to_opt_(nSize, return + 1) } lpReturnedString: LPWSTR;
+    {_In_     } nSize: DWORD;
+    {_In_opt_ } lpFileName: LPCWSTR): DWORD; stdcall; external KERNEL32_DLL;
+
+
+function WritePrivateProfileSectionA(
+    {_In_opt_ } lpAppName: LPCSTR;
+    {_In_opt_ } lpString: LPCSTR;
+    {_In_opt_ } lpFileName: LPCSTR): winbool; stdcall; external KERNEL32_DLL;
+
+
+function WritePrivateProfileSectionW(
+    {_In_opt_ } lpAppName: LPCWSTR;
+    {_In_opt_ } lpString: LPCWSTR;
+    {_In_opt_ } lpFileName: LPCWSTR): winbool; stdcall; external KERNEL32_DLL;
+
+
+function GetPrivateProfileSectionNamesA(
+    {_Out_writes_to_opt_(nSize, return + 1) } lpszReturnBuffer: LPSTR;
+    {_In_     } nSize: DWORD;
+    {_In_opt_ } lpFileName: LPCSTR): DWORD; stdcall; external KERNEL32_DLL;
+
+
+function GetPrivateProfileSectionNamesW(
+    {_Out_writes_to_opt_(nSize, return + 1) } lpszReturnBuffer: LPWSTR;
+    {_In_     } nSize: DWORD;
+    {_In_opt_ } lpFileName: LPCWSTR): DWORD; stdcall; external KERNEL32_DLL;
+
+
+function GetPrivateProfileStructA(
+    {_In_     } lpszSection: LPCSTR;
+    {_In_     } lpszKey: LPCSTR;
+    {_Out_writes_bytes_opt_(uSizeStruct) } lpStruct: LPVOID;
+    {_In_     } uSizeStruct: UINT;
+    {_In_opt_ } szFile: LPCSTR): winbool; stdcall; external KERNEL32_DLL;
+
+
+function GetPrivateProfileStructW(
+    {_In_     } lpszSection: LPCWSTR;
+    {_In_     } lpszKey: LPCWSTR;
+    {_Out_writes_bytes_opt_(uSizeStruct) } lpStruct: LPVOID;
+    {_In_     } uSizeStruct: UINT;
+    {_In_opt_ } szFile: LPCWSTR): winbool; stdcall; external KERNEL32_DLL;
+
+
+function WritePrivateProfileStructA(
+    {_In_     } lpszSection: LPCSTR;
+    {_In_     } lpszKey: LPCSTR;
+    {_In_reads_bytes_opt_(uSizeStruct) } lpStruct: LPVOID;
+    {_In_     } uSizeStruct: UINT;
+    {_In_opt_ } szFile: LPCSTR): winbool; stdcall; external KERNEL32_DLL;
+
+
+function WritePrivateProfileStructW(
+    {_In_     } lpszSection: LPCWSTR;
+    {_In_     } lpszKey: LPCWSTR;
+    {_In_reads_bytes_opt_(uSizeStruct) } lpStruct: LPVOID;
+    {_In_     } uSizeStruct: UINT;
+    {_In_opt_ } szFile: LPCWSTR): winbool; stdcall; external KERNEL32_DLL;
+
+
+function SetDllDirectoryA(
+    {_In_opt_ } lpPathName: LPCSTR): winbool; stdcall; external KERNEL32_DLL;
+
+
+function SetDllDirectoryW(
+    {_In_opt_ } lpPathName: LPCWSTR): winbool; stdcall; external KERNEL32_DLL;
+
+
+function GetDllDirectoryA(
+    {_In_ } nBufferLength: DWORD;
+    {_Out_writes_to_opt_(nBufferLength, return + 1) } lpBuffer: LPSTR): DWORD; stdcall; external KERNEL32_DLL;
+
+
+function GetDllDirectoryW(
+    {_In_ } nBufferLength: DWORD;
+    {_Out_writes_to_opt_(nBufferLength, return + 1) } lpBuffer: LPWSTR): DWORD; stdcall; external KERNEL32_DLL;
+
+
+function SetSearchPathMode(
+    {_In_ } Flags: DWORD): winbool; stdcall; external KERNEL32_DLL;
+
+
+function CreateDirectoryExA(
+    {_In_     } lpTemplateDirectory: LPCSTR;
+    {_In_     } lpNewDirectory: LPCSTR;
+    {_In_opt_ } lpSecurityAttributes: LPSECURITY_ATTRIBUTES): winbool; stdcall; external KERNEL32_DLL;
+
+
+function CreateDirectoryExW(
+    {_In_     } lpTemplateDirectory: LPCWSTR;
+    {_In_     } lpNewDirectory: LPCWSTR;
+    {_In_opt_ } lpSecurityAttributes: LPSECURITY_ATTRIBUTES): winbool; stdcall; external KERNEL32_DLL;
+
+
+function CreateDirectoryTransactedA(
+    {_In_opt_ } lpTemplateDirectory: LPCSTR;
+    {_In_     } lpNewDirectory: LPCSTR;
+    {_In_opt_ } lpSecurityAttributes: LPSECURITY_ATTRIBUTES;
+    {_In_     } hTransaction: HANDLE): winbool; stdcall; external KERNEL32_DLL;
+
+
+function CreateDirectoryTransactedW(
+    {_In_opt_ } lpTemplateDirectory: LPCWSTR;
+    {_In_     } lpNewDirectory: LPCWSTR;
+    {_In_opt_ } lpSecurityAttributes: LPSECURITY_ATTRIBUTES;
+    {_In_     } hTransaction: HANDLE): winbool; stdcall; external KERNEL32_DLL;
+
+
+function RemoveDirectoryTransactedA(
+    {_In_ } lpPathName: LPCSTR;
+    {_In_     } hTransaction: HANDLE): winbool; stdcall; external KERNEL32_DLL;
+
+
+function RemoveDirectoryTransactedW(
+    {_In_ } lpPathName: LPCWSTR;
+    {_In_     } hTransaction: HANDLE): winbool; stdcall; external KERNEL32_DLL;
+
+
+function GetFullPathNameTransactedA(
+    {_In_            } lpFileName: LPCSTR;
+    {_In_            } nBufferLength: DWORD;
+    {_Out_writes_to_opt_(nBufferLength, return + 1) } lpBuffer: LPSTR;
+    {_Outptr_opt_ } lpFilePart: PLPSTR;
+    {_In_            } hTransaction: HANDLE): DWORD; stdcall; external KERNEL32_DLL;
+
+
+function GetFullPathNameTransactedW(
+    {_In_            } lpFileName: LPCWSTR;
+    {_In_            } nBufferLength: DWORD;
+    {_Out_writes_to_opt_(nBufferLength, return + 1) } lpBuffer: LPWSTR;
+    {_Outptr_opt_ } lpFilePart: PLPWSTR;
+    {_In_            } hTransaction: HANDLE): DWORD; stdcall; external KERNEL32_DLL;
+
+
+function DefineDosDeviceA(
+    {_In_     } dwFlags: DWORD;
+    {_In_     } lpDeviceName: LPCSTR;
+    {_In_opt_ } lpTargetPath: LPCSTR): winbool; stdcall; external KERNEL32_DLL;
+
+
+function QueryDosDeviceA(
+    {_In_opt_ } lpDeviceName: LPCSTR;
+    {_Out_writes_to_opt_(ucchMax, return) } lpTargetPath: LPSTR;
+    {_In_     } ucchMax: DWORD): DWORD; stdcall; external KERNEL32_DLL;
+
+
+function CreateFileTransactedA(
+    {_In_       } lpFileName: LPCSTR;
+    {_In_       } dwDesiredAccess: DWORD;
+    {_In_       } dwShareMode: DWORD;
+    {_In_opt_   } lpSecurityAttributes: LPSECURITY_ATTRIBUTES;
+    {_In_       } dwCreationDisposition: DWORD;
+    {_In_       } dwFlagsAndAttributes: DWORD;
+    {_In_opt_   } hTemplateFile: HANDLE;
+    {_In_       } hTransaction: HANDLE;
+    {_In_opt_   } pusMiniVersion: PUSHORT;
+    {_Reserved_ } lpExtendedParameter: PVOID): HANDLE; stdcall; external KERNEL32_DLL;
+
+
+function CreateFileTransactedW(
+    {_In_       } lpFileName: LPCWSTR;
+    {_In_       } dwDesiredAccess: DWORD;
+    {_In_       } dwShareMode: DWORD;
+    {_In_opt_   } lpSecurityAttributes: LPSECURITY_ATTRIBUTES;
+    {_In_       } dwCreationDisposition: DWORD;
+    {_In_       } dwFlagsAndAttributes: DWORD;
+    {_In_opt_   } hTemplateFile: HANDLE;
+    {_In_       } hTransaction: HANDLE;
+    {_In_opt_   } pusMiniVersion: PUSHORT;
+    {_Reserved_ } lpExtendedParameter: PVOID): HANDLE; stdcall; external KERNEL32_DLL;
+
+
+function ReOpenFile(
+    {_In_ } hOriginalFile: HANDLE;
+    {_In_ } dwDesiredAccess: DWORD;
+    {_In_ } dwShareMode: DWORD;
+    {_In_ } dwFlagsAndAttributes: DWORD): HANDLE; stdcall; external KERNEL32_DLL;
+
+
+function SetFileAttributesTransactedA(
+    {_In_     } lpFileName: LPCSTR;
+    {_In_     } dwFileAttributes: DWORD;
+    {_In_     } hTransaction: HANDLE): winbool; stdcall; external KERNEL32_DLL;
+
+
+function SetFileAttributesTransactedW(
+    {_In_     } lpFileName: LPCWSTR;
+    {_In_     } dwFileAttributes: DWORD;
+    {_In_     } hTransaction: HANDLE): winbool; stdcall; external KERNEL32_DLL;
+
+
+function GetFileAttributesTransactedA(
+    {_In_  } lpFileName: LPCSTR;
+    {_In_  } fInfoLevelId: TGET_FILEEX_INFO_LEVELS;
+    {_Out_writes_bytes_(sizeof(WIN32_FILE_ATTRIBUTE_DATA)) } lpFileInformation: LPVOID;
+    {_In_     } hTransaction: HANDLE): winbool; stdcall; external KERNEL32_DLL;
+
+
+function GetFileAttributesTransactedW(
+    {_In_  } lpFileName: LPCWSTR;
+    {_In_  } fInfoLevelId: TGET_FILEEX_INFO_LEVELS;
+    {_Out_writes_bytes_(sizeof(WIN32_FILE_ATTRIBUTE_DATA)) } lpFileInformation: LPVOID;
+    {_In_     } hTransaction: HANDLE): winbool; stdcall; external KERNEL32_DLL;
+
+
+function GetCompressedFileSizeTransactedA(
+    {_In_      } lpFileName: LPCSTR;
+    {_Out_opt_ } lpFileSizeHigh: LPDWORD;
+    {_In_      } hTransaction: HANDLE): DWORD; stdcall; external KERNEL32_DLL;
+
+
+function GetCompressedFileSizeTransactedW(
+    {_In_      } lpFileName: LPCWSTR;
+    {_Out_opt_ } lpFileSizeHigh: LPDWORD;
+    {_In_      } hTransaction: HANDLE): DWORD; stdcall; external KERNEL32_DLL;
+
+
+function DeleteFileTransactedA(
+    {_In_     } lpFileName: LPCSTR;
+    {_In_     } hTransaction: HANDLE): winbool; stdcall; external KERNEL32_DLL;
+
+
+function DeleteFileTransactedW(
+    {_In_     } lpFileName: LPCWSTR;
+    {_In_     } hTransaction: HANDLE): winbool; stdcall; external KERNEL32_DLL;
+
+
+function CheckNameLegalDOS8Dot3A(
+    {_In_      } lpName: LPCSTR;
+    {_Out_writes_opt_(OemNameSize) } lpOemName: LPSTR;
+    {_In_      } OemNameSize: DWORD;
+    {_Out_opt_ } pbNameContainsSpacesOPTIONAL: PWinBOOL;
+    {_Out_     } pbNameLegal: PWinBOOL): winbool; stdcall; external KERNEL32_DLL;
+
+
+function CheckNameLegalDOS8Dot3W(
+    {_In_      } lpName: LPCWSTR;
+    {_Out_writes_opt_(OemNameSize) } lpOemName: LPSTR;
+    {_In_      } OemNameSize: DWORD;
+    {_Out_opt_ } pbNameContainsSpacesOPTIONAL: PWinBOOL;
+    {_Out_     } pbNameLegal: PWinBOOL): winbool; stdcall; external KERNEL32_DLL;
+
+
+function FindFirstFileTransactedA(
+    {_In_       } lpFileName: LPCSTR;
+    {_In_       } fInfoLevelId: TFINDEX_INFO_LEVELS;
+    {_Out_writes_bytes_(sizeof(WIN32_FIND_DATAA)) } lpFindFileData: LPVOID;
+    {_In_       } fSearchOp: TFINDEX_SEARCH_OPS;
+    {_Reserved_ } lpSearchFilter: LPVOID;
+    {_In_       } dwAdditionalFlags: DWORD;
+    {_In_       } hTransaction: HANDLE): HANDLE; stdcall; external KERNEL32_DLL;
+
+
+function FindFirstFileTransactedW(
+    {_In_       } lpFileName: LPCWSTR;
+    {_In_       } fInfoLevelId: TFINDEX_INFO_LEVELS;
+    {_Out_writes_bytes_(sizeof(WIN32_FIND_DATAW)) } lpFindFileData: LPVOID;
+    {_In_       } fSearchOp: TFINDEX_SEARCH_OPS;
+    {_Reserved_ } lpSearchFilter: LPVOID;
+    {_In_       } dwAdditionalFlags: DWORD;
+    {_In_       } hTransaction: HANDLE): HANDLE; stdcall; external KERNEL32_DLL;
+
+
+function CopyFileA(
+    {_In_ } lpExistingFileName: LPCSTR;
+    {_In_ } lpNewFileName: LPCSTR;
+    {_In_ } bFailIfExists: winbool): winbool; stdcall; external KERNEL32_DLL;
+
+
+function CopyFileW(
+    {_In_ } lpExistingFileName: LPCWSTR;
+    {_In_ } lpNewFileName: LPCWSTR;
+    {_In_ } bFailIfExists: winbool): winbool; stdcall; external KERNEL32_DLL;
+
+
+function CopyFileExA(
+    {_In_        } lpExistingFileName: LPCSTR;
+    {_In_        } lpNewFileName: LPCSTR;
+    {_In_opt_    } lpProgressRoutine: LPPROGRESS_ROUTINE;
+    {_In_opt_    } lpData: LPVOID;
+    {_Inout_opt_}  pbCancel: LPBOOL;
+    {_In_        } dwCopyFlags: DWORD): winbool; stdcall; external KERNEL32_DLL;
+
+
+function CopyFileExW(
+    {_In_        } lpExistingFileName: LPCWSTR;
+    {_In_        } lpNewFileName: LPCWSTR;
+    {_In_opt_    } lpProgressRoutine: LPPROGRESS_ROUTINE;
+    {_In_opt_    } lpData: LPVOID;
+    {_Inout_opt_}  pbCancel: LPBOOL;
+    {_In_        } dwCopyFlags: DWORD): winbool; stdcall; external KERNEL32_DLL;
+
+
+function CopyFileTransactedA(
+    {_In_     } lpExistingFileName: LPCSTR;
+    {_In_     } lpNewFileName: LPCSTR;
+    {_In_opt_ } lpProgressRoutine: LPPROGRESS_ROUTINE;
+    {_In_opt_ } lpData: LPVOID;
+    {_In_opt_ } pbCancel: LPBOOL;
+    {_In_     } dwCopyFlags: DWORD;
+    {_In_     } hTransaction: HANDLE): winbool; stdcall; external KERNEL32_DLL;
+
+
+function CopyFileTransactedW(
+    {_In_     } lpExistingFileName: LPCWSTR;
+    {_In_     } lpNewFileName: LPCWSTR;
+    {_In_opt_ } lpProgressRoutine: LPPROGRESS_ROUTINE;
+    {_In_opt_ } lpData: LPVOID;
+    {_In_opt_ } pbCancel: LPBOOL;
+    {_In_     } dwCopyFlags: DWORD;
+    {_In_     } hTransaction: HANDLE): winbool; stdcall; external KERNEL32_DLL;
+
+
+function CopyFile2(
+    {_In_      } pwszExistingFileName: PCWSTR;
+    {_In_      } pwszNewFileName: PCWSTR;
+    {_In_opt_  } pExtendedParameters: PCOPYFILE2_EXTENDED_PARAMETERS): HRESULT; stdcall; external KERNEL32_DLL;
+
+
+function MoveFileA(
+    {_In_ } lpExistingFileName: LPCSTR;
+    {_In_ } lpNewFileName: LPCSTR): winbool; stdcall; external KERNEL32_DLL;
+
+
+function MoveFileW(
+    {_In_ } lpExistingFileName: LPCWSTR;
+    {_In_ } lpNewFileName: LPCWSTR): winbool; stdcall; external KERNEL32_DLL;
+
+
+function MoveFileExA(
+    {_In_     } lpExistingFileName: LPCSTR;
+    {_In_opt_ } lpNewFileName: LPCSTR;
+    {_In_     } dwFlags: DWORD): winbool; stdcall; external KERNEL32_DLL;
+
+
+function MoveFileExW(
+    {_In_     } lpExistingFileName: LPCWSTR;
+    {_In_opt_ } lpNewFileName: LPCWSTR;
+    {_In_     } dwFlags: DWORD): winbool; stdcall; external KERNEL32_DLL;
+
+
+function MoveFileWithProgressA(
+    {_In_     } lpExistingFileName: LPCSTR;
+    {_In_opt_ } lpNewFileName: LPCSTR;
+    {_In_opt_ } lpProgressRoutine: LPPROGRESS_ROUTINE;
+    {_In_opt_ } lpData: LPVOID;
+    {_In_     } dwFlags: DWORD): winbool; stdcall; external KERNEL32_DLL;
+
+
+function MoveFileWithProgressW(
+    {_In_     } lpExistingFileName: LPCWSTR;
+    {_In_opt_ } lpNewFileName: LPCWSTR;
+    {_In_opt_ } lpProgressRoutine: LPPROGRESS_ROUTINE;
+    {_In_opt_ } lpData: LPVOID;
+    {_In_     } dwFlags: DWORD): winbool; stdcall; external KERNEL32_DLL;
+
+
+function MoveFileTransactedA(
+    {_In_     } lpExistingFileName: LPCSTR;
+    {_In_opt_ } lpNewFileName: LPCSTR;
+    {_In_opt_ } lpProgressRoutine: LPPROGRESS_ROUTINE;
+    {_In_opt_ } lpData: LPVOID;
+    {_In_     } dwFlags: DWORD;
+    {_In_     } hTransaction: HANDLE): winbool; stdcall; external KERNEL32_DLL;
+
+
+function MoveFileTransactedW(
+    {_In_     } lpExistingFileName: LPCWSTR;
+    {_In_opt_ } lpNewFileName: LPCWSTR;
+    {_In_opt_ } lpProgressRoutine: LPPROGRESS_ROUTINE;
+    {_In_opt_ } lpData: LPVOID;
+    {_In_     } dwFlags: DWORD;
+    {_In_     } hTransaction: HANDLE): winbool; stdcall; external KERNEL32_DLL;
+
+
+function ReplaceFileA(
+    {_In_       } lpReplacedFileName: LPCSTR;
+    {_In_       } lpReplacementFileName: LPCSTR;
+    {_In_opt_   } lpBackupFileName: LPCSTR;
+    {_In_       } dwReplaceFlags: DWORD;
+    {_Reserved_ } lpExclude: LPVOID;
+    {_Reserved_ } lpReserved: LPVOID): winbool; stdcall; external KERNEL32_DLL;
+
+
+function ReplaceFileW(
+    {_In_       } lpReplacedFileName: LPCWSTR;
+    {_In_       } lpReplacementFileName: LPCWSTR;
+    {_In_opt_   } lpBackupFileName: LPCWSTR;
+    {_In_       } dwReplaceFlags: DWORD;
+    {_Reserved_ } lpExclude: LPVOID;
+    {_Reserved_ } lpReserved: LPVOID): winbool; stdcall; external KERNEL32_DLL;
+
+
+// API call to create hard links.
+
+
+function CreateHardLinkA(
+    {_In_       } lpFileName: LPCSTR;
+    {_In_       } lpExistingFileName: LPCSTR;
+    {_Reserved_ } lpSecurityAttributes: LPSECURITY_ATTRIBUTES): winbool; stdcall; external KERNEL32_DLL;
+
+
+function CreateHardLinkW(
+    {_In_       } lpFileName: LPCWSTR;
+    {_In_       } lpExistingFileName: LPCWSTR;
+    {_Reserved_ } lpSecurityAttributes: LPSECURITY_ATTRIBUTES): winbool; stdcall; external KERNEL32_DLL;
+
+
+// API call to create hard links.
+
+
+function CreateHardLinkTransactedA(
+    {_In_       } lpFileName: LPCSTR;
+    {_In_       } lpExistingFileName: LPCSTR;
+    {_Reserved_ } lpSecurityAttributes: LPSECURITY_ATTRIBUTES;
+    {_In_       } hTransaction: HANDLE): winbool; stdcall; external KERNEL32_DLL;
+
+
+function CreateHardLinkTransactedW(
+    {_In_       } lpFileName: LPCWSTR;
+    {_In_       } lpExistingFileName: LPCWSTR;
+    {_Reserved_ } lpSecurityAttributes: LPSECURITY_ATTRIBUTES;
+    {_In_       } hTransaction: HANDLE): winbool; stdcall; external KERNEL32_DLL;
+
+
+function FindFirstStreamTransactedW(
+    {_In_       } lpFileName: LPCWSTR;
+    {_In_       } InfoLevel: TSTREAM_INFO_LEVELS;
+    {_Out_writes_bytes_(sizeof(WIN32_FIND_STREAM_DATA)) } lpFindStreamData: LPVOID;
+    {_Reserved_ } dwFlags: DWORD;
+    {_In_       } hTransaction: HANDLE): HANDLE; stdcall; external KERNEL32_DLL;
+
+
+function FindFirstFileNameTransactedW(
+    {_In_     } lpFileName: LPCWSTR;
+    {_In_     } dwFlags: DWORD;
+    {_Inout_  } StringLength: LPDWORD;
+    {_Out_writes_(*StringLength) } LinkName: PWSTR;
+    {_In_opt_ } hTransaction: HANDLE): HANDLE; stdcall; external KERNEL32_DLL;
+
+
+function CreateNamedPipeA(
+    {_In_     } lpName: LPCSTR;
+    {_In_     } dwOpenMode: DWORD;
+    {_In_     } dwPipeMode: DWORD;
+    {_In_     } nMaxInstances: DWORD;
+    {_In_     } nOutBufferSize: DWORD;
+    {_In_     } nInBufferSize: DWORD;
+    {_In_     } nDefaultTimeOut: DWORD;
+    {_In_opt_ } lpSecurityAttributes: LPSECURITY_ATTRIBUTES): HANDLE; stdcall; external KERNEL32_DLL;
+
+
+function GetNamedPipeHandleStateA(
+    {_In_      } hNamedPipe: HANDLE;
+    {_Out_opt_ } lpState: LPDWORD;
+    {_Out_opt_ } lpCurInstances: LPDWORD;
+    {_Out_opt_ } lpMaxCollectionCount: LPDWORD;
+    {_Out_opt_ } lpCollectDataTimeout: LPDWORD;
+    {_Out_writes_opt_(nMaxUserNameSize) } lpUserName: LPSTR;
+    {_In_      } nMaxUserNameSize: DWORD): winbool; stdcall; external KERNEL32_DLL;
+
+
+function CallNamedPipeA(
+    {_In_  } lpNamedPipeName: LPCSTR;
+    {_In_reads_bytes_opt_(nInBufferSize) } lpInBuffer: LPVOID;
+    {_In_  } nInBufferSize: DWORD;
+    {_Out_writes_bytes_to_opt_(nOutBufferSize, *lpBytesRead) } lpOutBuffer: LPVOID;
+    {_In_  } nOutBufferSize: DWORD;
+    {_Out_ } lpBytesRead: LPDWORD;
+    {_In_  } nTimeOut: DWORD): winbool; stdcall; external KERNEL32_DLL;
+
+
+function WaitNamedPipeA(
+    {_In_ } lpNamedPipeName: LPCSTR;
+    {_In_ } nTimeOut: DWORD): winbool; stdcall; external KERNEL32_DLL;
+
+
+function GetNamedPipeClientComputerNameA(
+    {_In_ } Pipe: HANDLE;
+    {_Out_writes_bytes_(ClientComputerNameLength)  } ClientComputerName: LPSTR;
+    {_In_ } ClientComputerNameLength: ULONG): winbool; stdcall; external KERNEL32_DLL;
+
+
+function GetNamedPipeClientProcessId(
+    {_In_ } Pipe: HANDLE;
+    {_Out_ } ClientProcessId: PULONG): winbool; stdcall; external KERNEL32_DLL;
+
+
+function GetNamedPipeClientSessionId(
+    {_In_ } Pipe: HANDLE;
+    {_Out_ } ClientSessionId: PULONG): winbool; stdcall; external KERNEL32_DLL;
+
+
+function GetNamedPipeServerProcessId(
+    {_In_ } Pipe: HANDLE;
+    {_Out_ } ServerProcessId: PULONG): winbool; stdcall; external KERNEL32_DLL;
+
+
+function GetNamedPipeServerSessionId(
+    {_In_ } Pipe: HANDLE;
+    {_Out_ } ServerSessionId: PULONG): winbool; stdcall; external KERNEL32_DLL;
+
+
+function SetVolumeLabelA(
+    {_In_opt_ } lpRootPathName: LPCSTR;
+    {_In_opt_ } lpVolumeName: LPCSTR): winbool; stdcall; external KERNEL32_DLL;
+
+
+function SetVolumeLabelW(
+    {_In_opt_ } lpRootPathName: LPCWSTR;
+    {_In_opt_ } lpVolumeName: LPCWSTR): winbool; stdcall; external KERNEL32_DLL;
+
+
+function SetFileBandwidthReservation(
+    {_In_  } hFile: HANDLE;
+    {_In_  } nPeriodMilliseconds: DWORD;
+    {_In_  } nBytesPerPeriod: DWORD;
+    {_In_  } bDiscardable: winbool;
+    {_Out_ } lpTransferSize: LPDWORD;
+    {_Out_ } lpNumOutstandingRequests: LPDWORD): winbool; stdcall; external KERNEL32_DLL;
+
+
+function GetFileBandwidthReservation(
+    {_In_  } hFile: HANDLE;
+    {_Out_ } lpPeriodMilliseconds: LPDWORD;
+    {_Out_ } lpBytesPerPeriod: LPDWORD;
+    {_Out_ } pDiscardable: LPBOOL;
+    {_Out_ } lpTransferSize: LPDWORD;
+    {_Out_ } lpNumOutstandingRequests: LPDWORD): winbool; stdcall; external KERNEL32_DLL;
+
+
+// Legacy Event logging APIs
+
+
+function ClearEventLogA(
+    {_In_     } hEventLog: HANDLE;
+    {_In_opt_ } lpBackupFileName: LPCSTR): winbool; stdcall; external KERNEL32_DLL;
+
+
+function ClearEventLogW(
+    {_In_     } hEventLog: HANDLE;
+    {_In_opt_ } lpBackupFileName: LPCWSTR): winbool; stdcall; external KERNEL32_DLL;
+
+
+function BackupEventLogA(
+    {_In_ } hEventLog: HANDLE;
+    {_In_ } lpBackupFileName: LPCSTR): winbool; stdcall; external KERNEL32_DLL;
+
+
+function BackupEventLogW(
+    {_In_ } hEventLog: HANDLE;
+    {_In_ } lpBackupFileName: LPCWSTR): winbool; stdcall; external KERNEL32_DLL;
+
+
+function CloseEventLog(
+    {_In_ } hEventLog: HANDLE): winbool; stdcall; external KERNEL32_DLL;
+
+
+function DeregisterEventSource(
+    {_In_ } hEventLog: HANDLE): winbool; stdcall; external KERNEL32_DLL;
+
+
+function NotifyChangeEventLog(
+    {_In_ } hEventLog: HANDLE;
+    {_In_ } hEvent: HANDLE): winbool; stdcall; external KERNEL32_DLL;
+
+
+function GetNumberOfEventLogRecords(
+    {_In_  } hEventLog: HANDLE;
+    {_Out_ } NumberOfRecords: PDWORD): winbool; stdcall; external KERNEL32_DLL;
+
+
+function GetOldestEventLogRecord(
+    {_In_  } hEventLog: HANDLE;
+    {_Out_ } OldestRecord: PDWORD): winbool; stdcall; external KERNEL32_DLL;
+
+
+function OpenEventLogA(
+    {_In_opt_ } lpUNCServerName: LPCSTR;
+    {_In_     } lpSourceName: LPCSTR): HANDLE; stdcall; external KERNEL32_DLL;
+
+
+function OpenEventLogW(
+    {_In_opt_ } lpUNCServerName: LPCWSTR;
+    {_In_     } lpSourceName: LPCWSTR): HANDLE; stdcall; external KERNEL32_DLL;
+
+
+function RegisterEventSourceA(
+    {_In_opt_ } lpUNCServerName: LPCSTR;
+    {_In_     } lpSourceName: LPCSTR): HANDLE; stdcall; external KERNEL32_DLL;
+
+
+function RegisterEventSourceW(
+    {_In_opt_ } lpUNCServerName: LPCWSTR;
+    {_In_     } lpSourceName: LPCWSTR): HANDLE; stdcall; external KERNEL32_DLL;
+
+
+function OpenBackupEventLogA(
+    {_In_opt_ } lpUNCServerName: LPCSTR;
+    {_In_     } lpFileName: LPCSTR): HANDLE; stdcall; external KERNEL32_DLL;
+
+
+function OpenBackupEventLogW(
+    {_In_opt_ } lpUNCServerName: LPCWSTR;
+    {_In_     } lpFileName: LPCWSTR): HANDLE; stdcall; external KERNEL32_DLL;
+
+
+function ReadEventLogA(
+    {_In_  } hEventLog: HANDLE;
+    {_In_  } dwReadFlags: DWORD;
+    {_In_  } dwRecordOffset: DWORD;
+    {_Out_writes_bytes_to_(nNumberOfBytesToRead, *pnBytesRead) } lpBuffer: LPVOID;
+    {_In_  } nNumberOfBytesToRead: DWORD;
+    {_Out_ } pnBytesRead: PDWORD;
+    {_Out_ } pnMinNumberOfBytesNeeded: PDWORD): winbool; stdcall; external KERNEL32_DLL;
+
+
+function ReadEventLogW(
+    {_In_  } hEventLog: HANDLE;
+    {_In_  } dwReadFlags: DWORD;
+    {_In_  } dwRecordOffset: DWORD;
+    {_Out_writes_bytes_to_(nNumberOfBytesToRead, *pnBytesRead) } lpBuffer: LPVOID;
+    {_In_  } nNumberOfBytesToRead: DWORD;
+    {_Out_ } pnBytesRead: PDWORD;
+    {_Out_ } pnMinNumberOfBytesNeeded: PDWORD): winbool; stdcall; external KERNEL32_DLL;
+
+
+function ReportEventA(
+    {_In_     } hEventLog: HANDLE;
+    {_In_     } wType: word;
+    {_In_     } wCategory: word;
+    {_In_     } dwEventID: DWORD;
+    {_In_opt_ } lpUserSid: PSID;
+    {_In_     } wNumStrings: word;
+    {_In_     } dwDataSize: DWORD;
+    {_In_reads_opt_(wNumStrings) } lpStrings: LPCSTR;
+    {_In_reads_bytes_opt_(dwDataSize) } lpRawData: LPVOID): winbool; stdcall; external KERNEL32_DLL;
+
+
+function ReportEventW(
+    {_In_     } hEventLog: HANDLE;
+    {_In_     } wType: word;
+    {_In_     } wCategory: word;
+    {_In_     } dwEventID: DWORD;
+    {_In_opt_ } lpUserSid: PSID;
+    {_In_     } wNumStrings: word;
+    {_In_     } dwDataSize: DWORD;
+    {_In_reads_opt_(wNumStrings) } lpStrings: LPCWSTR;
+    {_In_reads_bytes_opt_(dwDataSize) } lpRawData: LPVOID): winbool; stdcall; external KERNEL32_DLL;
+
+
+function GetEventLogInformation(
+    {_In_  } hEventLog: HANDLE;
+    {_In_  } dwInfoLevel: DWORD;
+    {_Out_writes_bytes_to_(cbBufSize, *pcbBytesNeeded) } lpBuffer: LPVOID;
+    {_In_  } cbBufSize: DWORD;
+    {_Out_ } pcbBytesNeeded: LPDWORD): winbool; stdcall; external KERNEL32_DLL;
+
+
+function OperationStart(
+    {_In_ } OperationStartParams: POPERATION_START_PARAMETERS): winbool; stdcall; external KERNEL32_DLL;
+
+
+function OperationEnd(
+    {_In_ } OperationEndParams: POPERATION_END_PARAMETERS): winbool; stdcall; external KERNEL32_DLL;
+
+
+// Security APIs
+
+
+function AccessCheckAndAuditAlarmA(
+    {_In_     } SubsystemName: LPCSTR;
+    {_In_opt_ } HandleId: LPVOID;
+    {_In_     } ObjectTypeName: LPSTR;
+    {_In_opt_ } ObjectName: LPSTR;
+    {_In_     } SecurityDescriptor: PSECURITY_DESCRIPTOR;
+    {_In_     } DesiredAccess: DWORD;
+    {_In_     } GenericMapping: PGENERIC_MAPPING;
+    {_In_     } ObjectCreation: winbool;
+    {_Out_    } GrantedAccess: LPDWORD;
+    {_Out_    } AccessStatus: LPBOOL;
+    {_Out_    } pfGenerateOnClose: LPBOOL): winbool; stdcall; external KERNEL32_DLL;
+
+
+function AccessCheckByTypeAndAuditAlarmA(
+    {_In_     } SubsystemName: LPCSTR;
+    {_In_     } HandleId: LPVOID;
+    {_In_     } ObjectTypeName: LPCSTR;
+    {_In_opt_ } ObjectName: LPCSTR;
+    {_In_     } SecurityDescriptor: PSECURITY_DESCRIPTOR;
+    {_In_opt_ } PrincipalSelfSid: PSID;
+    {_In_     } DesiredAccess: DWORD;
+    {_In_     } AuditType: TAUDIT_EVENT_TYPE;
+    {_In_     } Flags: DWORD;
+    {_Inout_updates_opt_(ObjectTypeListLength) } ObjectTypeList: POBJECT_TYPE_LIST;
+    {_In_     } ObjectTypeListLength: DWORD;
+    {_In_     } GenericMapping: PGENERIC_MAPPING;
+    {_In_     } ObjectCreation: winbool;
+    {_Out_    } GrantedAccess: LPDWORD;
+    {_Out_    } AccessStatus: LPBOOL;
+    {_Out_    } pfGenerateOnClose: LPBOOL): winbool; stdcall; external KERNEL32_DLL;
+
+
+function AccessCheckByTypeResultListAndAuditAlarmA(
+    {_In_     } SubsystemName: LPCSTR;
+    {_In_     } HandleId: LPVOID;
+    {_In_     } ObjectTypeName: LPCSTR;
+    {_In_opt_ } ObjectName: LPCSTR;
+    {_In_     } SecurityDescriptor: PSECURITY_DESCRIPTOR;
+    {_In_opt_ } PrincipalSelfSid: PSID;
+    {_In_     } DesiredAccess: DWORD;
+    {_In_     } AuditType: TAUDIT_EVENT_TYPE;
+    {_In_     } Flags: DWORD;
+    {_Inout_updates_opt_(ObjectTypeListLength) } ObjectTypeList: POBJECT_TYPE_LIST;
+    {_In_     } ObjectTypeListLength: DWORD;
+    {_In_     } GenericMapping: PGENERIC_MAPPING;
+    {_In_     } ObjectCreation: winbool;
+    {_Out_writes_(ObjectTypeListLength)       } GrantedAccess: LPDWORD;
+    {_Out_writes_(ObjectTypeListLength)       } AccessStatusList: LPDWORD;
+    {_Out_    } pfGenerateOnClose: LPBOOL): winbool; stdcall; external KERNEL32_DLL;
+
+
+function AccessCheckByTypeResultListAndAuditAlarmByHandleA(
+    {_In_     } SubsystemName: LPCSTR;
+    {_In_     } HandleId: LPVOID;
+    {_In_     } ClientToken: HANDLE;
+    {_In_     } ObjectTypeName: LPCSTR;
+    {_In_opt_ } ObjectName: LPCSTR;
+    {_In_     } SecurityDescriptor: PSECURITY_DESCRIPTOR;
+    {_In_opt_ } PrincipalSelfSid: PSID;
+    {_In_     } DesiredAccess: DWORD;
+    {_In_     } AuditType: TAUDIT_EVENT_TYPE;
+    {_In_     } Flags: DWORD;
+    {_Inout_updates_opt_(ObjectTypeListLength) } ObjectTypeList: POBJECT_TYPE_LIST;
+    {_In_     } ObjectTypeListLength: DWORD;
+    {_In_     } GenericMapping: PGENERIC_MAPPING;
+    {_In_     } ObjectCreation: winbool;
+    {_Out_writes_(ObjectTypeListLength)       } GrantedAccess: LPDWORD;
+    {_Out_writes_(ObjectTypeListLength)       } AccessStatusList: LPDWORD;
+    {_Out_    } pfGenerateOnClose: LPBOOL): winbool; stdcall; external KERNEL32_DLL;
+
+
+function ObjectOpenAuditAlarmA(
+    {_In_     } SubsystemName: LPCSTR;
+    {_In_     } HandleId: LPVOID;
+    {_In_     } ObjectTypeName: LPSTR;
+    {_In_opt_ } ObjectName: LPSTR;
+    {_In_     } pSecurityDescriptor: PSECURITY_DESCRIPTOR;
+    {_In_     } ClientToken: HANDLE;
+    {_In_     } DesiredAccess: DWORD;
+    {_In_     } GrantedAccess: DWORD;
+    {_In_opt_ } Privileges: PPRIVILEGE_SET;
+    {_In_     } ObjectCreation: winbool;
+    {_In_     } AccessGranted: winbool;
+    {_Out_    } GenerateOnClose: LPBOOL): winbool; stdcall; external KERNEL32_DLL;
+
+
+function ObjectPrivilegeAuditAlarmA(
+    {_In_ } SubsystemName: LPCSTR;
+    {_In_ } HandleId: LPVOID;
+    {_In_ } ClientToken: HANDLE;
+    {_In_ } DesiredAccess: DWORD;
+    {_In_ } Privileges: PPRIVILEGE_SET;
+    {_In_ } AccessGranted: winbool): winbool; stdcall; external KERNEL32_DLL;
+
+
+function ObjectCloseAuditAlarmA(
+    {_In_ } SubsystemName: LPCSTR;
+    {_In_ } HandleId: LPVOID;
+    {_In_ } GenerateOnClose: winbool): winbool; stdcall; external KERNEL32_DLL;
+
+
+function ObjectDeleteAuditAlarmA(
+    {_In_ } SubsystemName: LPCSTR;
+    {_In_ } HandleId: LPVOID;
+    {_In_ } GenerateOnClose: winbool): winbool; stdcall; external KERNEL32_DLL;
+
+
+function PrivilegedServiceAuditAlarmA(
+    {_In_ } SubsystemName: LPCSTR;
+    {_In_ } ServiceName: LPCSTR;
+    {_In_ } ClientToken: HANDLE;
+    {_In_ } Privileges: PPRIVILEGE_SET;
+    {_In_ } AccessGranted: winbool): winbool; stdcall; external KERNEL32_DLL;
+
+
+function AddConditionalAce(
+    {_Inout_ } pAcl: PACL;
+    {_In_    } dwAceRevision: DWORD;
+    {_In_    } AceFlags: DWORD;
+    {_In_    } AceType: UCHAR;
+    {_In_    } AccessMask: DWORD;
+    {_In_    } pSid: PSID;
+    {_In_ } ConditionStr: PWCHAR;
+    {_Out_ } ReturnLength: PDWORD): winbool; stdcall; external KERNEL32_DLL;
+
+
+function SetFileSecurityA(
+    {_In_ } lpFileName: LPCSTR;
+    {_In_ } SecurityInformation: SECURITY_INFORMATION;
+    {_In_ } pSecurityDescriptor: PSECURITY_DESCRIPTOR): winbool; stdcall; external KERNEL32_DLL;
+
+
+function GetFileSecurityA(
+    {_In_  } lpFileName: LPCSTR;
+    {_In_  } RequestedInformation: SECURITY_INFORMATION;
+    {_Out_writes_bytes_to_opt_(nLength, *lpnLengthNeeded) } pSecurityDescriptor: PSECURITY_DESCRIPTOR;
+    {_In_  } nLength: DWORD;
+    {_Out_ } lpnLengthNeeded: LPDWORD): winbool; stdcall; external KERNEL32_DLL;
+
+
+function ReadDirectoryChangesW(
+    {_In_        } hDirectory: HANDLE;
+    {_Out_writes_bytes_to_(nBufferLength, *lpBytesReturned) } lpBuffer: LPVOID;
+    {_In_        } nBufferLength: DWORD;
+    {_In_        } bWatchSubtree: winbool;
+    {_In_        } dwNotifyFilter: DWORD;
+    {_Out_opt_   } lpBytesReturned: LPDWORD;
+    {_Inout_opt_ } lpOverlapped: LPOVERLAPPED;
+    {_In_opt_    } lpCompletionRoutine: LPOVERLAPPED_COMPLETION_ROUTINE): winbool; stdcall; external KERNEL32_DLL;
+
+
+function ReadDirectoryChangesExW(
+    {_In_        } hDirectory: HANDLE;
+    {_Out_writes_bytes_to_(nBufferLength, *lpBytesReturned) } lpBuffer: LPVOID;
+    {_In_        } nBufferLength: DWORD;
+    {_In_        } bWatchSubtree: winbool;
+    {_In_        } dwNotifyFilter: DWORD;
+    {_Out_opt_   } lpBytesReturned: LPDWORD;
+    {_Inout_opt_ } lpOverlapped: LPOVERLAPPED;
+    {_In_opt_    } lpCompletionRoutine: LPOVERLAPPED_COMPLETION_ROUTINE;
+    {_In_        } ReadDirectoryNotifyInformationClass: TREAD_DIRECTORY_NOTIFY_INFORMATION_CLASS): winbool; stdcall; external KERNEL32_DLL;
+
+
+function MapViewOfFileExNuma(
+    {_In_     } hFileMappingObject: HANDLE;
+    {_In_     } dwDesiredAccess: DWORD;
+    {_In_     } dwFileOffsetHigh: DWORD;
+    {_In_     } dwFileOffsetLow: DWORD;
+    {_In_     } dwNumberOfBytesToMap: SIZE_T;
+    {_In_opt_ } lpBaseAddress: LPVOID;
+    {_In_     } nndPreferred: DWORD): LPVOID; stdcall; external KERNEL32_DLL;
+
+
+function IsBadReadPtr(
+    {_In_opt_ } lp: PVOID;
+    {_In_     } ucb: UINT_PTR): winbool; stdcall; external KERNEL32_DLL;
+
+
+function IsBadWritePtr(
+    {_In_opt_ } lp: LPVOID;
+    {_In_     } ucb: UINT_PTR): winbool; stdcall; external KERNEL32_DLL;
+
+
+function IsBadHugeReadPtr(
+    {_In_opt_ } lp: PVOID;
+    {_In_     } ucb: UINT_PTR): winbool; stdcall; external KERNEL32_DLL;
+
+
+function IsBadHugeWritePtr(
+    {_In_opt_ } lp: LPVOID;
+    {_In_     } ucb: UINT_PTR): winbool; stdcall; external KERNEL32_DLL;
+
+
+function IsBadCodePtr(
+    {_In_opt_ } lpfn: TFARPROC): winbool; stdcall; external KERNEL32_DLL;
+
+
+function IsBadStringPtrA(
+    {_In_opt_ } lpsz: LPCSTR;
+    {_In_     } ucchMax: UINT_PTR): winbool; stdcall; external KERNEL32_DLL;
+
+
+function IsBadStringPtrW(
+    {_In_opt_ } lpsz: LPCWSTR;
+    {_In_     } ucchMax: UINT_PTR): winbool; stdcall; external KERNEL32_DLL;
+
+
+function LookupAccountSidA(
+    {_In_opt_ } lpSystemName: LPCSTR;
+    {_In_ } Sid: PSID;
+    {_Out_writes_to_opt_(*cchName, *cchName + 1) } Name: LPSTR;
+    {_Inout_  } cchName: LPDWORD;
+    {_Out_writes_to_opt_(*cchReferencedDomainName, *cchReferencedDomainName + 1) } ReferencedDomainName: LPSTR;
+    {_Inout_ } cchReferencedDomainName: LPDWORD;
+    {_Out_ } peUse: PSID_NAME_USE): winbool; stdcall; external ADVAPI32_DLL;
+
+
+function LookupAccountSidW(
+    {_In_opt_ } lpSystemName: LPCWSTR;
+    {_In_ } Sid: PSID;
+    {_Out_writes_to_opt_(*cchName, *cchName + 1) } Name: LPWSTR;
+    {_Inout_  } cchName: LPDWORD;
+    {_Out_writes_to_opt_(*cchReferencedDomainName, *cchReferencedDomainName + 1) } ReferencedDomainName: LPWSTR;
+    {_Inout_ } cchReferencedDomainName: LPDWORD;
+    {_Out_ } peUse: PSID_NAME_USE): winbool; stdcall; external ADVAPI32_DLL;
+
+
+function LookupAccountNameA(
+    {_In_opt_ } lpSystemName: LPCSTR;
+    {_In_     } lpAccountName: LPCSTR;
+    {_Out_writes_bytes_to_opt_(*cbSid, *cbSid) } Sid: PSID;
+    {_Inout_  } cbSid: LPDWORD;
+    {_Out_writes_to_opt_(*cchReferencedDomainName, *cchReferencedDomainName + 1) } ReferencedDomainName: LPSTR;
+    {_Inout_  } cchReferencedDomainName: LPDWORD;
+    {_Out_    } peUse: PSID_NAME_USE): winbool; stdcall; external ADVAPI32_DLL;
+
+
+function LookupAccountNameW(
+    {_In_opt_ } lpSystemName: LPCWSTR;
+    {_In_     } lpAccountName: LPCWSTR;
+    {_Out_writes_bytes_to_opt_(*cbSid, *cbSid) } Sid: PSID;
+    {_Inout_  } cbSid: LPDWORD;
+    {_Out_writes_to_opt_(*cchReferencedDomainName, *cchReferencedDomainName + 1) } ReferencedDomainName: LPWSTR;
+    {_Inout_  } cchReferencedDomainName: LPDWORD;
+    {_Out_    } peUse: PSID_NAME_USE): winbool; stdcall; external ADVAPI32_DLL;
+
+
+
+
+function LookupPrivilegeValueA(
+    {_In_opt_ } lpSystemName: LPCSTR;
+    {_In_     } lpName: LPCSTR;
+    {_Out_    } lpLuid: PLUID): winbool; stdcall; external ADVAPI32_DLL;
+
+
+function LookupPrivilegeValueW(
+    {_In_opt_ } lpSystemName: LPCWSTR;
+    {_In_     } lpName: LPCWSTR;
+    {_Out_    } lpLuid: PLUID): winbool; stdcall; external ADVAPI32_DLL;
+
+
+function LookupPrivilegeNameA(
+    {_In_opt_ } lpSystemName: LPCSTR;
+    {_In_     } lpLuid: PLUID;
+    {_Out_writes_to_opt_(*cchName, *cchName + 1) } lpName: LPSTR;
+    {_Inout_  } cchName: LPDWORD): winbool; stdcall; external ADVAPI32_DLL;
+
+
+function LookupPrivilegeNameW(
+    {_In_opt_ } lpSystemName: LPCWSTR;
+    {_In_     } lpLuid: PLUID;
+    {_Out_writes_to_opt_(*cchName, *cchName + 1) } lpName: LPWSTR;
+    {_Inout_  } cchName: LPDWORD): winbool; stdcall; external ADVAPI32_DLL;
+
+
+function LookupPrivilegeDisplayNameA(
+    {_In_opt_ } lpSystemName: LPCSTR;
+    {_In_     } lpName: LPCSTR;
+    {_Out_writes_to_opt_(*cchDisplayName, *cchDisplayName + 1) } lpDisplayName: LPSTR;
+    {_Inout_  } cchDisplayName: LPDWORD;
+    {_Out_    } lpLanguageId: LPDWORD): winbool; stdcall; external ADVAPI32_DLL;
+
+
+function LookupPrivilegeDisplayNameW(
+    {_In_opt_ } lpSystemName: LPCWSTR;
+    {_In_     } lpName: LPCWSTR;
+    {_Out_writes_to_opt_(*cchDisplayName, *cchDisplayName + 1) } lpDisplayName: LPWSTR;
+    {_Inout_  } cchDisplayName: LPDWORD;
+    {_Out_    } lpLanguageId: LPDWORD): winbool; stdcall; external ADVAPI32_DLL;
+
+
+function BuildCommDCBA(
+    {_In_  } lpDef: LPCSTR;
+    {_Out_ } lpDCB: LPDCB): winbool; stdcall; external KERNEL32_DLL;
+
+
+function BuildCommDCBW(
+    {_In_  } lpDef: LPCWSTR;
+    {_Out_ } lpDCB: LPDCB): winbool; stdcall; external KERNEL32_DLL;
+
+
+function BuildCommDCBAndTimeoutsA(
+    {_In_  } lpDef: LPCSTR;
+    {_Out_ } lpDCB: LPDCB;
+    {_Out_ } lpCommTimeouts: LPCOMMTIMEOUTS): winbool; stdcall; external KERNEL32_DLL;
+
+
+function BuildCommDCBAndTimeoutsW(
+    {_In_  } lpDef: LPCWSTR;
+    {_Out_ } lpDCB: LPDCB;
+    {_Out_ } lpCommTimeouts: LPCOMMTIMEOUTS): winbool; stdcall; external KERNEL32_DLL;
+
+
+function CommConfigDialogA(
+    {_In_     } lpszName: LPCSTR;
+    {_In_opt_ } hWnd: HWND;
+    {_Inout_  } lpCC: LPCOMMCONFIG): winbool; stdcall; external KERNEL32_DLL;
+
+
+function CommConfigDialogW(
+    {_In_     } lpszName: LPCWSTR;
+    {_In_opt_ } hWnd: HWND;
+    {_Inout_  } lpCC: LPCOMMCONFIG): winbool; stdcall; external KERNEL32_DLL;
+
+
+function GetDefaultCommConfigA(
+    {_In_    } lpszName: LPCSTR;
+    {_Out_writes_bytes_to_(*lpdwSize, *lpdwSize) } lpCC: LPCOMMCONFIG;
+    {_Inout_ } lpdwSize: LPDWORD): winbool; stdcall; external KERNEL32_DLL;
+
+
+function GetDefaultCommConfigW(
+    {_In_    } lpszName: LPCWSTR;
+    {_Out_writes_bytes_to_(*lpdwSize, *lpdwSize) } lpCC: LPCOMMCONFIG;
+    {_Inout_ } lpdwSize: LPDWORD): winbool; stdcall; external KERNEL32_DLL;
+
+
+function SetDefaultCommConfigA(
+    {_In_ } lpszName: LPCSTR;
+    {_In_reads_bytes_(dwSize) } lpCC: LPCOMMCONFIG;
+    {_In_ } dwSize: DWORD): winbool; stdcall; external KERNEL32_DLL;
+
+
+function SetDefaultCommConfigW(
+    {_In_ } lpszName: LPCWSTR;
+    {_In_reads_bytes_(dwSize) } lpCC: LPCOMMCONFIG;
+    {_In_ } dwSize: DWORD): winbool; stdcall; external KERNEL32_DLL;
+
+
+function GetComputerNameA(
+    {_Out_writes_to_opt_(*nSize, *nSize + 1) } lpBuffer: LPSTR;
+    {_Inout_ } nSize: LPDWORD): winbool; stdcall; external KERNEL32_DLL;
+
+
+function GetComputerNameW(
+    {_Out_writes_to_opt_(*nSize, *nSize + 1) } lpBuffer: LPWSTR;
+    {_Inout_ } nSize: LPDWORD): winbool; stdcall; external KERNEL32_DLL;
+
+
+function DnsHostnameToComputerNameA(
+    {_In_    } Hostname: LPCSTR;
+    {_Out_writes_to_opt_(*nSize, *nSize + 1) } ComputerName: LPSTR;
+    {_Inout_ } nSize: LPDWORD): winbool; stdcall; external KERNEL32_DLL;
+
+
+function DnsHostnameToComputerNameW(
+    {_In_    } Hostname: LPCWSTR;
+    {_Out_writes_to_opt_(*nSize, *nSize + 1) } ComputerName: LPWSTR;
+    {_Inout_ } nSize: LPDWORD): winbool; stdcall; external KERNEL32_DLL;
+
+
+function GetUserNameA(
+    {_Out_writes_to_opt_(*pcbBuffer, *pcbBuffer) } lpBuffer: LPSTR;
+    {_Inout_ } pcbBuffer: LPDWORD): winbool; stdcall; external ADVAPI32_DLL;
+
+
+function GetUserNameW(
+    {_Out_writes_to_opt_(*pcbBuffer, *pcbBuffer) } lpBuffer: LPWSTR;
+    {_Inout_ } pcbBuffer: LPDWORD): winbool; stdcall; external ADVAPI32_DLL;
+
+
+function LogonUserA(
+    {_In_        } lpszUsername: LPCSTR;
+    {_In_opt_    } lpszDomain: LPCSTR;
+    {_In_opt_    } lpszPassword: LPCSTR;
+    {_In_        } dwLogonType: DWORD;
+    {_In_        } dwLogonProvider: DWORD;
+    {_Outptr_ } phToken: PHANDLE): winbool; stdcall; external ADVAPI32_DLL;
+
+
+function LogonUserW(
+    {_In_        } lpszUsername: LPCWSTR;
+    {_In_opt_    } lpszDomain: LPCWSTR;
+    {_In_opt_    } lpszPassword: LPCWSTR;
+    {_In_        } dwLogonType: DWORD;
+    {_In_        } dwLogonProvider: DWORD;
+    {_Outptr_ } phToken: PHANDLE): winbool; stdcall; external ADVAPI32_DLL;
+
+
+function LogonUserExA(
+    {_In_            } lpszUsername: LPCSTR;
+    {_In_opt_        } lpszDomain: LPCSTR;
+    {_In_opt_        } lpszPassword: LPCSTR;
+    {_In_            } dwLogonType: DWORD;
+    {_In_            } dwLogonProvider: DWORD;
+    {_Outptr_opt_ } phToken: PHANDLE;
+    {_Outptr_opt_ } ppLogonSid: PPSID;
+    {_Outptr_opt_result_bytebuffer_all_(*pdwProfileLength) } ppProfileBuffer: PPVOID;
+    {_Out_opt_       } pdwProfileLength: LPDWORD;
+    {_Out_opt_       } pQuotaLimits: PQUOTA_LIMITS): winbool; stdcall; external ADVAPI32_DLL;
+
+
+function LogonUserExW(
+    {_In_            } lpszUsername: LPCWSTR;
+    {_In_opt_        } lpszDomain: LPCWSTR;
+    {_In_opt_        } lpszPassword: LPCWSTR;
+    {_In_            } dwLogonType: DWORD;
+    {_In_            } dwLogonProvider: DWORD;
+    {_Outptr_opt_ } phToken: PHANDLE;
+    {_Outptr_opt_ } ppLogonSid: PPSID;
+    {_Outptr_opt_result_bytebuffer_all_(*pdwProfileLength) } ppProfileBuffer: PPVOID;
+    {_Out_opt_       } pdwProfileLength: LPDWORD;
+    {_Out_opt_       } pQuotaLimits: PQUOTA_LIMITS): winbool; stdcall; external ADVAPI32_DLL;
+
+
+function CreateProcessWithLogonW(
+    {_In_        } lpUsername: LPCWSTR;
+    {_In_opt_    } lpDomain: LPCWSTR;
+    {_In_        } lpPassword: LPCWSTR;
+    {_In_        } dwLogonFlags: DWORD;
+    {_In_opt_    } lpApplicationName: LPCWSTR;
+    {_Inout_opt_ } lpCommandLine: LPWSTR;
+    {_In_        } dwCreationFlags: DWORD;
+    {_In_opt_    } lpEnvironment: LPVOID;
+    {_In_opt_    } lpCurrentDirectory: LPCWSTR;
+    {_In_        } lpStartupInfo: LPSTARTUPINFOW;
+    {_Out_       } lpProcessInformation: LPPROCESS_INFORMATION): winbool; stdcall; external ADVAPI32_DLL;
+
+
+function CreateProcessWithTokenW(
+    {_In_        } hToken: HANDLE;
+    {_In_        } dwLogonFlags: DWORD;
+    {_In_opt_    } lpApplicationName: LPCWSTR;
+    {_Inout_opt_ } lpCommandLine: LPWSTR;
+    {_In_        } dwCreationFlags: DWORD;
+    {_In_opt_    } lpEnvironment: LPVOID;
+    {_In_opt_    } lpCurrentDirectory: LPCWSTR;
+    {_In_        } lpStartupInfo: LPSTARTUPINFOW;
+    {_Out_       } lpProcessInformation: LPPROCESS_INFORMATION): winbool; stdcall; external ADVAPI32_DLL;
+
+
+function IsTokenUntrusted(
+    {_In_ } TokenHandle: HANDLE): winbool; stdcall; external ADVAPI32_DLL;
+
+
+// Thread pool API's
+
+
+function RegisterWaitForSingleObject(
+    {_Outptr_ } phNewWaitObject: PHANDLE;
+    {_In_        } hObject: HANDLE;
+    {_In_        } Callback: TWAITORTIMERCALLBACK;
+    {_In_opt_    } Context: PVOID;
+    {_In_        } dwMilliseconds: ULONG;
+    {_In_        } dwFlags: ULONG): winbool; stdcall; external KERNEL32_DLL;
+
+
+function UnregisterWait(
+    {_In_ } WaitHandle: HANDLE): winbool; stdcall; external KERNEL32_DLL;
+
+
+function BindIoCompletionCallback(
+    {_In_ } FileHandle: HANDLE;
+    {_In_ } CallbackFunction: LPOVERLAPPED_COMPLETION_ROUTINE;
+    {_In_ } Flags: ULONG): winbool; stdcall; external KERNEL32_DLL;
+
+
+function SetTimerQueueTimer(
+    {_In_opt_ } TimerQueue: HANDLE;
+    {_In_     } Callback: TWAITORTIMERCALLBACK;
+    {_In_opt_ } Parameter: PVOID;
+    {_In_     } DueTime: DWORD;
+    {_In_     } Period: DWORD;
+    {_In_     } PreferIo: winbool): HANDLE; stdcall; external KERNEL32_DLL;
+
+
+function CancelTimerQueueTimer(
+    {_In_opt_ } TimerQueue: HANDLE;
+    {_In_     } Timer: HANDLE): winbool; stdcall; external KERNEL32_DLL;
+
+
+//  Private Namespaces support
+
+
+function CreatePrivateNamespaceA(
+    {_In_opt_ } lpPrivateNamespaceAttributes: LPSECURITY_ATTRIBUTES;
+    {_In_     } lpBoundaryDescriptor: LPVOID;
+    {_In_     } lpAliasPrefix: LPCSTR): HANDLE; stdcall; external KERNEL32_DLL;
+
+
+function OpenPrivateNamespaceA(
+    {_In_     } lpBoundaryDescriptor: LPVOID;
+    {_In_     } lpAliasPrefix: LPCSTR): HANDLE; stdcall; external KERNEL32_DLL;
+
+
+//  Boundary descriptors support
+
+
+function CreateBoundaryDescriptorA(
+    {_In_ } Name: LPCSTR;
+    {_In_ } Flags: ULONG): HANDLE; stdcall; external KERNEL32_DLL;
+
+
+function AddIntegrityLabelToBoundaryDescriptor(
+    {_Inout_ } BoundaryDescriptor: PHANDLE;
+    {_In_ } IntegrityLabel: PSID): winbool; stdcall; external KERNEL32_DLL;
+
+
+function GetCurrentHwProfileA(
+    {_Out_ } lpHwProfileInfo: LPHW_PROFILE_INFOA): winbool; stdcall; external KERNEL32_DLL;
+
+
+function GetCurrentHwProfileW(
+    {_Out_ } lpHwProfileInfo: LPHW_PROFILE_INFOW): winbool; stdcall; external KERNEL32_DLL;
+
+
+function VerifyVersionInfoA(
+    {_Inout_ } lpVersionInformation: LPOSVERSIONINFOEXA;
+    {_In_    } dwTypeMask: DWORD;
+    {_In_    } dwlConditionMask: DWORDLONG): winbool; stdcall; external KERNEL32_DLL;
+
+
+function VerifyVersionInfoW(
+    {_Inout_ } lpVersionInformation: LPOSVERSIONINFOEXW;
+    {_In_    } dwTypeMask: DWORD;
+    {_In_    } dwlConditionMask: DWORDLONG): winbool; stdcall; external KERNEL32_DLL;
+
+
+// Power Management APIs
+
+
+function SetSystemPowerState(
+    {_In_ } fSuspend: winbool;
+    {_In_ } fForce: winbool): winbool; stdcall; external KERNEL32_DLL;
+
+
+function GetSystemPowerStatus(
+    {_Out_ } lpSystemPowerStatus: LPSYSTEM_POWER_STATUS): winbool; stdcall; external KERNEL32_DLL;
+
+
+// Very Large Memory API Subset
+
+
+function MapUserPhysicalPagesScatter(
+    {_In_reads_(NumberOfPages) } VirtualAddresses: PPVOID;
+    {_In_ } NumberOfPages: ULONG_PTR;
+    {_In_reads_opt_(NumberOfPages) } PageArray: PULONG_PTR): winbool; stdcall; external KERNEL32_DLL;
+
+
+function CreateJobObjectA(
+    {_In_opt_ } lpJobAttributes: LPSECURITY_ATTRIBUTES;
+    {_In_opt_ } lpName: LPCSTR): HANDLE; stdcall; external KERNEL32_DLL;
+
+
+function OpenJobObjectA(
+    {_In_ } dwDesiredAccess: DWORD;
+    {_In_ } bInheritHandle: winbool;
+    {_In_ } lpName: LPCSTR): HANDLE; stdcall; external KERNEL32_DLL;
+
+
+function CreateJobSet(
+    {_In_ } NumJob: ULONG;
+    {_In_reads_(NumJob) } UserJobSet: PJOB_SET_ARRAY;
+    {_In_ } Flags: ULONG): winbool; stdcall; external KERNEL32_DLL;
+
+
+function FindFirstVolumeA(
+    {_Out_writes_(cchBufferLength) } lpszVolumeName: LPSTR;
+    {_In_ } cchBufferLength: DWORD): HANDLE; stdcall; external KERNEL32_DLL;
+
+
+function FindNextVolumeA(
+    {_Inout_ } hFindVolume: HANDLE;
+    {_Out_writes_(cchBufferLength) } lpszVolumeName: LPSTR;
+    {_In_    } cchBufferLength: DWORD): winbool; stdcall; external KERNEL32_DLL;
+
+
+function FindFirstVolumeMountPointA(
+    {_In_ } lpszRootPathName: LPCSTR;
+    {_Out_writes_(cchBufferLength) } lpszVolumeMountPoint: LPSTR;
+    {_In_ } cchBufferLength: DWORD): HANDLE; stdcall; external KERNEL32_DLL;
+
+
+function FindFirstVolumeMountPointW(
+    {_In_ } lpszRootPathName: LPCWSTR;
+    {_Out_writes_(cchBufferLength) } lpszVolumeMountPoint: LPWSTR;
+    {_In_ } cchBufferLength: DWORD): HANDLE; stdcall; external KERNEL32_DLL;
+
+
+function FindNextVolumeMountPointA(
+    {_In_ } hFindVolumeMountPoint: HANDLE;
+    {_Out_writes_(cchBufferLength) } lpszVolumeMountPoint: LPSTR;
+    {_In_ } cchBufferLength: DWORD): winbool; stdcall; external KERNEL32_DLL;
+
+
+function FindNextVolumeMountPointW(
+    {_In_ } hFindVolumeMountPoint: HANDLE;
+    {_Out_writes_(cchBufferLength) } lpszVolumeMountPoint: LPWSTR;
+    {_In_ } cchBufferLength: DWORD): winbool; stdcall; external KERNEL32_DLL;
+
+
+function FindVolumeMountPointClose(
+    {_In_ } hFindVolumeMountPoint: HANDLE): winbool; stdcall; external KERNEL32_DLL;
+
+
+function SetVolumeMountPointA(
+    {_In_ } lpszVolumeMountPoint: LPCSTR;
+    {_In_ } lpszVolumeName: LPCSTR): winbool; stdcall; external KERNEL32_DLL;
+
+
+function SetVolumeMountPointW(
+    {_In_ } lpszVolumeMountPoint: LPCWSTR;
+    {_In_ } lpszVolumeName: LPCWSTR): winbool; stdcall; external KERNEL32_DLL;
+
+
+function DeleteVolumeMountPointA(
+    {_In_ } lpszVolumeMountPoint: LPCSTR): winbool; stdcall; external KERNEL32_DLL;
+
+
+function GetVolumeNameForVolumeMountPointA(
+    {_In_ } lpszVolumeMountPoint: LPCSTR;
+    {_Out_writes_(cchBufferLength) } lpszVolumeName: LPSTR;
+    {_In_ } cchBufferLength: DWORD): winbool; stdcall; external KERNEL32_DLL;
+
+
+function GetVolumePathNameA(
+    {_In_ } lpszFileName: LPCSTR;
+    {_Out_writes_(cchBufferLength) } lpszVolumePathName: LPSTR;
+    {_In_ } cchBufferLength: DWORD): winbool; stdcall; external KERNEL32_DLL;
+
+
+function GetVolumePathNamesForVolumeNameA(
+    {_In_  } lpszVolumeName: LPCSTR;
+    {_Out_writes_to_opt_(cchBufferLength, *lpcchReturnLength) __Post_ _NullNull_terminated_} lpszVolumePathNames: LPCH;
+    {_In_  } cchBufferLength: DWORD;
+    {_Out_ } lpcchReturnLength: PDWORD): winbool; stdcall; external KERNEL32_DLL;
+
+
+function CreateActCtxA(
+    {_In_ } pActCtx: PCACTCTXA): HANDLE; stdcall; external KERNEL32_DLL;
+
+
+function CreateActCtxW(
+    {_In_ } pActCtx: PCACTCTXW): HANDLE; stdcall; external KERNEL32_DLL;
+
+
+procedure AddRefActCtx(
+    {_Inout_ } hActCtx: HANDLE); stdcall; external KERNEL32_DLL;
+
+
+procedure ReleaseActCtx(
+    {_Inout_ } hActCtx: HANDLE); stdcall; external KERNEL32_DLL;
+
+
+function ZombifyActCtx(
+    {_Inout_ } hActCtx: HANDLE): winbool; stdcall; external KERNEL32_DLL;
+
+
+function ActivateActCtx(
+    {_Inout_opt_ } hActCtx: HANDLE;
+    {_Out_   } lpCookie: PULONG_PTR): winbool; stdcall; external KERNEL32_DLL;
+
+
+function DeactivateActCtx(
+    {_In_ } dwFlags: DWORD;
+    {_In_ } ulCookie: ULONG_PTR): winbool; stdcall; external KERNEL32_DLL;
+
+
+function GetCurrentActCtx(
+    {_Outptr_ } lphActCtx: PHANDLE): winbool; stdcall; external KERNEL32_DLL;
+
+
+function FindActCtxSectionStringA(
+    {_In_       } dwFlags: DWORD;
+    {_Reserved_ } lpExtensionGuid: PGUID;
+    {_In_       } ulSectionId: ULONG;
+    {_In_       } lpStringToFind: LPCSTR;
+    {_Out_      } ReturnedData: PACTCTX_SECTION_KEYED_DATA): winbool; stdcall; external KERNEL32_DLL;
+
+
+function FindActCtxSectionStringW(
+    {_In_       } dwFlags: DWORD;
+    {_Reserved_ } lpExtensionGuid: PGUID;
+    {_In_       } ulSectionId: ULONG;
+    {_In_       } lpStringToFind: LPCWSTR;
+    {_Out_      } ReturnedData: PACTCTX_SECTION_KEYED_DATA): winbool; stdcall; external KERNEL32_DLL;
+
+
+function FindActCtxSectionGuid(
+    {_In_       } dwFlags: DWORD;
+    {_Reserved_ } lpExtensionGuid: PGUID;
+    {_In_       } ulSectionId: ULONG;
+    {_In_opt_   } lpGuidToFind: PGUID;
+    {_Out_      } ReturnedData: PACTCTX_SECTION_KEYED_DATA): winbool; stdcall; external KERNEL32_DLL;
+
+
+function QueryActCtxW(
+    {_In_      } dwFlags: DWORD;
+    {_In_      } hActCtx: HANDLE;
+    {_In_opt_  } pvSubInstance: PVOID;
+    {_In_      } ulInfoClass: ULONG;
+    {_Out_writes_bytes_to_opt_(cbBuffer, *pcbWrittenOrRequired) } pvBuffer: PVOID;
+    {_In_      } cbBuffer: SIZE_T;
+    {_Out_opt_ } pcbWrittenOrRequired: PSIZE_T): winbool; stdcall; external KERNEL32_DLL;
+
+
+function WTSGetActiveConsoleSessionId(): DWORD; stdcall; external KERNEL32_DLL;
+
+
+function WTSGetServiceSessionId(): DWORD; stdcall; external KERNEL32_DLL;
+
+
+function WTSIsServerContainer(): winbool; stdcall; external KERNEL32_DLL;
+
+
+function GetActiveProcessorGroupCount(): word; stdcall; external KERNEL32_DLL;
+
+
+function GetMaximumProcessorGroupCount(): word; stdcall; external KERNEL32_DLL;
+
+
+function GetActiveProcessorCount(
+    {_In_ } GroupNumber: word): DWORD; stdcall; external KERNEL32_DLL;
+
+
+function GetMaximumProcessorCount(
+    {_In_ } GroupNumber: word): DWORD; stdcall; external KERNEL32_DLL;
+
+
+// NUMA Information routines.
+
+
+function GetNumaProcessorNode(
+    {_In_  } Processor: UCHAR;
+    {_Out_ } NodeNumber: PUCHAR): winbool; stdcall; external KERNEL32_DLL;
+
+
+function GetNumaNodeNumberFromHandle(
+    {_In_  } hFile: HANDLE;
+    {_Out_ } NodeNumber: PUSHORT): winbool; stdcall; external KERNEL32_DLL;
+
+
+function GetNumaProcessorNodeEx(
+    {_In_  } Processor: PPROCESSOR_NUMBER;
+    {_Out_ } NodeNumber: PUSHORT): winbool; stdcall; external KERNEL32_DLL;
+
+
+function GetNumaNodeProcessorMask(
+    {_In_  } Node: UCHAR;
+    {_Out_ } ProcessorMask: PULONGLONG): winbool; stdcall; external KERNEL32_DLL;
+
+
+function GetNumaAvailableMemoryNode(
+    {_In_  } Node: UCHAR;
+    {_Out_ } AvailableBytes: PULONGLONG): winbool; stdcall; external KERNEL32_DLL;
+
+
+function GetNumaAvailableMemoryNodeEx(
+    {_In_  } Node: USHORT;
+    {_Out_ } AvailableBytes: PULONGLONG): winbool; stdcall; external KERNEL32_DLL;
+
+
+function GetNumaProximityNode(
+    {_In_  } ProximityId: ULONG;
+    {_Out_ } NodeNumber: PUCHAR): winbool; stdcall; external KERNEL32_DLL;
+
+
+function RegisterApplicationRecoveryCallback(
+    {_In_  } pRecoveyCallback: TAPPLICATION_RECOVERY_CALLBACK;
+    {_In_opt_  } pvParameter: PVOID;
+    {_In_ } dwPingInterval: DWORD;
+    {_In_ } dwFlags: DWORD): HRESULT; stdcall; external KERNEL32_DLL;
+
+
+function UnregisterApplicationRecoveryCallback(): HRESULT; stdcall; external KERNEL32_DLL;
+
+
+function RegisterApplicationRestart(
+    {_In_opt_ } pwzCommandline: PCWSTR;
+    {_In_ } dwFlags: DWORD): HRESULT; stdcall; external KERNEL32_DLL;
+
+
+function UnregisterApplicationRestart(): HRESULT; stdcall; external KERNEL32_DLL;
+
+
+function GetApplicationRecoveryCallback(
+    {_In_  } hProcess: HANDLE;
+    {_Out_ } pRecoveryCallback: PAPPLICATION_RECOVERY_CALLBACK;
+    {_Outptr_opt_result_maybenull_ } ppvParameter: PPVOID;
+    {_Out_opt_ } pdwPingInterval: PDWORD;
+    {_Out_opt_ } pdwFlags: PDWORD): HRESULT; stdcall; external KERNEL32_DLL;
+
+
+function GetApplicationRestartSettings(
+    {_In_ } hProcess: HANDLE;
+    {_Out_writes_opt_(*pcchSize) } pwzCommandline: PWSTR;
+    {_Inout_ } pcchSize: PDWORD;
+    {_Out_opt_ } pdwFlags: PDWORD): HRESULT; stdcall; external KERNEL32_DLL;
+
+
+function ApplicationRecoveryInProgress(
+    {_Out_ } pbCancelled: PWinBOOL): HRESULT; stdcall; external KERNEL32_DLL;
+
+
+procedure ApplicationRecoveryFinished(
+    {_In_ } bSuccess: winbool); stdcall; external KERNEL32_DLL;
+
+
+function GetFileInformationByHandleEx(
+    {_In_  } hFile: HANDLE;
+    {_In_  } FileInformationClass: TFILE_INFO_BY_HANDLE_CLASS;
+    {_Out_writes_bytes_(dwBufferSize) } lpFileInformation: LPVOID;
+    {_In_  } dwBufferSize: DWORD): winbool; stdcall; external 'Kernel32.dll';
+
+
+function GetFileInformationByName(
+    {_In_ } FileName: PCWSTR;
+    {_In_ } FileInformationClass: TFILE_INFO_BY_NAME_CLASS;
+    {_Out_writes_bytes_(FileInfoBufferSize) } FileInfoBuffer: PVOID;
+    {_In_ } FileInfoBufferSize: ULONG): winbool; stdcall; external 'Kernel32.dll';
+
+
+function OpenFileById(
+    {_In_     } hVolumeHint: HANDLE;
+    {_In_     } lpFileId: LPFILE_ID_DESCRIPTOR;
+    {_In_     } dwDesiredAccess: DWORD;
+    {_In_     } dwShareMode: DWORD;
+    {_In_opt_ } lpSecurityAttributes: LPSECURITY_ATTRIBUTES;
+    {_In_     } dwFlagsAndAttributes: DWORD): HANDLE; stdcall; external 'Kernel32.dll';
+
+
+function CreateSymbolicLinkA(
+    {_In_ } lpSymlinkFileName: LPCSTR;
+    {_In_ } lpTargetFileName: LPCSTR;
+    {_In_ } dwFlags: DWORD): winbool; stdcall; external 'Kernel32.dll';
+
+
+function CreateSymbolicLinkW(
+    {_In_ } lpSymlinkFileName: LPCWSTR;
+    {_In_ } lpTargetFileName: LPCWSTR;
+    {_In_ } dwFlags: DWORD): winbool; stdcall; external 'Kernel32.dll';
+
+
+function QueryActCtxSettingsW(
+    {_In_opt_      } dwFlags: DWORD;
+    {_In_opt_      } hActCtx: HANDLE;
+    {_In_opt_      } settingsNameSpace: PCWSTR;
+    {_In_          } settingName: PCWSTR;
+    {_Out_writes_bytes_to_opt_(dwBuffer, *pdwWrittenOrRequired) } pvBuffer: PWSTR;
+    {_In_      } dwBuffer: SIZE_T;
+    {_Out_opt_ } pdwWrittenOrRequired: PSIZE_T): winbool; stdcall; external 'Kernel32.dll';
+
+
+function CreateSymbolicLinkTransactedA(
+    {_In_     } lpSymlinkFileName: LPCSTR;
+    {_In_     } lpTargetFileName: LPCSTR;
+    {_In_     } dwFlags: DWORD;
+    {_In_     } hTransaction: HANDLE): winbool; stdcall; external 'Kernel32.dll';
+
+
+function CreateSymbolicLinkTransactedW(
+    {_In_     } lpSymlinkFileName: LPCWSTR;
+    {_In_     } lpTargetFileName: LPCWSTR;
+    {_In_     } dwFlags: DWORD;
+    {_In_     } hTransaction: HANDLE): winbool; stdcall; external 'Kernel32.dll';
+
+
+function ReplacePartitionUnit(
+    {_In_ } TargetPartition: PWSTR;
+    {_In_ } SparePartition: PWSTR;
+    {_In_ } Flags: ULONG): winbool; stdcall; external 'Kernel32.dll';
+
+
+function AddSecureMemoryCacheCallback(
+    {_In_ __callback } pfnCallBack: PSECURE_MEMORY_CACHE_CALLBACK): winbool; stdcall; external 'Kernel32.dll';
+
+
+function RemoveSecureMemoryCacheCallback(
+    { _In_ __callback}  pfnCallBack: PSECURE_MEMORY_CACHE_CALLBACK): winbool; stdcall; external 'Kernel32.dll';
+
+
+function CopyContext(
+    {_Inout_ } Destination: PCONTEXT;
+    {_In_ } ContextFlags: DWORD;
+    {_In_ } Source: PCONTEXT): winbool; stdcall; external 'Kernel32.dll';
+
+
+function InitializeContext(
+    {_Out_writes_bytes_opt_(*ContextLength) } Buffer: PVOID;
+    {_In_ } ContextFlags: DWORD;
+    {_Out_ } Context: PPCONTEXT;
+    {_Inout_ } ContextLength: PDWORD): winbool; stdcall; external 'Kernel32.dll';
+
+
+function InitializeContext2(
+    {_Out_writes_bytes_opt_(*ContextLength) } Buffer: PVOID;
+    {_In_ } ContextFlags: DWORD;
+    {_Out_ } Context: PPCONTEXT;
+    {_Inout_ } ContextLength: PDWORD;
+    {_In_ } XStateCompactionMask: ULONG64): winbool; stdcall; external 'Kernel32.dll';
+
+
+function GetEnabledXStateFeatures(): DWORD64; stdcall; external 'Kernel32.dll';
+
+
+function GetXStateFeaturesMask(
+    {_In_ } Context: PCONTEXT;
+    {_Out_ } FeatureMask: PDWORD64): winbool; stdcall; external 'Kernel32.dll';
+
+
+function LocateXStateFeature(
+    {_In_ } Context: PCONTEXT;
+    {_In_ } FeatureId: DWORD;
+    {_Out_opt_ } Length: PDWORD): PVOID; stdcall; external 'Kernel32.dll';
+
+
+function SetXStateFeaturesMask(
+    {_Inout_ } Context: PCONTEXT;
+    {_In_ } FeatureMask: DWORD64): winbool; stdcall; external 'Kernel32.dll';
+
+
+function GetThreadEnabledXStateFeatures(): DWORD64; stdcall; external 'Kernel32.dll';
+
+
+function EnableProcessOptionalXStateFeatures(
+    {_In_ } Features: DWORD64): winbool; stdcall; external 'Kernel32.dll';
+
+
+function EnableThreadProfiling(
+    {_In_ } ThreadHandle: HANDLE;
+    {_In_ } Flags: DWORD;
+    {_In_ } HardwareCounters: DWORD64;
+    {_Out_ } PerformanceDataHandle: PHANDLE): DWORD; stdcall; external 'Kernel32.dll';
+
+
+function DisableThreadProfiling(
+    {_In_ } PerformanceDataHandle: HANDLE): DWORD; stdcall; external 'Kernel32.dll';
+
+
+function QueryThreadProfiling(
+    {_In_ } ThreadHandle: HANDLE;
+    {_Out_ } Enabled: PWinBool): DWORD; stdcall; external 'Kernel32.dll';
+
+
+function ReadThreadProfilingData(
+    {_In_ } PerformanceDataHandle: HANDLE;
+    {_In_ } Flags: DWORD;
+    {_Out_ } PerformanceData: PPERFORMANCE_DATA): DWORD; stdcall; external 'Kernel32.dll';
+
+
+function RaiseCustomSystemEventTrigger(
+    {_In_ } CustomSystemEventTriggerConfig: PCUSTOM_SYSTEM_EVENT_TRIGGER_CONFIG): DWORD; stdcall; external 'Kernel32.dll';
+
+
+function GetFreeSpace(w: UINT): LONG;
+
+function MAKEINTATOM(i: word): LPTSTR;
+
+
+function LookupAccountNameLocalA(
+    {_In_     } lpAccountName: LPCSTR;
+    {_Out_writes_bytes_to_opt_(*cbSid, *cbSid) } Sid: PSID;
+    {_Inout_  } cbSid: LPDWORD;
+    {_Out_writes_to_opt_(*cchReferencedDomainName, *cchReferencedDomainName + 1) } ReferencedDomainName: LPSTR;
+    {_Inout_  } cchReferencedDomainName: LPDWORD;
+    {_Out_    } peUse: PSID_NAME_USE): winbool; stdcall;
+
+
+function LookupAccountNameLocalW(
+    {_In_     } lpAccountName: LPCWSTR;
+    {_Out_writes_bytes_to_opt_(*cbSid, *cbSid) } Sid: PSID;
+    {_Inout_  } cbSid: LPDWORD;
+    {_Out_writes_to_opt_(*cchReferencedDomainName, *cchReferencedDomainName + 1) } ReferencedDomainName: LPWSTR;
+    {_Inout_  } cchReferencedDomainName: LPDWORD;
+    {_Out_    } peUse: PSID_NAME_USE): winbool; stdcall;
+
+
+function LookupAccountSidLocalA(
+    {_In_ } Sid: PSID;
+    {_Out_writes_to_opt_(*cchName, *cchName + 1) } Name: LPSTR;
+    {_Inout_  } cchName: LPDWORD;
+    {_Out_writes_to_opt_(*cchReferencedDomainName, *cchReferencedDomainName + 1) } ReferencedDomainName: LPSTR;
+    {_Inout_ } cchReferencedDomainName: LPDWORD;
+    {_Out_ } peUse: PSID_NAME_USE): winbool; stdcall;
+
+
+function LookupAccountSidLocalW(
+    {_In_ } Sid: PSID;
+    {_Out_writes_to_opt_(*cchName, *cchName + 1) } Name: LPWSTR;
+    {_Inout_  } cchName: LPDWORD;
+    {_Out_writes_to_opt_(*cchReferencedDomainName, *cchReferencedDomainName + 1) } ReferencedDomainName: LPWSTR;
+    {_Inout_ } cchReferencedDomainName: LPDWORD;
+    {_Out_ } peUse: PSID_NAME_USE): winbool; stdcall;
+
+implementation
+
+
+
+function ProcThreadAttributeValue(Number: longword; Thread, Input, Additive: winbool): longword;
+var
+    l: longword;
+begin
+    l := (Number and PROC_THREAD_ATTRIBUTE_NUMBER);
+    if (Thread <> False) then
+        l := l or PROC_THREAD_ATTRIBUTE_THREAD;
+    if (Input <> False) then
+        l := l or PROC_THREAD_ATTRIBUTE_INPUT;
+    if (Additive <> False) then
+        l := l or PROC_THREAD_ATTRIBUTE_ADDITIVE;
+end;
+
+
+
+function GetFreeSpace(w: UINT): LONG;
+begin
+    Result := $100000;
+end;
+
+
+
+function MAKEINTATOM(i: word): LPTSTR;
+begin
+    result := LPTSTR(ULONG_PTR(i));
+end;
+
+function LookupAccountNameLocalA(lpAccountName: LPCSTR; Sid: PSID;
+  cbSid: LPDWORD; ReferencedDomainName: LPSTR;
+  cchReferencedDomainName: LPDWORD; peUse: PSID_NAME_USE): winbool; stdcall;
+begin
+    result:=LookupAccountNameA(nil, lpAccountName, Sid, cbSid, ReferencedDomainName, cchReferencedDomainName,peUse);
+end;
+
+function LookupAccountNameLocalW(lpAccountName: LPCWSTR; Sid: PSID;
+  cbSid: LPDWORD; ReferencedDomainName: LPWSTR;
+  cchReferencedDomainName: LPDWORD; peUse: PSID_NAME_USE): winbool; stdcall;
+begin
+  result:= LookupAccountNameW(nil, lpAccountName, Sid, cbSid, ReferencedDomainName, cchReferencedDomainName, peUse);
+end;
+
+function LookupAccountSidLocalA(Sid: PSID; Name: LPSTR; cchName: LPDWORD;
+  ReferencedDomainName: LPSTR; cchReferencedDomainName: LPDWORD;
+  peUse: PSID_NAME_USE): winbool; stdcall;
+begin
+   result:=  LookupAccountSidA(nil, Sid, Name, cchName,ReferencedDomainName, cchReferencedDomainName, peUse);
+end;
+
+function LookupAccountSidLocalW(Sid: PSID; Name: LPWSTR; cchName: LPDWORD;
+  ReferencedDomainName: LPWSTR; cchReferencedDomainName: LPDWORD;
+  peUse: PSID_NAME_USE): winbool; stdcall;
+begin
+  result:=  LookupAccountSidW(nil, Sid, Name, cchName,ReferencedDomainName, cchReferencedDomainName, peUse);
+end;
+
+
+(* this functions uses functions from Win32.WinNT
+
+procedure InitializeThreadpoolEnvironment(
+    {_Out_ } pcbe: TPTP_CALLBACK_ENVIRON); inline;
+begin
+    TpInitializeCallbackEnviron(pcbe);
+end;
+
+
+
+procedure SetThreadpoolCallbackPool(
+    {_Inout_ } pcbe: TPTP_CALLBACK_ENVIRON;
+    {_In_    } ptpp: TPTP_POOL); inline;
+begin
+    TpSetCallbackThreadpool(pcbe, ptpp);
+end;
+
+
+
+procedure SetThreadpoolCallbackCleanupGroup(
+    {_Inout_  } pcbe: TPTP_CALLBACK_ENVIRON;
+    {_In_     } ptpcg: TPTP_CLEANUP_GROUP;
+    {_In_opt_ } pfng: TPTP_CLEANUP_GROUP_CANCEL_CALLBACK); inline;
+begin
+    TpSetCallbackCleanupGroup(pcbe, ptpcg, pfng);
+end;
+
+
+
+procedure SetThreadpoolCallbackRunsLong(
+    {_Inout_ } pcbe: TPTP_CALLBACK_ENVIRON); inline;
+begin
+    TpSetCallbackLongFunction(pcbe);
+end;
+
+
+
+procedure SetThreadpoolCallbackLibrary(
+    {_Inout_ } pcbe: TPTP_CALLBACK_ENVIRON;
+    {_In_    } modHandle: PVOID); inline;
+begin
+    TpSetCallbackRaceWithDll(pcbe, modHandle);
+end;
+
+
+
+procedure SetThreadpoolCallbackPriority(
+    {_Inout_ } pcbe: TPTP_CALLBACK_ENVIRON;
+    {_In_    } Priority: TTP_CALLBACK_PRIORITY); inline;
+begin
+    TpSetCallbackPriority(pcbe, Priority);
+end;
+
+
+
+procedure DestroyThreadpoolEnvironment(
+    {_Inout_ } pcbe: TPTP_CALLBACK_ENVIRON); inline;
+begin
+    TpDestroyCallbackEnviron(pcbe);
+end;
+
+
+
+procedure SetThreadpoolCallbackPersistent(
+    {_Inout_ } pcbe: TPTP_CALLBACK_ENVIRON); inline;
+begin
+    TpSetCallbackPersistent(pcbe);
+end;
+       *)
+
+end.

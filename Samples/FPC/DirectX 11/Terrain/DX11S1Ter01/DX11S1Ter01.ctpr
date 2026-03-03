@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectOptions>
+    <Version Value="12"/>
+    <PathDelim Value="\"/>
+    <General>
+      <Flags>
+        <MainUnitHasCreateFormStatements Value="False"/>
+        <MainUnitHasTitleStatement Value="False"/>
+        <MainUnitHasScaledStatement Value="False"/>
+        <CompatibilityMode Value="True"/>
+      </Flags>
+      <SessionStorage Value="InProjectDir"/>
+      <Title Value="DX11S1Ter01"/>
+      <ResourceType Value="res"/>
+      <UseXPManifest Value="True"/>
+      <XPManifest>
+        <DpiAware Value="True"/>
+      </XPManifest>
+      <Icon Value="0"/>
+    </General>
+    <CustomData Count="3">
+      <Item0 Name="OpenAPIBase"/>
+      <Item1 Name="OpenAPIConfig"/>
+      <Item2 Name="OpenAPIFile"/>
+    </CustomData>
+    <BuildModes Count="3">
+      <Item1 Name="Default" Default="True"/>
+      <Item2 Name="Debug">
+        <CompilerOptions>
+          <Version Value="11"/>
+          <PathDelim Value="\"/>
+          <Target>
+            <Filename Value="c:\temp\binDX12\$NameOnly($Project(InfoFile))\DX11S1Ter01_$(TargetCPU)"/>
+          </Target>
+          <SearchPaths>
+            <IncludeFiles Value="$(ProjOutDir)"/>
+            <OtherUnitFiles Value="..\..\..\..\..\Units\DX12;..\..\..\..\..\Units\Win32;..\..\..\..\..\Units\DirectXMath"/>
+            <UnitOutputDirectory Value="c:\temp\lib\$NameOnly($Project(InfoFile))\$(TargetCPU)-$(TargetOS)"/>
+          </SearchPaths>
+          <Parsing>
+            <SyntaxOptions>
+              <SyntaxMode Value="Delphi"/>
+            </SyntaxOptions>
+          </Parsing>
+          <Linking>
+            <Debugging>
+              <UseExternalDbgSyms Value="True"/>
+            </Debugging>
+            <Options>
+              <Win32>
+                <GraphicApplication Value="True"/>
+              </Win32>
+            </Options>
+          </Linking>
+          <Other>
+            <CustomOptions Value="-al
+-CfAVX
+-dUseDirectXMath"/>
+            <OtherDefines Count="1">
+              <Define0 Value="UseDirectXMath"/>
+            </OtherDefines>
+          </Other>
+        </CompilerOptions>
+      </Item2>
+      <Item3 Name="Release">
+        <CompilerOptions>
+          <Version Value="11"/>
+          <PathDelim Value="\"/>
+          <Target>
+            <Filename Value="DX11S1Ter01"/>
+          </Target>
+          <SearchPaths>
+            <IncludeFiles Value="$(ProjOutDir)"/>
+            <OtherUnitFiles Value="..\..\..\..\..\Units\DirectXMath"/>
+            <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
+          </SearchPaths>
+          <Parsing>
+            <SyntaxOptions>
+              <SyntaxMode Value="DelphiUnicode"/>
+            </SyntaxOptions>
+          </Parsing>
+          <CodeGeneration>
+            <SmartLinkUnit Value="True"/>
+            <Optimizations>
+              <OptimizationLevel Value="3"/>
+            </Optimizations>
+          </CodeGeneration>
+          <Linking>
+            <Debugging>
+              <GenerateDebugInfo Value="False"/>
+            </Debugging>
+            <LinkSmart Value="True"/>
+            <Options>
+              <Win32>
+                <GraphicApplication Value="True"/>
+              </Win32>
+            </Options>
+          </Linking>
+        </CompilerOptions>
+      </Item3>
+    </BuildModes>
+    <PublishOptions>
+      <Version Value="2"/>
+      <UseFileFilters Value="True"/>
+    </PublishOptions>
+    <RunParams>
+      <FormatVersion Value="2"/>
+    </RunParams>
+    <RequiredPackages Count="1">
+      <Item1>
+        <PackageName Value="adLCL"/>
+      </Item1>
+    </RequiredPackages>
+    <Units Count="19">
+      <Unit0>
+        <Filename Value="DX11S1Ter01.ppr"/>
+        <FRMtype Value="0"/>
+        <IsPartOfProject Value="True"/>
+      </Unit0>
+      <Unit1>
+        <Filename Value="applicationclass.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ApplicationClass"/>
+      </Unit1>
+      <Unit2>
+        <Filename Value="cameraclass.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="CameraClass"/>
+      </Unit2>
+      <Unit3>
+        <Filename Value="colorshaderclass.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ColorShaderClass"/>
+      </Unit3>
+      <Unit4>
+        <Filename Value="cpuclass.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="CPUClass"/>
+      </Unit4>
+      <Unit5>
+        <Filename Value="d3dclass.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="D3DClass"/>
+      </Unit5>
+      <Unit6>
+        <Filename Value="fontclass.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="FontClass"/>
+      </Unit6>
+      <Unit7>
+        <Filename Value="fontshaderclass.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="FontShaderClass"/>
+      </Unit7>
+      <Unit8>
+        <Filename Value="fpsclass.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="FPSClass"/>
+      </Unit8>
+      <Unit9>
+        <Filename Value="inputclass.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="InputClass"/>
+      </Unit9>
+      <Unit10>
+        <Filename Value="positionclass.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit10>
+      <Unit11>
+        <Filename Value="systemclass.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="SystemClass"/>
+      </Unit11>
+      <Unit12>
+        <Filename Value="terrainclass.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="TerrainClass"/>
+      </Unit12>
+      <Unit13>
+        <Filename Value="textclass.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="TextClass"/>
+      </Unit13>
+      <Unit14>
+        <Filename Value="textureclass.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="TextureClass"/>
+      </Unit14>
+      <Unit15>
+        <Filename Value="timerclass.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit15>
+      <Unit16>
+        <Filename Value="..\..\..\..\..\Units\DirectXMath\DirectX.Math.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit16>
+      <Unit17>
+        <Filename Value="..\..\..\..\..\Units\Win32\Win32.PDH.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit17>
+      <Unit18>
+        <Filename Value="..\..\..\..\..\Units\Win32\Win32.WinPerf.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit18>
+    </Units>
+  </ProjectOptions>
+  <CompilerOptions>
+    <Version Value="11"/>
+    <PathDelim Value="\"/>
+    <Target>
+      <Filename Value="DX11S1Ter01"/>
+    </Target>
+    <SearchPaths>
+      <IncludeFiles Value="$(ProjOutDir)"/>
+      <OtherUnitFiles Value="..\..\..\..\..\Units\DirectXMath"/>
+      <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
+    </SearchPaths>
+    <Parsing>
+      <SyntaxOptions>
+        <SyntaxMode Value="DelphiUnicode"/>
+      </SyntaxOptions>
+    </Parsing>
+    <Linking>
+      <Options>
+        <Win32>
+          <GraphicApplication Value="True"/>
+        </Win32>
+      </Options>
+    </Linking>
+  </CompilerOptions>
+  <Debugging>
+    <Exceptions Count="3">
+      <Item1>
+        <Name Value="EAbort"/>
+      </Item1>
+      <Item2>
+        <Name Value="ECodetoolError"/>
+      </Item2>
+      <Item3>
+        <Name Value="EFOpenError"/>
+      </Item3>
+    </Exceptions>
+  </Debugging>
+</CONFIG>

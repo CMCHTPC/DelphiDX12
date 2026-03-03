@@ -1,0 +1,2948 @@
+{ **************************************************************************
+    FreePascal/Delphi DirectX 12 Header Files
+
+    Copyright (C) 2013-2025 Norbert Sonnleitner
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE.
+************************************************************************** }
+
+{ **************************************************************************
+   Additional Copyright (C) for this modul:
+
+   Copyright (C) Microsoft Corporation.
+   Licensed under the MIT license
+
+   This unit consists of the following header files
+   File name: DirectML.h
+   Header version: 10.0.26100.6584
+
+  ************************************************************************** }
+
+unit DX12.DirectML;
+
+{$mode ObjFPC}{$H+}
+
+interface
+
+uses
+    Windows, Classes, SysUtils,
+    DX12.D3D12;
+
+    {$Z4}
+
+
+    //#ifndef DML_TARGET_VERSION
+    //#if !defined(NTDDI_VERSION) || defined(DML_TARGET_VERSION_USE_LATEST) // Use the latest if using redist or no Windows target set.
+    {$DEFINE DML_TARGET_VERSION_0x6400}
+    {$DEFINE DML_TARGET_VERSION_0x6300}
+    {$DEFINE DML_TARGET_VERSION_0x6200}
+    {$DEFINE DML_TARGET_VERSION_0x6100}
+    //#elif defined(NTDDI_WIN10_ZN) && NTDDI_VERSION >= NTDDI_WIN10_ZN
+    {$DEFINE DML_TARGET_VERSION_0x6000}
+    {$DEFINE DML_TARGET_VERSION_0x5100}
+
+    //#elif defined(NTDDI_WIN10_NI) && NTDDI_VERSION >= NTDDI_WIN10_NI
+    {$DEFINE DML_TARGET_VERSION_0x5000}
+    //#elif defined(NTDDI_WIN10_CO) && NTDDI_VERSION >= NTDDI_WIN10_CO
+
+    {$DEFINE DML_TARGET_VERSION_0x4100}
+    {$DEFINE DML_TARGET_VERSION_0x4000}
+    //#elif defined(NTDDI_WIN10_FE) && NTDDI_VERSION >= NTDDI_WIN10_FE
+    {$DEFINE DML_TARGET_VERSION_0x3100}
+    {$DEFINE DML_TARGET_VERSION_0x3000}
+    //#elif defined(NTDDI_WIN10_VB) && NTDDI_VERSION >= NTDDI_WIN10_VB // Windows 10 2004 Update
+
+    {$DEFINE DML_TARGET_VERSION_0x2100}
+    {$DEFINE DML_TARGET_VERSION_0x2000}
+    //#else // defined(NTDDI_WIN10_19H1) && NTDDI_VERSION >= NTDDI_WIN10_19H1 // Windows 10 1903 Update
+    {$DEFINE DML_TARGET_VERSION_0x1000}
+    //#endif
+    //#endif // !defined(DML_TARGET_VERSION)
+
+const
+    DirectML_DLL = 'DirectML.dll';
+
+    // ===================================================================================================================
+    //   DirectML constants
+    // ===================================================================================================================
+
+    DML_TENSOR_DIMENSION_COUNT_MAX = 5;
+    {$IFDEF DML_TARGET_VERSION_0x3000}
+    DML_TENSOR_DIMENSION_COUNT_MAX1 = 8;
+    {$ENDIF}
+
+    DML_TEMPORARY_BUFFER_ALIGNMENT = 256;
+    DML_PERSISTENT_BUFFER_ALIGNMENT = 256;
+
+    DML_MINIMUM_BUFFER_TENSOR_ALIGNMENT = 16;
+
+
+    IID_IDMLObject: TGUID = '{c8263aac-9e0c-4a2d-9b8e-007521a3317c}';
+    IID_IDMLDevice: TGUID = '{6dbd6437-96fd-423f-a98c-ae5e7c2a573f}';
+    IID_IDMLDeviceChild: TGUID = '{27e83142-8165-49e3-974e-2fd66e4cb69d}';
+    IID_IDMLPageable: TGUID = '{b1ab0825-4542-4a4b-8617-6dde6e8f6201}';
+    IID_IDMLOperator: TGUID = '{26caae7a-3081-4633-9581-226fbe57695d}';
+    IID_IDMLDispatchable: TGUID = '{dcb821a8-1039-441e-9f1c-b1759c2f3cec}';
+    IID_IDMLCompiledOperator: TGUID = '{6b15e56a-bf5c-4902-92d8-da3a650afea4}';
+    IID_IDMLOperatorInitializer: TGUID = '{427c1113-435c-469c-8676-4d5dd072f813}';
+    IID_IDMLBindingTable: TGUID = '{29c687dc-de74-4e3b-ab00-1168f2fc3cfc}';
+    IID_IDMLCommandRecorder: TGUID = '{e6857a76-2e3e-4fdd-bff4-5d2ba10fb453}';
+    IID_IDMLDebugDevice: TGUID = '{7d6f3ac9-394a-4ac3-92a7-390cc57a8217}';
+    IID_IDMLDevice1: TGUID = '{a0884f9a-d2be-4355-aa5d-5901281ad1d2}';
+
+type
+
+
+    // ===================================================================================================================
+    //   Interface declarations
+    // ===================================================================================================================
+
+
+    IDMLObject = interface;
+    PIDMLObject = ^IDMLObject;
+
+
+    IDMLDevice = interface;
+    PIDMLDevice = ^IDMLDevice;
+
+
+    IDMLDeviceChild = interface;
+    PIDMLDeviceChild = ^IDMLDeviceChild;
+
+
+    IDMLPageable = interface;
+    PIDMLPageable = ^IDMLPageable;
+
+
+    IDMLDispatchable = interface;
+    PIDMLDispatchable = ^IDMLDispatchable;
+
+
+    IDMLOperator = interface;
+    PIDMLOperator = ^IDMLOperator;
+
+
+    IDMLCompiledOperator = interface;
+    PIDMLCompiledOperator = ^IDMLCompiledOperator;
+
+
+    IDMLOperatorInitializer = interface;
+    PIDMLOperatorInitializer = ^IDMLOperatorInitializer;
+
+
+    IDMLBindingTable = interface;
+    PIDMLBindingTable = ^IDMLBindingTable;
+
+
+    IDMLCommandRecorder = interface;
+    PIDMLCommandRecorder = ^IDMLCommandRecorder;
+
+
+    // ===================================================================================================================
+    //   Tensor descriptions
+    // ===================================================================================================================
+
+    TDML_TENSOR_DATA_TYPE = (
+        DML_TENSOR_DATA_TYPE_UNKNOWN,
+        DML_TENSOR_DATA_TYPE_FLOAT32,
+        DML_TENSOR_DATA_TYPE_FLOAT16,
+        DML_TENSOR_DATA_TYPE_UINT32,
+        DML_TENSOR_DATA_TYPE_UINT16,
+        DML_TENSOR_DATA_TYPE_UINT8,
+        DML_TENSOR_DATA_TYPE_INT32,
+        DML_TENSOR_DATA_TYPE_INT16,
+        DML_TENSOR_DATA_TYPE_INT8,
+        DML_TENSOR_DATA_TYPE_FLOAT64,
+        DML_TENSOR_DATA_TYPE_UINT64,
+        DML_TENSOR_DATA_TYPE_INT64
+        {$IFDEF DML_TARGET_VERSION_0x6300}
+        ,
+        DML_TENSOR_DATA_TYPE_UINT4,
+        DML_TENSOR_DATA_TYPE_INT4
+        {$ENDIF}// DML_TARGET_VERSION >= 0x6300
+        );
+
+    PDML_TENSOR_DATA_TYPE = ^TDML_TENSOR_DATA_TYPE;
+
+
+    TDML_TENSOR_TYPE = (
+        DML_TENSOR_TYPE_INVALID,
+        DML_TENSOR_TYPE_BUFFER);
+
+    PDML_TENSOR_TYPE = ^TDML_TENSOR_TYPE;
+
+
+    TDML_TENSOR_FLAGS = (
+        DML_TENSOR_FLAG_NONE = $0,
+        DML_TENSOR_FLAG_OWNED_BY_DML = $1);
+
+    PDML_TENSOR_FLAGS = ^TDML_TENSOR_FLAGS;
+
+
+    TDML_BUFFER_TENSOR_DESC = record
+        DataType: TDML_TENSOR_DATA_TYPE;
+        Flags: TDML_TENSOR_FLAGS;
+        DimensionCount: UINT;
+        {_Field_size_(DimensionCount)  } Sizes: PUINT;
+        {_Field_size_opt_(DimensionCount)  } Strides: PUINT;
+        TotalTensorSizeInBytes: uint64;
+        GuaranteedBaseOffsetAlignment: UINT;
+    end;
+    PDML_BUFFER_TENSOR_DESC = ^TDML_BUFFER_TENSOR_DESC;
+
+
+    TDML_TENSOR_DESC = record
+        TensorType: TDML_TENSOR_TYPE;
+        {_Field_size_(_Inexpressible_("Dependent on tensor type"))  } Desc: Pvoid;
+    end;
+    PDML_TENSOR_DESC = ^TDML_TENSOR_DESC;
+
+
+    // ===================================================================================================================
+    //   Operator types
+    // ===================================================================================================================
+
+    TDML_OPERATOR_TYPE = (
+        DML_OPERATOR_INVALID,
+        DML_OPERATOR_ELEMENT_WISE_IDENTITY,
+        DML_OPERATOR_ELEMENT_WISE_ABS,
+        DML_OPERATOR_ELEMENT_WISE_ACOS,
+        DML_OPERATOR_ELEMENT_WISE_ADD,
+        DML_OPERATOR_ELEMENT_WISE_ASIN,
+        DML_OPERATOR_ELEMENT_WISE_ATAN,
+        DML_OPERATOR_ELEMENT_WISE_CEIL,
+        DML_OPERATOR_ELEMENT_WISE_CLIP,
+        DML_OPERATOR_ELEMENT_WISE_COS,
+        DML_OPERATOR_ELEMENT_WISE_DIVIDE,
+        DML_OPERATOR_ELEMENT_WISE_EXP,
+        DML_OPERATOR_ELEMENT_WISE_FLOOR,
+        DML_OPERATOR_ELEMENT_WISE_LOG,
+        DML_OPERATOR_ELEMENT_WISE_LOGICAL_AND,
+        DML_OPERATOR_ELEMENT_WISE_LOGICAL_EQUALS,
+        DML_OPERATOR_ELEMENT_WISE_LOGICAL_GREATER_THAN,
+        DML_OPERATOR_ELEMENT_WISE_LOGICAL_LESS_THAN,
+        DML_OPERATOR_ELEMENT_WISE_LOGICAL_NOT,
+        DML_OPERATOR_ELEMENT_WISE_LOGICAL_OR,
+        DML_OPERATOR_ELEMENT_WISE_LOGICAL_XOR,
+        DML_OPERATOR_ELEMENT_WISE_MAX,
+        DML_OPERATOR_ELEMENT_WISE_MEAN,
+        DML_OPERATOR_ELEMENT_WISE_MIN,
+        DML_OPERATOR_ELEMENT_WISE_MULTIPLY,
+        DML_OPERATOR_ELEMENT_WISE_POW,
+        DML_OPERATOR_ELEMENT_WISE_CONSTANT_POW,
+        DML_OPERATOR_ELEMENT_WISE_RECIP,
+        DML_OPERATOR_ELEMENT_WISE_SIN,
+        DML_OPERATOR_ELEMENT_WISE_SQRT,
+        DML_OPERATOR_ELEMENT_WISE_SUBTRACT,
+        DML_OPERATOR_ELEMENT_WISE_TAN,
+        DML_OPERATOR_ELEMENT_WISE_THRESHOLD,
+        DML_OPERATOR_ELEMENT_WISE_QUANTIZE_LINEAR,
+        DML_OPERATOR_ELEMENT_WISE_DEQUANTIZE_LINEAR,
+        DML_OPERATOR_ACTIVATION_ELU,
+        DML_OPERATOR_ACTIVATION_HARDMAX,
+        DML_OPERATOR_ACTIVATION_HARD_SIGMOID,
+        DML_OPERATOR_ACTIVATION_IDENTITY,
+        DML_OPERATOR_ACTIVATION_LEAKY_RELU,
+        DML_OPERATOR_ACTIVATION_LINEAR,
+        DML_OPERATOR_ACTIVATION_LOG_SOFTMAX,
+        DML_OPERATOR_ACTIVATION_PARAMETERIZED_RELU,
+        DML_OPERATOR_ACTIVATION_PARAMETRIC_SOFTPLUS,
+        DML_OPERATOR_ACTIVATION_RELU,
+        DML_OPERATOR_ACTIVATION_SCALED_ELU,
+        DML_OPERATOR_ACTIVATION_SCALED_TANH,
+        DML_OPERATOR_ACTIVATION_SIGMOID,
+        DML_OPERATOR_ACTIVATION_SOFTMAX,
+        DML_OPERATOR_ACTIVATION_SOFTPLUS,
+        DML_OPERATOR_ACTIVATION_SOFTSIGN,
+        DML_OPERATOR_ACTIVATION_TANH,
+        DML_OPERATOR_ACTIVATION_THRESHOLDED_RELU,
+        DML_OPERATOR_CONVOLUTION,
+        DML_OPERATOR_GEMM,
+        DML_OPERATOR_REDUCE,
+        DML_OPERATOR_AVERAGE_POOLING,
+        DML_OPERATOR_LP_POOLING,
+        DML_OPERATOR_MAX_POOLING,
+        DML_OPERATOR_ROI_POOLING,
+        DML_OPERATOR_SLICE,
+        DML_OPERATOR_CAST,
+        DML_OPERATOR_SPLIT,
+        DML_OPERATOR_JOIN,
+        DML_OPERATOR_PADDING,
+        DML_OPERATOR_VALUE_SCALE_2D,
+        DML_OPERATOR_UPSAMPLE_2D,
+        DML_OPERATOR_GATHER,
+        DML_OPERATOR_SPACE_TO_DEPTH,
+        DML_OPERATOR_DEPTH_TO_SPACE,
+        DML_OPERATOR_TILE,
+        DML_OPERATOR_TOP_K,
+        DML_OPERATOR_BATCH_NORMALIZATION,
+        DML_OPERATOR_MEAN_VARIANCE_NORMALIZATION,
+        DML_OPERATOR_LOCAL_RESPONSE_NORMALIZATION,
+        DML_OPERATOR_LP_NORMALIZATION,
+        DML_OPERATOR_RNN,
+        DML_OPERATOR_LSTM,
+        DML_OPERATOR_GRU,
+        {$IFDEF DML_TARGET_VERSION_0x2000}
+        DML_OPERATOR_ELEMENT_WISE_SIGN,
+        DML_OPERATOR_ELEMENT_WISE_IS_NAN,
+        DML_OPERATOR_ELEMENT_WISE_ERF,
+        DML_OPERATOR_ELEMENT_WISE_SINH,
+        DML_OPERATOR_ELEMENT_WISE_COSH,
+        DML_OPERATOR_ELEMENT_WISE_TANH,
+        DML_OPERATOR_ELEMENT_WISE_ASINH,
+        DML_OPERATOR_ELEMENT_WISE_ACOSH,
+        DML_OPERATOR_ELEMENT_WISE_ATANH,
+        DML_OPERATOR_ELEMENT_WISE_IF,
+        DML_OPERATOR_ELEMENT_WISE_ADD1,
+        DML_OPERATOR_ACTIVATION_SHRINK,
+        DML_OPERATOR_MAX_POOLING1,
+        DML_OPERATOR_MAX_UNPOOLING,
+        DML_OPERATOR_DIAGONAL_MATRIX,
+        DML_OPERATOR_SCATTER_ELEMENTS,
+        DML_OPERATOR_SCATTER = DML_OPERATOR_SCATTER_ELEMENTS, // Alias name for backwards compatibility.
+        DML_OPERATOR_ONE_HOT,
+        DML_OPERATOR_RESAMPLE,
+        {$ENDIF}// DML_TARGET_VERSION >= 0x2000
+
+        {$IFDEF DML_TARGET_VERSION_0x2100}
+        DML_OPERATOR_ELEMENT_WISE_BIT_SHIFT_LEFT,
+        DML_OPERATOR_ELEMENT_WISE_BIT_SHIFT_RIGHT,
+        DML_OPERATOR_ELEMENT_WISE_ROUND,
+        DML_OPERATOR_ELEMENT_WISE_IS_INFINITY,
+        DML_OPERATOR_ELEMENT_WISE_MODULUS_TRUNCATE,
+        DML_OPERATOR_ELEMENT_WISE_MODULUS_FLOOR,
+        DML_OPERATOR_FILL_VALUE_CONSTANT,
+        DML_OPERATOR_FILL_VALUE_SEQUENCE,
+        DML_OPERATOR_CUMULATIVE_SUMMATION,
+        DML_OPERATOR_REVERSE_SUBSEQUENCES,
+        DML_OPERATOR_GATHER_ELEMENTS,
+        DML_OPERATOR_GATHER_ND,
+        DML_OPERATOR_SCATTER_ND,
+        DML_OPERATOR_MAX_POOLING2,
+        DML_OPERATOR_SLICE1,
+        DML_OPERATOR_TOP_K1,
+        DML_OPERATOR_DEPTH_TO_SPACE1,
+        DML_OPERATOR_SPACE_TO_DEPTH1,
+        DML_OPERATOR_MEAN_VARIANCE_NORMALIZATION1,
+        DML_OPERATOR_RESAMPLE1,
+        DML_OPERATOR_MATRIX_MULTIPLY_INTEGER,
+        DML_OPERATOR_QUANTIZED_LINEAR_MATRIX_MULTIPLY,
+        DML_OPERATOR_CONVOLUTION_INTEGER,
+        DML_OPERATOR_QUANTIZED_LINEAR_CONVOLUTION,
+        {$ENDIF}// DML_TARGET_VERSION >= 0x2100
+
+        {$IFDEF DML_TARGET_VERSION_0x3000}
+        DML_OPERATOR_ELEMENT_WISE_BIT_AND,
+        DML_OPERATOR_ELEMENT_WISE_BIT_OR,
+        DML_OPERATOR_ELEMENT_WISE_BIT_XOR,
+        DML_OPERATOR_ELEMENT_WISE_BIT_NOT,
+        DML_OPERATOR_ELEMENT_WISE_BIT_COUNT,
+        DML_OPERATOR_ELEMENT_WISE_LOGICAL_GREATER_THAN_OR_EQUAL,
+        DML_OPERATOR_ELEMENT_WISE_LOGICAL_LESS_THAN_OR_EQUAL,
+        DML_OPERATOR_ACTIVATION_CELU,
+        DML_OPERATOR_ACTIVATION_RELU_GRAD,
+        DML_OPERATOR_AVERAGE_POOLING_GRAD,
+        DML_OPERATOR_MAX_POOLING_GRAD,
+        DML_OPERATOR_RANDOM_GENERATOR,
+        DML_OPERATOR_NONZERO_COORDINATES,
+        DML_OPERATOR_RESAMPLE_GRAD,
+        DML_OPERATOR_SLICE_GRAD,
+        DML_OPERATOR_ADAM_OPTIMIZER,
+        DML_OPERATOR_ARGMIN,
+        DML_OPERATOR_ARGMAX,
+        DML_OPERATOR_ROI_ALIGN,
+        DML_OPERATOR_GATHER_ND1,
+        {$ENDIF}// DML_TARGET_VERSION >= 0x3000
+
+        {$IFDEF DML_TARGET_VERSION_0x3100}
+        DML_OPERATOR_ELEMENT_WISE_ATAN_YX,
+        DML_OPERATOR_ELEMENT_WISE_CLIP_GRAD,
+        DML_OPERATOR_ELEMENT_WISE_DIFFERENCE_SQUARE,
+        DML_OPERATOR_LOCAL_RESPONSE_NORMALIZATION_GRAD,
+        DML_OPERATOR_CUMULATIVE_PRODUCT,
+        DML_OPERATOR_BATCH_NORMALIZATION_GRAD,
+        {$ENDIF}// DML_TARGET_VERSION >= 0x3100
+
+        {$IFDEF DML_TARGET_VERSION_0x4000}
+        DML_OPERATOR_ELEMENT_WISE_QUANTIZED_LINEAR_ADD,
+        DML_OPERATOR_DYNAMIC_QUANTIZE_LINEAR,
+        DML_OPERATOR_ROI_ALIGN1,
+        {$ENDIF}// DML_TARGET_VERSION >= 0x4000
+
+        {$IFDEF DML_TARGET_VERSION_0x4100}
+        DML_OPERATOR_ROI_ALIGN_GRAD,
+        DML_OPERATOR_BATCH_NORMALIZATION_TRAINING,
+        DML_OPERATOR_BATCH_NORMALIZATION_TRAINING_GRAD,
+        {$ENDIF}// DML_TARGET_VERSION >= 0x4100
+
+        {$IFDEF DML_TARGET_VERSION_0x5000}
+        DML_OPERATOR_ELEMENT_WISE_CLIP1,
+        DML_OPERATOR_ELEMENT_WISE_CLIP_GRAD1,
+        DML_OPERATOR_PADDING1,
+        DML_OPERATOR_ELEMENT_WISE_NEGATE,
+        {$ENDIF}// DML_TARGET_VERSION >= 0x5000
+
+        {$IFDEF DML_TARGET_VERSION_0x5100}
+        DML_OPERATOR_ACTIVATION_GELU,
+        DML_OPERATOR_ACTIVATION_SOFTMAX1,
+        DML_OPERATOR_ACTIVATION_LOG_SOFTMAX1,
+        DML_OPERATOR_ACTIVATION_HARDMAX1,
+        DML_OPERATOR_RESAMPLE2,
+        DML_OPERATOR_RESAMPLE_GRAD1,
+        DML_OPERATOR_DIAGONAL_MATRIX1,
+        {$ENDIF}// DML_TARGET_VERSION >= 0x5100
+
+        {$IFDEF DML_TARGET_VERSION_0x6100}
+        DML_OPERATOR_MULTIHEAD_ATTENTION,
+        {$ENDIF}// DML_TARGET_VERSION >= 0x6100
+
+        {$IFDEF DML_TARGET_VERSION_0x6200}
+        DML_OPERATOR_LP_POOLING1,
+        DML_OPERATOR_AVERAGE_POOLING1,
+        DML_OPERATOR_ACTIVATION_SWISH,
+        DML_OPERATOR_ACTIVATION_HARD_SWISH,
+        DML_OPERATOR_QUANTIZED_LINEAR_AVERAGE_POOLING,
+        DML_OPERATOR_MATRIX_MULTIPLY_INTEGER_TO_FLOAT,
+        {$ENDIF}// DML_TARGET_VERSION >= 0x6200
+
+        {$IFDEF DML_TARGET_VERSION_0x6300}
+        DML_OPERATOR_MEAN_VARIANCE_NORMALIZATION2,
+        DML_OPERATOR_MULTIHEAD_ATTENTION1,
+        DML_OPERATOR_QUANTIZE,
+        DML_OPERATOR_DEQUANTIZE,
+        {$ENDIF}// DML_TARGET_VERSION >= 0x6300
+
+        {$IFDEF DML_TARGET_VERSION_0x6400}
+        DML_OPERATOR_RESAMPLE3,
+        DML_OPERATOR_FOLD,
+        DML_OPERATOR_UNFOLD
+        {$ENDIF}// DML_TARGET_VERSION >= 0x6400
+
+        );
+
+    PDML_OPERATOR_TYPE = ^TDML_OPERATOR_TYPE;
+
+
+    // ===================================================================================================================
+    //   Operator enumerations and structures
+    // ===================================================================================================================
+
+    TDML_REDUCE_FUNCTION = (
+        DML_REDUCE_FUNCTION_ARGMAX,
+        DML_REDUCE_FUNCTION_ARGMIN,
+        DML_REDUCE_FUNCTION_AVERAGE,
+        DML_REDUCE_FUNCTION_L1,
+        DML_REDUCE_FUNCTION_L2,
+        DML_REDUCE_FUNCTION_LOG_SUM,
+        DML_REDUCE_FUNCTION_LOG_SUM_EXP,
+        DML_REDUCE_FUNCTION_MAX,
+        DML_REDUCE_FUNCTION_MIN,
+        DML_REDUCE_FUNCTION_MULTIPLY,
+        DML_REDUCE_FUNCTION_SUM,
+        DML_REDUCE_FUNCTION_SUM_SQUARE);
+
+    PDML_REDUCE_FUNCTION = ^TDML_REDUCE_FUNCTION;
+
+
+    TDML_MATRIX_TRANSFORM = (
+        DML_MATRIX_TRANSFORM_NONE,
+        DML_MATRIX_TRANSFORM_TRANSPOSE);
+
+    PDML_MATRIX_TRANSFORM = ^TDML_MATRIX_TRANSFORM;
+
+
+    TDML_CONVOLUTION_MODE = (
+        DML_CONVOLUTION_MODE_CONVOLUTION,
+        DML_CONVOLUTION_MODE_CROSS_CORRELATION);
+
+    PDML_CONVOLUTION_MODE = ^TDML_CONVOLUTION_MODE;
+
+
+    TDML_CONVOLUTION_DIRECTION = (
+        DML_CONVOLUTION_DIRECTION_FORWARD,
+        DML_CONVOLUTION_DIRECTION_BACKWARD);
+
+    PDML_CONVOLUTION_DIRECTION = ^TDML_CONVOLUTION_DIRECTION;
+
+
+    TDML_PADDING_MODE = (
+        DML_PADDING_MODE_CONSTANT,
+        DML_PADDING_MODE_EDGE,
+        DML_PADDING_MODE_REFLECTION,
+        {$IFDEF DML_TARGET_VERSION_0x3000}
+        DML_PADDING_MODE_SYMMETRIC,
+        {$ENDIF}
+
+        {$IFDEF DML_TARGET_VERSION_0x6400}
+        DML_PADDING_MODE_WRAP
+        {$ENDIF}
+
+        );
+
+    PDML_PADDING_MODE = ^TDML_PADDING_MODE;
+
+
+    TDML_INTERPOLATION_MODE = (
+        DML_INTERPOLATION_MODE_NEAREST_NEIGHBOR,
+        DML_INTERPOLATION_MODE_LINEAR);
+
+    PDML_INTERPOLATION_MODE = ^TDML_INTERPOLATION_MODE;
+
+
+    TDML_SCALE_BIAS = record
+        Scale: single;
+        Bias: single;
+    end;
+    PDML_SCALE_BIAS = ^TDML_SCALE_BIAS;
+
+
+    TDML_SIZE_2D = record
+        Width: UINT;
+        Height: UINT;
+    end;
+    PDML_SIZE_2D = ^TDML_SIZE_2D;
+
+
+    TDML_RECURRENT_NETWORK_DIRECTION = (
+        DML_RECURRENT_NETWORK_DIRECTION_FORWARD,
+        DML_RECURRENT_NETWORK_DIRECTION_BACKWARD,
+        DML_RECURRENT_NETWORK_DIRECTION_BIDIRECTIONAL);
+
+    PDML_RECURRENT_NETWORK_DIRECTION = ^TDML_RECURRENT_NETWORK_DIRECTION;
+
+
+    {$IFDEF DML_TARGET_VERSION_0x2100}
+
+    TDML_ROUNDING_MODE = (
+        DML_ROUNDING_MODE_HALVES_TO_NEAREST_EVEN,
+        DML_ROUNDING_MODE_TOWARD_ZERO,
+        DML_ROUNDING_MODE_TOWARD_INFINITY);
+
+    PDML_ROUNDING_MODE = ^TDML_ROUNDING_MODE;
+
+
+    TDML_IS_INFINITY_MODE = (
+        DML_IS_INFINITY_MODE_EITHER = 0,
+        DML_IS_INFINITY_MODE_POSITIVE = 1,
+        DML_IS_INFINITY_MODE_NEGATIVE = 2);
+
+    PDML_IS_INFINITY_MODE = ^TDML_IS_INFINITY_MODE;
+
+
+    TDML_AXIS_DIRECTION = (
+        DML_AXIS_DIRECTION_INCREASING = 0,
+        DML_AXIS_DIRECTION_DECREASING = 1);
+
+    PDML_AXIS_DIRECTION = ^TDML_AXIS_DIRECTION;
+
+
+    TDML_DEPTH_SPACE_ORDER = (
+        DML_DEPTH_SPACE_ORDER_DEPTH_COLUMN_ROW,
+        DML_DEPTH_SPACE_ORDER_COLUMN_ROW_DEPTH);
+
+    PDML_DEPTH_SPACE_ORDER = ^TDML_DEPTH_SPACE_ORDER;
+
+
+    TDML_SCALAR_UNION = record
+        case integer of
+            0: (ABytes: array [0..7] of byte);
+            1: (AInt8: int8);
+            2: (AUInt8: uint8);
+            3: (AInt16: int16);
+            4: (AUInt16: uint16);
+            5: (AInt32: int32);
+            6: (AUInt32: uint32);
+            7: (AInt64: int64);
+            8: (AUInt64: uint64);
+            9: (AFloat32: single);
+            10: (AFloat64: double);
+    end;
+
+
+    {$ENDIF}// DML_TARGET_VERSION >= 0x2100
+
+
+    {$IFDEF DML_TARGET_VERSION_0x3000}
+
+    TDML_RANDOM_GENERATOR_TYPE = (
+        DML_RANDOM_GENERATOR_TYPE_PHILOX_4X32_10);
+
+    PDML_RANDOM_GENERATOR_TYPE = ^TDML_RANDOM_GENERATOR_TYPE;
+
+
+    {$ENDIF}// DML_TARGET_VERSION >= 0x3000
+
+
+    {$IFDEF DML_TARGET_VERSION_0x6100}
+
+    TDML_MULTIHEAD_ATTENTION_MASK_TYPE = (
+        DML_MULTIHEAD_ATTENTION_MASK_TYPE_NONE,
+        DML_MULTIHEAD_ATTENTION_MASK_TYPE_KEY_SEQUENCE_LENGTH,
+        DML_MULTIHEAD_ATTENTION_MASK_TYPE_KEY_SEQUENCE_END_START,
+        DML_MULTIHEAD_ATTENTION_MASK_TYPE_KEY_QUERY_SEQUENCE_LENGTH_START_END,
+        DML_MULTIHEAD_ATTENTION_MASK_TYPE_BOOLEAN);
+
+    PDML_MULTIHEAD_ATTENTION_MASK_TYPE = ^TDML_MULTIHEAD_ATTENTION_MASK_TYPE;
+
+
+    {$ENDIF}// DML_TARGET_VERSION >= 0x6100
+
+
+    {$IFDEF DML_TARGET_VERSION_0x6300}
+
+    TDML_QUANTIZATION_TYPE = (
+        DML_QUANTIZATION_TYPE_NONE,
+        DML_QUANTIZATION_TYPE_SCALE,
+        DML_QUANTIZATION_TYPE_SCALE_ZERO_POINT);
+
+    PDML_QUANTIZATION_TYPE = ^TDML_QUANTIZATION_TYPE;
+
+
+    {$ENDIF}// DML_TARGET_VERSION >= 0x6300
+
+
+    // ===================================================================================================================
+    //   Operator descriptions
+    // ===================================================================================================================
+
+    TDML_OPERATOR_DESC = record
+        OperatorType: TDML_OPERATOR_TYPE;
+        {_Field_size_(_Inexpressible_("Dependent on operator type")) } Desc: Pvoid;
+    end;
+    PDML_OPERATOR_DESC = ^TDML_OPERATOR_DESC;
+
+
+    TDML_ELEMENT_WISE_IDENTITY_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } ScaleBias: PDML_SCALE_BIAS;
+    end;
+    PDML_ELEMENT_WISE_IDENTITY_OPERATOR_DESC = ^TDML_ELEMENT_WISE_IDENTITY_OPERATOR_DESC;
+
+
+    TDML_ELEMENT_WISE_ABS_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } ScaleBias: PDML_SCALE_BIAS;
+    end;
+    PDML_ELEMENT_WISE_ABS_OPERATOR_DESC = ^TDML_ELEMENT_WISE_ABS_OPERATOR_DESC;
+
+
+    TDML_ELEMENT_WISE_ACOS_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } ScaleBias: PDML_SCALE_BIAS;
+    end;
+    PDML_ELEMENT_WISE_ACOS_OPERATOR_DESC = ^TDML_ELEMENT_WISE_ACOS_OPERATOR_DESC;
+
+
+    TDML_ELEMENT_WISE_ADD_OPERATOR_DESC = record
+        ATensor: PDML_TENSOR_DESC;
+        BTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+    end;
+    PDML_ELEMENT_WISE_ADD_OPERATOR_DESC = ^TDML_ELEMENT_WISE_ADD_OPERATOR_DESC;
+
+
+    TDML_ELEMENT_WISE_ADD1_OPERATOR_DESC = record
+        ATensor: PDML_TENSOR_DESC;
+        BTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } FusedActivation: PDML_OPERATOR_DESC;
+    end;
+    PDML_ELEMENT_WISE_ADD1_OPERATOR_DESC = ^TDML_ELEMENT_WISE_ADD1_OPERATOR_DESC;
+
+
+    TDML_ELEMENT_WISE_ASIN_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } ScaleBias: PDML_SCALE_BIAS;
+    end;
+    PDML_ELEMENT_WISE_ASIN_OPERATOR_DESC = ^TDML_ELEMENT_WISE_ASIN_OPERATOR_DESC;
+
+
+    TDML_ELEMENT_WISE_ATAN_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } ScaleBias: PDML_SCALE_BIAS;
+    end;
+    PDML_ELEMENT_WISE_ATAN_OPERATOR_DESC = ^TDML_ELEMENT_WISE_ATAN_OPERATOR_DESC;
+
+
+    TDML_ELEMENT_WISE_CEIL_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } ScaleBias: PDML_SCALE_BIAS;
+    end;
+    PDML_ELEMENT_WISE_CEIL_OPERATOR_DESC = ^TDML_ELEMENT_WISE_CEIL_OPERATOR_DESC;
+
+
+    TDML_ELEMENT_WISE_CLIP_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } ScaleBias: PDML_SCALE_BIAS;
+        Min: single;
+        Max: single;
+    end;
+    PDML_ELEMENT_WISE_CLIP_OPERATOR_DESC = ^TDML_ELEMENT_WISE_CLIP_OPERATOR_DESC;
+
+
+    TDML_ELEMENT_WISE_COS_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } ScaleBias: PDML_SCALE_BIAS;
+    end;
+    PDML_ELEMENT_WISE_COS_OPERATOR_DESC = ^TDML_ELEMENT_WISE_COS_OPERATOR_DESC;
+
+
+    TDML_ELEMENT_WISE_DIVIDE_OPERATOR_DESC = record
+        ATensor: PDML_TENSOR_DESC;
+        BTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+    end;
+    PDML_ELEMENT_WISE_DIVIDE_OPERATOR_DESC = ^TDML_ELEMENT_WISE_DIVIDE_OPERATOR_DESC;
+
+
+    TDML_ELEMENT_WISE_EXP_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } ScaleBias: PDML_SCALE_BIAS;
+    end;
+    PDML_ELEMENT_WISE_EXP_OPERATOR_DESC = ^TDML_ELEMENT_WISE_EXP_OPERATOR_DESC;
+
+
+    TDML_ELEMENT_WISE_FLOOR_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } ScaleBias: PDML_SCALE_BIAS;
+    end;
+    PDML_ELEMENT_WISE_FLOOR_OPERATOR_DESC = ^TDML_ELEMENT_WISE_FLOOR_OPERATOR_DESC;
+
+
+    TDML_ELEMENT_WISE_LOG_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } ScaleBias: PDML_SCALE_BIAS;
+    end;
+    PDML_ELEMENT_WISE_LOG_OPERATOR_DESC = ^TDML_ELEMENT_WISE_LOG_OPERATOR_DESC;
+
+
+    TDML_ELEMENT_WISE_LOGICAL_AND_OPERATOR_DESC = record
+        ATensor: PDML_TENSOR_DESC;
+        BTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+    end;
+    PDML_ELEMENT_WISE_LOGICAL_AND_OPERATOR_DESC = ^TDML_ELEMENT_WISE_LOGICAL_AND_OPERATOR_DESC;
+
+
+    TDML_ELEMENT_WISE_LOGICAL_EQUALS_OPERATOR_DESC = record
+        ATensor: PDML_TENSOR_DESC;
+        BTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+    end;
+    PDML_ELEMENT_WISE_LOGICAL_EQUALS_OPERATOR_DESC = ^TDML_ELEMENT_WISE_LOGICAL_EQUALS_OPERATOR_DESC;
+
+
+    TDML_ELEMENT_WISE_LOGICAL_GREATER_THAN_OPERATOR_DESC = record
+        ATensor: PDML_TENSOR_DESC;
+        BTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+    end;
+    PDML_ELEMENT_WISE_LOGICAL_GREATER_THAN_OPERATOR_DESC = ^TDML_ELEMENT_WISE_LOGICAL_GREATER_THAN_OPERATOR_DESC;
+
+
+    TDML_ELEMENT_WISE_LOGICAL_LESS_THAN_OPERATOR_DESC = record
+        ATensor: PDML_TENSOR_DESC;
+        BTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+    end;
+    PDML_ELEMENT_WISE_LOGICAL_LESS_THAN_OPERATOR_DESC = ^TDML_ELEMENT_WISE_LOGICAL_LESS_THAN_OPERATOR_DESC;
+
+
+    TDML_ELEMENT_WISE_LOGICAL_NOT_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+    end;
+    PDML_ELEMENT_WISE_LOGICAL_NOT_OPERATOR_DESC = ^TDML_ELEMENT_WISE_LOGICAL_NOT_OPERATOR_DESC;
+
+
+    TDML_ELEMENT_WISE_LOGICAL_OR_OPERATOR_DESC = record
+        ATensor: PDML_TENSOR_DESC;
+        BTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+    end;
+    PDML_ELEMENT_WISE_LOGICAL_OR_OPERATOR_DESC = ^TDML_ELEMENT_WISE_LOGICAL_OR_OPERATOR_DESC;
+
+
+    TDML_ELEMENT_WISE_LOGICAL_XOR_OPERATOR_DESC = record
+        ATensor: PDML_TENSOR_DESC;
+        BTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+    end;
+    PDML_ELEMENT_WISE_LOGICAL_XOR_OPERATOR_DESC = ^TDML_ELEMENT_WISE_LOGICAL_XOR_OPERATOR_DESC;
+
+
+    TDML_ELEMENT_WISE_MAX_OPERATOR_DESC = record
+        ATensor: PDML_TENSOR_DESC;
+        BTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+    end;
+    PDML_ELEMENT_WISE_MAX_OPERATOR_DESC = ^TDML_ELEMENT_WISE_MAX_OPERATOR_DESC;
+
+
+    TDML_ELEMENT_WISE_MEAN_OPERATOR_DESC = record
+        ATensor: PDML_TENSOR_DESC;
+        BTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+    end;
+    PDML_ELEMENT_WISE_MEAN_OPERATOR_DESC = ^TDML_ELEMENT_WISE_MEAN_OPERATOR_DESC;
+
+
+    TDML_ELEMENT_WISE_MIN_OPERATOR_DESC = record
+        ATensor: PDML_TENSOR_DESC;
+        BTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+    end;
+    PDML_ELEMENT_WISE_MIN_OPERATOR_DESC = ^TDML_ELEMENT_WISE_MIN_OPERATOR_DESC;
+
+
+    TDML_ELEMENT_WISE_MULTIPLY_OPERATOR_DESC = record
+        ATensor: PDML_TENSOR_DESC;
+        BTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+    end;
+    PDML_ELEMENT_WISE_MULTIPLY_OPERATOR_DESC = ^TDML_ELEMENT_WISE_MULTIPLY_OPERATOR_DESC;
+
+
+    TDML_ELEMENT_WISE_POW_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        ExponentTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } ScaleBias: PDML_SCALE_BIAS;
+    end;
+    PDML_ELEMENT_WISE_POW_OPERATOR_DESC = ^TDML_ELEMENT_WISE_POW_OPERATOR_DESC;
+
+
+    TDML_ELEMENT_WISE_CONSTANT_POW_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } ScaleBias: PDML_SCALE_BIAS;
+        Exponent: single;
+    end;
+    PDML_ELEMENT_WISE_CONSTANT_POW_OPERATOR_DESC = ^TDML_ELEMENT_WISE_CONSTANT_POW_OPERATOR_DESC;
+
+
+    TDML_ELEMENT_WISE_RECIP_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } ScaleBias: PDML_SCALE_BIAS;
+    end;
+    PDML_ELEMENT_WISE_RECIP_OPERATOR_DESC = ^TDML_ELEMENT_WISE_RECIP_OPERATOR_DESC;
+
+
+    TDML_ELEMENT_WISE_SIN_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } ScaleBias: PDML_SCALE_BIAS;
+    end;
+    PDML_ELEMENT_WISE_SIN_OPERATOR_DESC = ^TDML_ELEMENT_WISE_SIN_OPERATOR_DESC;
+
+
+    TDML_ELEMENT_WISE_SQRT_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } ScaleBias: PDML_SCALE_BIAS;
+    end;
+    PDML_ELEMENT_WISE_SQRT_OPERATOR_DESC = ^TDML_ELEMENT_WISE_SQRT_OPERATOR_DESC;
+
+
+    TDML_ELEMENT_WISE_SUBTRACT_OPERATOR_DESC = record
+        ATensor: PDML_TENSOR_DESC;
+        BTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+    end;
+    PDML_ELEMENT_WISE_SUBTRACT_OPERATOR_DESC = ^TDML_ELEMENT_WISE_SUBTRACT_OPERATOR_DESC;
+
+
+    TDML_ELEMENT_WISE_TAN_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } ScaleBias: PDML_SCALE_BIAS;
+    end;
+    PDML_ELEMENT_WISE_TAN_OPERATOR_DESC = ^TDML_ELEMENT_WISE_TAN_OPERATOR_DESC;
+
+
+    TDML_ELEMENT_WISE_THRESHOLD_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } ScaleBias: PDML_SCALE_BIAS;
+        Min: single;
+    end;
+    PDML_ELEMENT_WISE_THRESHOLD_OPERATOR_DESC = ^TDML_ELEMENT_WISE_THRESHOLD_OPERATOR_DESC;
+
+
+    TDML_ELEMENT_WISE_QUANTIZE_LINEAR_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        ScaleTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } ZeroPointTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+    end;
+    PDML_ELEMENT_WISE_QUANTIZE_LINEAR_OPERATOR_DESC = ^TDML_ELEMENT_WISE_QUANTIZE_LINEAR_OPERATOR_DESC;
+
+
+    TDML_ELEMENT_WISE_DEQUANTIZE_LINEAR_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        ScaleTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } ZeroPointTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+    end;
+    PDML_ELEMENT_WISE_DEQUANTIZE_LINEAR_OPERATOR_DESC = ^TDML_ELEMENT_WISE_DEQUANTIZE_LINEAR_OPERATOR_DESC;
+
+
+    TDML_ACTIVATION_ELU_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        Alpha: single;
+    end;
+    PDML_ACTIVATION_ELU_OPERATOR_DESC = ^TDML_ACTIVATION_ELU_OPERATOR_DESC;
+
+
+    TDML_ACTIVATION_HARDMAX_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+    end;
+    PDML_ACTIVATION_HARDMAX_OPERATOR_DESC = ^TDML_ACTIVATION_HARDMAX_OPERATOR_DESC;
+
+
+    TDML_ACTIVATION_HARD_SIGMOID_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        Alpha: single;
+        Beta: single;
+    end;
+    PDML_ACTIVATION_HARD_SIGMOID_OPERATOR_DESC = ^TDML_ACTIVATION_HARD_SIGMOID_OPERATOR_DESC;
+
+
+    TDML_ACTIVATION_IDENTITY_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+    end;
+    PDML_ACTIVATION_IDENTITY_OPERATOR_DESC = ^TDML_ACTIVATION_IDENTITY_OPERATOR_DESC;
+
+
+    TDML_ACTIVATION_LEAKY_RELU_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        Alpha: single;
+    end;
+    PDML_ACTIVATION_LEAKY_RELU_OPERATOR_DESC = ^TDML_ACTIVATION_LEAKY_RELU_OPERATOR_DESC;
+
+
+    TDML_ACTIVATION_LINEAR_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        Alpha: single;
+        Beta: single;
+    end;
+    PDML_ACTIVATION_LINEAR_OPERATOR_DESC = ^TDML_ACTIVATION_LINEAR_OPERATOR_DESC;
+
+
+    TDML_ACTIVATION_LOG_SOFTMAX_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+    end;
+    PDML_ACTIVATION_LOG_SOFTMAX_OPERATOR_DESC = ^TDML_ACTIVATION_LOG_SOFTMAX_OPERATOR_DESC;
+
+
+    TDML_ACTIVATION_PARAMETERIZED_RELU_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        SlopeTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+    end;
+    PDML_ACTIVATION_PARAMETERIZED_RELU_OPERATOR_DESC = ^TDML_ACTIVATION_PARAMETERIZED_RELU_OPERATOR_DESC;
+
+
+    TDML_ACTIVATION_PARAMETRIC_SOFTPLUS_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        Alpha: single;
+        Beta: single;
+    end;
+    PDML_ACTIVATION_PARAMETRIC_SOFTPLUS_OPERATOR_DESC = ^TDML_ACTIVATION_PARAMETRIC_SOFTPLUS_OPERATOR_DESC;
+
+
+    TDML_ACTIVATION_RELU_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+    end;
+    PDML_ACTIVATION_RELU_OPERATOR_DESC = ^TDML_ACTIVATION_RELU_OPERATOR_DESC;
+
+
+    TDML_ACTIVATION_SCALED_ELU_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        Alpha: single;
+        Gamma: single;
+    end;
+    PDML_ACTIVATION_SCALED_ELU_OPERATOR_DESC = ^TDML_ACTIVATION_SCALED_ELU_OPERATOR_DESC;
+
+
+    TDML_ACTIVATION_SCALED_TANH_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        Alpha: single;
+        Beta: single;
+    end;
+    PDML_ACTIVATION_SCALED_TANH_OPERATOR_DESC = ^TDML_ACTIVATION_SCALED_TANH_OPERATOR_DESC;
+
+
+    TDML_ACTIVATION_SIGMOID_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+    end;
+    PDML_ACTIVATION_SIGMOID_OPERATOR_DESC = ^TDML_ACTIVATION_SIGMOID_OPERATOR_DESC;
+
+
+    TDML_ACTIVATION_SOFTMAX_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+    end;
+    PDML_ACTIVATION_SOFTMAX_OPERATOR_DESC = ^TDML_ACTIVATION_SOFTMAX_OPERATOR_DESC;
+
+
+    TDML_ACTIVATION_SOFTPLUS_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        Steepness: single;
+    end;
+    PDML_ACTIVATION_SOFTPLUS_OPERATOR_DESC = ^TDML_ACTIVATION_SOFTPLUS_OPERATOR_DESC;
+
+
+    TDML_ACTIVATION_SOFTSIGN_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+    end;
+    PDML_ACTIVATION_SOFTSIGN_OPERATOR_DESC = ^TDML_ACTIVATION_SOFTSIGN_OPERATOR_DESC;
+
+
+    TDML_ACTIVATION_TANH_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+    end;
+    PDML_ACTIVATION_TANH_OPERATOR_DESC = ^TDML_ACTIVATION_TANH_OPERATOR_DESC;
+
+
+    TDML_ACTIVATION_THRESHOLDED_RELU_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        Alpha: single;
+    end;
+    PDML_ACTIVATION_THRESHOLDED_RELU_OPERATOR_DESC = ^TDML_ACTIVATION_THRESHOLDED_RELU_OPERATOR_DESC;
+
+
+    TDML_CONVOLUTION_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        FilterTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } BiasTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        Mode: TDML_CONVOLUTION_MODE;
+        Direction: TDML_CONVOLUTION_DIRECTION;
+        DimensionCount: UINT;
+        {_Field_size_(DimensionCount) } Strides: PUINT;
+        {_Field_size_(DimensionCount) } Dilations: PUINT;
+        {_Field_size_(DimensionCount) } StartPadding: PUINT;
+        {_Field_size_(DimensionCount) } EndPadding: PUINT;
+        {_Field_size_(DimensionCount) } OutputPadding: PUINT;
+        GroupCount: UINT;
+        {_Maybenull_ } FusedActivation: PDML_OPERATOR_DESC;
+    end;
+    PDML_CONVOLUTION_OPERATOR_DESC = ^TDML_CONVOLUTION_OPERATOR_DESC;
+
+
+    TDML_GEMM_OPERATOR_DESC = record
+        ATensor: PDML_TENSOR_DESC;
+        BTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } CTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        TransA: TDML_MATRIX_TRANSFORM;
+        TransB: TDML_MATRIX_TRANSFORM;
+        Alpha: single;
+        Beta: single;
+        {_Maybenull_ } FusedActivation: PDML_OPERATOR_DESC;
+    end;
+    PDML_GEMM_OPERATOR_DESC = ^TDML_GEMM_OPERATOR_DESC;
+
+
+    TDML_REDUCE_OPERATOR_DESC = record
+        ReduceFunction: TDML_REDUCE_FUNCTION;
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        AxisCount: UINT;
+        {_Field_size_(AxisCount) } Axes: PUINT;
+    end;
+    PDML_REDUCE_OPERATOR_DESC = ^TDML_REDUCE_OPERATOR_DESC;
+
+
+    TDML_AVERAGE_POOLING_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        DimensionCount: UINT;
+        {_Field_size_(DimensionCount) } Strides: PUINT;
+        {_Field_size_(DimensionCount) } WindowSize: PUINT;
+        {_Field_size_(DimensionCount) } StartPadding: PUINT;
+        {_Field_size_(DimensionCount) } EndPadding: PUINT;
+        IncludePadding: boolean;
+    end;
+    PDML_AVERAGE_POOLING_OPERATOR_DESC = ^TDML_AVERAGE_POOLING_OPERATOR_DESC;
+
+
+    TDML_LP_POOLING_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        DimensionCount: UINT;
+        {_Field_size_(DimensionCount) } Strides: PUINT;
+        {_Field_size_(DimensionCount) } WindowSize: PUINT;
+        {_Field_size_(DimensionCount) } StartPadding: PUINT;
+        {_Field_size_(DimensionCount) } EndPadding: PUINT;
+        P: UINT;
+    end;
+    PDML_LP_POOLING_OPERATOR_DESC = ^TDML_LP_POOLING_OPERATOR_DESC;
+
+
+    TDML_MAX_POOLING_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        DimensionCount: UINT;
+        {_Field_size_(DimensionCount) } Strides: PUINT;
+        {_Field_size_(DimensionCount) } WindowSize: PUINT;
+        {_Field_size_(DimensionCount) } StartPadding: PUINT;
+        {_Field_size_(DimensionCount) } EndPadding: PUINT;
+    end;
+    PDML_MAX_POOLING_OPERATOR_DESC = ^TDML_MAX_POOLING_OPERATOR_DESC;
+
+
+    TDML_ROI_POOLING_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        ROITensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        SpatialScale: single;
+        PooledSize: TDML_SIZE_2D;
+    end;
+    PDML_ROI_POOLING_OPERATOR_DESC = ^TDML_ROI_POOLING_OPERATOR_DESC;
+
+
+    TDML_SLICE_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        DimensionCount: UINT;
+        {_Field_size_(DimensionCount) } Offsets: PUINT;
+        {_Field_size_(DimensionCount) } Sizes: PUINT;
+        {_Field_size_(DimensionCount) } Strides: PUINT;
+    end;
+    PDML_SLICE_OPERATOR_DESC = ^TDML_SLICE_OPERATOR_DESC;
+
+
+    TDML_CAST_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+    end;
+    PDML_CAST_OPERATOR_DESC = ^TDML_CAST_OPERATOR_DESC;
+
+
+    TDML_SPLIT_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputCount: UINT;
+        {_Field_size_(OutputCount) } OutputTensors: PDML_TENSOR_DESC;
+        Axis: UINT;
+    end;
+    PDML_SPLIT_OPERATOR_DESC = ^TDML_SPLIT_OPERATOR_DESC;
+
+
+    TDML_JOIN_OPERATOR_DESC = record
+        InputCount: UINT;
+        {_Field_size_(InputCount) } InputTensors: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        Axis: UINT;
+    end;
+    PDML_JOIN_OPERATOR_DESC = ^TDML_JOIN_OPERATOR_DESC;
+
+
+    TDML_PADDING_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        PaddingMode: TDML_PADDING_MODE;
+        PaddingValue: single;
+        DimensionCount: UINT;
+        {_Field_size_(DimensionCount) } StartPadding: PUINT;
+        {_Field_size_(DimensionCount) } EndPadding: PUINT;
+    end;
+    PDML_PADDING_OPERATOR_DESC = ^TDML_PADDING_OPERATOR_DESC;
+
+
+    TDML_VALUE_SCALE_2D_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        Scale: single;
+        ChannelCount: UINT;
+        {_Field_size_(ChannelCount) } Bias: Psingle;
+    end;
+    PDML_VALUE_SCALE_2D_OPERATOR_DESC = ^TDML_VALUE_SCALE_2D_OPERATOR_DESC;
+
+
+    TDML_UPSAMPLE_2D_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        ScaleSize: TDML_SIZE_2D;
+        InterpolationMode: TDML_INTERPOLATION_MODE;
+    end;
+    PDML_UPSAMPLE_2D_OPERATOR_DESC = ^TDML_UPSAMPLE_2D_OPERATOR_DESC;
+
+
+    TDML_GATHER_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        IndicesTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        Axis: UINT;
+        IndexDimensions: UINT;
+    end;
+    PDML_GATHER_OPERATOR_DESC = ^TDML_GATHER_OPERATOR_DESC;
+
+
+    TDML_SPACE_TO_DEPTH_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        BlockSize: UINT;
+    end;
+    PDML_SPACE_TO_DEPTH_OPERATOR_DESC = ^TDML_SPACE_TO_DEPTH_OPERATOR_DESC;
+
+
+    TDML_DEPTH_TO_SPACE_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        BlockSize: UINT;
+    end;
+    PDML_DEPTH_TO_SPACE_OPERATOR_DESC = ^TDML_DEPTH_TO_SPACE_OPERATOR_DESC;
+
+
+    TDML_TILE_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        RepeatsCount: UINT;
+        {_Field_size_(RepeatsCount) } Repeats: PUINT;
+    end;
+    PDML_TILE_OPERATOR_DESC = ^TDML_TILE_OPERATOR_DESC;
+
+
+    TDML_TOP_K_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputValueTensor: PDML_TENSOR_DESC;
+        OutputIndexTensor: PDML_TENSOR_DESC;
+        Axis: UINT;
+        K: UINT;
+    end;
+    PDML_TOP_K_OPERATOR_DESC = ^TDML_TOP_K_OPERATOR_DESC;
+
+
+    TDML_BATCH_NORMALIZATION_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        MeanTensor: PDML_TENSOR_DESC;
+        VarianceTensor: PDML_TENSOR_DESC;
+        ScaleTensor: PDML_TENSOR_DESC;
+        BiasTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        Spatial: boolean;
+        Epsilon: single;
+        {_Maybenull_ } FusedActivation: PDML_OPERATOR_DESC;
+    end;
+    PDML_BATCH_NORMALIZATION_OPERATOR_DESC = ^TDML_BATCH_NORMALIZATION_OPERATOR_DESC;
+
+
+    TDML_MEAN_VARIANCE_NORMALIZATION_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } ScaleTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } BiasTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        CrossChannel: boolean;
+        NormalizeVariance: boolean;
+        Epsilon: single;
+        {_Maybenull_ } FusedActivation: PDML_OPERATOR_DESC;
+    end;
+    PDML_MEAN_VARIANCE_NORMALIZATION_OPERATOR_DESC = ^TDML_MEAN_VARIANCE_NORMALIZATION_OPERATOR_DESC;
+
+
+    TDML_LOCAL_RESPONSE_NORMALIZATION_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        CrossChannel: boolean;
+        LocalSize: UINT;
+        Alpha: single;
+        Beta: single;
+        Bias: single;
+    end;
+    PDML_LOCAL_RESPONSE_NORMALIZATION_OPERATOR_DESC = ^TDML_LOCAL_RESPONSE_NORMALIZATION_OPERATOR_DESC;
+
+
+    TDML_LP_NORMALIZATION_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        Axis: UINT;
+        Epsilon: single;
+        P: UINT;
+    end;
+    PDML_LP_NORMALIZATION_OPERATOR_DESC = ^TDML_LP_NORMALIZATION_OPERATOR_DESC;
+
+
+    TDML_RNN_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        WeightTensor: PDML_TENSOR_DESC;
+        RecurrenceTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } BiasTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } HiddenInitTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } SequenceLengthsTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } OutputSequenceTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } OutputSingleTensor: PDML_TENSOR_DESC;
+        ActivationDescCount: UINT;
+        {_Field_size_(ActivationDescCount) } ActivationDescs: PDML_OPERATOR_DESC;
+        Direction: TDML_RECURRENT_NETWORK_DIRECTION;
+    end;
+    PDML_RNN_OPERATOR_DESC = ^TDML_RNN_OPERATOR_DESC;
+
+
+    TDML_LSTM_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        WeightTensor: PDML_TENSOR_DESC;
+        RecurrenceTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } BiasTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } HiddenInitTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } CellMemInitTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } SequenceLengthsTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } PeepholeTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } OutputSequenceTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } OutputSingleTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } OutputCellSingleTensor: PDML_TENSOR_DESC;
+        ActivationDescCount: UINT;
+        {_Field_size_(ActivationDescCount) } ActivationDescs: PDML_OPERATOR_DESC;
+        Direction: TDML_RECURRENT_NETWORK_DIRECTION;
+        ClipThreshold: single;
+        UseClipThreshold: boolean;
+        CoupleInputForget: boolean;
+    end;
+    PDML_LSTM_OPERATOR_DESC = ^TDML_LSTM_OPERATOR_DESC;
+
+
+    TDML_GRU_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        WeightTensor: PDML_TENSOR_DESC;
+        RecurrenceTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } BiasTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } HiddenInitTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } SequenceLengthsTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } OutputSequenceTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } OutputSingleTensor: PDML_TENSOR_DESC;
+        ActivationDescCount: UINT;
+        {_Field_size_(ActivationDescCount) } ActivationDescs: PDML_OPERATOR_DESC;
+        Direction: TDML_RECURRENT_NETWORK_DIRECTION;
+        LinearBeforeReset: boolean;
+    end;
+    PDML_GRU_OPERATOR_DESC = ^TDML_GRU_OPERATOR_DESC;
+
+
+    {$IFDEF DML_TARGET_VERSION_0x2000}
+
+    TDML_ELEMENT_WISE_SIGN_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+    end;
+    PDML_ELEMENT_WISE_SIGN_OPERATOR_DESC = ^TDML_ELEMENT_WISE_SIGN_OPERATOR_DESC;
+
+
+    TDML_ELEMENT_WISE_IS_NAN_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+    end;
+    PDML_ELEMENT_WISE_IS_NAN_OPERATOR_DESC = ^TDML_ELEMENT_WISE_IS_NAN_OPERATOR_DESC;
+
+
+    TDML_ELEMENT_WISE_ERF_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } ScaleBias: PDML_SCALE_BIAS;
+    end;
+    PDML_ELEMENT_WISE_ERF_OPERATOR_DESC = ^TDML_ELEMENT_WISE_ERF_OPERATOR_DESC;
+
+
+    TDML_ELEMENT_WISE_SINH_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } ScaleBias: PDML_SCALE_BIAS;
+    end;
+    PDML_ELEMENT_WISE_SINH_OPERATOR_DESC = ^TDML_ELEMENT_WISE_SINH_OPERATOR_DESC;
+
+
+    TDML_ELEMENT_WISE_COSH_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } ScaleBias: PDML_SCALE_BIAS;
+    end;
+    PDML_ELEMENT_WISE_COSH_OPERATOR_DESC = ^TDML_ELEMENT_WISE_COSH_OPERATOR_DESC;
+
+
+    TDML_ELEMENT_WISE_TANH_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } ScaleBias: PDML_SCALE_BIAS;
+    end;
+    PDML_ELEMENT_WISE_TANH_OPERATOR_DESC = ^TDML_ELEMENT_WISE_TANH_OPERATOR_DESC;
+
+
+    TDML_ELEMENT_WISE_ASINH_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } ScaleBias: PDML_SCALE_BIAS;
+    end;
+    PDML_ELEMENT_WISE_ASINH_OPERATOR_DESC = ^TDML_ELEMENT_WISE_ASINH_OPERATOR_DESC;
+
+
+    TDML_ELEMENT_WISE_ACOSH_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } ScaleBias: PDML_SCALE_BIAS;
+    end;
+    PDML_ELEMENT_WISE_ACOSH_OPERATOR_DESC = ^TDML_ELEMENT_WISE_ACOSH_OPERATOR_DESC;
+
+
+    TDML_ELEMENT_WISE_ATANH_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } ScaleBias: PDML_SCALE_BIAS;
+    end;
+    PDML_ELEMENT_WISE_ATANH_OPERATOR_DESC = ^TDML_ELEMENT_WISE_ATANH_OPERATOR_DESC;
+
+
+    TDML_ELEMENT_WISE_IF_OPERATOR_DESC = record
+        ConditionTensor: PDML_TENSOR_DESC;
+        ATensor: PDML_TENSOR_DESC;
+        BTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+    end;
+    PDML_ELEMENT_WISE_IF_OPERATOR_DESC = ^TDML_ELEMENT_WISE_IF_OPERATOR_DESC;
+
+
+    TDML_ACTIVATION_SHRINK_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        Bias: single;
+        Threshold: single;
+    end;
+    PDML_ACTIVATION_SHRINK_OPERATOR_DESC = ^TDML_ACTIVATION_SHRINK_OPERATOR_DESC;
+
+
+    TDML_MAX_POOLING1_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } OutputIndicesTensor: PDML_TENSOR_DESC;
+        DimensionCount: UINT;
+        {_Field_size_(DimensionCount) } Strides: PUINT;
+        {_Field_size_(DimensionCount) } WindowSize: PUINT;
+        {_Field_size_(DimensionCount) } StartPadding: PUINT;
+        {_Field_size_(DimensionCount) } EndPadding: PUINT;
+    end;
+    PDML_MAX_POOLING1_OPERATOR_DESC = ^TDML_MAX_POOLING1_OPERATOR_DESC;
+
+
+    TDML_MAX_UNPOOLING_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        IndicesTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+    end;
+    PDML_MAX_UNPOOLING_OPERATOR_DESC = ^TDML_MAX_UNPOOLING_OPERATOR_DESC;
+
+
+    TDML_DIAGONAL_MATRIX_OPERATOR_DESC = record
+        OutputTensor: PDML_TENSOR_DESC;
+        Offset: int32;
+        Value: single;
+    end;
+    PDML_DIAGONAL_MATRIX_OPERATOR_DESC = ^TDML_DIAGONAL_MATRIX_OPERATOR_DESC;
+
+
+    TDML_SCATTER_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        IndicesTensor: PDML_TENSOR_DESC;
+        UpdatesTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        Axis: UINT;
+    end;
+    PDML_SCATTER_OPERATOR_DESC = ^TDML_SCATTER_OPERATOR_DESC;
+
+
+    TDML_ONE_HOT_OPERATOR_DESC = record
+        IndicesTensor: PDML_TENSOR_DESC;
+        ValuesTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        Axis: UINT;
+    end;
+    PDML_ONE_HOT_OPERATOR_DESC = ^TDML_ONE_HOT_OPERATOR_DESC;
+
+
+    TDML_RESAMPLE_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        InterpolationMode: TDML_INTERPOLATION_MODE;
+        ScaleCount: UINT;
+        {_Field_size_(ScaleCount) } Scales: Psingle;
+    end;
+    PDML_RESAMPLE_OPERATOR_DESC = ^TDML_RESAMPLE_OPERATOR_DESC;
+
+
+    {$ENDIF}// DML_TARGET_VERSION >= 0x2000
+
+
+    {$IFDEF DML_TARGET_VERSION_0x2100}
+
+    TDML_ELEMENT_WISE_BIT_SHIFT_LEFT_OPERATOR_DESC = record
+        ATensor: PDML_TENSOR_DESC;
+        BTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+    end;
+    PDML_ELEMENT_WISE_BIT_SHIFT_LEFT_OPERATOR_DESC = ^TDML_ELEMENT_WISE_BIT_SHIFT_LEFT_OPERATOR_DESC;
+
+
+    TDML_ELEMENT_WISE_BIT_SHIFT_RIGHT_OPERATOR_DESC = record
+        ATensor: PDML_TENSOR_DESC;
+        BTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+    end;
+    PDML_ELEMENT_WISE_BIT_SHIFT_RIGHT_OPERATOR_DESC = ^TDML_ELEMENT_WISE_BIT_SHIFT_RIGHT_OPERATOR_DESC;
+
+
+    TDML_ELEMENT_WISE_ROUND_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        RoundingMode: TDML_ROUNDING_MODE;
+    end;
+    PDML_ELEMENT_WISE_ROUND_OPERATOR_DESC = ^TDML_ELEMENT_WISE_ROUND_OPERATOR_DESC;
+
+
+    TDML_ELEMENT_WISE_IS_INFINITY_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        InfinityMode: TDML_IS_INFINITY_MODE;
+    end;
+    PDML_ELEMENT_WISE_IS_INFINITY_OPERATOR_DESC = ^TDML_ELEMENT_WISE_IS_INFINITY_OPERATOR_DESC;
+
+
+    TDML_ELEMENT_WISE_MODULUS_TRUNCATE_OPERATOR_DESC = record
+        ATensor: PDML_TENSOR_DESC;
+        BTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+    end;
+    PDML_ELEMENT_WISE_MODULUS_TRUNCATE_OPERATOR_DESC = ^TDML_ELEMENT_WISE_MODULUS_TRUNCATE_OPERATOR_DESC;
+
+
+    TDML_ELEMENT_WISE_MODULUS_FLOOR_OPERATOR_DESC = record
+        ATensor: PDML_TENSOR_DESC;
+        BTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+    end;
+    PDML_ELEMENT_WISE_MODULUS_FLOOR_OPERATOR_DESC = ^TDML_ELEMENT_WISE_MODULUS_FLOOR_OPERATOR_DESC;
+
+
+    TDML_FILL_VALUE_CONSTANT_OPERATOR_DESC = record
+        OutputTensor: PDML_TENSOR_DESC;
+        ValueDataType: TDML_TENSOR_DATA_TYPE;
+        Value: TDML_SCALAR_UNION;
+    end;
+    PDML_FILL_VALUE_CONSTANT_OPERATOR_DESC = ^TDML_FILL_VALUE_CONSTANT_OPERATOR_DESC;
+
+
+    TDML_FILL_VALUE_SEQUENCE_OPERATOR_DESC = record
+        OutputTensor: PDML_TENSOR_DESC;
+        ValueDataType: TDML_TENSOR_DATA_TYPE;
+        ValueStart: TDML_SCALAR_UNION;
+        ValueDelta: TDML_SCALAR_UNION;
+    end;
+    PDML_FILL_VALUE_SEQUENCE_OPERATOR_DESC = ^TDML_FILL_VALUE_SEQUENCE_OPERATOR_DESC;
+
+
+    TDML_CUMULATIVE_SUMMATION_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        Axis: UINT;
+        AxisDirection: TDML_AXIS_DIRECTION;
+        HasExclusiveSum: boolean;
+    end;
+    PDML_CUMULATIVE_SUMMATION_OPERATOR_DESC = ^TDML_CUMULATIVE_SUMMATION_OPERATOR_DESC;
+
+
+    TDML_REVERSE_SUBSEQUENCES_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        SequenceLengthsTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        Axis: UINT;
+    end;
+    PDML_REVERSE_SUBSEQUENCES_OPERATOR_DESC = ^TDML_REVERSE_SUBSEQUENCES_OPERATOR_DESC;
+
+
+    TDML_GATHER_ELEMENTS_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        IndicesTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        Axis: UINT;
+    end;
+    PDML_GATHER_ELEMENTS_OPERATOR_DESC = ^TDML_GATHER_ELEMENTS_OPERATOR_DESC;
+
+
+    // Alias existing operator, symmetric with DML_GATHER_ELEMENTS_OPERATOR_DESC.
+    TDML_SCATTER_ELEMENTS_OPERATOR_DESC = TDML_SCATTER_OPERATOR_DESC;
+    PDML_SCATTER_ELEMENTS_OPERATOR_DESC = ^TDML_SCATTER_ELEMENTS_OPERATOR_DESC;
+
+
+    TDML_GATHER_ND_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        IndicesTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        InputDimensionCount: UINT;
+        IndicesDimensionCount: UINT;
+    end;
+    PDML_GATHER_ND_OPERATOR_DESC = ^TDML_GATHER_ND_OPERATOR_DESC;
+
+
+    TDML_SCATTER_ND_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        IndicesTensor: PDML_TENSOR_DESC;
+        UpdatesTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        InputDimensionCount: UINT;
+        IndicesDimensionCount: UINT;
+    end;
+    PDML_SCATTER_ND_OPERATOR_DESC = ^TDML_SCATTER_ND_OPERATOR_DESC;
+
+
+    TDML_MAX_POOLING2_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } OutputIndicesTensor: PDML_TENSOR_DESC;
+        DimensionCount: UINT;
+        {_Field_size_(DimensionCount) } Strides: PUINT;
+        {_Field_size_(DimensionCount) } WindowSize: PUINT;
+        {_Field_size_(DimensionCount) } StartPadding: PUINT;
+        {_Field_size_(DimensionCount) } EndPadding: PUINT;
+        {_Field_size_(DimensionCount) } Dilations: PUINT;
+    end;
+    PDML_MAX_POOLING2_OPERATOR_DESC = ^TDML_MAX_POOLING2_OPERATOR_DESC;
+
+
+    TDML_SLICE1_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        DimensionCount: UINT;
+        {_Field_size_(DimensionCount) } InputWindowOffsets: PUINT;
+        {_Field_size_(DimensionCount) } InputWindowSizes: PUINT;
+        {_Field_size_(DimensionCount) } InputWindowStrides: PINT32;
+    end;
+    PDML_SLICE1_OPERATOR_DESC = ^TDML_SLICE1_OPERATOR_DESC;
+
+
+    TDML_TOP_K1_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputValueTensor: PDML_TENSOR_DESC;
+        OutputIndexTensor: PDML_TENSOR_DESC;
+        Axis: UINT;
+        K: UINT;
+        AxisDirection: TDML_AXIS_DIRECTION;
+    end;
+    PDML_TOP_K1_OPERATOR_DESC = ^TDML_TOP_K1_OPERATOR_DESC;
+
+
+    TDML_DEPTH_TO_SPACE1_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        BlockSize: UINT;
+        Order: TDML_DEPTH_SPACE_ORDER;
+    end;
+    PDML_DEPTH_TO_SPACE1_OPERATOR_DESC = ^TDML_DEPTH_TO_SPACE1_OPERATOR_DESC;
+
+
+    TDML_SPACE_TO_DEPTH1_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        BlockSize: UINT;
+        Order: TDML_DEPTH_SPACE_ORDER;
+    end;
+    PDML_SPACE_TO_DEPTH1_OPERATOR_DESC = ^TDML_SPACE_TO_DEPTH1_OPERATOR_DESC;
+
+
+    TDML_MEAN_VARIANCE_NORMALIZATION1_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } ScaleTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } BiasTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        AxisCount: UINT;
+        {_Field_size_(AxisCount) } Axes: PUINT;
+        NormalizeVariance: boolean;
+        Epsilon: single;
+        {_Maybenull_ } FusedActivation: PDML_OPERATOR_DESC;
+    end;
+    PDML_MEAN_VARIANCE_NORMALIZATION1_OPERATOR_DESC = ^TDML_MEAN_VARIANCE_NORMALIZATION1_OPERATOR_DESC;
+
+
+    TDML_RESAMPLE1_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        InterpolationMode: TDML_INTERPOLATION_MODE;
+        DimensionCount: UINT;
+        {_Field_size_(DimensionCount) } Scales: Psingle;
+        {_Field_size_(DimensionCount) } InputPixelOffsets: Psingle;
+        {_Field_size_(DimensionCount) } OutputPixelOffsets: Psingle;
+    end;
+    PDML_RESAMPLE1_OPERATOR_DESC = ^TDML_RESAMPLE1_OPERATOR_DESC;
+
+
+    TDML_MATRIX_MULTIPLY_INTEGER_OPERATOR_DESC = record
+        ATensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } AZeroPointTensor: PDML_TENSOR_DESC;
+        BTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } BZeroPointTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+    end;
+    PDML_MATRIX_MULTIPLY_INTEGER_OPERATOR_DESC = ^TDML_MATRIX_MULTIPLY_INTEGER_OPERATOR_DESC;
+
+
+    TDML_QUANTIZED_LINEAR_MATRIX_MULTIPLY_OPERATOR_DESC = record
+        ATensor: PDML_TENSOR_DESC;
+        AScaleTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } AZeroPointTensor: PDML_TENSOR_DESC;
+        BTensor: PDML_TENSOR_DESC;
+        BScaleTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } BZeroPointTensor: PDML_TENSOR_DESC;
+        OutputScaleTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } OutputZeroPointTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+    end;
+    PDML_QUANTIZED_LINEAR_MATRIX_MULTIPLY_OPERATOR_DESC = ^TDML_QUANTIZED_LINEAR_MATRIX_MULTIPLY_OPERATOR_DESC;
+
+
+    TDML_CONVOLUTION_INTEGER_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } InputZeroPointTensor: PDML_TENSOR_DESC;
+        FilterTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } FilterZeroPointTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        DimensionCount: UINT;
+        {_Field_size_(DimensionCount) } Strides: PUINT;
+        {_Field_size_(DimensionCount) } Dilations: PUINT;
+        {_Field_size_(DimensionCount) } StartPadding: PUINT;
+        {_Field_size_(DimensionCount) } EndPadding: PUINT;
+        GroupCount: UINT;
+    end;
+    PDML_CONVOLUTION_INTEGER_OPERATOR_DESC = ^TDML_CONVOLUTION_INTEGER_OPERATOR_DESC;
+
+
+    TDML_QUANTIZED_LINEAR_CONVOLUTION_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        InputScaleTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } InputZeroPointTensor: PDML_TENSOR_DESC;
+        FilterTensor: PDML_TENSOR_DESC;
+        FilterScaleTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } FilterZeroPointTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } BiasTensor: PDML_TENSOR_DESC;
+        OutputScaleTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } OutputZeroPointTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        DimensionCount: UINT;
+        {_Field_size_(DimensionCount) } Strides: PUINT;
+        {_Field_size_(DimensionCount) } Dilations: PUINT;
+        {_Field_size_(DimensionCount) } StartPadding: PUINT;
+        {_Field_size_(DimensionCount) } EndPadding: PUINT;
+        GroupCount: UINT;
+    end;
+    PDML_QUANTIZED_LINEAR_CONVOLUTION_OPERATOR_DESC = ^TDML_QUANTIZED_LINEAR_CONVOLUTION_OPERATOR_DESC;
+
+
+    {$ENDIF}// DML_TARGET_VERSION >= 0x2100
+
+
+    {$IFDEF DML_TARGET_VERSION_0x3000}
+
+    TDML_ELEMENT_WISE_BIT_AND_OPERATOR_DESC = record
+        ATensor: PDML_TENSOR_DESC;
+        BTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+    end;
+    PDML_ELEMENT_WISE_BIT_AND_OPERATOR_DESC = ^TDML_ELEMENT_WISE_BIT_AND_OPERATOR_DESC;
+
+
+    TDML_ELEMENT_WISE_BIT_OR_OPERATOR_DESC = record
+        ATensor: PDML_TENSOR_DESC;
+        BTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+    end;
+    PDML_ELEMENT_WISE_BIT_OR_OPERATOR_DESC = ^TDML_ELEMENT_WISE_BIT_OR_OPERATOR_DESC;
+
+
+    TDML_ELEMENT_WISE_BIT_XOR_OPERATOR_DESC = record
+        ATensor: PDML_TENSOR_DESC;
+        BTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+    end;
+    PDML_ELEMENT_WISE_BIT_XOR_OPERATOR_DESC = ^TDML_ELEMENT_WISE_BIT_XOR_OPERATOR_DESC;
+
+
+    TDML_ELEMENT_WISE_BIT_NOT_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+    end;
+    PDML_ELEMENT_WISE_BIT_NOT_OPERATOR_DESC = ^TDML_ELEMENT_WISE_BIT_NOT_OPERATOR_DESC;
+
+
+    TDML_ELEMENT_WISE_BIT_COUNT_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+    end;
+    PDML_ELEMENT_WISE_BIT_COUNT_OPERATOR_DESC = ^TDML_ELEMENT_WISE_BIT_COUNT_OPERATOR_DESC;
+
+
+    TDML_ELEMENT_WISE_LOGICAL_GREATER_THAN_OR_EQUAL_OPERATOR_DESC = record
+        ATensor: PDML_TENSOR_DESC;
+        BTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+    end;
+    PDML_ELEMENT_WISE_LOGICAL_GREATER_THAN_OR_EQUAL_OPERATOR_DESC = ^TDML_ELEMENT_WISE_LOGICAL_GREATER_THAN_OR_EQUAL_OPERATOR_DESC;
+
+
+    TDML_ELEMENT_WISE_LOGICAL_LESS_THAN_OR_EQUAL_OPERATOR_DESC = record
+        ATensor: PDML_TENSOR_DESC;
+        BTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+    end;
+    PDML_ELEMENT_WISE_LOGICAL_LESS_THAN_OR_EQUAL_OPERATOR_DESC = ^TDML_ELEMENT_WISE_LOGICAL_LESS_THAN_OR_EQUAL_OPERATOR_DESC;
+
+
+    TDML_ACTIVATION_CELU_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        Alpha: single;
+    end;
+    PDML_ACTIVATION_CELU_OPERATOR_DESC = ^TDML_ACTIVATION_CELU_OPERATOR_DESC;
+
+
+    TDML_ACTIVATION_RELU_GRAD_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        InputGradientTensor: PDML_TENSOR_DESC;
+        OutputGradientTensor: PDML_TENSOR_DESC;
+    end;
+    PDML_ACTIVATION_RELU_GRAD_OPERATOR_DESC = ^TDML_ACTIVATION_RELU_GRAD_OPERATOR_DESC;
+
+
+    TDML_AVERAGE_POOLING_GRAD_OPERATOR_DESC = record
+        InputGradientTensor: PDML_TENSOR_DESC;
+        OutputGradientTensor: PDML_TENSOR_DESC;
+        DimensionCount: UINT;
+        {_Field_size_(DimensionCount) } Strides: PUINT;
+        {_Field_size_(DimensionCount) } WindowSize: PUINT;
+        {_Field_size_(DimensionCount) } StartPadding: PUINT;
+        {_Field_size_(DimensionCount) } EndPadding: PUINT;
+        IncludePadding: boolean;
+    end;
+    PDML_AVERAGE_POOLING_GRAD_OPERATOR_DESC = ^TDML_AVERAGE_POOLING_GRAD_OPERATOR_DESC;
+
+
+    TDML_MAX_POOLING_GRAD_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        InputGradientTensor: PDML_TENSOR_DESC;
+        OutputGradientTensor: PDML_TENSOR_DESC;
+        DimensionCount: UINT;
+        {_Field_size_(DimensionCount) } Strides: PUINT;
+        {_Field_size_(DimensionCount) } WindowSize: PUINT;
+        {_Field_size_(DimensionCount) } StartPadding: PUINT;
+        {_Field_size_(DimensionCount) } EndPadding: PUINT;
+        {_Field_size_(DimensionCount) } Dilations: PUINT;
+    end;
+    PDML_MAX_POOLING_GRAD_OPERATOR_DESC = ^TDML_MAX_POOLING_GRAD_OPERATOR_DESC;
+
+
+    TDML_RANDOM_GENERATOR_OPERATOR_DESC = record
+        InputStateTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } OutputStateTensor: PDML_TENSOR_DESC;
+        GeneratorType: TDML_RANDOM_GENERATOR_TYPE;
+    end;
+    PDML_RANDOM_GENERATOR_OPERATOR_DESC = ^TDML_RANDOM_GENERATOR_OPERATOR_DESC;
+
+
+    TDML_NONZERO_COORDINATES_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputCountTensor: PDML_TENSOR_DESC;
+        OutputCoordinatesTensor: PDML_TENSOR_DESC;
+    end;
+    PDML_NONZERO_COORDINATES_OPERATOR_DESC = ^TDML_NONZERO_COORDINATES_OPERATOR_DESC;
+
+
+    TDML_RESAMPLE_GRAD_OPERATOR_DESC = record
+        InputGradientTensor: PDML_TENSOR_DESC;
+        OutputGradientTensor: PDML_TENSOR_DESC;
+        InterpolationMode: TDML_INTERPOLATION_MODE;
+        DimensionCount: UINT;
+        {_Field_size_(DimensionCount) } Scales: Psingle;
+        {_Field_size_(DimensionCount) } InputPixelOffsets: Psingle;
+        {_Field_size_(DimensionCount) } OutputPixelOffsets: Psingle;
+    end;
+    PDML_RESAMPLE_GRAD_OPERATOR_DESC = ^TDML_RESAMPLE_GRAD_OPERATOR_DESC;
+
+
+    TDML_SLICE_GRAD_OPERATOR_DESC = record
+        InputGradientTensor: PDML_TENSOR_DESC;
+        OutputGradientTensor: PDML_TENSOR_DESC;
+        DimensionCount: UINT;
+        {_Field_size_(DimensionCount) } InputWindowOffsets: PUINT;
+        {_Field_size_(DimensionCount) } InputWindowSizes: PUINT;
+        {_Field_size_(DimensionCount) } InputWindowStrides: PINT32;
+    end;
+    PDML_SLICE_GRAD_OPERATOR_DESC = ^TDML_SLICE_GRAD_OPERATOR_DESC;
+
+
+    TDML_ADAM_OPTIMIZER_OPERATOR_DESC = record
+        InputParametersTensor: PDML_TENSOR_DESC;
+        InputFirstMomentTensor: PDML_TENSOR_DESC;
+        InputSecondMomentTensor: PDML_TENSOR_DESC;
+        GradientTensor: PDML_TENSOR_DESC;
+        TrainingStepTensor: PDML_TENSOR_DESC;
+        OutputParametersTensor: PDML_TENSOR_DESC;
+        OutputFirstMomentTensor: PDML_TENSOR_DESC;
+        OutputSecondMomentTensor: PDML_TENSOR_DESC;
+        LearningRate: single;
+        Beta1: single;
+        Beta2: single;
+        Epsilon: single;
+    end;
+    PDML_ADAM_OPTIMIZER_OPERATOR_DESC = ^TDML_ADAM_OPTIMIZER_OPERATOR_DESC;
+
+
+    TDML_ARGMIN_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        AxisCount: UINT;
+        {_Field_size_(AxisCount) } Axes: PUINT;
+        AxisDirection: TDML_AXIS_DIRECTION;
+    end;
+    PDML_ARGMIN_OPERATOR_DESC = ^TDML_ARGMIN_OPERATOR_DESC;
+
+
+    TDML_ARGMAX_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        AxisCount: UINT;
+        {_Field_size_(AxisCount) } Axes: PUINT;
+        AxisDirection: TDML_AXIS_DIRECTION;
+    end;
+    PDML_ARGMAX_OPERATOR_DESC = ^TDML_ARGMAX_OPERATOR_DESC;
+
+
+    TDML_ROI_ALIGN_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        ROITensor: PDML_TENSOR_DESC;
+        BatchIndicesTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        ReductionFunction: TDML_REDUCE_FUNCTION;
+        InterpolationMode: TDML_INTERPOLATION_MODE;
+        SpatialScaleX: single;
+        SpatialScaleY: single;
+        OutOfBoundsInputValue: single;
+        MinimumSamplesPerOutput: UINT;
+        MaximumSamplesPerOutput: UINT;
+    end;
+    PDML_ROI_ALIGN_OPERATOR_DESC = ^TDML_ROI_ALIGN_OPERATOR_DESC;
+
+
+    TDML_GATHER_ND1_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        IndicesTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        InputDimensionCount: UINT;
+        IndicesDimensionCount: UINT;
+        BatchDimensionCount: UINT;
+    end;
+    PDML_GATHER_ND1_OPERATOR_DESC = ^TDML_GATHER_ND1_OPERATOR_DESC;
+
+
+    {$ENDIF}// DML_TARGET_VERSION >= 0x3000
+
+
+    {$IFDEF DML_TARGET_VERSION_0x3100}
+
+    TDML_ELEMENT_WISE_ATAN_YX_OPERATOR_DESC = record
+        ATensor: PDML_TENSOR_DESC;
+        BTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+    end;
+    PDML_ELEMENT_WISE_ATAN_YX_OPERATOR_DESC = ^TDML_ELEMENT_WISE_ATAN_YX_OPERATOR_DESC;
+
+
+    TDML_ELEMENT_WISE_CLIP_GRAD_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        InputGradientTensor: PDML_TENSOR_DESC;
+        OutputGradientTensor: PDML_TENSOR_DESC;
+        Min: single;
+        Max: single;
+    end;
+    PDML_ELEMENT_WISE_CLIP_GRAD_OPERATOR_DESC = ^TDML_ELEMENT_WISE_CLIP_GRAD_OPERATOR_DESC;
+
+
+    TDML_ELEMENT_WISE_DIFFERENCE_SQUARE_OPERATOR_DESC = record
+        ATensor: PDML_TENSOR_DESC;
+        BTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+    end;
+    PDML_ELEMENT_WISE_DIFFERENCE_SQUARE_OPERATOR_DESC = ^TDML_ELEMENT_WISE_DIFFERENCE_SQUARE_OPERATOR_DESC;
+
+
+    TDML_LOCAL_RESPONSE_NORMALIZATION_GRAD_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        InputGradientTensor: PDML_TENSOR_DESC;
+        OutputGradientTensor: PDML_TENSOR_DESC;
+        CrossChannel: boolean;
+        LocalSize: UINT;
+        Alpha: single;
+        Beta: single;
+        Bias: single;
+    end;
+    PDML_LOCAL_RESPONSE_NORMALIZATION_GRAD_OPERATOR_DESC = ^TDML_LOCAL_RESPONSE_NORMALIZATION_GRAD_OPERATOR_DESC;
+
+
+    TDML_CUMULATIVE_PRODUCT_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        Axis: UINT;
+        AxisDirection: TDML_AXIS_DIRECTION;
+        HasExclusiveProduct: boolean;
+    end;
+    PDML_CUMULATIVE_PRODUCT_OPERATOR_DESC = ^TDML_CUMULATIVE_PRODUCT_OPERATOR_DESC;
+
+
+    TDML_BATCH_NORMALIZATION_GRAD_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        InputGradientTensor: PDML_TENSOR_DESC;
+        MeanTensor: PDML_TENSOR_DESC;
+        VarianceTensor: PDML_TENSOR_DESC;
+        ScaleTensor: PDML_TENSOR_DESC;
+        OutputGradientTensor: PDML_TENSOR_DESC;
+        OutputScaleGradientTensor: PDML_TENSOR_DESC;
+        OutputBiasGradientTensor: PDML_TENSOR_DESC;
+        Epsilon: single;
+    end;
+    PDML_BATCH_NORMALIZATION_GRAD_OPERATOR_DESC = ^TDML_BATCH_NORMALIZATION_GRAD_OPERATOR_DESC;
+
+
+    {$ENDIF}// DML_TARGET_VERSION_0x3100
+
+
+    {$IFDEF DML_TARGET_VERSION_0x4000}
+    TDML_ELEMENT_WISE_QUANTIZED_LINEAR_ADD_OPERATOR_DESC = record
+        ATensor: PDML_TENSOR_DESC;
+        AScaleTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } AZeroPointTensor: PDML_TENSOR_DESC;
+        BTensor: PDML_TENSOR_DESC;
+        BScaleTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } BZeroPointTensor: PDML_TENSOR_DESC;
+        OutputScaleTensor: PDML_TENSOR_DESC; // This is an input tensor
+        {_Maybenull_ } OutputZeroPointTensor: PDML_TENSOR_DESC; // This is an input tensor
+        OutputTensor: PDML_TENSOR_DESC;
+    end;
+    PDML_ELEMENT_WISE_QUANTIZED_LINEAR_ADD_OPERATOR_DESC = ^TDML_ELEMENT_WISE_QUANTIZED_LINEAR_ADD_OPERATOR_DESC;
+
+
+    TDML_DYNAMIC_QUANTIZE_LINEAR_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        OutputScaleTensor: PDML_TENSOR_DESC; // This is an output tensor
+        OutputZeroPointTensor: PDML_TENSOR_DESC; // This is an output tensor
+    end;
+    PDML_DYNAMIC_QUANTIZE_LINEAR_OPERATOR_DESC = ^TDML_DYNAMIC_QUANTIZE_LINEAR_OPERATOR_DESC;
+
+
+    TDML_ROI_ALIGN1_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        ROITensor: PDML_TENSOR_DESC;
+        BatchIndicesTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        ReductionFunction: TDML_REDUCE_FUNCTION;
+        InterpolationMode: TDML_INTERPOLATION_MODE;
+        SpatialScaleX: single;
+        SpatialScaleY: single;
+        InputPixelOffset: single;
+        OutputPixelOffset: single;
+        OutOfBoundsInputValue: single;
+        MinimumSamplesPerOutput: UINT;
+        MaximumSamplesPerOutput: UINT;
+        AlignRegionsToCorners: boolean;
+    end;
+    PDML_ROI_ALIGN1_OPERATOR_DESC = ^TDML_ROI_ALIGN1_OPERATOR_DESC;
+
+
+    {$ENDIF}// DML_TARGET_VERSION_0x4000
+
+
+    {$IFDEF DML_TARGET_VERSION_0x4100}
+
+    TDML_ROI_ALIGN_GRAD_OPERATOR_DESC = record
+        {_Maybenull_ } InputTensor: PDML_TENSOR_DESC;
+        InputGradientTensor: PDML_TENSOR_DESC;
+        ROITensor: PDML_TENSOR_DESC;
+        BatchIndicesTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } OutputGradientTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } OutputROIGradientTensor: PDML_TENSOR_DESC;
+        ReductionFunction: TDML_REDUCE_FUNCTION;
+        InterpolationMode: TDML_INTERPOLATION_MODE;
+        SpatialScaleX: single;
+        SpatialScaleY: single;
+        InputPixelOffset: single;
+        OutputPixelOffset: single;
+        MinimumSamplesPerOutput: UINT;
+        MaximumSamplesPerOutput: UINT;
+        AlignRegionsToCorners: boolean;
+    end;
+    PDML_ROI_ALIGN_GRAD_OPERATOR_DESC = ^TDML_ROI_ALIGN_GRAD_OPERATOR_DESC;
+
+
+    TDML_BATCH_NORMALIZATION_TRAINING_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        ScaleTensor: PDML_TENSOR_DESC;
+        BiasTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } FusedAddTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        OutputMeanTensor: PDML_TENSOR_DESC;
+        OutputVarianceTensor: PDML_TENSOR_DESC;
+        Epsilon: single;
+        {_Maybenull_ } FusedActivation: PDML_OPERATOR_DESC;
+    end;
+    PDML_BATCH_NORMALIZATION_TRAINING_OPERATOR_DESC = ^TDML_BATCH_NORMALIZATION_TRAINING_OPERATOR_DESC;
+
+
+    TDML_BATCH_NORMALIZATION_TRAINING_GRAD_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        InputGradientTensor: PDML_TENSOR_DESC;
+        MeanTensor: PDML_TENSOR_DESC;
+        VarianceTensor: PDML_TENSOR_DESC;
+        ScaleTensor: PDML_TENSOR_DESC;
+        OutputGradientTensor: PDML_TENSOR_DESC;
+        OutputScaleGradientTensor: PDML_TENSOR_DESC;
+        OutputBiasGradientTensor: PDML_TENSOR_DESC;
+        Epsilon: single;
+    end;
+    PDML_BATCH_NORMALIZATION_TRAINING_GRAD_OPERATOR_DESC = ^TDML_BATCH_NORMALIZATION_TRAINING_GRAD_OPERATOR_DESC;
+
+
+    {$ENDIF}// DML_TARGET_VERSION_0x4100
+
+
+    {$IFDEF DML_TARGET_VERSION_0x5000}
+
+    TDML_ELEMENT_WISE_CLIP1_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } ScaleBias: PDML_SCALE_BIAS;
+        MinMaxDataType: TDML_TENSOR_DATA_TYPE;
+        Min: TDML_SCALAR_UNION;
+        Max: TDML_SCALAR_UNION;
+    end;
+    PDML_ELEMENT_WISE_CLIP1_OPERATOR_DESC = ^TDML_ELEMENT_WISE_CLIP1_OPERATOR_DESC;
+
+
+    TDML_ELEMENT_WISE_CLIP_GRAD1_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        InputGradientTensor: PDML_TENSOR_DESC;
+        OutputGradientTensor: PDML_TENSOR_DESC;
+        MinMaxDataType: TDML_TENSOR_DATA_TYPE;
+        Min: TDML_SCALAR_UNION;
+        Max: TDML_SCALAR_UNION;
+    end;
+    PDML_ELEMENT_WISE_CLIP_GRAD1_OPERATOR_DESC = ^TDML_ELEMENT_WISE_CLIP_GRAD1_OPERATOR_DESC;
+
+
+    TDML_PADDING1_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        PaddingMode: TDML_PADDING_MODE;
+        PaddingValueDataType: TDML_TENSOR_DATA_TYPE;
+        PaddingValue: TDML_SCALAR_UNION;
+        DimensionCount: UINT;
+        {_Field_size_(DimensionCount) } StartPadding: PUINT;
+        {_Field_size_(DimensionCount) } EndPadding: PUINT;
+    end;
+    PDML_PADDING1_OPERATOR_DESC = ^TDML_PADDING1_OPERATOR_DESC;
+
+
+    TDML_ELEMENT_WISE_NEGATE_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+    end;
+    PDML_ELEMENT_WISE_NEGATE_OPERATOR_DESC = ^TDML_ELEMENT_WISE_NEGATE_OPERATOR_DESC;
+
+
+    {$ENDIF}// DML_TARGET_VERSION_0x5000
+
+
+    {$IFDEF DML_TARGET_VERSION_0x5100}
+
+    TDML_ACTIVATION_GELU_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+    end;
+    PDML_ACTIVATION_GELU_OPERATOR_DESC = ^TDML_ACTIVATION_GELU_OPERATOR_DESC;
+
+
+    TDML_ACTIVATION_SOFTMAX1_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        AxisCount: UINT;
+        {_Field_size_(AxisCount) } Axes: PUINT;
+    end;
+    PDML_ACTIVATION_SOFTMAX1_OPERATOR_DESC = ^TDML_ACTIVATION_SOFTMAX1_OPERATOR_DESC;
+
+
+    TDML_ACTIVATION_LOG_SOFTMAX1_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        AxisCount: UINT;
+        {_Field_size_(AxisCount) } Axes: PUINT;
+    end;
+    PDML_ACTIVATION_LOG_SOFTMAX1_OPERATOR_DESC = ^TDML_ACTIVATION_LOG_SOFTMAX1_OPERATOR_DESC;
+
+
+    TDML_ACTIVATION_HARDMAX1_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        AxisCount: UINT;
+        {_Field_size_(AxisCount) } Axes: PUINT;
+    end;
+    PDML_ACTIVATION_HARDMAX1_OPERATOR_DESC = ^TDML_ACTIVATION_HARDMAX1_OPERATOR_DESC;
+
+
+    TDML_RESAMPLE2_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        InterpolationMode: TDML_INTERPOLATION_MODE;
+        RoundingDirection: TDML_AXIS_DIRECTION;
+        DimensionCount: UINT;
+        {_Field_size_(DimensionCount) } Scales: Psingle;
+        {_Field_size_(DimensionCount) } InputPixelOffsets: Psingle;
+        {_Field_size_(DimensionCount) } OutputPixelOffsets: Psingle;
+    end;
+    PDML_RESAMPLE2_OPERATOR_DESC = ^TDML_RESAMPLE2_OPERATOR_DESC;
+
+
+    TDML_RESAMPLE_GRAD1_OPERATOR_DESC = record
+        InputGradientTensor: PDML_TENSOR_DESC;
+        OutputGradientTensor: PDML_TENSOR_DESC;
+        InterpolationMode: TDML_INTERPOLATION_MODE;
+        RoundingDirection: TDML_AXIS_DIRECTION;
+        DimensionCount: UINT;
+        {_Field_size_(DimensionCount) } Scales: Psingle;
+        {_Field_size_(DimensionCount) } InputPixelOffsets: Psingle;
+        {_Field_size_(DimensionCount) } OutputPixelOffsets: Psingle;
+    end;
+    PDML_RESAMPLE_GRAD1_OPERATOR_DESC = ^TDML_RESAMPLE_GRAD1_OPERATOR_DESC;
+
+
+    TDML_DIAGONAL_MATRIX1_OPERATOR_DESC = record
+        {_Maybenull_ } InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        ValueDataType: TDML_TENSOR_DATA_TYPE;
+        Value: TDML_SCALAR_UNION;
+        DiagonalFillBegin: int32;
+        DiagonalFillEnd: int32;
+    end;
+    PDML_DIAGONAL_MATRIX1_OPERATOR_DESC = ^TDML_DIAGONAL_MATRIX1_OPERATOR_DESC;
+
+
+    {$ENDIF}// DML_TARGET_VERSION_0x5100
+
+
+    {$IFDEF DML_TARGET_VERSION_0x6100}
+
+    TDML_MULTIHEAD_ATTENTION_OPERATOR_DESC = record
+        {_Maybenull_ } QueryTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } KeyTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } ValueTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } StackedQueryKeyTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } StackedKeyValueTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } StackedQueryKeyValueTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } BiasTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } MaskTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } RelativePositionBiasTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } PastKeyTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } PastValueTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } OutputPresentKeyTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } OutputPresentValueTensor: PDML_TENSOR_DESC;
+        Scale: single;
+        MaskFilterValue: single;
+        HeadCount: UINT;
+        MaskType: TDML_MULTIHEAD_ATTENTION_MASK_TYPE;
+    end;
+    PDML_MULTIHEAD_ATTENTION_OPERATOR_DESC = ^TDML_MULTIHEAD_ATTENTION_OPERATOR_DESC;
+
+
+    {$ENDIF}// DML_TARGET_VERSION_0x6100
+
+
+    {$IFDEF DML_TARGET_VERSION_0x6200}
+
+    TDML_LP_POOLING1_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        DimensionCount: UINT;
+        {_Field_size_(DimensionCount) } Strides: PUINT;
+        {_Field_size_(DimensionCount) } WindowSize: PUINT;
+        {_Field_size_(DimensionCount) } StartPadding: PUINT;
+        {_Field_size_(DimensionCount) } EndPadding: PUINT;
+        {_Field_size_(DimensionCount) } Dilations: PUINT;
+        P: UINT;
+    end;
+    PDML_LP_POOLING1_OPERATOR_DESC = ^TDML_LP_POOLING1_OPERATOR_DESC;
+
+
+    TDML_AVERAGE_POOLING1_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        DimensionCount: UINT;
+        {_Field_size_(DimensionCount) } Strides: PUINT;
+        {_Field_size_(DimensionCount) } WindowSize: PUINT;
+        {_Field_size_(DimensionCount) } StartPadding: PUINT;
+        {_Field_size_(DimensionCount) } EndPadding: PUINT;
+        {_Field_size_(DimensionCount) } Dilations: PUINT;
+        IncludePadding: boolean;
+    end;
+    PDML_AVERAGE_POOLING1_OPERATOR_DESC = ^TDML_AVERAGE_POOLING1_OPERATOR_DESC;
+
+
+    TDML_ACTIVATION_SWISH_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        SigmoidInputScale: single;
+    end;
+    PDML_ACTIVATION_SWISH_OPERATOR_DESC = ^TDML_ACTIVATION_SWISH_OPERATOR_DESC;
+
+
+    TDML_ACTIVATION_HARD_SWISH_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        Alpha: single;
+        Beta: single;
+    end;
+    PDML_ACTIVATION_HARD_SWISH_OPERATOR_DESC = ^TDML_ACTIVATION_HARD_SWISH_OPERATOR_DESC;
+
+
+    TDML_QUANTIZED_LINEAR_AVERAGE_POOLING_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        InputScaleTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } InputZeroPointTensor: PDML_TENSOR_DESC;
+        OutputScaleTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } OutputZeroPointTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        DimensionCount: UINT;
+        {_Field_size_(DimensionCount) } Strides: PUINT;
+        {_Field_size_(DimensionCount) } WindowSize: PUINT;
+        {_Field_size_(DimensionCount) } StartPadding: PUINT;
+        {_Field_size_(DimensionCount) } EndPadding: PUINT;
+        {_Field_size_(DimensionCount) } Dilations: PUINT;
+        IncludePadding: boolean;
+    end;
+    PDML_QUANTIZED_LINEAR_AVERAGE_POOLING_OPERATOR_DESC = ^TDML_QUANTIZED_LINEAR_AVERAGE_POOLING_OPERATOR_DESC;
+
+
+    TDML_MATRIX_MULTIPLY_INTEGER_TO_FLOAT_OPERATOR_DESC = record
+        ATensor: PDML_TENSOR_DESC;
+        AScaleTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } AZeroPointTensor: PDML_TENSOR_DESC;
+        BTensor: PDML_TENSOR_DESC;
+        BScaleTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } BZeroPointTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } BiasTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+    end;
+    PDML_MATRIX_MULTIPLY_INTEGER_TO_FLOAT_OPERATOR_DESC = ^TDML_MATRIX_MULTIPLY_INTEGER_TO_FLOAT_OPERATOR_DESC;
+
+
+    {$ENDIF}// DML_TARGET_VERSION_0x6200
+
+
+    {$IFDEF DML_TARGET_VERSION_0x6300}
+
+    TDML_MEAN_VARIANCE_NORMALIZATION2_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } ScaleTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } BiasTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        AxisCount: UINT;
+        {_Field_size_(AxisCount) } Axes: PUINT;
+        UseMean: boolean;
+        UseVariance: boolean;
+        Epsilon: single;
+        {_Maybenull_ } FusedActivation: PDML_OPERATOR_DESC;
+    end;
+    PDML_MEAN_VARIANCE_NORMALIZATION2_OPERATOR_DESC = ^TDML_MEAN_VARIANCE_NORMALIZATION2_OPERATOR_DESC;
+
+
+    TDML_MULTIHEAD_ATTENTION1_OPERATOR_DESC = record
+        {_Maybenull_ } QueryTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } KeyTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } ValueTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } StackedQueryKeyTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } StackedKeyValueTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } StackedQueryKeyValueTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } BiasTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } MaskTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } RelativePositionBiasTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } PastKeyTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } PastValueTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } PastSequenceLengthsTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } OutputPresentKeyTensor: PDML_TENSOR_DESC;
+        {_Maybenull_ } OutputPresentValueTensor: PDML_TENSOR_DESC;
+        Scale: single;
+        MaskFilterValue: single;
+        QueryHeadCount: UINT;
+        KeyValueHeadCount: UINT;
+        MaskType: TDML_MULTIHEAD_ATTENTION_MASK_TYPE;
+    end;
+    PDML_MULTIHEAD_ATTENTION1_OPERATOR_DESC = ^TDML_MULTIHEAD_ATTENTION1_OPERATOR_DESC;
+
+
+    TDML_QUANTIZE_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        QuantizationType: TDML_QUANTIZATION_TYPE;
+        QuantizationTensorCount: UINT;
+        {_Field_size_(QuantizationTensorCount) } QuantizationTensors: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+    end;
+    PDML_QUANTIZE_OPERATOR_DESC = ^TDML_QUANTIZE_OPERATOR_DESC;
+
+
+    TDML_DEQUANTIZE_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        QuantizationType: TDML_QUANTIZATION_TYPE;
+        QuantizationTensorCount: UINT;
+        {_Field_size_(QuantizationTensorCount) } QuantizationTensors: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+    end;
+    PDML_DEQUANTIZE_OPERATOR_DESC = ^TDML_DEQUANTIZE_OPERATOR_DESC;
+
+
+    {$ENDIF}// DML_TARGET_VERSION_0x6300
+
+
+    {$IFDEF DML_TARGET_VERSION_0x6400}
+
+    TDML_RESAMPLE3_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        InterpolationMode: TDML_INTERPOLATION_MODE;
+        RoundingDirection: TDML_AXIS_DIRECTION;
+        DimensionCount: UINT;
+        {_Field_size_(DimensionCount) } Scales: Psingle;
+        {_Field_size_(DimensionCount) } InputPixelOffsets: Psingle;
+        {_Field_size_(DimensionCount) } OutputPixelOffsets: Psingle;
+        Antialiased: boolean;
+    end;
+    PDML_RESAMPLE3_OPERATOR_DESC = ^TDML_RESAMPLE3_OPERATOR_DESC;
+
+
+    TDML_FOLD_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        DimensionCount: UINT;
+        {_Field_size_(DimensionCount) } WindowSizes: PUINT; // Size of the extracted patch
+        {_Field_size_(DimensionCount) } Strides: PUINT; // Step size of the extracted patches
+        {_Field_size_(DimensionCount) } Dilations: PUINT; // Dialations of the extracted patch
+        {_Field_size_(DimensionCount) } StartPadding: PUINT; // Start padding of the "source tensor"
+        {_Field_size_(DimensionCount) } EndPadding: PUINT; // End padding of the "source tensor"
+    end;
+    PDML_FOLD_OPERATOR_DESC = ^TDML_FOLD_OPERATOR_DESC;
+
+
+    TDML_UNFOLD_OPERATOR_DESC = record
+        InputTensor: PDML_TENSOR_DESC;
+        OutputTensor: PDML_TENSOR_DESC;
+        DimensionCount: UINT;
+        {_Field_size_(DimensionCount) } WindowSizes: PUINT; // Size of the extracted patch
+        {_Field_size_(DimensionCount) } Strides: PUINT; // Step size of the extracted patches
+        {_Field_size_(DimensionCount) } Dilations: PUINT; // Dialations of the extracted patch
+        {_Field_size_(DimensionCount) } StartPadding: PUINT; // Start padding of the "source tensor"
+        {_Field_size_(DimensionCount) } EndPadding: PUINT; // End padding of the "source tensor"
+    end;
+    PDML_UNFOLD_OPERATOR_DESC = ^TDML_UNFOLD_OPERATOR_DESC;
+
+
+    {$ENDIF}// DML_TARGET_VERSION_0x6400
+
+
+    // ===================================================================================================================
+    //   DML feature support queries
+    // ===================================================================================================================
+
+    {$IFDEF DML_TARGET_VERSION_0x2000}
+
+    TDML_FEATURE_LEVEL = (
+        DML_FEATURE_LEVEL_1_0 = $1000,
+        DML_FEATURE_LEVEL_2_0 = $2000,
+        DML_FEATURE_LEVEL_2_1 = $2100,
+        DML_FEATURE_LEVEL_3_0 = $3000,
+        DML_FEATURE_LEVEL_3_1 = $3100,
+        DML_FEATURE_LEVEL_4_0 = $4000,
+        DML_FEATURE_LEVEL_4_1 = $4100,
+        DML_FEATURE_LEVEL_5_0 = $5000,
+        DML_FEATURE_LEVEL_5_1 = $5100,
+        DML_FEATURE_LEVEL_5_2 = $5200,
+        DML_FEATURE_LEVEL_6_0 = $6000,
+        DML_FEATURE_LEVEL_6_1 = $6100,
+        DML_FEATURE_LEVEL_6_2 = $6200,
+        DML_FEATURE_LEVEL_6_3 = $6300,
+        DML_FEATURE_LEVEL_6_4 = $6400);
+
+    PDML_FEATURE_LEVEL = ^TDML_FEATURE_LEVEL;
+
+
+    {$ENDIF}// DML_TARGET_VERSION_0x2000
+
+
+    TDML_FEATURE = (
+        DML_FEATURE_TENSOR_DATA_TYPE_SUPPORT,
+        {$IFDEF DML_TARGET_VERSION_0x2000}
+        DML_FEATURE_FEATURE_LEVELS
+        {$ENDIF}// DML_TARGET_VERSION_0x2000
+
+        );
+
+    PDML_FEATURE = ^TDML_FEATURE;
+
+
+    TDML_FEATURE_QUERY_TENSOR_DATA_TYPE_SUPPORT = record
+        DataType: TDML_TENSOR_DATA_TYPE;
+    end;
+    PDML_FEATURE_QUERY_TENSOR_DATA_TYPE_SUPPORT = ^TDML_FEATURE_QUERY_TENSOR_DATA_TYPE_SUPPORT;
+
+
+    TDML_FEATURE_DATA_TENSOR_DATA_TYPE_SUPPORT = record
+        IsSupported: boolean;
+    end;
+    PDML_FEATURE_DATA_TENSOR_DATA_TYPE_SUPPORT = ^TDML_FEATURE_DATA_TENSOR_DATA_TYPE_SUPPORT;
+
+
+    {$IFDEF DML_TARGET_VERSION_0x2000}
+
+    TDML_FEATURE_QUERY_FEATURE_LEVELS = record
+        RequestedFeatureLevelCount: UINT;
+        {_Field_size_(RequestedFeatureLevelCount) } RequestedFeatureLevels: PDML_FEATURE_LEVEL;
+    end;
+    PDML_FEATURE_QUERY_FEATURE_LEVELS = ^TDML_FEATURE_QUERY_FEATURE_LEVELS;
+
+
+    TDML_FEATURE_DATA_FEATURE_LEVELS = record
+        MaxSupportedFeatureLevel: TDML_FEATURE_LEVEL;
+    end;
+    PDML_FEATURE_DATA_FEATURE_LEVELS = ^TDML_FEATURE_DATA_FEATURE_LEVELS;
+
+
+    {$ENDIF}// DML_TARGET_VERSION_0x2000
+
+
+    // ===================================================================================================================
+    //   DML device functions, enumerations, and structures
+    // ===================================================================================================================
+
+    TDML_BINDING_TABLE_DESC = record
+        Dispatchable: PIDMLDispatchable;
+        CPUDescriptorHandle: TD3D12_CPU_DESCRIPTOR_HANDLE;
+        GPUDescriptorHandle: TD3D12_GPU_DESCRIPTOR_HANDLE;
+        SizeInDescriptors: UINT;
+    end;
+    PDML_BINDING_TABLE_DESC = ^TDML_BINDING_TABLE_DESC;
+
+
+    TDML_EXECUTION_FLAGS = (
+        DML_EXECUTION_FLAG_NONE = 0,
+        DML_EXECUTION_FLAG_ALLOW_HALF_PRECISION_COMPUTATION = $1,
+        DML_EXECUTION_FLAG_DISABLE_META_COMMANDS = $2,
+        DML_EXECUTION_FLAG_DESCRIPTORS_VOLATILE = $4);
+
+    PDML_EXECUTION_FLAGS = ^TDML_EXECUTION_FLAGS;
+
+
+    TDML_CREATE_DEVICE_FLAGS = (
+        DML_CREATE_DEVICE_FLAG_NONE = 0,
+        DML_CREATE_DEVICE_FLAG_DEBUG = $1);
+
+    PDML_CREATE_DEVICE_FLAGS = ^TDML_CREATE_DEVICE_FLAGS;
+
+
+    // ===================================================================================================================
+    //   DML object
+    // ===================================================================================================================
+
+    IDMLObject = interface(IUnknown)
+        ['{c8263aac-9e0c-4a2d-9b8e-007521a3317c}']
+        function GetPrivateData(guid: REFGUID;
+        {_Inout_ } dataSize: PUINT;
+        {_Out_writes_bytes_opt_(*dataSize) } Data: Pvoid): HRESULT; stdcall;
+
+        function SetPrivateData(guid: REFGUID; dataSize: UINT;
+        {_In_reads_bytes_opt_(dataSize) } Data: Pvoid): HRESULT; stdcall;
+
+        function SetPrivateDataInterface(guid: REFGUID;
+        {_In_opt_ } Data: IUnknown): HRESULT; stdcall;
+
+        function SetName(Name: PCWSTR): HRESULT; stdcall;
+
+    end;
+
+
+    // ===================================================================================================================
+    //   DML device
+    // ===================================================================================================================
+
+    IDMLDevice = interface(IDMLObject)
+        ['{6dbd6437-96fd-423f-a98c-ae5e7c2a573f}']
+        function CheckFeatureSupport(feature: TDML_FEATURE; featureQueryDataSize: UINT;
+        {_In_reads_bytes_opt_(featureQueryDataSize) } featureQueryData: Pvoid; featureSupportDataSize: UINT;
+        {_Out_writes_bytes_(featureSupportDataSize) } featureSupportData: Pvoid): HRESULT; stdcall;
+
+        function CreateOperator(desc: PDML_OPERATOR_DESC;
+        // expected: IDMLOperator
+            riid: REFIID;
+        {_COM_Outptr_opt_ }  out ppv): HRESULT; stdcall;
+
+        function CompileOperator(op: IDMLOperator; flags: TDML_EXECUTION_FLAGS;
+        // expected: IDMLCompiledOperator
+            riid: REFIID;
+        {_COM_Outptr_opt_ }  out ppv): HRESULT; stdcall;
+
+        function CreateOperatorInitializer(operatorCount: UINT;
+        {_In_reads_opt_(operatorCount) } operators: PIDMLCompiledOperator;
+        // expected: IDMLOperatorInitializer
+            riid: REFIID;
+        {_COM_Outptr_ }  out ppv): HRESULT; stdcall;
+
+        function CreateCommandRecorder(
+        // expected: IDMLCommandRecorder
+            riid: REFIID;
+        {_COM_Outptr_ }  out ppv): HRESULT; stdcall;
+
+        function CreateBindingTable(
+        {_In_opt_ } desc: PDML_BINDING_TABLE_DESC;
+        // expected: IDMLBindingTable
+            riid: REFIID;
+        {_COM_Outptr_ }  out ppv): HRESULT; stdcall;
+
+        function Evict(Count: UINT;
+        {_In_reads_(count) } ppObjects: PIDMLPageable): HRESULT; stdcall;
+
+        function MakeResident(Count: UINT;
+        {_In_reads_(count) } ppObjects: PIDMLPageable): HRESULT; stdcall;
+
+        function GetDeviceRemovedReason(): HRESULT; stdcall;
+
+        function GetParentDevice(riid: REFIID;
+        {_COM_Outptr_ }  out ppv): HRESULT; stdcall;
+
+    end;
+
+
+    // ===================================================================================================================
+    //   DML device children
+    // ===================================================================================================================
+
+    IDMLDeviceChild = interface(IDMLObject)
+        ['{27e83142-8165-49e3-974e-2fd66e4cb69d}']
+        function GetDevice(
+        // expected: IDMLDevice
+            riid: REFIID;
+        {_COM_Outptr_ }  out ppv): HRESULT; stdcall;
+
+    end;
+
+
+    IDMLPageable = interface(IDMLDeviceChild)
+        ['{b1ab0825-4542-4a4b-8617-6dde6e8f6201}']
+    end;
+
+
+    // ===================================================================================================================
+    //   DML operator
+    // ===================================================================================================================
+
+    IDMLOperator = interface(IDMLDeviceChild)
+        ['{26caae7a-3081-4633-9581-226fbe57695d}']
+    end;
+
+
+    // ===================================================================================================================
+    //   DML dispatchable
+    // ===================================================================================================================
+
+    TDML_BINDING_PROPERTIES = record
+        RequiredDescriptorCount: UINT;
+        TemporaryResourceSize: uint64;
+        PersistentResourceSize: uint64;
+    end;
+    PDML_BINDING_PROPERTIES = ^TDML_BINDING_PROPERTIES;
+
+
+    IDMLDispatchable = interface(IDMLPageable)
+        ['{dcb821a8-1039-441e-9f1c-b1759c2f3cec}']
+        function GetBindingProperties(): TDML_BINDING_PROPERTIES; stdcall;
+
+    end;
+
+
+    // ===================================================================================================================
+    //   DML compiled operator
+    // ===================================================================================================================
+
+    IDMLCompiledOperator = interface(IDMLDispatchable)
+        ['{6b15e56a-bf5c-4902-92d8-da3a650afea4}']
+    end;
+
+
+    // ===================================================================================================================
+    //   DML operator initializer
+    // ===================================================================================================================
+
+    IDMLOperatorInitializer = interface(IDMLDispatchable)
+        ['{427c1113-435c-469c-8676-4d5dd072f813}']
+        function Reset(operatorCount: UINT;
+        {_In_reads_opt_(operatorCount) } operators: PIDMLCompiledOperator): HRESULT; stdcall;
+
+    end;
+
+
+    // ===================================================================================================================
+    //   DML binding table
+    // ===================================================================================================================
+
+    TDML_BINDING_TYPE = (
+        DML_BINDING_TYPE_NONE,
+        DML_BINDING_TYPE_BUFFER,
+        DML_BINDING_TYPE_BUFFER_ARRAY);
+
+    PDML_BINDING_TYPE = ^TDML_BINDING_TYPE;
+
+
+    TDML_BINDING_DESC = record
+        BindingType: TDML_BINDING_TYPE;
+        {_Field_size_opt_(_Inexpressible_("Dependent on binding type")) } Desc: Pvoid;
+    end;
+    PDML_BINDING_DESC = ^TDML_BINDING_DESC;
+
+
+    TDML_BUFFER_BINDING = record
+        {_Maybenull_ } Buffer: PID3D12Resource;
+        Offset: uint64;
+        SizeInBytes: uint64;
+    end;
+    PDML_BUFFER_BINDING = ^TDML_BUFFER_BINDING;
+
+
+    TDML_BUFFER_ARRAY_BINDING = record
+        BindingCount: UINT;
+        {_Field_size_(BindingCount) } Bindings: PDML_BUFFER_BINDING;
+    end;
+    PDML_BUFFER_ARRAY_BINDING = ^TDML_BUFFER_ARRAY_BINDING;
+
+
+    IDMLBindingTable = interface(IDMLDeviceChild)
+        ['{29c687dc-de74-4e3b-ab00-1168f2fc3cfc}']
+        procedure BindInputs(bindingCount: UINT;
+        {_In_reads_opt_(bindingCount) } bindings: PDML_BINDING_DESC); stdcall;
+
+        procedure BindOutputs(bindingCount: UINT;
+        {_In_reads_opt_(bindingCount) } bindings: PDML_BINDING_DESC); stdcall;
+
+        procedure BindTemporaryResource(
+        {_In_opt_ } binding: PDML_BINDING_DESC); stdcall;
+
+        procedure BindPersistentResource(
+        {_In_opt_ } binding: PDML_BINDING_DESC); stdcall;
+
+        function Reset(
+        {_In_opt_ } desc: PDML_BINDING_TABLE_DESC): HRESULT; stdcall;
+
+    end;
+
+
+    // ===================================================================================================================
+    //   DML command recorder
+    // ===================================================================================================================
+
+    IDMLCommandRecorder = interface(IDMLDeviceChild)
+        ['{e6857a76-2e3e-4fdd-bff4-5d2ba10fb453}']
+        procedure RecordDispatch(commandList: ID3D12CommandList; dispatchable: IDMLDispatchable; bindings: IDMLBindingTable); stdcall;
+
+    end;
+
+
+    // ===================================================================================================================
+    //   DML debug
+    // ===================================================================================================================
+
+    IDMLDebugDevice = interface(IUnknown)
+        ['{7d6f3ac9-394a-4ac3-92a7-390cc57a8217}']
+        procedure SetMuteDebugOutput(mute: boolean); stdcall;
+
+    end;
+
+
+    // ===================================================================================================================
+    // DML graph
+    // ===================================================================================================================
+
+{$IFDEF DML_TARGET_VERSION_0x2100}
+
+    TDML_GRAPH_EDGE_TYPE = (
+        DML_GRAPH_EDGE_TYPE_INVALID,
+        DML_GRAPH_EDGE_TYPE_INPUT,
+        DML_GRAPH_EDGE_TYPE_OUTPUT,
+        DML_GRAPH_EDGE_TYPE_INTERMEDIATE);
+
+    PDML_GRAPH_EDGE_TYPE = ^TDML_GRAPH_EDGE_TYPE;
+
+
+    TDML_GRAPH_EDGE_DESC = record
+        EdgeType: TDML_GRAPH_EDGE_TYPE;
+        {_Field_size_(_Inexpressible_("Dependent on edge type")) } Desc: Pvoid;
+    end;
+    PDML_GRAPH_EDGE_DESC = ^TDML_GRAPH_EDGE_DESC;
+
+
+    TDML_INPUT_GRAPH_EDGE_DESC = record
+        GraphInputIndex: UINT;
+        ToNodeIndex: UINT;
+        ToNodeInputIndex: UINT;
+        {_Field_z_ _Maybenull_ } Name: pchar;
+    end;
+    PDML_INPUT_GRAPH_EDGE_DESC = ^TDML_INPUT_GRAPH_EDGE_DESC;
+
+
+    TDML_OUTPUT_GRAPH_EDGE_DESC = record
+        FromNodeIndex: UINT;
+        FromNodeOutputIndex: UINT;
+        GraphOutputIndex: UINT;
+        {_Field_z_ _Maybenull_ } Name: pchar;
+    end;
+    PDML_OUTPUT_GRAPH_EDGE_DESC = ^TDML_OUTPUT_GRAPH_EDGE_DESC;
+
+
+    TDML_INTERMEDIATE_GRAPH_EDGE_DESC = record
+        FromNodeIndex: UINT;
+        FromNodeOutputIndex: UINT;
+        ToNodeIndex: UINT;
+        ToNodeInputIndex: UINT;
+        {_Field_z_ _Maybenull_ } Name: pchar;
+    end;
+    PDML_INTERMEDIATE_GRAPH_EDGE_DESC = ^TDML_INTERMEDIATE_GRAPH_EDGE_DESC;
+
+
+    TDML_GRAPH_NODE_TYPE = (
+        DML_GRAPH_NODE_TYPE_INVALID,
+        DML_GRAPH_NODE_TYPE_OPERATOR,
+        {$IFDEF DML_TARGET_VERSION_0x6200}
+        DML_GRAPH_NODE_TYPE_CONSTANT
+        {$ENDIF}// DML_TARGET_VERSION_0x6200
+
+        );
+
+    PDML_GRAPH_NODE_TYPE = ^TDML_GRAPH_NODE_TYPE;
+
+
+    TDML_GRAPH_NODE_DESC = record
+        NodeType: TDML_GRAPH_NODE_TYPE;
+        {_Field_size_(_Inexpressible_("Dependent on node type")) } Desc: Pvoid;
+    end;
+    PDML_GRAPH_NODE_DESC = ^TDML_GRAPH_NODE_DESC;
+
+
+    TDML_OPERATOR_GRAPH_NODE_DESC = record
+        MLOperator: PIDMLOperator;
+        {_Field_z_ _Maybenull_ } Name: pchar;
+    end;
+    PDML_OPERATOR_GRAPH_NODE_DESC = ^TDML_OPERATOR_GRAPH_NODE_DESC;
+
+
+    {$IFDEF DML_TARGET_VERSION_0x6200}
+    TDML_CONSTANT_DATA_GRAPH_NODE_DESC = record
+        {_Field_size_bytes_(DataSize) } Data: Pvoid;
+        DataSize: SIZE_T;
+        {_Field_z_ _Maybenull_ } Name: pchar;
+    end;
+    PDML_CONSTANT_DATA_GRAPH_NODE_DESC = ^TDML_CONSTANT_DATA_GRAPH_NODE_DESC;
+
+    {$ENDIF}// DML_TARGET_VERSION_0x6200
+
+
+    TDML_GRAPH_DESC = record
+        InputCount: UINT;
+        OutputCount: UINT;
+        NodeCount: UINT;
+        {_Field_size_(NodeCount) } Nodes: PDML_GRAPH_NODE_DESC;
+        InputEdgeCount: UINT;
+        {_Field_size_opt_(InputEdgeCount) } InputEdges: PDML_GRAPH_EDGE_DESC;
+        OutputEdgeCount: UINT;
+        {_Field_size_(OutputEdgeCount) } OutputEdges: PDML_GRAPH_EDGE_DESC;
+        IntermediateEdgeCount: UINT;
+        {_Field_size_opt_(IntermediateEdgeCount) } IntermediateEdges: PDML_GRAPH_EDGE_DESC;
+    end;
+    PDML_GRAPH_DESC = ^TDML_GRAPH_DESC;
+
+
+    IDMLDevice1 = interface(IDMLDevice)
+        ['{a0884f9a-d2be-4355-aa5d-5901281ad1d2}']
+        function CompileGraph(desc: PDML_GRAPH_DESC; flags: TDML_EXECUTION_FLAGS;
+        // expected: IDMLCompiledOperator
+            riid: REFIID;
+        {_COM_Outptr_opt_ }  out ppv): HRESULT; stdcall;
+
+    end;
+
+
+{$ENDIF}// DML_TARGET_VERSION_0x2100
+
+
+function DMLCreateDevice(d3d12Device: ID3D12Device; flags: TDML_CREATE_DEVICE_FLAGS;
+    // Expected: IDMLDevice
+    riid: REFIID;
+    {_COM_Outptr_opt_ }  out ppv): HRESULT; stdcall; external DirectML_DLL;
+
+
+{$IFDEF DML_TARGET_VERSION_0x2000}
+
+function DMLCreateDevice1(d3d12Device: ID3D12Device; flags: TDML_CREATE_DEVICE_FLAGS; minimumFeatureLevel: TDML_FEATURE_LEVEL;
+    // Expected: IDMLDevice
+    riid: REFIID;
+    {_COM_Outptr_opt_ }  out ppv): HRESULT; stdcall; external DirectML_DLL;
+
+
+{$ENDIF}// DML_TARGET_VERSION_0x2000
+
+
+implementation
+
+end.
