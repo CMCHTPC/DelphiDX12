@@ -1,6 +1,6 @@
 # DelphiDX12
-DirectX 12 Headers for Delphi and FPC
-based on SDK 10.0.17763.0 SDK Oct 2018
+DirectX 12 Headers for (Delphi and) FPC
+based on SDK 10.0.26100.7705 February 2026 and DirectX SDK 619 February 2026
 
 The files are available under Apache License, Version 2.0.
 You may obtain a copy of the License at
@@ -8,27 +8,20 @@ You may obtain a copy of the License at
 
 So this license should be okay also for commerical projects.
 	   
-This header translation is  NOT based on the JSB headers
+The present files are a complete retranslation of the DirectX header files. Since the first release over 10 years ago, Free Pascal has gained a large number of additional features. At this point, a BIG THANK YOU to the developers and the community of Free Pascal.
 
-  The HelperFiles are translated to be used with Delphi/FPC. Therefore there are
-  more functions then in the original header file since Pascal syntax doesn't
-  support default values of a function as a result of another function.
+For this reason, I decided to retranslate the headers and take advantage of the new possibilities. Furthermore, the headers are now (more) SAL-oriented. Wherever possible, the calling conventions have been preserved and the original comments have also been retained.
 
-  But the use should be straight forward. Looks to the examples if any
-  questions.
+The old files can be found in the “Historic” folder.
 
-  WHEN you should use this headers: if you plan a new software release and
-     you are not based on much older source code.
-  WHEN you should NOT use this heades: when you have existing source code
-    based on the JSB headers and don't want to change a LOT.
+For older DirectX 11 or DirectX 10 applications, switching is not necessarily required. The JSB headers are still available on the internet as well. However, anyone who wants to develop with DirectX 12 is strongly advised to use the new header files.
 
-  You MUST use this if you work with FPC. The JSB Headers are buggy for FPC
-  cause interfaces not based on IUnknown are solved with abstract classes
-  in Delphi, which will not work on FPC. FPC has the CORBA Interface
-  compiler switch.
-  Also FPC supports BITPACKED RECORDS.
+The DirectX 12 ToolKit (also known as DX12TK) has already been largely translated, although not yet completely. Further updates and tools will follow.
 
-  The inline functions of the interfaces are
-  translated to FPC in some headers (still some work todo).
-  FPC supports now helper classes for interface.
-  In Delphi you miss this feature. Maybe someday...
+A word to Delphi users: the new headers have not been tested under Delphi. I will address this at a later point. My main development environment at the moment is CodeTyphon and therefore the header files are only tested under Free Pascal.
+
+I welcome bug reports and suggestions for extensions and improvements.
+
+Have fun and happy DirectX coding!
+
+P.S.: The DirectX 12 multithreading sample runs about 19% faster on my PC than the original C++ version from Microsoft. 
